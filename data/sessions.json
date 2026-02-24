@@ -1,0 +1,31 @@
+{
+  "lastUpdated": "2026-02-25T00:01:00+08:00",
+  "sessions": [
+    {
+      "id": "main",
+      "agent": "Nexus",
+      "status": "active",
+      "started": "2026-02-24T19:00:00+08:00",
+      "duration": "5h 1m",
+      "tokens": 125000
+    },
+    {
+      "id": "cron-sentry",
+      "agent": "Sentry",
+      "status": "monitoring",
+      "started": "2026-02-24T00:00:00+08:00",
+      "duration": "24h 1m",
+      "tokens": 45000
+    },
+    {
+      "id": "cron-autosync",
+      "agent": "AutoSync",
+      "status": "monitoring",
+      "started": "2026-02-24T00:00:00+08:00",
+      "duration": "24h 1m",
+      "tokens": 12000
+    }
+  ],
+  "totalActive": 3,
+  "totalTokens": 182000
+}

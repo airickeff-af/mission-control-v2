@@ -1,0 +1,41 @@
+{
+  "lastUpdated": "2026-02-25T00:01:00+08:00",
+  "projects": [
+    {
+      "id": "mission-control",
+      "name": "Mission Control",
+      "status": "active",
+      "completion": 45,
+      "url": "https://dashboard-ten-sand-20.vercel.app",
+      "pendingTasks": 5,
+      "lead": "Nexus"
+    },
+    {
+      "id": "mc-project",
+      "name": "MC Project",
+      "status": "deployed",
+      "completion": 81,
+      "url": "https://airickeff-af.github.io/mc-project/",
+      "pendingTasks": 7,
+      "lead": "Meemo"
+    },
+    {
+      "id": "dealflow",
+      "name": "DealFlow",
+      "status": "development",
+      "completion": 0,
+      "url": null,
+      "pendingTasks": 5,
+      "lead": "DealFlow-Alpha"
+    },
+    {
+      "id": "pixel-sanctuary",
+      "name": "Pixel Sanctuary",
+      "status": "sprint",
+      "completion": 14,
+      "url": null,
+      "pendingTasks": 7,
+      "lead": "ZooKeeper"
+    }
+  ]
+}

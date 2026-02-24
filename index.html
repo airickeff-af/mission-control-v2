@@ -307,6 +307,22 @@
             </div>
         </div>
 
+        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">🚀 Projects</h2>
+        <p style="color: #666; font-size: 0.875rem;">All projects status & links</p>
+        
+        <div id="projectsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <!-- Projects loaded dynamically -->
+        </div>
+        
+        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">👥 Active Sessions</h2>
+        <p style="color: #666; font-size: 0.875rem;">Live agent session monitor</p>
+        
+        <div id="sessionsMonitor" class="card" style="margin-top: 1rem;">
+            <div class="card-content" style="text-align: center; padding: 2rem;">
+                <p style="color: #888;">Loading sessions...</p>
+            </div>
+        </div>
+        
         <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">📋 Agent Task Board</h2>
         <p style="color: #666; font-size: 0.875rem;">Live pending tasks — Auto-refresh every 30s</p>
         
@@ -572,18 +588,118 @@
             }
         }
         
+        // Load projects data
+        async function loadProjectsData() {
+            try {
+                const response = await fetch('data/projects.json');
+                const data = await response.json();
+                
+                const projectsGrid = document.getElementById('projectsGrid');
+                let projectsHTML = '';
+                
+                data.projects.forEach(project => {
+                    const statusColor = project.status === 'deployed' ? '#51cf66' : project.status === 'active' ? '#00d4ff' : project.status === 'sprint' ? '#fcc419' : '#888';
+                    const statusIcon = project.status === 'deployed' ? '🚀' : project.status === 'active' ? '⚡' : project.status === 'sprint' ? '🏃' : '🔧';
+                    
+                    projectsHTML += `
+                        <div class="card" style="background: rgba(0,0,0,0.2);">
+                            <div style="padding: 1.5rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="color: #e0e0e0; margin-bottom: 0.25rem;">${project.name}</h3>
+                                        <span style="color: ${statusColor}; font-size: 0.875rem;">${statusIcon} ${project.status.toUpperCase()}</span>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="color: #e0e0e0; font-size: 1.5rem; font-weight: 700;">${project.completion}%</div>
+                                        <div style="color: #666; font-size: 0.75rem;">complete</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-bar" style="margin-bottom: 1rem;">
+                                    <div class="progress-fill" style="width: ${project.completion}%; background: ${statusColor};"></div>
+                                </div>
+                                
+                                <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #888; margin-bottom: 1rem;">
+                                    <span>👤 ${project.lead}</span>
+                                    <span>📋 ${project.pendingTasks} tasks</span>
+                                </div>
+                                
+                                ${project.url ? `<a href="${project.url}" target="_blank" style="display: inline-block; background: ${statusColor}; color: #000; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; font-weight: 600;">Open →</a>` : '<span style="color: #666; font-size: 0.875rem;">Not deployed</span>'}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                projectsGrid.innerHTML = projectsHTML;
+                console.log('✅ Projects data loaded:', data.lastUpdated);
+                
+            } catch (error) {
+                console.error('❌ Failed to load projects data:', error);
+            }
+        }
+        
+        // Load sessions data
+        async function loadSessionsData() {
+            try {
+                const response = await fetch('data/sessions.json');
+                const data = await response.json();
+                
+                const sessionsMonitor = document.getElementById('sessionsMonitor');
+                let sessionsHTML = '';
+                
+                data.sessions.forEach(session => {
+                    const statusColor = session.status === 'active' ? '#00d4ff' : '#51cf66';
+                    
+                    sessionsHTML += `
+                        <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong style="color: #e0e0e0;">${session.agent}</strong>
+                                    <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">${session.id}</span>
+                                </div>
+                                <span style="color: ${statusColor}; font-size: 0.75rem;">● ${session.status}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.75rem; color: #666;">
+                                <span>⏱️ ${session.duration}</span>
+                                <span>🪙 ${(session.tokens / 1000).toFixed(0)}K tokens</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                sessionsHTML += `
+                    <div style="padding: 1rem; background: rgba(0,0,0,0.3);">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #888;">
+                            <span>Active: ${data.totalActive}</span>
+                            <span>Tokens: ${(data.totalTokens / 1000).toFixed(0)}K</span>
+                        </div>
+                    </div>
+                `;
+                
+                sessionsMonitor.innerHTML = sessionsHTML;
+                console.log('✅ Sessions data loaded:', data.lastUpdated);
+                
+            } catch (error) {
+                console.error('❌ Failed to load sessions data:', error);
+            }
+        }
+        
         // Load all data
         loadTaskData();
         loadTokenData();
         loadKanbanData();
+        loadProjectsData();
+        loadSessionsData();
         
         // Set refresh intervals
-        setInterval(loadTaskData, 30000);    // 30s
-        setInterval(loadTokenData, 60000);   // 60s
-        setInterval(loadKanbanData, 30000);  // 30s
+        setInterval(loadTaskData, 30000);     // 30s
+        setInterval(loadTokenData, 60000);    // 60s
+        setInterval(loadKanbanData, 30000);   // 30s
+        setInterval(loadProjectsData, 60000); // 60s
+        setInterval(loadSessionsData, 30000); // 30s
         
         console.log('Mission Control v2.0 loaded');
-        console.log('Live data: Active (Task: 30s, Token: 60s, Kanban: 30s)');
+        console.log('Live data: Active (Projects: 60s, Sessions: 30s, Tasks: 30s, Tokens: 60s)');
     </script>
 </body>
 </html>
