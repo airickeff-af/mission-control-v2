@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2026-02-25T00:30:00+08:00",
+  "lastUpdated": "2026-02-25T00:34:00+08:00",
   "projects": [
     {
       "id": "mission-control",
       "name": "Mission Control",
-      "status": "active",
-      "completion": 45,
-      "url": "https://dashboard-ten-sand-20.vercel.app",
-      "pendingTasks": 5,
+      "status": "deployed",
+      "completion": 85,
+      "url": "https://mission-control-v2-sepia.vercel.app",
+      "pendingTasks": 2,
       "lead": "Nexus"
     },
     {
