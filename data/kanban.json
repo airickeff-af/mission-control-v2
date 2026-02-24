@@ -1,0 +1,60 @@
+{
+  "lastUpdated": "2026-02-24T20:51:00+08:00",
+  "columns": [
+    {
+      "id": "todo",
+      "title": "📋 To Do",
+      "tasks": [
+        {
+          "id": "TASK-001",
+          "title": "Deploy Mission Control v2.0",
+          "agent": "Nexus",
+          "priority": "P0",
+          "due": "2026-02-24T22:00:00+08:00",
+          "tags": ["deployment", "v2.0"]
+        },
+        {
+          "id": "TASK-002",
+          "title": "Add Token Tracker to v2.0",
+          "agent": "Nexus",
+          "priority": "P1",
+          "due": "2026-02-24T23:00:00+08:00",
+          "tags": ["feature", "tokens"]
+        }
+      ]
+    },
+    {
+      "id": "inprogress",
+      "title": "🔵 In Progress",
+      "tasks": [
+        {
+          "id": "TASK-003",
+          "title": "Build Enhanced Task Board",
+          "agent": "Nexus",
+          "priority": "P1",
+          "due": "2026-02-25T00:00:00+08:00",
+          "tags": ["feature", "ui"]
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "title": "👀 Review",
+      "tasks": []
+    },
+    {
+      "id": "done",
+      "title": "✅ Done",
+      "tasks": [
+        {
+          "id": "TASK-000",
+          "title": "Archive old Mission Control",
+          "agent": "Nexus",
+          "priority": "P0",
+          "completed": "2026-02-24T19:00:00+08:00",
+          "tags": ["cleanup"]
+        }
+      ]
+    }
+  ]
+}

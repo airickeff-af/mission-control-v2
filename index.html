@@ -343,6 +343,21 @@
                 <p style="color: #888;">Loading agent data...</p>
             </div>
         </div>
+        
+        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">📊 Enhanced Task Board</h2>
+        
+        <p style="color: #666; font-size: 0.875rem;">Kanban-style task management — Drag & drop coming v2.2</p>
+        
+        <div id="kanbanBoard" style="margin-top: 1rem; overflow-x: auto;">
+            <div style="display: flex; gap: 1rem; min-width: 800px;">
+                <!-- Columns will be loaded dynamically -->
+                <div class="card" style="flex: 1; min-width: 200px;">
+                    <div class="card-content" style="text-align: center; padding: 2rem;">
+                        <p style="color: #888;">Loading kanban...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -512,12 +527,63 @@
             }
         }
         
-        // Load token data
+        // Load kanban board data
+        async function loadKanbanData() {
+            try {
+                const response = await fetch('data/kanban.json');
+                const data = await response.json();
+                
+                const kanbanBoard = document.getElementById('kanbanBoard');
+                let kanbanHTML = '<div style="display: flex; gap: 1rem; min-width: 800px;">';
+                
+                data.columns.forEach(column => {
+                    const columnColor = column.id === 'todo' ? '#888' : column.id === 'inprogress' ? '#00d4ff' : column.id === 'review' ? '#fcc419' : '#51cf66';
+                    
+                    kanbanHTML += `
+                        <div class="card" style="flex: 1; min-width: 200px; background: rgba(0,0,0,0.2);">
+                            <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <strong style="color: ${columnColor};">${column.title}</strong>
+                                <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">${column.tasks.length}</span>
+                            </div>
+                            <div style="padding: 0.5rem;">
+                                ${column.tasks.map(task => `
+                                    <div style="background: rgba(255,255,255,0.05); padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid ${task.priority === 'P0' ? '#ff6b6b' : task.priority === 'P1' ? '#fcc419' : '#888'};">
+                                        <div style="font-size: 0.875rem; color: #e0e0e0; margin-bottom: 0.25rem;">${task.title}</div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #666;">
+                                            <span>${task.agent}</span>
+                                            <span style="color: ${task.priority === 'P0' ? '#ff6b6b' : task.priority === 'P1' ? '#fcc419' : '#888'};">${task.priority}</span>
+                                        </div>
+                                        ${task.due ? `<div style="font-size: 0.75rem; color: #666; margin-top: 0.25rem;">Due: ${new Date(task.due).toLocaleDateString()}</div>` : ''}
+                                    </div>
+                                `).join('')}
+                                ${column.tasks.length === 0 ? `<div style="text-align: center; padding: 2rem; color: #666; font-size: 0.875rem;">No tasks</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                kanbanHTML += '</div>';
+                kanbanBoard.innerHTML = kanbanHTML;
+                
+                console.log('✅ Kanban data loaded:', data.lastUpdated);
+                
+            } catch (error) {
+                console.error('❌ Failed to load kanban data:', error);
+            }
+        }
+        
+        // Load all data
+        loadTaskData();
         loadTokenData();
-        setInterval(loadTokenData, 60000); // Refresh every minute
+        loadKanbanData();
+        
+        // Set refresh intervals
+        setInterval(loadTaskData, 30000);    // 30s
+        setInterval(loadTokenData, 60000);   // 60s
+        setInterval(loadKanbanData, 30000);  // 30s
         
         console.log('Mission Control v2.0 loaded');
-        console.log('Live data: Active (30s refresh)');
+        console.log('Live data: Active (Task: 30s, Token: 60s, Kanban: 30s)');
     </script>
 </body>
 </html>
