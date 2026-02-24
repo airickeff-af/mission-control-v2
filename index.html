@@ -458,10 +458,15 @@
             </div>
         </div>
         
-        <div class="theme-toggle">
-            <button class="theme-btn" data-theme="light" title="Light Mode">☀️</button>
-            <button class="theme-btn active" data-theme="auto" title="Auto">🌓</button>
-            <button class="theme-btn" data-theme="dark" title="Dark Mode">🌙</button>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
+            <div id="lastUpdated" style="color: var(--text-muted); font-size: 0.85rem;">
+                🕐 Last updated: Loading...
+            </div>
+            <div class="theme-toggle">
+                <button class="theme-btn" data-theme="light" title="Light Mode">☀️</button>
+                <button class="theme-btn active" data-theme="auto" title="Auto">🌓</button>
+                <button class="theme-btn" data-theme="dark" title="Dark Mode">🌙</button>
+            </div>
         </div>
     </header>
 
@@ -501,9 +506,9 @@
                 <div class="stat-value loading">---</div>
                 <div class="stat-label">Daily Burn</div>
             </div>
-            <div class="stat-box">
+            <div class="stat-box" style="position: relative;">
                 <div class="stat-value loading">---</div>
-                <div class="stat-label">Monthly</div>
+                <div class="stat-label">Monthly <span style="color: var(--accent-yellow); font-size: 0.75rem;">(EST.)</span></div>
             </div>
         </div>
 
@@ -675,11 +680,20 @@
                         <div class="stat-value">${(data.summary.dailyBurnRate / 1000).toFixed(0)}K</div>
                         <div class="stat-label">Daily Burn</div>
                     </div>
-                    <div class="stat-box">
+                    <div class="stat-box" style="position: relative;">
                         <div class="stat-value">$${data.summary.projectedMonthlyCost.toFixed(2)}</div>
-                        <div class="stat-label">Monthly</div>
+                        <div class="stat-label">Monthly <span style="color: var(--accent-yellow); font-size: 0.75rem;">(EST.)</span></div>
                     </div>
                 `;
+                
+                // Update last updated time
+                const lastUpdated = new Date(data.lastUpdated).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                document.getElementById('lastUpdated').textContent = `🕐 Last updated: ${lastUpdated}`;
                 
             } catch (error) {
                 console.error('Failed to load token stats:', error);
