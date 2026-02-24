@@ -1,705 +1,717 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="auto">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission Control v2.0 | EricF's Command Center</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>🏢 Mission Control v2.0 | EricF's Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
-            color: #e0e0e0;
-            min-height: 100vh;
+        /* CSS Variables for theming */
+        :root {
+            /* Kairosoft Color Palette - Dark Mode (Default) */
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #1a0f2e;
+            --bg-card: #3d2b5e;
+            --bg-card-hover: #4d3b6e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
+            --border-color: #5d4b7e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --pixel-border: 4px;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+
+        /* Light Mode */
+        [data-theme="light"] {
+            --bg-primary: #f0e6ff;
+            --bg-secondary: #e0d0f0;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f0ff;
+            --text-primary: #2d1b4e;
+            --text-secondary: #5d4b7e;
+            --text-muted: #8a7a99;
+            --accent-cyan: #0099aa;
+            --accent-pink: #e91e63;
+            --accent-yellow: #f9a825;
+            --accent-green: #4caf50;
+            --accent-orange: #ff9800;
+            --border-color: #d0c0e0;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+        }
+
+        /* Auto mode - follows system preference */
+        @media (prefers-color-scheme: light) {
+            :root[data-theme="auto"] {
+                --bg-primary: #f0e6ff;
+                --bg-secondary: #e0d0f0;
+                --bg-card: #ffffff;
+                --bg-card-hover: #f5f0ff;
+                --text-primary: #2d1b4e;
+                --text-secondary: #5d4b7e;
+                --text-muted: #8a7a99;
+                --accent-cyan: #0099aa;
+                --accent-pink: #e91e63;
+                --accent-yellow: #f9a825;
+                --accent-green: #4caf50;
+                --accent-orange: #ff9800;
+                --border-color: #d0c0e0;
+                --shadow-color: rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
         
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        /* Pixel Art Header */
         .header {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1.5rem 2rem;
+            background: var(--bg-secondary);
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
         }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
-        
-        .version {
-            font-size: 0.75rem;
-            color: #666;
-            font-family: 'JetBrains Mono', monospace;
+
+        .pixel-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-cyan);
+            border: 4px solid var(--text-primary);
+            box-shadow: 
+                4px 4px 0 var(--shadow-color),
+                inset -4px -4px 0 rgba(0,0,0,0.2),
+                inset 4px 4px 0 rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
         }
-        
+
+        .logo-text {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-yellow);
+            text-shadow: 2px 2px 0 var(--shadow-color);
+            line-height: 1.6;
+        }
+
+        .logo-text span {
+            color: var(--accent-cyan);
+            font-size: 0.5rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.5rem;
+            border: 3px solid var(--border-color);
+            box-shadow: 3px 3px 0 var(--shadow-color);
+        }
+
+        .theme-btn {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-pixel);
+            font-size: 1rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .theme-btn:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .theme-btn.active {
+            background: var(--accent-cyan);
+            color: var(--bg-secondary);
+            border-color: var(--text-primary);
+        }
+
+        /* Main Container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+
+        /* Pixel Cards */
+        .pixel-card {
+            background: var(--bg-card);
+            border: 4px solid var(--border-color);
+            box-shadow: 
+                6px 6px 0 var(--shadow-color),
+                inset -2px -2px 0 rgba(0,0,0,0.1);
             padding: 1.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.1s;
         }
-        
-        .card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
+
+        .pixel-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 
+                8px 8px 0 var(--shadow-color),
+                inset -2px -2px 0 rgba(0,0,0,0.1);
         }
-        
+
         .card-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
             margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px dashed var(--border-color);
         }
-        
+
         .card-icon {
             font-size: 1.5rem;
-        }
-        
-        .card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-        }
-        
-        .card-status {
-            margin-left: auto;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .status-live { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
-        .status-dev { background: rgba(252, 196, 25, 0.2); color: #fcc419; }
-        .status-pending { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
-        
-        .card-content {
-            color: #888;
-            font-size: 0.875rem;
-            line-height: 1.6;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin-top: 0.75rem;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-        
-        .progress-81 { width: 81%; background: linear-gradient(90deg, #00d4ff, #0099cc); }
-        .progress-14 { width: 14%; background: linear-gradient(90deg, #fcc419, #ff922b); }
-        .progress-0 { width: 0%; background: linear-gradient(90deg, #ff6b6b, #fa5252); }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.25rem;
-            background: rgba(0, 212, 255, 0.2);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 8px;
-            color: #00d4ff;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-top: 1rem;
-            transition: all 0.2s ease;
-        }
-        
-        .btn:hover {
-            background: rgba(0, 212, 255, 0.3);
-        }
-        
-        .agents-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .agent-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .agent-avatar {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
         }
-        
-        .agent-info h4 {
-            font-size: 0.875rem;
-            font-weight: 600;
+
+        .card-title {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            color: var(--text-primary);
+            flex: 1;
         }
-        
-        .agent-info p {
-            font-size: 0.75rem;
-            color: #666;
+
+        .pixel-badge {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.9rem;
+            border: 2px solid;
+            box-shadow: 2px 2px 0 var(--shadow-color);
         }
-        
-        .agent-status {
+
+        .badge-live { 
+            background: var(--accent-green); 
+            color: var(--bg-secondary);
+            border-color: var(--text-primary);
+        }
+        .badge-dev { 
+            background: var(--accent-yellow); 
+            color: var(--bg-secondary);
+            border-color: var(--text-primary);
+        }
+        .badge-pending { 
+            background: var(--accent-pink); 
+            color: var(--text-primary);
+            border-color: var(--text-primary);
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            box-shadow: 4px 4px 0 var(--shadow-color);
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-yellow);
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
             margin-left: auto;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #51cf66;
-            box-shadow: 0 0 8px #51cf66;
         }
-        
-        footer {
+
+        /* Grid Layouts */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-box {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 3px 3px 0 var(--shadow-color);
+        }
+
+        .stat-value {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Progress Bar */
+        .pixel-progress {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            height: 24px;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+
+        .pixel-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            border-right: 3px solid var(--text-primary);
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .pixel-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 4px;
+            background: rgba(255,255,255,0.5);
+        }
+
+        /* Agent List */
+        .agent-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .agent-row:last-child {
+            border-bottom: none;
+        }
+
+        .agent-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .agent-info {
+            flex: 1;
+        }
+
+        .agent-name {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .agent-role {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Task Items */
+        .task-item {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-left: 6px solid var(--accent-pink);
+            box-shadow: 2px 2px 0 var(--shadow-color);
+        }
+
+        .task-item.p0 { border-left-color: var(--accent-pink); }
+        .task-item.p1 { border-left-color: var(--accent-yellow); }
+        .task-item.p2 { border-left-color: var(--text-muted); }
+
+        .task-title {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Links */
+        .pixel-link {
+            display: inline-block;
+            background: var(--accent-cyan);
+            color: var(--bg-secondary);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border: 3px solid var(--text-primary);
+            box-shadow: 3px 3px 0 var(--shadow-color);
+            font-size: 0.9rem;
+            transition: all 0.1s;
+        }
+
+        .pixel-link:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--shadow-color);
+        }
+
+        /* Footer */
+        .footer {
             text-align: center;
             padding: 2rem;
-            color: #666;
-            font-size: 0.75rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 3rem;
+            margin-top: 2rem;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--border-color);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Loading Animation */
+        @keyframes pixel-blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .loading {
+            animation: pixel-blink 1s infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .section-title {
+                font-size: 0.5rem;
+            }
+            
+            .logo-text {
+                font-size: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <div>
-            <div class="logo">🎯 Mission Control</div>
-            <div class="version">v2.0.0 — Clean, Simple, Effective</div>
+        <div class="logo-container">
+            <div class="pixel-logo">🏢</div>
+            <div class="logo-text">
+                MISSION<br>CONTROL<br><span>v2.0</span>
+            </div>
         </div>
-        <div style="color: #666; font-size: 0.875rem;">
-            Commander: EricF | Lead: Nexus
+        
+        <div class="theme-toggle">
+            <button class="theme-btn" data-theme="light" title="Light Mode">☀️</button>
+            <button class="theme-btn active" data-theme="auto" title="Auto">🌓</button>
+            <button class="theme-btn" data-theme="dark" title="Dark Mode">🌙</button>
         </div>
     </header>
 
-    <div class="container">
-        <h2 style="margin-bottom: 0.5rem;">📊 Projects</h2>
-        <p style="color: #666; font-size: 0.875rem;">All EricF's projects in one place</p>
-        
-        <div class="grid">
-            <!-- MC Project -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-icon">🎮</span>
-                    <span class="card-title">MC Project</span>
-                    <span class="card-status status-live">LIVE</span>
-                </div>
-                <div class="card-content">
-                    Personal character tracking with VRM avatar, health/wealth stats, and gamified progression.
-                    <br><br>
-                    <strong>Lead:</strong> Meemo<br>
-                    <strong>Completion:</strong> 81%
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-81"></div>
-                    </div>
-                    <a href="https://airickeff-af.github.io/mc-project/" class="btn" target="_blank">
-                        🚀 Open MC Project
-                    </a>
-                </div>
-            </div>
-
-            <!-- Pixel Sanctuary -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-icon">🦁</span>
-                    <span class="card-title">Pixel Sanctuary</span>
-                    <span class="card-status status-dev">IN DEV</span>
-                </div>
-                <div class="card-content">
-                    Interactive sprite zoo with React + Canvas. 48-hour sprint in progress.
-                    <br><br>
-                    <strong>Lead:</strong> ZooKeeper<br>
-                    <strong>Completion:</strong> 14%
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-14"></div>
-                    </div>
-                    <a href="#" class="btn" style="opacity: 0.5; cursor: not-allowed;">
-                        🔒 Coming Soon
-                    </a>
-                </div>
-            </div>
-
-            <!-- DealFlow -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-icon">🤝</span>
-                    <span class="card-title">DealFlow</span>
-                    <span class="card-status status-pending">PENDING</span>
-                </div>
-                <div class="card-content">
-                    Lead generation and outreach automation. Integration with ColdCall for meeting booking.
-                    <br><br>
-                    <strong>Lead:</strong> Nexus (interim)<br>
-                    <strong>Completion:</strong> 0%
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-0"></div>
-                    </div>
-                    <a href="#" class="btn" style="opacity: 0.5; cursor: not-allowed;">
-                        🔒 Not Started
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">🤖 Active Agents</h2>
-        <p style="color: #666; font-size: 0.875rem;">Streamlined team for v2.0</p>
-        
-        <div class="agents-grid">
-            <div class="agent-card">
-                <div class="agent-avatar">👑</div>
-                <div class="agent-info">
-                    <h4>Nexus</h4>
-                    <p>Orchestrator</p>
-                </div>
-                <div class="agent-status"></div>
-            </div>
-            
-            <div class="agent-card">
-                <div class="agent-avatar">🎨</div>
-                <div class="agent-info">
-                    <h4>Meemo</h4>
-                    <p>MC Project Lead</p>
-                </div>
-                <div class="agent-status"></div>
-            </div>
-            
-            <div class="agent-card">
-                <div class="agent-avatar">🦁</div>
-                <div class="agent-info">
-                    <h4>ZooKeeper</h4>
-                    <p>PS Project Lead</p>
-                </div>
-                <div class="agent-status"></div>
-            </div>
-        </div>
-
-        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">🚀 Projects</h2>
-        <p style="color: #666; font-size: 0.875rem;">All projects status & links</p>
-        
-        <div id="projectsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
-            <!-- Projects loaded dynamically -->
+    <main class="container">
+        <!-- Projects Section -->
+        <div class="section-header">
+            <span class="section-icon">🚀</span>
+            <h2 class="section-title">PROJECTS</h2>
+            <span class="section-subtitle">Live Status</span>
         </div>
         
-        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">👥 Active Sessions</h2>
-        <p style="color: #666; font-size: 0.875rem;">Live agent session monitor</p>
-        
-        <div id="sessionsMonitor" class="card" style="margin-top: 1rem;">
-            <div class="card-content" style="text-align: center; padding: 2rem;">
-                <p style="color: #888;">Loading sessions...</p>
-            </div>
-        </div>
-        
-        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">📋 Agent Task Board</h2>
-        <p style="color: #666; font-size: 0.875rem;">Live pending tasks — Auto-refresh every 30s</p>
-        
-        <div id="taskBoard" class="card" style="margin-top: 1rem;">
-            <div class="card-content" style="text-align: center; padding: 2rem;">
-                <p style="color: #888;">Loading tasks...</p>
-            </div>
-        </div>
-        
-        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">📊 Pending Tasks Summary</h2>
-        <p style="color: #666; font-size: 0.875rem;">All pending tasks across projects</p>
-        
-        <div id="pendingTasks" class="card" style="margin-top: 1rem;">
-            <div class="card-content" style="text-align: center; padding: 2rem;">
-                <p style="color: #888;">Loading pending tasks...</p>
-            </div>
-        </div>
-
-        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">💰 Token Tracker</h2>
-        <p style="color: #666; font-size: 0.875rem;">Live agent token usage & cost monitoring</p>
-        
-        <div class="card" style="margin-top: 1rem;">
-            <div id="tokenSummary">
+        <div id="projectsGrid" class="projects-grid">
+            <div class="pixel-card">
                 <div class="card-content" style="text-align: center; padding: 2rem;">
-                    <p style="color: #888;">Loading token data...</p>
+                    <span class="loading">Loading projects...</span>
                 </div>
             </div>
         </div>
-        
-        <h3 style="margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1rem;">Agent Token Usage</h3>
-        
-        <div id="agentTokens" class="card">
-            <div class="card-content" style="text-align: center; padding: 2rem;">
-                <p style="color: #888;">Loading agent data...</p>
-            </div>
-        </div>
-        
-        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">📊 Enhanced Task Board</h2>
-        
-        <p style="color: #666; font-size: 0.875rem;">Kanban-style task management — Drag & drop coming v2.2</p>
-        
-        <div id="kanbanBoard" style="margin-top: 1rem; overflow-x: auto;">
-            <div style="display: flex; gap: 1rem; min-width: 800px;">
-                <!-- Columns will be loaded dynamically -->
-                <div class="card" style="flex: 1; min-width: 200px;">
-                    <div class="card-content" style="text-align: center; padding: 2rem;">
-                        <p style="color: #888;">Loading kanban...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <footer>
-        <p>Mission Control v2.0 — Built by Nexus for EricF</p>
-        <p style="margin-top: 0.5rem; opacity: 0.7;">Clean, Simple, Effective</p>
+        <!-- Stats Section -->
+        <div class="section-header">
+            <span class="section-icon">📊</span>
+            <h2 class="section-title">STATS</h2>
+            <span class="section-subtitle">Token Usage</span>
+        </div>
+        
+        <div id="tokenStats" class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value loading">---</div>
+                <div class="stat-label">Total Tokens</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value loading">---</div>
+                <div class="stat-label">Total Cost</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value loading">---</div>
+                <div class="stat-label">Daily Burn</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value loading">---</div>
+                <div class="stat-label">Monthly</div>
+            </div>
+        </div>
+
+        <!-- Agents Section -->
+        <div class="section-header">
+            <span class="section-icon">👥</span>
+            <h2 class="section-title">AGENTS</h2>
+            <span class="section-subtitle">Active Sessions</span>
+        </div>
+        
+        <div id="agentsList" class="pixel-card">
+            <div class="card-content" style="text-align: center; padding: 2rem;">
+                <span class="loading">Loading agents...</span>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="section-header">
+            <span class="section-icon">📋</span>
+            <h2 class="section-title">TASKS</h2>
+            <span class="section-subtitle">Pending</span>
+        </div>
+        
+        <div id="tasksList" class="pixel-card">
+            <div class="card-content" style="text-align: center; padding: 2rem;">
+                <span class="loading">Loading tasks...</span>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">🏢 Mission Control v2.0 | Built by Nexus for EricF</p>
+        <p class="footer-text" style="margin-top: 0.5rem;">🎮 Kairosoft Theme | Auto Dark/Light Mode</p>
     </footer>
 
     <script>
-        // Load live task data
-        async function loadTaskData() {
-            try {
-                const response = await fetch('data/tasks.json');
-                const data = await response.json();
-                
-                // Render Agent Task Board
-                const taskBoard = document.getElementById('taskBoard');
-                let agentHTML = '';
-                
-                data.agents.forEach(agent => {
-                    const statusClass = agent.status === 'active' ? 'status-live' : 'status-dev';
-                    const statusText = agent.status === 'active' ? 'ACTIVE' : 'STANDBY';
-                    const icon = agent.name === 'Nexus' ? '👑' : agent.name === 'Meemo' ? '🎨' : '🦁';
-                    const color = agent.name === 'Nexus' ? '#00d4ff' : agent.name === 'Meemo' ? '#fcc419' : '#51cf66';
-                    
-                    agentHTML += `
-                        <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <strong style="color: ${color};">${icon} ${agent.name}</strong>
-                                    <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">${agent.role}</span>
-                                </div>
-                                <span class="card-status ${statusClass}">${statusText}</span>
-                            </div>
-                            <div style="margin-top: 0.5rem; color: #888; font-size: 0.875rem;">
-                                ${agent.status === 'active' ? '📝' : '⏸️'} ${agent.task}
-                                ${agent.priority ? `<span style="color: #ff6b6b; margin-left: 0.5rem;">[${agent.priority}]</span>` : ''}
-                                ${agent.due ? `<span style="color: #666; margin-left: 0.5rem;">Due: ${new Date(agent.due).toLocaleTimeString()}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                taskBoard.innerHTML = agentHTML;
-                
-                // Render Pending Tasks Summary
-                const pendingTasks = document.getElementById('pendingTasks');
-                let tasksHTML = '';
-                
-                data.pendingTasks.forEach(task => {
-                    const priorityColor = task.priority === 'P0' ? '#ff6b6b' : task.priority === 'P1' ? '#fcc419' : '#888';
-                    const statusIcon = task.status === 'in-progress' ? '🔵' : '⚪';
-                    
-                    tasksHTML += `
-                        <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <strong style="color: #e0e0e0;">${statusIcon} ${task.title}</strong>
-                                    <span style="color: ${priorityColor}; font-size: 0.75rem; margin-left: 0.5rem; font-weight: 600;">${task.priority}</span>
-                                </div>
-                                <span style="color: #666; font-size: 0.75rem;">${task.agent}</span>
-                            </div>
-                            <div style="margin-top: 0.25rem; color: #666; font-size: 0.75rem;">
-                                Due: ${new Date(task.due).toLocaleString()} | Status: ${task.status}
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                // Add summary footer
-                const p0Count = data.pendingTasks.filter(t => t.priority === 'P0').length;
-                const p1Count = data.pendingTasks.filter(t => t.priority === 'P1').length;
-                const p2Count = data.pendingTasks.filter(t => t.priority === 'P2').length;
-                
-                tasksHTML += `
-                    <div style="padding: 1rem; background: rgba(0,0,0,0.3);">
-                        <div style="display: flex; gap: 1rem; font-size: 0.875rem;">
-                            <span style="color: #ff6b6b;">🔴 P0: ${p0Count}</span>
-                            <span style="color: #fcc419;">🟡 P1: ${p1Count}</span>
-                            <span style="color: #888;">⚪ P2: ${p2Count}</span>
-                            <span style="color: #666; margin-left: auto;">Total: ${data.pendingTasks.length}</span>
-                        </div>
-                    </div>
-                `;
-                
-                pendingTasks.innerHTML = tasksHTML;
-                
-                console.log('✅ Live data loaded:', data.lastUpdated);
-                
-            } catch (error) {
-                console.error('❌ Failed to load task data:', error);
-                document.getElementById('taskBoard').innerHTML = `
-                    <div class="card-content" style="text-align: center; padding: 2rem;">
-                        <p style="color: #ff6b6b;">⚠️ Failed to load live data</p>
-                        <p style="color: #666; font-size: 0.875rem;">Using static fallback</p>
-                    </div>
-                `;
-            }
-        }
-        
-        // Load immediately and refresh every 30 seconds
-        loadTaskData();
-        setInterval(loadTaskData, 30000);
-        
-        // Load token tracker data
-        async function loadTokenData() {
-            try {
-                const response = await fetch('data/tokens.json');
-                const data = await response.json();
-                
-                // Render Token Summary
-                const tokenSummary = document.getElementById('tokenSummary');
-                tokenSummary.innerHTML = `
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 1rem;">
-                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
-                            <div style="color: #666; font-size: 0.75rem;">Total Tokens</div>
-                            <div style="color: #00d4ff; font-size: 1.5rem; font-weight: 700;">${(data.summary.totalTokens / 1000000).toFixed(2)}M</div>
-                        </div>
-                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
-                            <div style="color: #666; font-size: 0.75rem;">Total Cost</div>
-                            <div style="color: #51cf66; font-size: 1.5rem; font-weight: 700;">$${data.summary.totalCost.toFixed(2)}</div>
-                        </div>
-                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
-                            <div style="color: #666; font-size: 0.75rem;">Daily Burn</div>
-                            <div style="color: #fcc419; font-size: 1.5rem; font-weight: 700;">${(data.summary.dailyBurnRate / 1000).toFixed(0)}K</div>
-                        </div>
-                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
-                            <div style="color: #666; font-size: 0.75rem;">Monthly Projected</div>
-                            <div style="color: #ff6b6b; font-size: 1.5rem; font-weight: 700;">$${data.summary.projectedMonthlyCost.toFixed(2)}</div>
-                        </div>
-                    </div>
-                `;
-                
-                // Render Agent Token Usage
-                const agentTokens = document.getElementById('agentTokens');
-                let agentTokenHTML = '';
-                
-                data.agents.forEach(agent => {
-                    const percentage = (agent.tokens / data.summary.totalTokens * 100).toFixed(1);
-                    const color = agent.name === 'Nexus' ? '#00d4ff' : agent.name === 'Meemo' ? '#fcc419' : '#51cf66';
-                    
-                    agentTokenHTML += `
-                        <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <strong style="color: ${color};">${agent.name}</strong>
-                                <span style="color: #888;">${percentage}%</span>
-                            </div>
-                            <div style="margin-top: 0.5rem;">
-                                <div class="progress-bar" style="height: 6px;">
-                                    <div class="progress-fill" style="width: ${percentage}%; background: ${color};"></div>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-top: 0.25rem; font-size: 0.75rem; color: #666;">
-                                    <span>${(agent.tokens / 1000).toFixed(0)}K tokens</span>
-                                    <span>$${agent.cost.toFixed(2)}</span>
-                                    <span>${agent.sessions} sessions</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                agentTokens.innerHTML = agentTokenHTML;
-                
-                console.log('✅ Token data loaded:', data.lastUpdated);
-                
-            } catch (error) {
-                console.error('❌ Failed to load token data:', error);
-            }
-        }
-        
-        // Load kanban board data
-        async function loadKanbanData() {
-            try {
-                const response = await fetch('data/kanban.json');
-                const data = await response.json();
-                
-                const kanbanBoard = document.getElementById('kanbanBoard');
-                let kanbanHTML = '<div style="display: flex; gap: 1rem; min-width: 800px;">';
-                
-                data.columns.forEach(column => {
-                    const columnColor = column.id === 'todo' ? '#888' : column.id === 'inprogress' ? '#00d4ff' : column.id === 'review' ? '#fcc419' : '#51cf66';
-                    
-                    kanbanHTML += `
-                        <div class="card" style="flex: 1; min-width: 200px; background: rgba(0,0,0,0.2);">
-                            <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                <strong style="color: ${columnColor};">${column.title}</strong>
-                                <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">${column.tasks.length}</span>
-                            </div>
-                            <div style="padding: 0.5rem;">
-                                ${column.tasks.map(task => `
-                                    <div style="background: rgba(255,255,255,0.05); padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; border-left: 3px solid ${task.priority === 'P0' ? '#ff6b6b' : task.priority === 'P1' ? '#fcc419' : '#888'};">
-                                        <div style="font-size: 0.875rem; color: #e0e0e0; margin-bottom: 0.25rem;">${task.title}</div>
-                                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #666;">
-                                            <span>${task.agent}</span>
-                                            <span style="color: ${task.priority === 'P0' ? '#ff6b6b' : task.priority === 'P1' ? '#fcc419' : '#888'};">${task.priority}</span>
-                                        </div>
-                                        ${task.due ? `<div style="font-size: 0.75rem; color: #666; margin-top: 0.25rem;">Due: ${new Date(task.due).toLocaleDateString()}</div>` : ''}
-                                    </div>
-                                `).join('')}
-                                ${column.tasks.length === 0 ? `<div style="text-align: center; padding: 2rem; color: #666; font-size: 0.875rem;">No tasks</div>` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                kanbanHTML += '</div>';
-                kanbanBoard.innerHTML = kanbanHTML;
-                
-                console.log('✅ Kanban data loaded:', data.lastUpdated);
-                
-            } catch (error) {
-                console.error('❌ Failed to load kanban data:', error);
-            }
-        }
-        
-        // Load projects data
-        async function loadProjectsData() {
+        // Theme Toggle
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const html = document.documentElement;
+
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                themeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                html.setAttribute('data-theme', btn.dataset.theme);
+                localStorage.setItem('theme', btn.dataset.theme);
+            });
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'auto';
+        html.setAttribute('data-theme', savedTheme);
+        themeButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === savedTheme);
+        });
+
+        // Load Projects
+        async function loadProjects() {
             try {
                 const response = await fetch('data/projects.json');
                 const data = await response.json();
                 
-                const projectsGrid = document.getElementById('projectsGrid');
-                let projectsHTML = '';
-                
-                data.projects.forEach(project => {
-                    const statusColor = project.status === 'deployed' ? '#51cf66' : project.status === 'active' ? '#00d4ff' : project.status === 'sprint' ? '#fcc419' : '#888';
-                    const statusIcon = project.status === 'deployed' ? '🚀' : project.status === 'active' ? '⚡' : project.status === 'sprint' ? '🏃' : '🔧';
+                const container = document.getElementById('projectsGrid');
+                container.innerHTML = data.projects.map(project => {
+                    const statusClass = project.status === 'deployed' ? 'badge-live' : 
+                                       project.status === 'active' ? 'badge-live' : 
+                                       project.status === 'sprint' ? 'badge-dev' : 'badge-pending';
+                    const statusText = project.status.toUpperCase();
+                    const accentColor = project.completion >= 80 ? 'var(--accent-green)' : 
+                                       project.completion >= 50 ? 'var(--accent-yellow)' : 
+                                       'var(--accent-pink)';
                     
-                    projectsHTML += `
-                        <div class="card" style="background: rgba(0,0,0,0.2);">
-                            <div style="padding: 1.5rem;">
-                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                                    <div>
-                                        <h3 style="color: #e0e0e0; margin-bottom: 0.25rem;">${project.name}</h3>
-                                        <span style="color: ${statusColor}; font-size: 0.875rem;">${statusIcon} ${project.status.toUpperCase()}</span>
-                                    </div>
-                                    <div style="text-align: right;">
-                                        <div style="color: #e0e0e0; font-size: 1.5rem; font-weight: 700;">${project.completion}%</div>
-                                        <div style="color: #666; font-size: 0.75rem;">complete</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="progress-bar" style="margin-bottom: 1rem;">
-                                    <div class="progress-fill" style="width: ${project.completion}%; background: ${statusColor};"></div>
-                                </div>
-                                
-                                <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #888; margin-bottom: 1rem;">
-                                    <span>👤 ${project.lead}</span>
-                                    <span>📋 ${project.pendingTasks} tasks</span>
-                                </div>
-                                
-                                ${project.url ? `<a href="${project.url}" target="_blank" style="display: inline-block; background: ${statusColor}; color: #000; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-size: 0.875rem; font-weight: 600;">Open →</a>` : '<span style="color: #666; font-size: 0.875rem;">Not deployed</span>'}
+                    return `
+                        <div class="pixel-card">
+                            <div class="card-header">
+                                <div class="card-icon">${project.completion >= 80 ? '🚀' : project.completion >= 50 ? '⚡' : '🔧'}</div>
+                                <h3 class="card-title">${project.name}</h3>
+                                <span class="pixel-badge ${statusClass}">${statusText}</span>
                             </div>
+                            
+                            <div style="margin: 1rem 0;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span style="color: var(--text-secondary);">Progress</span>
+                                    <span style="color: ${accentColor}; font-family: var(--font-header); font-size: 0.8rem;">${project.completion}%</span>
+                                </div>
+                                <div class="pixel-progress">
+                                    <div class="pixel-progress-fill" style="width: ${project.completion}%; background: ${accentColor};"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                                <span>👤 ${project.lead}</span>
+                                <span>📋 ${project.pendingTasks} tasks</span>
+                            </div>
+                            
+                            ${project.url ? `<a href="${project.url}" target="_blank" class="pixel-link">OPEN →</a>` : '<span style="color: var(--text-muted); font-size: 0.9rem;">🔒 Not Deployed</span>'}
                         </div>
                     `;
-                });
-                
-                projectsGrid.innerHTML = projectsHTML;
-                console.log('✅ Projects data loaded:', data.lastUpdated);
+                }).join('');
                 
             } catch (error) {
-                console.error('❌ Failed to load projects data:', error);
+                console.error('Failed to load projects:', error);
             }
         }
-        
-        // Load sessions data
-        async function loadSessionsData() {
+
+        // Load Token Stats
+        async function loadTokenStats() {
             try {
-                const response = await fetch('data/sessions.json');
+                const response = await fetch('data/tokens.json');
                 const data = await response.json();
                 
-                const sessionsMonitor = document.getElementById('sessionsMonitor');
-                let sessionsHTML = '';
-                
-                data.sessions.forEach(session => {
-                    const statusColor = session.status === 'active' ? '#00d4ff' : '#51cf66';
-                    
-                    sessionsHTML += `
-                        <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <strong style="color: #e0e0e0;">${session.agent}</strong>
-                                    <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">${session.id}</span>
-                                </div>
-                                <span style="color: ${statusColor}; font-size: 0.75rem;">● ${session.status}</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.75rem; color: #666;">
-                                <span>⏱️ ${session.duration}</span>
-                                <span>🪙 ${(session.tokens / 1000).toFixed(0)}K tokens</span>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                sessionsHTML += `
-                    <div style="padding: 1rem; background: rgba(0,0,0,0.3);">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #888;">
-                            <span>Active: ${data.totalActive}</span>
-                            <span>Tokens: ${(data.totalTokens / 1000).toFixed(0)}K</span>
-                        </div>
+                document.getElementById('tokenStats').innerHTML = `
+                    <div class="stat-box">
+                        <div class="stat-value">${(data.summary.totalTokens / 1000000).toFixed(2)}M</div>
+                        <div class="stat-label">Total Tokens</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">$${data.summary.totalCost.toFixed(2)}</div>
+                        <div class="stat-label">Total Cost</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">${(data.summary.dailyBurnRate / 1000).toFixed(0)}K</div>
+                        <div class="stat-label">Daily Burn</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">$${data.summary.projectedMonthlyCost.toFixed(2)}</div>
+                        <div class="stat-label">Monthly</div>
                     </div>
                 `;
                 
-                sessionsMonitor.innerHTML = sessionsHTML;
-                console.log('✅ Sessions data loaded:', data.lastUpdated);
-                
             } catch (error) {
-                console.error('❌ Failed to load sessions data:', error);
+                console.error('Failed to load token stats:', error);
             }
         }
-        
+
+        // Load Agents
+        async function loadAgents() {
+            try {
+                const response = await fetch('data/agents.json');
+                const data = await response.json();
+                
+                const container = document.getElementById('agentsList');
+                container.innerHTML = data.agents.map(agent => {
+                    const statusColor = agent.status === 'active' ? 'var(--accent-cyan)' : 'var(--text-muted)';
+                    const icon = agent.name === 'Nexus' ? '👑' : 
+                                agent.name === 'Meemo' ? '🎨' : 
+                                agent.name === 'ZooKeeper' ? '🦁' : '🤖';
+                    
+                    return `
+                        <div class="agent-row">
+                            <div class="agent-avatar">${icon}</div>
+                            <div class="agent-info">
+                                <div class="agent-name" style="color: ${statusColor};">${agent.name}</div>
+                                <div class="agent-role">${agent.role} | ${agent.project}</div>
+                            </div>
+                            <span class="pixel-badge ${agent.status === 'active' ? 'badge-live' : 'badge-dev'}">${agent.status.toUpperCase()}</span>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Failed to load agents:', error);
+            }
+        }
+
+        // Load Tasks
+        async function loadTasks() {
+            try {
+                const response = await fetch('data/tasks.json');
+                const data = await response.json();
+                
+                const container = document.getElementById('tasksList');
+                container.innerHTML = data.pendingTasks.map(task => {
+                    const priorityClass = task.priority === 'P0' ? 'p0' : task.priority === 'P1' ? 'p1' : 'p2';
+                    
+                    return `
+                        <div class="task-item ${priorityClass}">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta">
+                                <span>👤 ${task.agent}</span>
+                                <span style="color: ${task.priority === 'P0' ? 'var(--accent-pink)' : task.priority === 'P1' ? 'var(--accent-yellow)' : 'var(--text-muted)'};">${task.priority}</span>
+                                <span>⏰ ${new Date(task.due).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Failed to load tasks:', error);
+            }
+        }
+
         // Load all data
-        loadTaskData();
-        loadTokenData();
-        loadKanbanData();
-        loadProjectsData();
-        loadSessionsData();
-        
-        // Set refresh intervals
-        setInterval(loadTaskData, 30000);     // 30s
-        setInterval(loadTokenData, 60000);    // 60s
-        setInterval(loadKanbanData, 30000);   // 30s
-        setInterval(loadProjectsData, 60000); // 60s
-        setInterval(loadSessionsData, 30000); // 30s
-        
-        console.log('Mission Control v2.0 loaded');
-        console.log('Live data: Active (Projects: 60s, Sessions: 30s, Tasks: 30s, Tokens: 60s)');
+        loadProjects();
+        loadTokenStats();
+        loadAgents();
+        loadTasks();
+
+        // Auto refresh every 30 seconds
+        setInterval(() => {
+            loadProjects();
+            loadTokenStats();
+            loadAgents();
+            loadTasks();
+        }, 30000);
+
+        console.log('🎮 Mission Control v2.0 - Kairosoft Theme Loaded!');
+        console.log('🌓 Theme: ' + (savedTheme || 'auto'));
     </script>
 </body>
 </html>
