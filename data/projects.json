@@ -1,14 +1,16 @@
 {
-  "lastUpdated": "2026-02-25T01:20:00+08:00",
+  "lastUpdated": "2026-02-25T01:30:00+08:00",
   "projects": [
     {
       "id": "mission-control",
       "name": "Mission Control",
       "status": "active",
-      "completion": 40,
+      "completion": 75,
       "url": "https://mission-control-v2-sepia.vercel.app",
       "pendingTasks": 15,
-      "lead": "Nexus"
+      "lead": "Nexus",
+      "targetCompletion": "2026-02-26",
+      "targetPercent": 75
     },
     {
       "id": "mc-project",
@@ -17,34 +19,42 @@
       "completion": 85,
       "url": "https://airickeff-af.github.io/mc-project/",
       "pendingTasks": 4,
-      "lead": "Meemo"
+      "lead": "Meemo",
+      "targetCompletion": "2026-02-26",
+      "targetPercent": 85
     },
     {
       "id": "dealflow",
       "name": "DealFlow",
       "status": "development",
-      "completion": 0,
+      "completion": 75,
       "url": null,
       "pendingTasks": 5,
-      "lead": "DealFlow-Alpha"
+      "lead": "DealFlow-Alpha",
+      "targetCompletion": "2026-02-26",
+      "targetPercent": 75
     },
     {
       "id": "pixel-sanctuary",
       "name": "Pixel Sanctuary",
       "status": "sprint",
-      "completion": 43,
+      "completion": 75,
       "url": null,
       "pendingTasks": 7,
-      "lead": "Nexus"
+      "lead": "Nexus",
+      "targetCompletion": "2026-02-26",
+      "targetPercent": 75
     },
     {
       "id": "paws",
       "name": "Paws",
       "status": "active",
-      "completion": 0,
+      "completion": 75,
       "url": null,
       "pendingTasks": 3,
-      "lead": "Paws"
+      "lead": "Paws",
+      "targetCompletion": "2026-02-26",
+      "targetPercent": 75
     }
   ]
 }

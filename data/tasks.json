@@ -7,7 +7,9 @@
     "p3Count": 0,
     "totalPending": 19,
     "completed24h": 8,
-    "completed7d": 16
+    "completed7d": 16,
+    "targetCompletion": "2026-02-26",
+    "targetPercent": 75
   },
   "pendingTasks": [
     {
@@ -43,7 +45,7 @@
       "agent": "Nexus",
       "priority": "P0",
       "due": "2026-02-25T14:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "mission-control"
     },
     {
@@ -52,7 +54,7 @@
       "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-25T11:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "mission-control"
     },
     {
@@ -61,7 +63,7 @@
       "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-25T15:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "mission-control"
     },
     {
@@ -70,7 +72,7 @@
       "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-25T13:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "mission-control"
     },
     {
@@ -187,7 +189,7 @@
       "agent": "DealFlow-Alpha",
       "priority": "P0",
       "due": "2026-02-26T12:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "dealflow"
     },
     {
@@ -196,7 +198,7 @@
       "agent": "DealFlow-Alpha",
       "priority": "P1",
       "due": "2026-02-27T12:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "dealflow"
     },
     {
@@ -205,7 +207,7 @@
       "agent": "DealFlow-Alpha",
       "priority": "P1",
       "due": "2026-02-28T12:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "dealflow"
     },
     {
@@ -214,7 +216,7 @@
       "agent": "DealFlow-Alpha",
       "priority": "P1",
       "due": "2026-03-01T12:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "dealflow"
     },
     {
@@ -223,7 +225,7 @@
       "agent": "DealFlow-Alpha",
       "priority": "P1",
       "due": "2026-03-02T12:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "dealflow"
     },
     {
@@ -277,7 +279,7 @@
       "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-28T18:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "pixel-sanctuary"
     },
     {
@@ -286,7 +288,7 @@
       "agent": "Nexus",
       "priority": "P1",
       "due": "2026-03-01T12:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "pixel-sanctuary"
     },
     {
@@ -295,7 +297,7 @@
       "agent": "Paws",
       "priority": "P1",
       "due": "2026-02-25T09:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "paws"
     },
     {
@@ -304,7 +306,7 @@
       "agent": "Paws",
       "priority": "P1",
       "due": "2026-02-25T09:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "paws"
     },
     {
@@ -313,7 +315,7 @@
       "agent": "Paws",
       "priority": "P1",
       "due": "2026-02-28T09:00:00+08:00",
-      "status": "pending",
+      "status": "in-progress",
       "project": "paws"
     }
   ],
