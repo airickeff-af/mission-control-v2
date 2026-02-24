@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control v2.0 | EricF's Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .version {
+            font-size: 0.75rem;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-icon {
+            font-size: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .card-status {
+            margin-left: auto;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-live { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+        .status-dev { background: rgba(252, 196, 25, 0.2); color: #fcc419; }
+        .status-pending { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+        
+        .card-content {
+            color: #888;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 0.75rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-81 { width: 81%; background: linear-gradient(90deg, #00d4ff, #0099cc); }
+        .progress-14 { width: 14%; background: linear-gradient(90deg, #fcc419, #ff922b); }
+        .progress-0 { width: 0%; background: linear-gradient(90deg, #ff6b6b, #fa5252); }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .agent-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .agent-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .agent-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .agent-info p {
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .agent-status {
+            margin-left: auto;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #51cf66;
+            box-shadow: 0 0 8px #51cf66;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <div class="logo">🎯 Mission Control</div>
+            <div class="version">v2.0.0 — Clean, Simple, Effective</div>
+        </div>
+        <div style="color: #666; font-size: 0.875rem;">
+            Commander: EricF | Lead: Nexus
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 style="margin-bottom: 0.5rem;">📊 Projects</h2>
+        <p style="color: #666; font-size: 0.875rem;">All EricF's projects in one place</p>
+        
+        <div class="grid">
+            <!-- MC Project -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🎮</span>
+                    <span class="card-title">MC Project</span>
+                    <span class="card-status status-live">LIVE</span>
+                </div>
+                <div class="card-content">
+                    Personal character tracking with VRM avatar, health/wealth stats, and gamified progression.
+                    <br><br>
+                    <strong>Lead:</strong> Meemo<br>
+                    <strong>Completion:</strong> 81%
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-81"></div>
+                    </div>
+                    <a href="https://airickeff-af.github.io/mc-project/" class="btn" target="_blank">
+                        🚀 Open MC Project
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pixel Sanctuary -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🦁</span>
+                    <span class="card-title">Pixel Sanctuary</span>
+                    <span class="card-status status-dev">IN DEV</span>
+                </div>
+                <div class="card-content">
+                    Interactive sprite zoo with React + Canvas. 48-hour sprint in progress.
+                    <br><br>
+                    <strong>Lead:</strong> ZooKeeper<br>
+                    <strong>Completion:</strong> 14%
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-14"></div>
+                    </div>
+                    <a href="#" class="btn" style="opacity: 0.5; cursor: not-allowed;">
+                        🔒 Coming Soon
+                    </a>
+                </div>
+            </div>
+
+            <!-- DealFlow -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🤝</span>
+                    <span class="card-title">DealFlow</span>
+                    <span class="card-status status-pending">PENDING</span>
+                </div>
+                <div class="card-content">
+                    Lead generation and outreach automation. Integration with ColdCall for meeting booking.
+                    <br><br>
+                    <strong>Lead:</strong> Nexus (interim)<br>
+                    <strong>Completion:</strong> 0%
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-0"></div>
+                    </div>
+                    <a href="#" class="btn" style="opacity: 0.5; cursor: not-allowed;">
+                        🔒 Not Started
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">🤖 Active Agents</h2>
+        <p style="color: #666; font-size: 0.875rem;">Streamlined team for v2.0</p>
+        
+        <div class="agents-grid">
+            <div class="agent-card">
+                <div class="agent-avatar">👑</div>
+                <div class="agent-info">
+                    <h4>Nexus</h4>
+                    <p>Orchestrator</p>
+                </div>
+                <div class="agent-status"></div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-avatar">🎨</div>
+                <div class="agent-info">
+                    <h4>Meemo</h4>
+                    <p>MC Project Lead</p>
+                </div>
+                <div class="agent-status"></div>
+            </div>
+            
+            <div class="agent-card">
+                <div class="agent-avatar">🦁</div>
+                <div class="agent-info">
+                    <h4>ZooKeeper</h4>
+                    <p>PS Project Lead</p>
+                </div>
+                <div class="agent-status"></div>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">📋 Task Board</h2>
+        <p style="color: #666; font-size: 0.875rem;">Fresh start for v2.0</p>
+        
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-content" style="text-align: center; padding: 2rem;">
+                <p style="font-size: 1.125rem; color: #888; margin-bottom: 0.5rem;">No active tasks</p>
+                <p style="font-size: 0.875rem; color: #666;">Mission Control v2.0 just launched. Tasks will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Mission Control v2.0 — Built by Nexus for EricF</p>
+        <p style="margin-top: 0.5rem; opacity: 0.7;">Clean, Simple, Effective</p>
+    </footer>
+
+    <script>
+        // Auto-refresh every 5 minutes
+        setInterval(() => {
+            location.reload();
+        }, 5 * 60 * 1000);
+        
+        // Update timestamps
+        console.log('Mission Control v2.0 loaded');
+        console.log('Last updated: 2026-02-24');
+    </script>
+</body>
+</html>
