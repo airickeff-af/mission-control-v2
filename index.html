@@ -520,11 +520,58 @@
             </div>
         </div>
 
-        <!-- Tasks Section -->
+        <!-- P0 Critical Tasks Section -->
+        <div class="section-header" style="background: linear-gradient(90deg, var(--bg-secondary), rgba(255, 107, 157, 0.2)); border-color: var(--accent-pink);">
+            <span class="section-icon">🚨</span>
+            <h2 class="section-title" style="color: var(--accent-pink);">P0 CRITICAL</h2>
+            <span class="section-subtitle">Immediate Action Required</span>
+        </div>
+        
+        <div id="p0TasksList" class="pixel-card" style="border-color: var(--accent-pink); box-shadow: 6px 6px 0 rgba(255, 107, 157, 0.3);">
+            <div class="card-content" style="text-align: center; padding: 2rem;">
+                <span class="loading">Loading P0 tasks...</span>
+            </div>
+        </div>
+
+        <!-- Task Stats & Refresh Section -->
+        <div class="section-header">
+            <span class="section-icon">📊</span>
+            <h2 class="section-title">TASK DASHBOARD</h2>
+            <div style="margin-left: auto; display: flex; gap: 1rem; align-items: center;">
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Auto-refresh: 1h</span>
+                <button id="refreshBtn" class="pixel-link" style="cursor: pointer; border: none; font-family: var(--font-pixel);">🔄 REFRESH</button>
+            </div>
+        </div>
+
+        <!-- Priority Counters -->
+        <div class="stats-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 1rem;">
+            <div class="stat-box" style="border-color: var(--accent-pink);">
+                <div class="stat-value" id="p0Count" style="color: var(--accent-pink);">-</div>
+                <div class="stat-label">P0 Critical</div>
+            </div>
+            <div class="stat-box" style="border-color: var(--accent-yellow);">
+                <div class="stat-value" id="p1Count" style="color: var(--accent-yellow);">-</div>
+                <div class="stat-label">P1 High</div>
+            </div>
+            <div class="stat-box" style="border-color: var(--text-muted);">
+                <div class="stat-value" id="p2Count" style="color: var(--text-muted);">-</div>
+                <div class="stat-label">P2 Medium</div>
+            </div>
+            <div class="stat-box" style="border-color: var(--accent-green);">
+                <div class="stat-value" id="completed24h" style="color: var(--accent-green);">-</div>
+                <div class="stat-label">Done (24h)</div>
+            </div>
+            <div class="stat-box" style="border-color: var(--accent-cyan);">
+                <div class="stat-value" id="completed7d" style="color: var(--accent-cyan);">-</div>
+                <div class="stat-label">Done (7d)</div>
+            </div>
+        </div>
+        
+        <!-- All Tasks Section -->
         <div class="section-header">
             <span class="section-icon">📋</span>
-            <h2 class="section-title">TASKS</h2>
-            <span class="section-subtitle">Pending</span>
+            <h2 class="section-title">ALL TASKS</h2>
+            <span class="section-subtitle" id="totalPending">Loading...</span>
         </div>
         
         <div id="tasksList" class="pixel-card">
@@ -675,6 +722,38 @@
                 const response = await fetch('data/tasks.json');
                 const data = await response.json();
                 
+                // Update priority counters
+                document.getElementById('p0Count').textContent = data.summary.p0Count;
+                document.getElementById('p1Count').textContent = data.summary.p1Count;
+                document.getElementById('p2Count').textContent = data.summary.p2Count;
+                document.getElementById('completed24h').textContent = data.summary.completed24h;
+                document.getElementById('completed7d').textContent = data.summary.completed7d;
+                document.getElementById('totalPending').textContent = `${data.summary.totalPending} Pending`;
+                
+                // Load P0 tasks
+                const p0Tasks = data.pendingTasks.filter(t => t.priority === 'P0');
+                const p0Container = document.getElementById('p0TasksList');
+                if (p0Tasks.length > 0) {
+                    p0Container.innerHTML = p0Tasks.map(task => `
+                        <div class="task-item p0" style="border-left-width: 6px;">
+                            <div class="task-title" style="color: var(--accent-pink); font-weight: bold;">${task.title}</div>
+                            <div class="task-meta">
+                                <span>👤 ${task.agent}</span>
+                                <span style="color: var(--accent-pink);">${task.priority}</span>
+                                <span>⏰ ${new Date(task.due).toLocaleString()}</span>
+                                <span style="color: ${task.status === 'in-progress' ? 'var(--accent-cyan)' : 'var(--text-muted)'};">${task.status === 'in-progress' ? '🔵 IN PROGRESS' : '⏸️ PENDING'}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    p0Container.innerHTML = `
+                        <div class="card-content" style="text-align: center; padding: 2rem; color: var(--accent-green);">
+                            ✅ No P0 tasks! All critical items resolved.
+                        </div>
+                    `;
+                }
+                
+                // Load all pending tasks
                 const container = document.getElementById('tasksList');
                 container.innerHTML = data.pendingTasks.map(task => {
                     const priorityClass = task.priority === 'P0' ? 'p0' : task.priority === 'P1' ? 'p1' : 'p2';
@@ -686,15 +765,44 @@
                                 <span>👤 ${task.agent}</span>
                                 <span style="color: ${task.priority === 'P0' ? 'var(--accent-pink)' : task.priority === 'P1' ? 'var(--accent-yellow)' : 'var(--text-muted)'};">${task.priority}</span>
                                 <span>⏰ ${new Date(task.due).toLocaleDateString()}</span>
+                                <span style="color: ${task.status === 'in-progress' ? 'var(--accent-cyan)' : 'var(--text-muted)'};">${task.status === 'in-progress' ? '🔵 IN PROGRESS' : '⏸️ PENDING'}</span>
                             </div>
                         </div>
                     `;
                 }).join('');
                 
+                console.log('✅ Tasks loaded:', data.lastUpdated);
+                
             } catch (error) {
-                console.error('Failed to load tasks:', error);
+                console.error('❌ Failed to load tasks:', error);
             }
         }
+
+        // Refresh button handler
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            const btn = document.getElementById('refreshBtn');
+            btn.textContent = '⏳ REFRESHING...';
+            btn.disabled = true;
+            
+            Promise.all([
+                loadProjects(),
+                loadTokenStats(),
+                loadAgents(),
+                loadTasks()
+            ]).then(() => {
+                btn.textContent = '✅ REFRESHED!';
+                setTimeout(() => {
+                    btn.textContent = '🔄 REFRESH';
+                    btn.disabled = false;
+                }, 2000);
+            }).catch(() => {
+                btn.textContent = '❌ ERROR';
+                setTimeout(() => {
+                    btn.textContent = '🔄 REFRESH';
+                    btn.disabled = false;
+                }, 2000);
+            });
+        });
 
         // Load all data
         loadProjects();
@@ -702,16 +810,17 @@
         loadAgents();
         loadTasks();
 
-        // Auto refresh every 30 seconds
+        // Auto refresh every hour (3600000ms)
         setInterval(() => {
             loadProjects();
             loadTokenStats();
             loadAgents();
             loadTasks();
-        }, 30000);
+        }, 3600000);
 
         console.log('🎮 Mission Control v2.0 - Kairosoft Theme Loaded!');
         console.log('🌓 Theme: ' + (savedTheme || 'auto'));
+        console.log('⏰ Auto-refresh: Every 1 hour');
     </script>
 </body>
 </html>

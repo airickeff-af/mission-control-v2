@@ -1,55 +1,54 @@
 {
-  "lastUpdated": "2026-02-24T19:34:00+08:00",
-  "agents": [
-    {
-      "name": "Nexus",
-      "role": "Orchestrator",
-      "status": "active",
-      "task": "Mission Control v2.0 deployment",
-      "priority": "P0",
-      "due": "2026-02-24T20:00:00+08:00"
-    },
-    {
-      "name": "Meemo",
-      "role": "MC Project Lead",
-      "status": "standby",
-      "task": "Awaiting new assignments",
-      "priority": null,
-      "due": null
-    },
-    {
-      "name": "ZooKeeper",
-      "role": "PS Project Lead",
-      "status": "standby",
-      "task": "Awaiting new assignments",
-      "priority": null,
-      "due": null
-    }
-  ],
+  "lastUpdated": "2026-02-25T00:30:00+08:00",
+  "summary": {
+    "p0Count": 1,
+    "p1Count": 1,
+    "p2Count": 1,
+    "p3Count": 0,
+    "totalPending": 3,
+    "completed24h": 2,
+    "completed7d": 5
+  },
   "pendingTasks": [
     {
       "id": "TASK-001",
       "title": "Deploy Mission Control v2.0",
       "agent": "Nexus",
       "priority": "P0",
-      "status": "in-progress",
-      "due": "2026-02-24T20:00:00+08:00"
+      "due": "2026-02-25T12:00:00+08:00",
+      "status": "in-progress"
     },
     {
       "id": "TASK-002",
       "title": "Add Token Tracker to v2.0",
       "agent": "Nexus",
       "priority": "P1",
-      "status": "pending",
-      "due": "2026-02-24T22:00:00+08:00"
+      "due": "2026-02-25T23:59:00+08:00",
+      "status": "pending"
     },
     {
       "id": "TASK-003",
       "title": "Integrate Discord notifications",
       "agent": "Nexus",
       "priority": "P2",
-      "status": "pending",
-      "due": "2026-02-25T12:00:00+08:00"
+      "due": "2026-02-26T23:59:00+08:00",
+      "status": "pending"
+    }
+  ],
+  "completedTasks": [
+    {
+      "id": "TASK-000",
+      "title": "Archive old Mission Control",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-24T20:00:00+08:00"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Create Paws personal assistant",
+      "agent": "Nexus",
+      "priority": "P1",
+      "completedAt": "2026-02-25T00:15:00+08:00"
     }
   ]
 }
