@@ -1,54 +1,431 @@
 {
-  "lastUpdated": "2026-02-25T00:30:00+08:00",
+  "lastUpdated": "2026-02-25T01:05:00+08:00",
   "summary": {
-    "p0Count": 1,
-    "p1Count": 1,
-    "p2Count": 1,
-    "p3Count": 0,
-    "totalPending": 3,
-    "completed24h": 2,
-    "completed7d": 5
+    "p0Count": 9,
+    "p1Count": 29,
+    "p2Count": 18,
+    "p3Count": 5,
+    "totalPending": 61,
+    "completed24h": 8,
+    "completed7d": 16
   },
   "pendingTasks": [
     {
-      "id": "TASK-001",
+      "id": "MC-001",
       "title": "Deploy Mission Control v2.0",
       "agent": "Nexus",
       "priority": "P0",
       "due": "2026-02-25T12:00:00+08:00",
-      "status": "in-progress"
+      "status": "in-progress",
+      "project": "mission-control"
     },
     {
-      "id": "TASK-002",
-      "title": "Add Token Tracker to v2.0",
+      "id": "MC-002",
+      "title": "Fix API 404 Errors",
+      "agent": "Code",
+      "priority": "P0",
+      "due": "2026-02-25T10:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-003",
+      "title": "Pixel Office Real Agent Activity",
+      "agent": "CodeMaster+Forge+Pixel",
+      "priority": "P0",
+      "due": "2026-02-25T18:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-004",
+      "title": "Standardize All Tab Headers",
+      "agent": "Forge-1,2,3",
+      "priority": "P0",
+      "due": "2026-02-25T14:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-005",
+      "title": "Fix HQ Refresh + Auto-Refresh All Pages",
+      "agent": "Forge",
+      "priority": "P0",
+      "due": "2026-02-25T11:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-006",
+      "title": "Real API Integration - All Pages",
+      "agent": "CodeMaster+Forge",
+      "priority": "P0",
+      "due": "2026-02-25T15:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-007",
+      "title": "Agent Hierarchy Table",
+      "agent": "Forge",
+      "priority": "P0",
+      "due": "2026-02-25T13:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-008",
+      "title": "API Documentation Fix",
+      "agent": "Quill",
+      "priority": "P0",
+      "due": "2026-02-25T16:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-009",
+      "title": "Consolidate Improvement Crons",
+      "agent": "Nexus",
+      "priority": "P0",
+      "due": "2026-02-25T09:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-001",
+      "title": "Singapore Leads (30-50)",
+      "agent": "Scout+DealFlow",
+      "priority": "P1",
+      "due": "2026-02-27T23:59:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-002",
+      "title": "Hong Kong Leads (30-50)",
+      "agent": "Scout+DealFlow",
+      "priority": "P1",
+      "due": "2026-02-28T23:59:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-003",
+      "title": "Token Tracker Live API",
+      "agent": "Code",
+      "priority": "P1",
+      "due": "2026-02-26T17:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-004",
+      "title": "PIE Maximum Functionality",
+      "agent": "Gary",
+      "priority": "P1",
+      "due": "2026-02-28T12:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-005",
+      "title": "ColdCall Outreach Sequences",
+      "agent": "Larry",
+      "priority": "P1",
+      "due": "2026-02-27T17:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-006",
+      "title": "Australia Leads (30-50)",
+      "agent": "Scout+DealFlow",
+      "priority": "P1",
+      "due": "2026-03-01T23:59:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-007",
+      "title": "Brazil Leads (30-50)",
+      "agent": "DealFlow",
+      "priority": "P1",
+      "due": "2026-03-02T23:59:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-008",
+      "title": "Nigeria Leads (30-50)",
+      "agent": "Scout+DealFlow",
+      "priority": "P1",
+      "due": "2026-03-03T23:59:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-009",
+      "title": "Thailand Leads (30-50)",
+      "agent": "Glasses+DealFlow",
+      "priority": "P1",
+      "due": "2026-03-03T23:59:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P2-001",
+      "title": "Content Repurposing System",
+      "agent": "Quill",
+      "priority": "P2",
+      "due": "2026-03-01T23:59:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P2-002",
+      "title": "Mobile App Mockups",
+      "agent": "Pixel",
+      "priority": "P2",
+      "due": "2026-03-01T23:59:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-NUC-001",
+      "title": "Visual Feedback System",
       "agent": "Nexus",
       "priority": "P1",
-      "due": "2026-02-25T23:59:00+08:00",
-      "status": "pending"
+      "due": "2026-02-25T10:30:00+08:00",
+      "status": "in-progress",
+      "project": "mc-project"
     },
     {
-      "id": "TASK-003",
-      "title": "Integrate Discord notifications",
+      "id": "MC-NUC-002",
+      "title": "Mobile + PWA",
       "agent": "Nexus",
-      "priority": "P2",
-      "due": "2026-02-26T23:59:00+08:00",
-      "status": "pending"
+      "priority": "P1",
+      "due": "2026-02-25T11:30:00+08:00",
+      "status": "in-progress",
+      "project": "mc-project"
+    },
+    {
+      "id": "MC-NUC-003",
+      "title": "Testing + Bug Fixes",
+      "agent": "Nexus",
+      "priority": "P1",
+      "due": "2026-02-25T12:00:00+08:00",
+      "status": "in-progress",
+      "project": "mc-project"
+    },
+    {
+      "id": "MC-NUC-004",
+      "title": "Documentation",
+      "agent": "Nexus",
+      "priority": "P1",
+      "due": "2026-02-25T10:00:00+08:00",
+      "status": "in-progress",
+      "project": "mc-project"
+    },
+    {
+      "id": "DF-001",
+      "title": "Create DealFlow Kanban",
+      "agent": "DealFlow-Alpha",
+      "priority": "P0",
+      "due": "2026-02-26T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "DF-002",
+      "title": "Contact Enrichment",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "due": "2026-02-27T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "DF-003",
+      "title": "Lead Scoring Algorithm",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "due": "2026-02-28T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "DF-004",
+      "title": "PIE Integration",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "due": "2026-03-01T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "DF-005",
+      "title": "ColdCall Handoff API",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "due": "2026-03-02T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "PS-P1-001",
+      "title": "Canvas Engine + Grid",
+      "agent": "PS-Code-A",
+      "priority": "P1",
+      "due": "2026-02-26T12:00:00+08:00",
+      "status": "in-progress",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-002",
+      "title": "Sprite System + Legs",
+      "agent": "PS-Pixel",
+      "priority": "P1",
+      "due": "2026-02-26T18:00:00+08:00",
+      "status": "in-progress",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-003",
+      "title": "Movement AI",
+      "agent": "PS-Code-B",
+      "priority": "P1",
+      "due": "2026-02-27T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-004",
+      "title": "Environment Tilemaps",
+      "agent": "PS-Forge",
+      "priority": "P1",
+      "due": "2026-02-27T12:00:00+08:00",
+      "status": "in-progress",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-005",
+      "title": "Agent Behaviors",
+      "agent": "PS-Logic",
+      "priority": "P1",
+      "due": "2026-02-28T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-006",
+      "title": "Player Controls",
+      "agent": "PS-Forge",
+      "priority": "P1",
+      "due": "2026-02-28T18:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-007",
+      "title": "Integration",
+      "agent": "ZooKeeper",
+      "priority": "P1",
+      "due": "2026-03-01T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PAWS-001",
+      "title": "Daily Family Check-in",
+      "agent": "Paws",
+      "priority": "P1",
+      "due": "2026-02-25T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws"
+    },
+    {
+      "id": "PAWS-002",
+      "title": "Home Checklist Progress",
+      "agent": "Paws",
+      "priority": "P1",
+      "due": "2026-02-25T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws"
+    },
+    {
+      "id": "PAWS-003",
+      "title": "Baby Activity Suggestions",
+      "agent": "Paws",
+      "priority": "P1",
+      "due": "2026-02-28T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws"
     }
   ],
   "completedTasks": [
     {
-      "id": "TASK-000",
+      "id": "TASK-ARCHIVE",
       "title": "Archive old Mission Control",
       "agent": "Nexus",
       "priority": "P0",
-      "completedAt": "2026-02-24T20:00:00+08:00"
+      "completedAt": "2026-02-24T20:00:00+08:00",
+      "project": "mission-control"
     },
     {
-      "id": "TASK-004",
+      "id": "TASK-PAWS-CREATE",
       "title": "Create Paws personal assistant",
       "agent": "Nexus",
       "priority": "P1",
-      "completedAt": "2026-02-25T00:15:00+08:00"
+      "completedAt": "2026-02-25T00:15:00+08:00",
+      "project": "paws"
+    },
+    {
+      "id": "TASK-DATAVIEWER",
+      "title": "Create Data Viewer with filters",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-25T01:05:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "TASK-KAIROSOFT",
+      "title": "Kairosoft theme + Auto dark/light mode",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-25T00:20:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "TASK-CRON-SETUP",
+      "title": "Setup all cron jobs (8 jobs)",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-25T00:35:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "TASK-MINT-REMINDER",
+      "title": "Meebits mint reminder set",
+      "agent": "Nexus",
+      "priority": "P1",
+      "completedAt": "2026-02-25T01:03:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "TASK-VERCEL-CLEANUP",
+      "title": "Clean up old Vercel projects",
+      "agent": "Nexus",
+      "priority": "P1",
+      "completedAt": "2026-02-25T00:40:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "TASK-URL-FIX",
+      "title": "Fix Mission Control URL",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-25T00:38:00+08:00",
+      "project": "mission-control"
     }
   ]
 }
