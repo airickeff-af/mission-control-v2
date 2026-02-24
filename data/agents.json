@@ -1,205 +1,45 @@
 {
-  "lastUpdated": "2026-02-25T01:18:00+08:00",
+  "lastUpdated": "2026-02-25T01:20:00+08:00",
   "agents": [
     {
       "name": "Nexus",
       "role": "Orchestrator",
       "status": "active",
       "project": "Mission Control",
-      "task": "Deploy v2.0 + Fix APIs",
+      "task": "Deploy v2.0 + Fix APIs + Standardize Headers",
       "priority": "P0",
-      "tokens": 520000,
-      "sessions": 52
+      "tokens": 620000,
+      "sessions": 62
     },
     {
       "name": "Meemo",
       "role": "MC Project Lead",
       "status": "active",
       "project": "MC Project",
-      "task": "Visual Feedback + Mobile",
+      "task": "Visual Feedback + Mobile PWA + Testing + Docs",
       "priority": "P1",
-      "tokens": 380000,
-      "sessions": 38
-    },
-    {
-      "name": "ZooKeeper",
-      "role": "PS Project Lead",
-      "status": "active",
-      "project": "Pixel Sanctuary",
-      "task": "Canvas + Sprites + Integration",
-      "priority": "P1",
-      "tokens": 220000,
-      "sessions": 22
+      "tokens": 420000,
+      "sessions": 42
     },
     {
       "name": "DealFlow-Alpha",
       "role": "DealFlow Lead",
-      "status": "standby",
+      "status": "active",
       "project": "DealFlow",
-      "task": "Awaiting Kanban setup",
+      "task": "Create Kanban + Contact Enrichment + Lead Scoring",
       "priority": "P0",
-      "tokens": 15000,
-      "sessions": 2
+      "tokens": 85000,
+      "sessions": 9
     },
     {
       "name": "Paws",
       "role": "Personal Assistant",
       "status": "active",
       "project": "Paws",
-      "task": "Family check-ins + Baby activities",
+      "task": "Daily Family Check-ins + Baby Activities + Home Checklist",
       "priority": "P1",
-      "tokens": 85000,
-      "sessions": 9
-    },
-    {
-      "name": "Code",
-      "role": "Backend Lead",
-      "status": "active",
-      "project": "Mission Control",
-      "task": "Fix API 404s + Token Tracker API",
-      "priority": "P0",
-      "tokens": 310000,
-      "sessions": 31
-    },
-    {
-      "name": "Forge",
-      "role": "Frontend Lead",
-      "status": "active",
-      "project": "Mission Control",
-      "task": "Tab Headers + Refresh + Pixel Office",
-      "priority": "P0",
-      "tokens": 280000,
-      "sessions": 28
-    },
-    {
-      "name": "Pixel",
-      "role": "Designer",
-      "status": "active",
-      "project": "Pixel Sanctuary",
-      "task": "Sprite System + Legs",
-      "priority": "P1",
-      "tokens": 195000,
-      "sessions": 20
-    },
-    {
-      "name": "Scout",
-      "role": "Researcher",
-      "status": "active",
-      "project": "Mission Control",
-      "task": "Singapore + HK Leads",
-      "priority": "P1",
-      "tokens": 165000,
-      "sessions": 17
-    },
-    {
-      "name": "Glasses",
-      "role": "Intelligence",
-      "status": "active",
-      "project": "Mission Control",
-      "task": "Thailand Leads",
-      "priority": "P1",
-      "tokens": 142000,
-      "sessions": 15
-    },
-    {
-      "name": "Gary",
-      "role": "Marketing Lead",
-      "status": "active",
-      "project": "Mission Control",
-      "task": "PIE Maximum Functionality",
-      "priority": "P1",
-      "tokens": 128000,
-      "sessions": 13
-    },
-    {
-      "name": "Larry",
-      "role": "Social Lead",
-      "status": "active",
-      "project": "Mission Control",
-      "task": "ColdCall Outreach Sequences",
-      "priority": "P1",
-      "tokens": 115000,
-      "sessions": 12
-    },
-    {
-      "name": "Quill",
-      "role": "Writer",
-      "status": "active",
-      "project": "Mission Control",
-      "task": "API Documentation Fix",
-      "priority": "P0",
-      "tokens": 98000,
+      "tokens": 95000,
       "sessions": 10
-    },
-    {
-      "name": "Sentry",
-      "role": "DevOps",
-      "status": "active",
-      "project": "Mission Control",
-      "task": "Deployment Monitoring",
-      "priority": "P0",
-      "tokens": 87000,
-      "sessions": 9
-    },
-    {
-      "name": "Cipher",
-      "role": "Security",
-      "status": "standby",
-      "project": "Mission Control",
-      "task": "Security monitoring",
-      "priority": null,
-      "tokens": 45000,
-      "sessions": 5
-    },
-    {
-      "name": "PS-Code-A",
-      "role": "PS Developer",
-      "status": "active",
-      "project": "Pixel Sanctuary",
-      "task": "Canvas Engine + Grid",
-      "priority": "P1",
-      "tokens": 72000,
-      "sessions": 8
-    },
-    {
-      "name": "PS-Pixel",
-      "role": "PS Designer",
-      "status": "active",
-      "project": "Pixel Sanctuary",
-      "task": "Sprite System + Legs",
-      "priority": "P1",
-      "tokens": 68000,
-      "sessions": 7
-    },
-    {
-      "name": "PS-Forge",
-      "role": "PS Frontend",
-      "status": "active",
-      "project": "Pixel Sanctuary",
-      "task": "Environment + Player Controls",
-      "priority": "P1",
-      "tokens": 55000,
-      "sessions": 6
-    },
-    {
-      "name": "PS-Code-B",
-      "role": "PS AI Developer",
-      "status": "standby",
-      "project": "Pixel Sanctuary",
-      "task": "Movement AI",
-      "priority": "P1",
-      "tokens": 32000,
-      "sessions": 4
-    },
-    {
-      "name": "PS-Logic",
-      "role": "PS Behavior Dev",
-      "status": "standby",
-      "project": "Pixel Sanctuary",
-      "task": "Agent Behaviors",
-      "priority": "P1",
-      "tokens": 28000,
-      "sessions": 3
     }
   ]
 }

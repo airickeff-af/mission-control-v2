@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2026-02-25T01:05:00+08:00",
+  "lastUpdated": "2026-02-25T01:20:00+08:00",
   "summary": {
-    "p0Count": 9,
-    "p1Count": 29,
-    "p2Count": 18,
-    "p3Count": 5,
-    "totalPending": 61,
+    "p0Count": 4,
+    "p1Count": 12,
+    "p2Count": 3,
+    "p3Count": 0,
+    "totalPending": 19,
     "completed24h": 8,
     "completed7d": 16
   },
@@ -22,7 +22,7 @@
     {
       "id": "MC-002",
       "title": "Fix API 404 Errors",
-      "agent": "Code",
+      "agent": "Nexus",
       "priority": "P0",
       "due": "2026-02-25T10:00:00+08:00",
       "status": "in-progress",
@@ -31,7 +31,7 @@
     {
       "id": "MC-003",
       "title": "Pixel Office Real Agent Activity",
-      "agent": "CodeMaster+Forge+Pixel",
+      "agent": "Nexus",
       "priority": "P0",
       "due": "2026-02-25T18:00:00+08:00",
       "status": "in-progress",
@@ -40,7 +40,7 @@
     {
       "id": "MC-004",
       "title": "Standardize All Tab Headers",
-      "agent": "Forge-1,2,3",
+      "agent": "Nexus",
       "priority": "P0",
       "due": "2026-02-25T14:00:00+08:00",
       "status": "pending",
@@ -49,8 +49,8 @@
     {
       "id": "MC-005",
       "title": "Fix HQ Refresh + Auto-Refresh All Pages",
-      "agent": "Forge",
-      "priority": "P0",
+      "agent": "Nexus",
+      "priority": "P1",
       "due": "2026-02-25T11:00:00+08:00",
       "status": "pending",
       "project": "mission-control"
@@ -58,8 +58,8 @@
     {
       "id": "MC-006",
       "title": "Real API Integration - All Pages",
-      "agent": "CodeMaster+Forge",
-      "priority": "P0",
+      "agent": "Nexus",
+      "priority": "P1",
       "due": "2026-02-25T15:00:00+08:00",
       "status": "pending",
       "project": "mission-control"
@@ -67,8 +67,8 @@
     {
       "id": "MC-007",
       "title": "Agent Hierarchy Table",
-      "agent": "Forge",
-      "priority": "P0",
+      "agent": "Nexus",
+      "priority": "P1",
       "due": "2026-02-25T13:00:00+08:00",
       "status": "pending",
       "project": "mission-control"
@@ -76,8 +76,8 @@
     {
       "id": "MC-008",
       "title": "API Documentation Fix",
-      "agent": "Quill",
-      "priority": "P0",
+      "agent": "Nexus",
+      "priority": "P1",
       "due": "2026-02-25T16:00:00+08:00",
       "status": "in-progress",
       "project": "mission-control"
@@ -86,7 +86,7 @@
       "id": "MC-009",
       "title": "Consolidate Improvement Crons",
       "agent": "Nexus",
-      "priority": "P0",
+      "priority": "P1",
       "due": "2026-02-25T09:00:00+08:00",
       "status": "in-progress",
       "project": "mission-control"
@@ -94,7 +94,7 @@
     {
       "id": "MC-P1-001",
       "title": "Singapore Leads (30-50)",
-      "agent": "Scout+DealFlow",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-27T23:59:00+08:00",
       "status": "in-progress",
@@ -103,7 +103,7 @@
     {
       "id": "MC-P1-002",
       "title": "Hong Kong Leads (30-50)",
-      "agent": "Scout+DealFlow",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-28T23:59:00+08:00",
       "status": "in-progress",
@@ -112,7 +112,7 @@
     {
       "id": "MC-P1-003",
       "title": "Token Tracker Live API",
-      "agent": "Code",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-26T17:00:00+08:00",
       "status": "pending",
@@ -121,7 +121,7 @@
     {
       "id": "MC-P1-004",
       "title": "PIE Maximum Functionality",
-      "agent": "Gary",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-28T12:00:00+08:00",
       "status": "in-progress",
@@ -130,61 +130,16 @@
     {
       "id": "MC-P1-005",
       "title": "ColdCall Outreach Sequences",
-      "agent": "Larry",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-27T17:00:00+08:00",
       "status": "in-progress",
       "project": "mission-control"
     },
     {
-      "id": "MC-P1-006",
-      "title": "Australia Leads (30-50)",
-      "agent": "Scout+DealFlow",
-      "priority": "P1",
-      "due": "2026-03-01T23:59:00+08:00",
-      "status": "pending",
-      "project": "mission-control"
-    },
-    {
-      "id": "MC-P1-007",
-      "title": "Brazil Leads (30-50)",
-      "agent": "DealFlow",
-      "priority": "P1",
-      "due": "2026-03-02T23:59:00+08:00",
-      "status": "pending",
-      "project": "mission-control"
-    },
-    {
-      "id": "MC-P1-008",
-      "title": "Nigeria Leads (30-50)",
-      "agent": "Scout+DealFlow",
-      "priority": "P1",
-      "due": "2026-03-03T23:59:00+08:00",
-      "status": "pending",
-      "project": "mission-control"
-    },
-    {
-      "id": "MC-P1-009",
-      "title": "Thailand Leads (30-50)",
-      "agent": "Glasses+DealFlow",
-      "priority": "P1",
-      "due": "2026-03-03T23:59:00+08:00",
-      "status": "pending",
-      "project": "mission-control"
-    },
-    {
       "id": "MC-P2-001",
       "title": "Content Repurposing System",
-      "agent": "Quill",
-      "priority": "P2",
-      "due": "2026-03-01T23:59:00+08:00",
-      "status": "pending",
-      "project": "mission-control"
-    },
-    {
-      "id": "MC-P2-002",
-      "title": "Mobile App Mockups",
-      "agent": "Pixel",
+      "agent": "Nexus",
       "priority": "P2",
       "due": "2026-03-01T23:59:00+08:00",
       "status": "pending",
@@ -193,7 +148,7 @@
     {
       "id": "MC-NUC-001",
       "title": "Visual Feedback System",
-      "agent": "Nexus",
+      "agent": "Meemo",
       "priority": "P1",
       "due": "2026-02-25T10:30:00+08:00",
       "status": "in-progress",
@@ -202,7 +157,7 @@
     {
       "id": "MC-NUC-002",
       "title": "Mobile + PWA",
-      "agent": "Nexus",
+      "agent": "Meemo",
       "priority": "P1",
       "due": "2026-02-25T11:30:00+08:00",
       "status": "in-progress",
@@ -211,7 +166,7 @@
     {
       "id": "MC-NUC-003",
       "title": "Testing + Bug Fixes",
-      "agent": "Nexus",
+      "agent": "Meemo",
       "priority": "P1",
       "due": "2026-02-25T12:00:00+08:00",
       "status": "in-progress",
@@ -220,7 +175,7 @@
     {
       "id": "MC-NUC-004",
       "title": "Documentation",
-      "agent": "Nexus",
+      "agent": "Meemo",
       "priority": "P1",
       "due": "2026-02-25T10:00:00+08:00",
       "status": "in-progress",
@@ -274,7 +229,7 @@
     {
       "id": "PS-P1-001",
       "title": "Canvas Engine + Grid",
-      "agent": "PS-Code-A",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-26T12:00:00+08:00",
       "status": "in-progress",
@@ -283,7 +238,7 @@
     {
       "id": "PS-P1-002",
       "title": "Sprite System + Legs",
-      "agent": "PS-Pixel",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-26T18:00:00+08:00",
       "status": "in-progress",
@@ -292,7 +247,7 @@
     {
       "id": "PS-P1-003",
       "title": "Movement AI",
-      "agent": "PS-Code-B",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-27T12:00:00+08:00",
       "status": "pending",
@@ -301,7 +256,7 @@
     {
       "id": "PS-P1-004",
       "title": "Environment Tilemaps",
-      "agent": "PS-Forge",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-27T12:00:00+08:00",
       "status": "in-progress",
@@ -310,7 +265,7 @@
     {
       "id": "PS-P1-005",
       "title": "Agent Behaviors",
-      "agent": "PS-Logic",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-28T12:00:00+08:00",
       "status": "pending",
@@ -319,7 +274,7 @@
     {
       "id": "PS-P1-006",
       "title": "Player Controls",
-      "agent": "PS-Forge",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-02-28T18:00:00+08:00",
       "status": "pending",
@@ -328,7 +283,7 @@
     {
       "id": "PS-P1-007",
       "title": "Integration",
-      "agent": "ZooKeeper",
+      "agent": "Nexus",
       "priority": "P1",
       "due": "2026-03-01T12:00:00+08:00",
       "status": "pending",
@@ -397,7 +352,7 @@
     },
     {
       "id": "TASK-CRON-SETUP",
-      "title": "Setup all cron jobs (8 jobs)",
+      "title": "Setup all cron jobs (10 jobs)",
       "agent": "Nexus",
       "priority": "P0",
       "completedAt": "2026-02-25T00:35:00+08:00",
