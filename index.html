@@ -324,6 +324,25 @@
                 <p style="color: #888;">Loading pending tasks...</p>
             </div>
         </div>
+
+        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">💰 Token Tracker</h2>
+        <p style="color: #666; font-size: 0.875rem;">Live agent token usage & cost monitoring</p>
+        
+        <div class="card" style="margin-top: 1rem;">
+            <div id="tokenSummary">
+                <div class="card-content" style="text-align: center; padding: 2rem;">
+                    <p style="color: #888;">Loading token data...</p>
+                </div>
+            </div>
+        </div>
+        
+        <h3 style="margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1rem;">Agent Token Usage</h3>
+        
+        <div id="agentTokens" class="card">
+            <div class="card-content" style="text-align: center; padding: 2rem;">
+                <p style="color: #888;">Loading agent data...</p>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -426,6 +445,76 @@
         // Load immediately and refresh every 30 seconds
         loadTaskData();
         setInterval(loadTaskData, 30000);
+        
+        // Load token tracker data
+        async function loadTokenData() {
+            try {
+                const response = await fetch('data/tokens.json');
+                const data = await response.json();
+                
+                // Render Token Summary
+                const tokenSummary = document.getElementById('tokenSummary');
+                tokenSummary.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 1rem;">
+                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
+                            <div style="color: #666; font-size: 0.75rem;">Total Tokens</div>
+                            <div style="color: #00d4ff; font-size: 1.5rem; font-weight: 700;">${(data.summary.totalTokens / 1000000).toFixed(2)}M</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
+                            <div style="color: #666; font-size: 0.75rem;">Total Cost</div>
+                            <div style="color: #51cf66; font-size: 1.5rem; font-weight: 700;">$${data.summary.totalCost.toFixed(2)}</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
+                            <div style="color: #666; font-size: 0.75rem;">Daily Burn</div>
+                            <div style="color: #fcc419; font-size: 1.5rem; font-weight: 700;">${(data.summary.dailyBurnRate / 1000).toFixed(0)}K</div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
+                            <div style="color: #666; font-size: 0.75rem;">Monthly Projected</div>
+                            <div style="color: #ff6b6b; font-size: 1.5rem; font-weight: 700;">$${data.summary.projectedMonthlyCost.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Render Agent Token Usage
+                const agentTokens = document.getElementById('agentTokens');
+                let agentTokenHTML = '';
+                
+                data.agents.forEach(agent => {
+                    const percentage = (agent.tokens / data.summary.totalTokens * 100).toFixed(1);
+                    const color = agent.name === 'Nexus' ? '#00d4ff' : agent.name === 'Meemo' ? '#fcc419' : '#51cf66';
+                    
+                    agentTokenHTML += `
+                        <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="color: ${color};">${agent.name}</strong>
+                                <span style="color: #888;">${percentage}%</span>
+                            </div>
+                            <div style="margin-top: 0.5rem;">
+                                <div class="progress-bar" style="height: 6px;">
+                                    <div class="progress-fill" style="width: ${percentage}%; background: ${color};"></div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-top: 0.25rem; font-size: 0.75rem; color: #666;">
+                                    <span>${(agent.tokens / 1000).toFixed(0)}K tokens</span>
+                                    <span>$${agent.cost.toFixed(2)}</span>
+                                    <span>${agent.sessions} sessions</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                agentTokens.innerHTML = agentTokenHTML;
+                
+                console.log('✅ Token data loaded:', data.lastUpdated);
+                
+            } catch (error) {
+                console.error('❌ Failed to load token data:', error);
+            }
+        }
+        
+        // Load token data
+        loadTokenData();
+        setInterval(loadTokenData, 60000); // Refresh every minute
         
         console.log('Mission Control v2.0 loaded');
         console.log('Live data: Active (30s refresh)');
