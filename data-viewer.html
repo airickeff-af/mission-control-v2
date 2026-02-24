@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📁 Data Viewer | Mission Control v2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #1a0f2e;
+            --bg-card: #3d2b5e;
+            --bg-card-hover: #4d3b6e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
+            --border-color: #5d4b7e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f0e6ff;
+            --bg-secondary: #e0d0f0;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f0ff;
+            --text-primary: #2d1b4e;
+            --text-secondary: #5d4b7e;
+            --text-muted: #8a7a99;
+            --accent-cyan: #0099aa;
+            --accent-pink: #e91e63;
+            --accent-yellow: #f9a825;
+            --accent-green: #4caf50;
+            --accent-orange: #ff9800;
+            --border-color: #d0c0e0;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root[data-theme="auto"] {
+                --bg-primary: #f0e6ff;
+                --bg-secondary: #e0d0f0;
+                --bg-card: #ffffff;
+                --bg-card-hover: #f5f0ff;
+                --text-primary: #2d1b4e;
+                --text-secondary: #5d4b7e;
+                --text-muted: #8a7a99;
+                --accent-cyan: #0099aa;
+                --accent-pink: #e91e63;
+                --accent-yellow: #f9a825;
+                --accent-green: #4caf50;
+                --accent-orange: #ff9800;
+                --border-color: #d0c0e0;
+                --shadow-color: rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pixel-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-cyan);
+            border: 4px solid var(--text-primary);
+            box-shadow: 4px 4px 0 var(--shadow-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-yellow);
+            text-shadow: 2px 2px 0 var(--shadow-color);
+            line-height: 1.6;
+        }
+
+        .back-link {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            box-shadow: 4px 4px 0 var(--shadow-color);
+        }
+
+        .section-title {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-yellow);
+        }
+
+        /* Filters */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-pixel);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            box-shadow: 3px 3px 0 var(--shadow-color);
+            transition: all 0.1s;
+        }
+
+        .filter-btn:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-cyan);
+            color: var(--bg-secondary);
+            border-color: var(--text-primary);
+        }
+
+        .search-box {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-pixel);
+            font-size: 1rem;
+            color: var(--text-primary);
+            box-shadow: 3px 3px 0 var(--shadow-color);
+            min-width: 250px;
+        }
+
+        .search-box::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .data-table th {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            padding: 1rem;
+            text-align: left;
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            color: var(--accent-yellow);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table th:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .data-table td {
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            background: var(--bg-card);
+        }
+
+        .data-table tr:hover td {
+            background: var(--bg-card-hover);
+        }
+
+        .file-name {
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .project-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+            border: 2px solid;
+            margin-right: 0.5rem;
+        }
+
+        .tag-mission-control { background: var(--accent-cyan); color: var(--bg-secondary); border-color: var(--text-primary); }
+        .tag-mc-project { background: var(--accent-green); color: var(--bg-secondary); border-color: var(--text-primary); }
+        .tag-dealflow { background: var(--accent-orange); color: var(--bg-secondary); border-color: var(--text-primary); }
+        .tag-pixel-sanctuary { background: var(--accent-pink); color: var(--text-primary); border-color: var(--text-primary); }
+        .tag-paws { background: var(--accent-yellow); color: var(--bg-secondary); border-color: var(--text-primary); }
+        .tag-shared { background: var(--text-muted); color: var(--text-primary); border-color: var(--text-primary); }
+
+        .file-type {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .last-updated {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-pixel);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            box-shadow: 2px 2px 0 var(--shadow-color);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-secondary);
+        }
+
+        /* Modal for viewing data */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 4px solid var(--border-color);
+            box-shadow: 8px 8px 0 var(--shadow-color);
+            width: 100%;
+            max-width: 900px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            background: var(--bg-secondary);
+            border-bottom: 3px solid var(--border-color);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-yellow);
+        }
+
+        .modal-close {
+            background: var(--accent-pink);
+            border: 2px solid var(--text-primary);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-pixel);
+            font-size: 1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            box-shadow: 2px 2px 0 var(--shadow-color);
+        }
+
+        .modal-body {
+            padding: 1rem;
+            overflow: auto;
+            flex: 1;
+        }
+
+        .json-viewer {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 50vh;
+            overflow: auto;
+        }
+
+        .modal-footer {
+            background: var(--bg-secondary);
+            border-top: 3px solid var(--border-color);
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .export-btn {
+            background: var(--accent-green);
+            border: 3px solid var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            font-family: var(--font-pixel);
+            font-size: 1rem;
+            color: var(--bg-secondary);
+            cursor: pointer;
+            box-shadow: 3px 3px 0 var(--shadow-color);
+        }
+
+        .export-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--shadow-color);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .data-table {
+                font-size: 0.85rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="pixel-logo">📁</div>
+            <div class="logo-text">
+                DATA<br>VIEWER<br><span>v2.0</span>
+            </div>
+        </div>
+        <a href="index.html" class="back-link">← Back to Mission Control</a>
+    </header>
+
+    <main class="container">
+        <div class="section-header">
+            <span style="font-size: 1.5rem;">📂</span>
+            <h1 class="section-title">DATA FILES</h1>
+        </div>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <span class="filter-label">Project:</span>
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="mission-control">Mission Control</button>
+                <button class="filter-btn" data-filter="mc-project">MC Project</button>
+                <button class="filter-btn" data-filter="dealflow">DealFlow</button>
+                <button class="filter-btn" data-filter="pixel-sanctuary">Pixel Sanctuary</button>
+                <button class="filter-btn" data-filter="paws">Paws</button>
+                <button class="filter-btn" data-filter="shared">Shared</button>
+            </div>
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search files...">
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th onclick="sortTable('name')">File Name ↕</th>
+                    <th onclick="sortTable('project')">Project ↕</th>
+                    <th onclick="sortTable('type')">Type ↕</th>
+                    <th onclick="sortTable('updated')">Last Updated ↕</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="fileTableBody">
+                <tr>
+                    <td colspan="5" class="no-results">Loading files...</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Modal for viewing data -->
+    <div class="modal-overlay" id="viewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">View File</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="json-viewer" id="jsonViewer">Loading...</div>
+            </div>
+            <div class="modal-footer">
+                <button class="export-btn" onclick="exportAsTxt()">📄 Export as TXT</button>
+                <button class="export-btn" onclick="exportAsJson()">📋 Export as JSON</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data files configuration
+        const dataFiles = [
+            { name: 'projects.json', project: 'shared', path: 'data/projects.json', type: 'JSON' },
+            { name: 'agents.json', project: 'shared', path: 'data/agents.json', type: 'JSON' },
+            { name: 'tasks.json', project: 'shared', path: 'data/tasks.json', type: 'JSON' },
+            { name: 'tokens.json', project: 'shared', path: 'data/tokens.json', type: 'JSON' },
+            { name: 'sessions.json', project: 'shared', path: 'data/sessions.json', type: 'JSON' },
+            { name: 'kanban.json', project: 'shared', path: 'data/kanban.json', type: 'JSON' },
+            { name: 'PENDING_TASKS.md', project: 'mission-control', path: '../PENDING_TASKS.md', type: 'Markdown' },
+            { name: 'IDENTITY.md', project: 'paws', path: '../paws/IDENTITY.md', type: 'Markdown' },
+            { name: 'baby-activities.md', project: 'paws', path: '../paws/baby-activities.md', type: 'Markdown' },
+            { name: 'home-checklist.md', project: 'paws', path: '../paws/home-checklist.md', type: 'Markdown' }
+        ];
+
+        let currentData = null;
+        let currentFile = null;
+        let sortDirection = {};
+
+        // Load file data
+        async function loadFileData() {
+            const tbody = document.getElementById('fileTableBody');
+            tbody.innerHTML = '<tr><td colspan="5" class="no-results">Loading files...</td></tr>';
+
+            const filesWithData = await Promise.all(dataFiles.map(async (file) => {
+                try {
+                    const response = await fetch(file.path);
+                    const text = await response.text();
+                    let data = null;
+                    let lastUpdated = 'Unknown';
+                    
+                    try {
+                        data = JSON.parse(text);
+                        lastUpdated = data.lastUpdated ? new Date(data.lastUpdated).toLocaleString() : 'Unknown';
+                    } catch (e) {
+                        // Not JSON, treat as text
+                        lastUpdated = 'N/A';
+                    }
+                    
+                    return { ...file, data, text, lastUpdated };
+                } catch (error) {
+                    return { ...file, data: null, text: 'Error loading file', lastUpdated: 'Error' };
+                }
+            }));
+
+            renderTable(filesWithData);
+        }
+
+        // Render table
+        function renderTable(files) {
+            const tbody = document.getElementById('fileTableBody');
+            const filter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+            const search = document.getElementById('searchBox').value.toLowerCase();
+
+            let filtered = files;
+
+            // Apply project filter
+            if (filter !== 'all') {
+                filtered = filtered.filter(f => f.project === filter);
+            }
+
+            // Apply search filter
+            if (search) {
+                filtered = filtered.filter(f => f.name.toLowerCase().includes(search));
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="no-results">No files found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(file => `
+                <tr>
+                    <td class="file-name">${file.name}</td>
+                    <td><span class="project-tag tag-${file.project}">${file.project.replace('-', ' ').toUpperCase()}</span></td>
+                    <td><span class="file-type">${file.type}</span></td>
+                    <td class="last-updated">${file.lastUpdated}</td>
+                    <td class="actions">
+                        <button class="action-btn" onclick="viewFile('${file.name}')">👁 View</button>
+                        <a href="${file.path}" download class="action-btn">⬇ Download</a>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Store for sorting
+            window.currentFiles = filtered;
+        }
+
+        // View file in modal
+        async function viewFile(fileName) {
+            const file = window.currentFiles?.find(f => f.name === fileName);
+            if (!file) return;
+
+            currentFile = file;
+            currentData = file.data || file.text;
+
+            document.getElementById('modalTitle').textContent = file.name;
+            
+            const viewer = document.getElementById('jsonViewer');
+            if (file.data && typeof file.data === 'object') {
+                viewer.textContent = JSON.stringify(file.data, null, 2);
+            } else {
+                viewer.textContent = file.text;
+            }
+
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
+        // Export as TXT
+        function exportAsTxt() {
+            if (!currentData) return;
+            
+            const content = typeof currentData === 'object' 
+                ? JSON.stringify(currentData, null, 2) 
+                : currentData;
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile.name.replace(/\.json$/, '.txt');
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Export as JSON
+        function exportAsJson() {
+            if (!currentData) return;
+            
+            const content = typeof currentData === 'object' 
+                ? JSON.stringify(currentData, null, 2) 
+                : currentData;
+            
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile.name.endsWith('.json') ? currentFile.name : currentFile.name + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Sort table
+        function sortTable(column) {
+            if (!window.currentFiles) return;
+
+            sortDirection[column] = !sortDirection[column];
+            const dir = sortDirection[column] ? 1 : -1;
+
+            window.currentFiles.sort((a, b) => {
+                let valA, valB;
+                
+                switch(column) {
+                    case 'name': valA = a.name; valB = b.name; break;
+                    case 'project': valA = a.project; valB = b.project; break;
+                    case 'type': valA = a.type; valB = b.type; break;
+                    case 'updated': valA = a.lastUpdated; valB = b.lastUpdated; break;
+                    default: return 0;
+                }
+
+                if (valA < valB) return -1 * dir;
+                if (valA > valB) return 1 * dir;
+                return 0;
+            });
+
+            renderTable(window.currentFiles);
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                loadFileData();
+            });
+        });
+
+        // Search box
+        document.getElementById('searchBox').addEventListener('input', () => {
+            renderTable(window.currentFiles || []);
+        });
+
+        // Close modal on overlay click
+        document.getElementById('viewModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('viewModal')) {
+                closeModal();
+            }
+        });
+
+        // Load on page load
+        loadFileData();
+
+        // Auto-refresh every 5 minutes
+        setInterval(loadFileData, 300000);
+
+        console.log('📁 Data Viewer loaded');
+    </script>
+</body>
+</html>
