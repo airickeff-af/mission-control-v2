@@ -308,46 +308,20 @@
         </div>
 
         <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">📋 Agent Task Board</h2>
-        <p style="color: #666; font-size: 0.875rem;">Real-time agent task tracking</p>
+        <p style="color: #666; font-size: 0.875rem;">Live pending tasks — Auto-refresh every 30s</p>
         
-        <div class="card" style="margin-top: 1rem;">
-            <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <strong style="color: #00d4ff;">Nexus</strong>
-                        <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">Orchestrator</span>
-                    </div>
-                    <span class="card-status status-live">ACTIVE</span>
-                </div>
-                <div style="margin-top: 0.5rem; color: #888; font-size: 0.875rem;">
-                    📝 Mission Control v2.0 deployment
-                </div>
+        <div id="taskBoard" class="card" style="margin-top: 1rem;">
+            <div class="card-content" style="text-align: center; padding: 2rem;">
+                <p style="color: #888;">Loading tasks...</p>
             </div>
-            
-            <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <strong style="color: #fcc419;">Meemo</strong>
-                        <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">MC Project Lead</span>
-                    </div>
-                    <span class="card-status status-dev">STANDBY</span>
-                </div>
-                <div style="margin-top: 0.5rem; color: #888; font-size: 0.875rem;">
-                    ⏸️ Awaiting new assignments
-                </div>
-            </div>
-            
-            <div style="padding: 1rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <strong style="color: #51cf66;">ZooKeeper</strong>
-                        <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">PS Project Lead</span>
-                    </div>
-                    <span class="card-status status-dev">STANDBY</span>
-                </div>
-                <div style="margin-top: 0.5rem; color: #888; font-size: 0.875rem;">
-                    ⏸️ Awaiting new assignments
-                </div>
+        </div>
+        
+        <h2 style="margin-top: 3rem; margin-bottom: 0.5rem;">📊 Pending Tasks Summary</h2>
+        <p style="color: #666; font-size: 0.875rem;">All pending tasks across projects</p>
+        
+        <div id="pendingTasks" class="card" style="margin-top: 1rem;">
+            <div class="card-content" style="text-align: center; padding: 2rem;">
+                <p style="color: #888;">Loading pending tasks...</p>
             </div>
         </div>
     </div>
@@ -358,14 +332,103 @@
     </footer>
 
     <script>
-        // Auto-refresh every 5 minutes
-        setInterval(() => {
-            location.reload();
-        }, 5 * 60 * 1000);
+        // Load live task data
+        async function loadTaskData() {
+            try {
+                const response = await fetch('data/tasks.json');
+                const data = await response.json();
+                
+                // Render Agent Task Board
+                const taskBoard = document.getElementById('taskBoard');
+                let agentHTML = '';
+                
+                data.agents.forEach(agent => {
+                    const statusClass = agent.status === 'active' ? 'status-live' : 'status-dev';
+                    const statusText = agent.status === 'active' ? 'ACTIVE' : 'STANDBY';
+                    const icon = agent.name === 'Nexus' ? '👑' : agent.name === 'Meemo' ? '🎨' : '🦁';
+                    const color = agent.name === 'Nexus' ? '#00d4ff' : agent.name === 'Meemo' ? '#fcc419' : '#51cf66';
+                    
+                    agentHTML += `
+                        <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong style="color: ${color};">${icon} ${agent.name}</strong>
+                                    <span style="color: #666; font-size: 0.75rem; margin-left: 0.5rem;">${agent.role}</span>
+                                </div>
+                                <span class="card-status ${statusClass}">${statusText}</span>
+                            </div>
+                            <div style="margin-top: 0.5rem; color: #888; font-size: 0.875rem;">
+                                ${agent.status === 'active' ? '📝' : '⏸️'} ${agent.task}
+                                ${agent.priority ? `<span style="color: #ff6b6b; margin-left: 0.5rem;">[${agent.priority}]</span>` : ''}
+                                ${agent.due ? `<span style="color: #666; margin-left: 0.5rem;">Due: ${new Date(agent.due).toLocaleTimeString()}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                taskBoard.innerHTML = agentHTML;
+                
+                // Render Pending Tasks Summary
+                const pendingTasks = document.getElementById('pendingTasks');
+                let tasksHTML = '';
+                
+                data.pendingTasks.forEach(task => {
+                    const priorityColor = task.priority === 'P0' ? '#ff6b6b' : task.priority === 'P1' ? '#fcc419' : '#888';
+                    const statusIcon = task.status === 'in-progress' ? '🔵' : '⚪';
+                    
+                    tasksHTML += `
+                        <div style="padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <strong style="color: #e0e0e0;">${statusIcon} ${task.title}</strong>
+                                    <span style="color: ${priorityColor}; font-size: 0.75rem; margin-left: 0.5rem; font-weight: 600;">${task.priority}</span>
+                                </div>
+                                <span style="color: #666; font-size: 0.75rem;">${task.agent}</span>
+                            </div>
+                            <div style="margin-top: 0.25rem; color: #666; font-size: 0.75rem;">
+                                Due: ${new Date(task.due).toLocaleString()} | Status: ${task.status}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // Add summary footer
+                const p0Count = data.pendingTasks.filter(t => t.priority === 'P0').length;
+                const p1Count = data.pendingTasks.filter(t => t.priority === 'P1').length;
+                const p2Count = data.pendingTasks.filter(t => t.priority === 'P2').length;
+                
+                tasksHTML += `
+                    <div style="padding: 1rem; background: rgba(0,0,0,0.3);">
+                        <div style="display: flex; gap: 1rem; font-size: 0.875rem;">
+                            <span style="color: #ff6b6b;">🔴 P0: ${p0Count}</span>
+                            <span style="color: #fcc419;">🟡 P1: ${p1Count}</span>
+                            <span style="color: #888;">⚪ P2: ${p2Count}</span>
+                            <span style="color: #666; margin-left: auto;">Total: ${data.pendingTasks.length}</span>
+                        </div>
+                    </div>
+                `;
+                
+                pendingTasks.innerHTML = tasksHTML;
+                
+                console.log('✅ Live data loaded:', data.lastUpdated);
+                
+            } catch (error) {
+                console.error('❌ Failed to load task data:', error);
+                document.getElementById('taskBoard').innerHTML = `
+                    <div class="card-content" style="text-align: center; padding: 2rem;">
+                        <p style="color: #ff6b6b;">⚠️ Failed to load live data</p>
+                        <p style="color: #666; font-size: 0.875rem;">Using static fallback</p>
+                    </div>
+                `;
+            }
+        }
         
-        // Update timestamps
+        // Load immediately and refresh every 30 seconds
+        loadTaskData();
+        setInterval(loadTaskData, 30000);
+        
         console.log('Mission Control v2.0 loaded');
-        console.log('Last updated: 2026-02-24');
+        console.log('Live data: Active (30s refresh)');
     </script>
 </body>
 </html>

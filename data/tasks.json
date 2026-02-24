@@ -1,0 +1,55 @@
+{
+  "lastUpdated": "2026-02-24T19:34:00+08:00",
+  "agents": [
+    {
+      "name": "Nexus",
+      "role": "Orchestrator",
+      "status": "active",
+      "task": "Mission Control v2.0 deployment",
+      "priority": "P0",
+      "due": "2026-02-24T20:00:00+08:00"
+    },
+    {
+      "name": "Meemo",
+      "role": "MC Project Lead",
+      "status": "standby",
+      "task": "Awaiting new assignments",
+      "priority": null,
+      "due": null
+    },
+    {
+      "name": "ZooKeeper",
+      "role": "PS Project Lead",
+      "status": "standby",
+      "task": "Awaiting new assignments",
+      "priority": null,
+      "due": null
+    }
+  ],
+  "pendingTasks": [
+    {
+      "id": "TASK-001",
+      "title": "Deploy Mission Control v2.0",
+      "agent": "Nexus",
+      "priority": "P0",
+      "status": "in-progress",
+      "due": "2026-02-24T20:00:00+08:00"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Add Token Tracker to v2.0",
+      "agent": "Nexus",
+      "priority": "P1",
+      "status": "pending",
+      "due": "2026-02-24T22:00:00+08:00"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Integrate Discord notifications",
+      "agent": "Nexus",
+      "priority": "P2",
+      "status": "pending",
+      "due": "2026-02-25T12:00:00+08:00"
+    }
+  ]
+}
