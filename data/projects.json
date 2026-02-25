@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-26T05:22:00+08:00",
+  "lastUpdated": "2026-02-26T07:22:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -84,9 +84,9 @@
       "id": "quill-research",
       "name": "Quill Research",
       "status": "active",
-      "completion": 10,
+      "completion": 50,
       "url": null,
-      "pendingTasks": 2,
+      "pendingTasks": 0,
       "lead": "Quill",
       "targetCompletion": "2026-02-28",
       "targetPercent": 100,
@@ -96,8 +96,8 @@
       "outputLocation": "/root/.openclaw/workspace/quill/profiles/",
       "dailyTarget": "2 profiles (3500-4000 words each)",
       "stats": {
-        "profilesCompleted": 0,
-        "profilesPending": 2,
+        "profilesCompleted": 2,
+        "profilesPending": 0,
         "wordsPerProfile": "3500-4000",
         "topics": ["Crypto", "AI", "Tech"]
       }
