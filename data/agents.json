@@ -1,45 +1,108 @@
 {
-  "lastUpdated": "2026-02-25T01:20:00+08:00",
+  "lastUpdated": "2026-02-26T05:22:00+08:00",
   "agents": [
     {
       "name": "Nexus",
       "role": "Orchestrator",
       "status": "active",
       "project": "Mission Control",
-      "task": "Deploy v2.0 + Fix APIs + Standardize Headers",
+      "task": "Hourly dashboard update + Vercel redeploy",
       "priority": "P0",
-      "tokens": 620000,
-      "sessions": 62
+      "tokens": 218000,
+      "sessions": 74,
+      "type": "main",
+      "sessionKey": "agent:main:main"
     },
     {
-      "name": "Meemo",
+      "name": "Meemo-Replacement",
       "role": "MC Project Lead",
-      "status": "active",
+      "status": "completed",
       "project": "MC Project",
-      "task": "Visual Feedback + Mobile PWA + Testing + Docs",
+      "task": "P1 COMPLETED - All 4 tasks done",
       "priority": "P1",
-      "tokens": 420000,
-      "sessions": 42
+      "tokens": 41700,
+      "sessions": 1,
+      "type": "subagent",
+      "sessionKey": "agent:main:subagent:053d7381-7a70-4aec-9adc-68281e2138a2",
+      "replaced": "Meemo (silent 4+ days)"
     },
     {
-      "name": "DealFlow-Alpha",
+      "name": "DealFlow-Replacement",
       "role": "DealFlow Lead",
-      "status": "active",
+      "status": "completed",
       "project": "DealFlow",
-      "task": "Create Kanban + Contact Enrichment + Lead Scoring",
+      "task": "90 contacts researched (20 original + 40 stablecoins + 30 RWA)",
       "priority": "P0",
-      "tokens": 85000,
-      "sessions": 9
+      "tokens": 222100,
+      "sessions": 7,
+      "type": "subagent",
+      "sessionKey": "agent:main:subagent:39347f25-b2a8-4ad1-bb50-9b49c02ac7fb",
+      "replaced": "DealFlow-Alpha (silent 7+ days)",
+      "consolidated": ["Research-Stablecoins", "Research-RWA"]
     },
     {
-      "name": "Paws",
+      "name": "PixelSanctuary-Replacement",
+      "role": "Pixel Sanctuary Lead",
+      "status": "completed",
+      "project": "Pixel Sanctuary",
+      "task": "P1 COMPLETED - 8-directional sprites, steak feeding, colors",
+      "priority": "P1",
+      "tokens": 89000,
+      "sessions": 3,
+      "type": "subagent",
+      "sessionKey": "agent:main:subagent:4b4ce7b5-29a0-4759-aa22-b46f961dc4e2",
+      "replaced": "ZooKeeper (silent 6+ days)"
+    },
+    {
+      "name": "Paws-Replacement",
       "role": "Personal Assistant",
       "status": "active",
       "project": "Paws",
-      "task": "Daily Family Check-ins + Baby Activities + Home Checklist",
+      "task": "Daily check-in, home checklist tracked, personal tasks deployed",
       "priority": "P1",
-      "tokens": 95000,
-      "sessions": 10
+      "tokens": 13000,
+      "sessions": 1,
+      "type": "subagent",
+      "sessionKey": "agent:main:subagent:ba693d6f-3edb-4077-a7ac-a47e61e03d0d",
+      "replaced": "Paws (inconsistent)"
+    },
+    {
+      "name": "ColdCall-Research",
+      "role": "Email Researcher",
+      "status": "completed",
+      "project": "DealFlow",
+      "task": "Found 19/20 emails + outreach preparation",
+      "priority": "P1",
+      "tokens": 29600,
+      "sessions": 1,
+      "type": "subagent",
+      "sessionKey": "agent:main:subagent:b17ce9fd-45ac-4429-9e15-0f3e666a7823"
+    },
+    {
+      "name": "Quill",
+      "role": "Research Writer",
+      "status": "active",
+      "project": "Content",
+      "task": "2 deep-dive profiles/day (3500-4000 words) on crypto/AI/tech figures",
+      "priority": "P1",
+      "tokens": 48076,
+      "sessions": 1,
+      "type": "subagent",
+      "sessionKey": "agent:main:subagent:1e6ff6ea-8c48-4915-bc5e-c878a25b9131"
+    }
+  ],
+  "consolidatedAgents": [
+    {
+      "name": "Research-Stablecoins",
+      "consolidatedInto": "DealFlow-Replacement",
+      "date": "2026-02-25T18:50:00+08:00",
+      "reason": "Redundant - DealFlow-Replacement can handle all research tasks"
+    },
+    {
+      "name": "Research-RWA",
+      "consolidatedInto": "DealFlow-Replacement",
+      "date": "2026-02-25T18:50:00+08:00",
+      "reason": "Redundant - DealFlow-Replacement can handle all research tasks"
     }
   ]
 }

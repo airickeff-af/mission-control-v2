@@ -1,26 +1,34 @@
 {
-  "lastUpdated": "2026-02-25T01:41:00+08:00",
+  "lastUpdated": "2026-02-26T05:22:00+08:00",
   "projects": [
     {
       "id": "dealflow",
       "name": "DealFlow",
-      "status": "sprint",
-      "completion": 75,
-      "url": null,
-      "pendingTasks": 5,
-      "lead": "DealFlow-Alpha",
+      "status": "deployed",
+      "completion": 95,
+      "url": "https://dealflow-psi.vercel.app",
+      "pendingTasks": 2,
+      "lead": "DealFlow-Replacement",
       "targetCompletion": "2026-02-26",
       "targetPercent": 100,
       "priority": 1,
-      "deployBy": "2026-02-26"
+      "deployBy": "2026-02-26",
+      "stats": {
+        "totalContacts": 90,
+        "withEmails": 79,
+        "readyForOutreach": 80,
+        "stablecoins": 40,
+        "rwa": 30,
+        "original": 20
+      }
     },
     {
       "id": "mission-control",
       "name": "Mission Control",
-      "status": "sprint",
-      "completion": 75,
+      "status": "deployed",
+      "completion": 93,
       "url": "https://mission-control-v2-sepia.vercel.app",
-      "pendingTasks": 15,
+      "pendingTasks": 9,
       "lead": "Nexus",
       "targetCompletion": "2026-02-26",
       "targetPercent": 100,
@@ -30,11 +38,11 @@
     {
       "id": "paws",
       "name": "Paws",
-      "status": "sprint",
-      "completion": 75,
-      "url": null,
-      "pendingTasks": 3,
-      "lead": "Paws",
+      "status": "deployed",
+      "completion": 95,
+      "url": "https://paws-mu.vercel.app",
+      "pendingTasks": 2,
+      "lead": "Paws-Replacement",
       "targetCompletion": "2026-02-26",
       "targetPercent": 100,
       "priority": 3,
@@ -44,10 +52,10 @@
       "id": "mc-project",
       "name": "MC Project",
       "status": "deployed",
-      "completion": 85,
+      "completion": 100,
       "url": "https://airickeff-af.github.io/mc-project/",
-      "pendingTasks": 4,
-      "lead": "Meemo",
+      "pendingTasks": 0,
+      "lead": "Meemo-Replacement",
       "targetCompletion": "2026-02-25",
       "targetPercent": 100,
       "priority": 4,
@@ -56,15 +64,43 @@
     {
       "id": "pixel-sanctuary",
       "name": "Pixel Sanctuary",
-      "status": "sprint",
-      "completion": 75,
-      "url": null,
-      "pendingTasks": 7,
-      "lead": "Nexus",
+      "status": "deployed",
+      "completion": 100,
+      "url": "https://pixel-sanctuary.vercel.app",
+      "pendingTasks": 0,
+      "lead": "PixelSanctuary-Replacement",
       "targetCompletion": "2026-02-27",
       "targetPercent": 100,
       "priority": 5,
-      "deployBy": "2026-02-27"
+      "deployBy": "2026-02-27",
+      "features": [
+        "8-directional movement",
+        "12 color palettes",
+        "Steak feeding system",
+        "Proportional food spawning"
+      ]
+    },
+    {
+      "id": "quill-research",
+      "name": "Quill Research",
+      "status": "active",
+      "completion": 10,
+      "url": null,
+      "pendingTasks": 2,
+      "lead": "Quill",
+      "targetCompletion": "2026-02-28",
+      "targetPercent": 100,
+      "priority": 6,
+      "deployBy": "2026-02-28",
+      "description": "Deep-dive research profiles on crypto/AI/tech industry figures",
+      "outputLocation": "/root/.openclaw/workspace/quill/profiles/",
+      "dailyTarget": "2 profiles (3500-4000 words each)",
+      "stats": {
+        "profilesCompleted": 0,
+        "profilesPending": 2,
+        "wordsPerProfile": "3500-4000",
+        "topics": ["Crypto", "AI", "Tech"]
+      }
     }
   ]
 }

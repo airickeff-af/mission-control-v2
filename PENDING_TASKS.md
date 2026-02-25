@@ -1,7 +1,7 @@
 # PENDING TASKS - MISSION CONTROL v2.0
 **Status:** ACTIVE  
-**Last Updated:** 2026-02-25 1:16 AM HKT  
-**Total Tasks:** 61  
+**Last Updated:** 2026-02-25 2:00 AM HKT  
+**Total Tasks:** 71  
 **Nuclear Reset:** Feb 24, 2026 - Fresh start, all old tasks archived
 
 ---
@@ -10,15 +10,43 @@
 
 | Priority | Count | Status |
 |----------|-------|--------|
-| 🔴 P0 - Critical | 9 | 3 in progress |
-| 🟡 P1 - High | 29 | Multiple in progress |
-| 🟢 P2 - Medium | 18 | Planned |
+| 🔴 P0 - Critical | 13 | 3 in progress |
+| 🟡 P1 - High | 32 | Multiple in progress |
+| 🟢 P2 - Medium | 21 | Planned |
 | ⚪ P3 - Low | 5 | Future |
-| **TOTAL** | **61** | **Active** |
+| **TOTAL** | **71** | **Active** |
 
 ---
 
 ## 🔴 P0 - CRITICAL (Complete ASAP)
+
+### **MC-P0-010: Fix Vercel Deployment Pipeline**
+- **Assigned:** Sentry
+- **Due:** Feb 25, 8:00 AM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Fix failing Vercel builds and deployment pipeline issues
+
+### **MC-P0-011: Database Migration for v2.0**
+- **Assigned:** Cipher
+- **Due:** Feb 25, 2:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Execute database schema migration for v2.0 features
+
+### **PS-P0-001: Fix Canvas Performance Issues**
+- **Assigned:** Pixel
+- **Due:** Feb 25, 4:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Pixel Sanctuary
+- **Description:** Optimize canvas rendering for 60fps with 50+ sprites
+
+### **DF-P0-002: DealFlow API Rate Limiting**
+- **Assigned:** DealFlow-Alpha
+- **Due:** Feb 25, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** DealFlow
+- **Description:** Implement API rate limiting to prevent service abuse
 
 ### **MC-001: Deploy Mission Control v2.0**
 - **Assigned:** Nexus
@@ -138,6 +166,24 @@
 - **Assigned:** Glasses + DealFlow
 - **Due:** Mar 3, 11:59 PM
 - **Status:** ⏳ PENDING
+
+#### **MC-P1-010: Agent Performance Analytics**
+- **Assigned:** Gary
+- **Due:** Feb 27, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Description:** Build dashboard tracking agent task completion, response times, and efficiency metrics
+
+#### **MC-P1-011: Weekly Newsletter Automation**
+- **Assigned:** Quill
+- **Due:** Feb 28, 10:00 AM
+- **Status:** ⏳ PENDING
+- **Description:** Automate weekly newsletter generation with agent highlights and project updates
+
+#### **PAWS-P1-004: Family Calendar Integration**
+- **Assigned:** Paws
+- **Due:** Mar 1, 9:00 AM
+- **Status:** ⏳ PENDING
+- **Description:** Sync family events and create proactive reminders for appointments
 
 ### **MC Project Tasks**
 
@@ -260,6 +306,24 @@
 - **Assigned:** Pixel
 - **Due:** Mar 1, 11:59 PM
 - **Status:** ⏳ PENDING
+
+### **MC-P2-003: Dark Mode Polish**
+- **Assigned:** Pixel
+- **Due:** Mar 2, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Description:** Refine dark mode colors, contrast ratios, and theme consistency
+
+### **PS-P2-001: Sprite Animation Polish**
+- **Assigned:** Pixel
+- **Due:** Mar 3, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Description:** Add idle animations, smooth transitions, and personality to agent sprites
+
+### **MC-P2-004: Keyboard Shortcuts System**
+- **Assigned:** Forge
+- **Due:** Mar 4, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Description:** Implement vim-style keyboard navigation and custom shortcuts
 
 ---
 

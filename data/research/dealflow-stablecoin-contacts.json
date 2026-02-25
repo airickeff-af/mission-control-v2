@@ -1,0 +1,395 @@
+{
+  "lastUpdated": "2026-02-25T18:30:00Z",
+  "contacts": [
+    {
+      "company": "Circle",
+      "stablecoin": "USDC",
+      "decisionMaker": "Jeremy Allaire",
+      "title": "CEO & Co-Founder",
+      "email": "jeremy@circle.com",
+      "linkedin": "https://www.linkedin.com/in/jeremyallaire",
+      "twitter": "@jerallaire",
+      "confidence": "high"
+    },
+    {
+      "company": "Tether",
+      "stablecoin": "USDT",
+      "decisionMaker": "Paolo Ardoino",
+      "title": "CEO",
+      "email": "paolo@tether.to",
+      "linkedin": "https://uk.linkedin.com/in/prdn",
+      "twitter": "@paoloardoino",
+      "confidence": "high"
+    },
+    {
+      "company": "Ethena Labs",
+      "stablecoin": "USDe",
+      "decisionMaker": "Guy Young",
+      "title": "Founder & CEO",
+      "email": "guy@ethena.fi",
+      "linkedin": "https://pt.linkedin.com/in/guy-young-a11914279",
+      "twitter": "@ethena_labs",
+      "confidence": "medium"
+    },
+    {
+      "company": "PayPal",
+      "stablecoin": "PYUSD",
+      "decisionMaker": "Alex Chriss",
+      "title": "President & CEO",
+      "email": "alex.chriss@paypal.com",
+      "linkedin": "https://www.linkedin.com/in/alexchriss",
+      "twitter": "@PayPal",
+      "confidence": "high"
+    },
+    {
+      "company": "Paxos",
+      "stablecoin": "PAXG, USDP",
+      "decisionMaker": "Charles Cascarilla",
+      "title": "CEO & Co-Founder",
+      "email": "charles@paxos.com",
+      "linkedin": "https://www.linkedin.com/in/charlescascarilla",
+      "twitter": "@paxosglobal",
+      "confidence": "high"
+    },
+    {
+      "company": "First Digital Trust",
+      "stablecoin": "FDUSD",
+      "decisionMaker": "Vincent Chok",
+      "title": "Founder & CEO",
+      "email": "vincent@1stdigital.com",
+      "linkedin": "https://hk.linkedin.com/in/vchok",
+      "twitter": "@FirstDigitalHQ",
+      "confidence": "high"
+    },
+    {
+      "company": "Stellar Development Foundation",
+      "stablecoin": "USDC (Stellar)",
+      "decisionMaker": "Denelle Dixon",
+      "title": "CEO & Executive Director",
+      "email": "denelle@stellar.org",
+      "linkedin": "https://www.linkedin.com/in/denelle-dixon-967a236",
+      "twitter": "@DenelleDixon",
+      "confidence": "high"
+    },
+    {
+      "company": "Agora",
+      "stablecoin": "AUSD",
+      "decisionMaker": "Nick van Eck",
+      "title": "CEO & Co-Founder",
+      "email": "nick@agora.finance",
+      "linkedin": "https://www.linkedin.com/in/nick-van-eck-17036212a",
+      "twitter": "@Nick_van_Eck",
+      "confidence": "high"
+    },
+    {
+      "company": "Ondo Finance",
+      "stablecoin": "USDY, OUSG",
+      "decisionMaker": "Nathan Allman",
+      "title": "Founder & CEO",
+      "email": "nathan@ondo.finance",
+      "linkedin": "https://www.linkedin.com/in/nathanlallman",
+      "twitter": "@nathanlallman",
+      "confidence": "high"
+    },
+    {
+      "company": "Frax Finance",
+      "stablecoin": "FRAX",
+      "decisionMaker": "Sam Kazemian",
+      "title": "CEO & Founder",
+      "email": "sam@frax.com",
+      "linkedin": "https://www.linkedin.com/in/sam-kazemian-99b198353",
+      "twitter": "@samkazemian",
+      "confidence": "high"
+    },
+    {
+      "company": "Mento Labs",
+      "stablecoin": "cUSD, cEUR",
+      "decisionMaker": "Markus Franke",
+      "title": "CEO & Co-Founder",
+      "email": "markus@mento.org",
+      "linkedin": "https://www.linkedin.com/company/mento-labs",
+      "twitter": "@MarkusMento",
+      "confidence": "medium"
+    },
+    {
+      "company": "Reserve Protocol",
+      "stablecoin": "RSV, RToken",
+      "decisionMaker": "Nevin Freeman",
+      "title": "CEO & Co-Founder",
+      "email": "nevin@reserve.org",
+      "linkedin": "https://www.linkedin.com/in/nevinfreeman",
+      "twitter": "@reserveprotocol",
+      "confidence": "high"
+    },
+    {
+      "company": "Angle Labs",
+      "stablecoin": "EURA, USDA",
+      "decisionMaker": "Pablo Veyrat",
+      "title": "CEO & Co-Founder",
+      "email": "pablo@angle.money",
+      "linkedin": "https://fr.linkedin.com/in/pablo-veyrat-5a6a84130",
+      "twitter": "@AngleProtocol",
+      "confidence": "medium"
+    },
+    {
+      "company": "Helio (MoonPay Commerce)",
+      "stablecoin": "Payment Infrastructure",
+      "decisionMaker": "Stijn Paumen",
+      "title": "Co-Founder & CEO",
+      "email": "stijn@helio.co",
+      "linkedin": "https://www.linkedin.com/posts/heliopay_stijn-paumen-co-founder-ceo-at-helio-activity-7189213383924072448-7v-Q",
+      "twitter": "@heliopay",
+      "confidence": "medium"
+    },
+    {
+      "company": "Plasma Finance",
+      "stablecoin": "Payment Infrastructure",
+      "decisionMaker": "Ilia Maksimenka",
+      "title": "CEO & Founder",
+      "email": "ilia@plasma.finance",
+      "linkedin": "https://www.linkedin.com/in/maksimenka",
+      "twitter": "@0xPlasma",
+      "confidence": "high"
+    },
+    {
+      "company": "Wirex",
+      "stablecoin": "Payment Infrastructure",
+      "decisionMaker": "Pavel Matveev",
+      "title": "Founder & CEO",
+      "email": "pavel@wirexapp.com",
+      "linkedin": "https://uk.linkedin.com/in/pmatveev",
+      "twitter": "@matveevp",
+      "confidence": "high"
+    },
+    {
+      "company": "Monerium",
+      "stablecoin": "EURe (Euro stablecoin)",
+      "decisionMaker": "Sveinn Valfells",
+      "title": "Co-Founder & Chair",
+      "email": "sveinn@monerium.com",
+      "linkedin": "https://www.linkedin.com/in/sveinn-valfells",
+      "twitter": "@sveinnvalfells",
+      "confidence": "medium"
+    },
+    {
+      "company": "Gnosis Pay",
+      "stablecoin": "Payment Infrastructure",
+      "decisionMaker": "Marcos Nunes",
+      "title": "Co-Founder & CEO",
+      "email": "marcos@gnosispay.com",
+      "linkedin": "https://www.linkedin.com/in/marcos-p-nunes-8695b268",
+      "twitter": "@GnosisPay",
+      "confidence": "medium"
+    },
+    {
+      "company": "BVNK",
+      "stablecoin": "Payment Infrastructure",
+      "decisionMaker": "Jesse Hemson-Struthers",
+      "title": "Co-Founder & CEO",
+      "email": "jesse@bvnk.com",
+      "linkedin": "https://www.linkedin.com/in/jessehs",
+      "twitter": "@bvnk",
+      "confidence": "medium"
+    },
+    {
+      "company": "Mountain Protocol (Anchorage Digital)",
+      "stablecoin": "USDM",
+      "decisionMaker": "Martin Carrica",
+      "title": "Founder & CEO",
+      "email": "martin@mountainprotocol.com",
+      "linkedin": "https://www.linkedin.com/in/mcarrica",
+      "twitter": "@mountainproto",
+      "confidence": "high"
+    },
+    {
+      "company": "MakerDAO/Sky",
+      "stablecoin": "DAI (now USDS)",
+      "decisionMaker": "Rune Christensen",
+      "title": "Co-Founder",
+      "email": "rune@makerdao.com",
+      "linkedin": "https://www.linkedin.com/in/rune-christensen-1a3300214",
+      "twitter": "@RuneKek",
+      "confidence": "high"
+    },
+    {
+      "company": "Ripple",
+      "stablecoin": "RLUSD",
+      "decisionMaker": "Brad Garlinghouse",
+      "title": "CEO",
+      "email": "brad@ripple.com",
+      "linkedin": "https://www.linkedin.com/in/bradgarlinghouse",
+      "twitter": "@bgarlinghouse",
+      "confidence": "high"
+    },
+    {
+      "company": "Archblock (TrueUSD)",
+      "stablecoin": "TUSD",
+      "decisionMaker": "Christian De Lorraine",
+      "title": "CEO",
+      "email": "christian@archblock.com",
+      "linkedin": "https://ie.linkedin.com/in/alexdelorraine",
+      "twitter": "@archblockinc",
+      "confidence": "medium"
+    },
+    {
+      "company": "Societe Generale-FORGE",
+      "stablecoin": "EURCV",
+      "decisionMaker": "Jean-Marc Stenger",
+      "title": "CEO",
+      "email": "jean-marc.stenger@socgen.com",
+      "linkedin": "https://fr.linkedin.com/in/jean-marc-stenger-89115040",
+      "twitter": "@SG_Forge",
+      "confidence": "high"
+    },
+    {
+      "company": "Taurus",
+      "stablecoin": "TDX (Tokenization Platform)",
+      "decisionMaker": "Lamine Brahimi",
+      "title": "Co-Founder & Managing Partner",
+      "email": "lamine@taurusgroup.ch",
+      "linkedin": "https://www.linkedin.com/in/lamine-brahimi-cfa-393483/",
+      "twitter": "@TaurusPlatform",
+      "confidence": "high"
+    },
+    {
+      "company": "Stellar Development Foundation",
+      "stablecoin": "XLM, USDC on Stellar",
+      "decisionMaker": "Jed McCaleb",
+      "title": "Co-Founder & Chief Architect",
+      "email": "jed@stellar.org",
+      "linkedin": "https://www.linkedin.com/in/jed-mccaleb-4052a4",
+      "twitter": "@JedMcCaleb",
+      "confidence": "high"
+    },
+    {
+      "company": "Archblock (TrueUSD)",
+      "stablecoin": "TUSD",
+      "decisionMaker": "Rafael Cosman",
+      "title": "Co-Founder & Board Member",
+      "email": "rafael@archblock.com",
+      "linkedin": "https://www.linkedin.com/in/rafaelcosman",
+      "twitter": "@rafaelcosman",
+      "confidence": "medium"
+    },
+    {
+      "company": "Archblock (TrueUSD)",
+      "stablecoin": "TUSD",
+      "decisionMaker": "Jazear Brooks",
+      "title": "CTO",
+      "email": "jazear@archblock.com",
+      "linkedin": "https://www.linkedin.com/in/jazearbrooks",
+      "twitter": "@trusttoken",
+      "confidence": "medium"
+    },
+    {
+      "company": "Mento Labs",
+      "stablecoin": "cUSD, cEUR",
+      "decisionMaker": "Roman Croessmann",
+      "title": "Head of Growth",
+      "email": "roman@mento.org",
+      "linkedin": "https://www.linkedin.com/company/mento-labs",
+      "twitter": "@MentoLabs",
+      "confidence": "low"
+    },
+    {
+      "company": "Circle",
+      "stablecoin": "USDC, EURC",
+      "decisionMaker": "Dante Disparte",
+      "title": "Chief Strategy Officer & Head of Global Policy",
+      "email": "dante@circle.com",
+      "linkedin": "https://www.linkedin.com/in/dantedisparte",
+      "twitter": "@ddisparte",
+      "confidence": "high"
+    },
+    {
+      "company": "Yellow Card",
+      "stablecoin": "USDT Infrastructure (Africa)",
+      "decisionMaker": "Chris Maurice",
+      "title": "Co-Founder & CEO",
+      "email": "chris@yellowcard.io",
+      "linkedin": "https://www.linkedin.com/in/chrismaurice18",
+      "twitter": "@chrismaurice",
+      "confidence": "high"
+    },
+    {
+      "company": "Usual Money",
+      "stablecoin": "USD0",
+      "decisionMaker": "Pierre Person",
+      "title": "CEO & Co-Founder",
+      "email": "pierre@usual.money",
+      "linkedin": "https://www.linkedin.com/in/pierre-person-57a395a7/",
+      "twitter": "@Pierr_Person",
+      "confidence": "high"
+    },
+    {
+      "company": "Resolv Labs",
+      "stablecoin": "USR",
+      "decisionMaker": "Ivan Kozlov",
+      "title": "Co-Founder & CEO",
+      "email": "ivan@resolv.xyz",
+      "linkedin": "https://vg.linkedin.com/in/ivan-kozlov",
+      "twitter": "@ResolvLabs",
+      "confidence": "high"
+    },
+    {
+      "company": "Levl",
+      "stablecoin": "Payment Infrastructure",
+      "decisionMaker": "Jaisel Sandhu",
+      "title": "Founder & CEO",
+      "email": "jaisel@levl.ch",
+      "linkedin": "https://ch.linkedin.com/in/jaisel-sandhu",
+      "twitter": "@LevlFi",
+      "confidence": "high"
+    },
+    {
+      "company": "StraitsX",
+      "stablecoin": "XSGD, XUSD",
+      "decisionMaker": "Tianwei Liu",
+      "title": "CEO & Co-Founder",
+      "email": "tianwei@straitsx.com",
+      "linkedin": "https://sg.linkedin.com/in/tianweiliu",
+      "twitter": "@StraitsX",
+      "confidence": "high"
+    },
+    {
+      "company": "StablR",
+      "stablecoin": "EURR, USDR",
+      "decisionMaker": "Gijs op de Weegh",
+      "title": "Founder & CEO",
+      "email": "gijs@stablr.com",
+      "linkedin": "https://nl.linkedin.com/in/gijsopdeweegh",
+      "twitter": "@StablR",
+      "confidence": "high"
+    },
+    {
+      "company": "Spiko",
+      "stablecoin": "Tokenized Money Market Funds",
+      "decisionMaker": "Paul-Adrien Hyppolite",
+      "title": "Co-Founder & CEO",
+      "email": "paul-adrien@spiko.io",
+      "linkedin": "https://fr.linkedin.com/in/paul-adrien-hyppolite-71217ab4",
+      "twitter": "@Spiko_xyz",
+      "confidence": "high"
+    },
+    {
+      "company": "Kinto",
+      "stablecoin": "Yield-Bearing Infrastructure",
+      "decisionMaker": "Ramon Recuero",
+      "title": "Co-Founder & CEO",
+      "email": "ramon@kinto.xyz",
+      "linkedin": "https://www.linkedin.com/in/ramon-recuero",
+      "twitter": "@RamonRecuero",
+      "confidence": "high"
+    },
+    {
+      "company": "Ethena Labs",
+      "stablecoin": "USDtb",
+      "decisionMaker": "Guy Young",
+      "title": "Founder & CEO",
+      "email": "guy@ethena.fi",
+      "linkedin": "https://pt.linkedin.com/in/guy-young-a11914279",
+      "twitter": "@ethena_labs",
+      "confidence": "high"
+    }
+  ]
+}

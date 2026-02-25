@@ -1,0 +1,125 @@
+{
+  "lastUpdated": "2026-02-25T21:50:00+08:00",
+  "reports": [
+    {
+      "id": "research-001",
+      "title": "AI Agent Swarms in 2025-2026",
+      "author": "Research-Writer",
+      "wordCount": 4200,
+      "date": "2026-02-25T10:05:00+08:00",
+      "file": "research/AI_Agent_Swarms_Research_2025-2026.md",
+      "summary": "Comprehensive analysis of AI agent swarm adoption, key players, use cases, risks, and future outlook. 10+ sources cited.",
+      "confidence": "HIGH",
+      "tags": ["AI", "agents", "swarms", "2025", "2026", "research"],
+      "category": "Research"
+    },
+    {
+      "id": "research-002",
+      "title": "Beeple (Mike Winkelmann): The Deep Dive",
+      "author": "Research-Writer",
+      "wordCount": 4800,
+      "date": "2026-02-25T10:15:00+08:00",
+      "file": "research/Beeple_Deep_Dive.md",
+      "summary": "Complete biography from Wisconsin origins to $69M Christie's sale. Covers Everydays project, Web3 fame, current exhibitions, and net worth.",
+      "confidence": "HIGH",
+      "tags": ["Beeple", "NFT", "digital art", "Web3", "biography", "art history"],
+      "category": "Research"
+    },
+    {
+      "id": "quill-001",
+      "title": "Kris Marszalek: Crypto.com & AI.com",
+      "author": "Quill",
+      "wordCount": 4700,
+      "date": "2026-02-25T19:05:00+08:00",
+      "file": "research/quill/2026-02-25-kris-marszalek.md",
+      "summary": "Polish entrepreneur, Crypto.com CEO (150M+ users), bought AI.com for $70M (Feb 2026), net worth ~$700M. Former BEECRAZY founder ($21M exit).",
+      "confidence": "HIGH",
+      "tags": ["Kris Marszalek", "Crypto.com", "AI.com", "crypto", "fintech"],
+      "category": "Research"
+    },
+    {
+      "id": "quill-002",
+      "title": "Sam Altman: OpenAI & The Architect of AI",
+      "author": "Quill",
+      "wordCount": 6500,
+      "date": "2026-02-25T19:05:00+08:00",
+      "file": "research/quill/2026-02-25-sam-altman.md",
+      "summary": "OpenAI CEO, Stargate Project ($500B), net worth ~$2B, Time's 'Architects of AI' 2025. YC alum, Loopt founder, Worldcoin creator.",
+      "confidence": "HIGH",
+      "tags": ["Sam Altman", "OpenAI", "ChatGPT", "AI", "Stargate", "Worldcoin"],
+      "category": "Research"
+    },
+    {
+      "id": "dealflow-001",
+      "title": "DealFlow Original Contacts (20 P0/P1)",
+      "author": "ColdCall-Research",
+      "wordCount": 0,
+      "date": "2026-02-25T14:48:00+08:00",
+      "file": "research/dealflow-original-contacts.json",
+      "summary": "20 high-priority contacts from Nubank, HashKey, OSL, Securitize, Ondo Finance, dYdX, and more. 95% have verified emails.",
+      "confidence": "HIGH",
+      "tags": ["DealFlow", "contacts", "crypto", "fintech", "outreach"],
+      "category": "Contacts"
+    },
+    {
+      "id": "dealflow-002",
+      "title": "DealFlow Stablecoin Contacts (40)",
+      "author": "Research-Stablecoins",
+      "wordCount": 0,
+      "date": "2026-02-25T18:04:00+08:00",
+      "file": "research/dealflow-stablecoin-contacts.json",
+      "summary": "40 stablecoin company contacts including Circle (USDC), Tether (USDT), PayPal (PYUSD), Ripple (RLUSD), Ethena (USDe), and emerging players.",
+      "confidence": "HIGH",
+      "tags": ["DealFlow", "stablecoins", "USDC", "USDT", "contacts"],
+      "category": "Contacts"
+    },
+    {
+      "id": "dealflow-003",
+      "title": "DealFlow RWA Contacts (30)",
+      "author": "Research-RWA",
+      "wordCount": 0,
+      "date": "2026-02-25T14:59:00+08:00",
+      "file": "research/dealflow-rwa-contacts.json",
+      "summary": "30 Real World Assets contacts including Ondo Finance, Securitize, Maple Finance, Superstate, Centrifuge, and tokenized treasury platforms.",
+      "confidence": "HIGH",
+      "tags": ["DealFlow", "RWA", "tokenized", "treasuries", "contacts"],
+      "category": "Contacts"
+    },
+    {
+      "id": "dealflow-004",
+      "title": "DealFlow Outreach Email Templates",
+      "author": "ColdCall",
+      "wordCount": 1200,
+      "date": "2026-02-25T14:48:00+08:00",
+      "file": "research/dealflow-outreach-emails.md",
+      "summary": "Personalized email templates for top 5 P0 contacts: Nubank, Securitize, dYdX, Ondo Finance, HashKey. Ready for approval.",
+      "confidence": "MEDIUM",
+      "tags": ["DealFlow", "outreach", "emails", "templates", "ColdCall"],
+      "category": "Outreach"
+    },
+    {
+      "id": "innovation-001",
+      "title": "EricF 6-8 Month Learning Innovation Plan",
+      "author": "Nexus",
+      "wordCount": 7300,
+      "date": "2026-02-25T20:54:00+08:00",
+      "file": "research/innovation/ERICF_LEARNING_PLAN.md",
+      "summary": "3 innovation tracks: AI Knowledge Graph, Crypto Market Dashboard, Content Agent Swarm. Weekly milestones over 6-8 months.",
+      "confidence": "HIGH",
+      "tags": ["innovation", "learning", "AI", "crypto", "content", "6-month-plan"],
+      "category": "Innovation"
+    },
+    {
+      "id": "paws-002",
+      "title": "Paws Innovation Plan v2: Smarter, Healthier, Stronger",
+      "author": "Nexus",
+      "wordCount": 7800,
+      "date": "2026-02-25T21:55:00+08:00",
+      "file": "research/innovation/PAWS_INNOVATION_PLAN_V2.md",
+      "summary": "3 Paws innovations focused on Nanobear's development: Brain Development Program (cognitive), Optimal Health System (nutrition/health), Physical Strength & Motor Development.",
+      "confidence": "HIGH",
+      "tags": ["Paws", "innovation", "baby-development", "cognitive", "health", "physical", "Nanobear"],
+      "category": "Innovation"
+    }
+  ]
+}

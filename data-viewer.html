@@ -255,6 +255,7 @@
         .tag-dealflow { background: var(--accent-orange); color: var(--bg-secondary); border-color: var(--text-primary); }
         .tag-pixel-sanctuary { background: var(--accent-pink); color: var(--text-primary); border-color: var(--text-primary); }
         .tag-paws { background: var(--accent-yellow); color: var(--bg-secondary); border-color: var(--text-primary); }
+        .tag-research { background: #9b59b6; color: var(--text-primary); border-color: var(--text-primary); }
         .tag-shared { background: var(--text-muted); color: var(--text-primary); border-color: var(--text-primary); }
 
         .file-type {
@@ -441,6 +442,7 @@
                 <button class="filter-btn" data-filter="dealflow">DealFlow</button>
                 <button class="filter-btn" data-filter="pixel-sanctuary">Pixel Sanctuary</button>
                 <button class="filter-btn" data-filter="paws">Paws</button>
+                <button class="filter-btn" data-filter="research">Research</button>
                 <button class="filter-btn" data-filter="shared">Shared</button>
             </div>
             <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search files...">
@@ -490,10 +492,13 @@
             { name: 'tokens.json', project: 'shared', path: 'data/tokens.json', type: 'JSON' },
             { name: 'sessions.json', project: 'shared', path: 'data/sessions.json', type: 'JSON' },
             { name: 'kanban.json', project: 'shared', path: 'data/kanban.json', type: 'JSON' },
+            { name: 'research-index.json', project: 'shared', path: 'data/research-index.json', type: 'JSON' },
             { name: 'PENDING_TASKS.md', project: 'mission-control', path: '../PENDING_TASKS.md', type: 'Markdown' },
             { name: 'IDENTITY.md', project: 'paws', path: '../paws/IDENTITY.md', type: 'Markdown' },
             { name: 'baby-activities.md', project: 'paws', path: '../paws/baby-activities.md', type: 'Markdown' },
-            { name: 'home-checklist.md', project: 'paws', path: '../paws/home-checklist.md', type: 'Markdown' }
+            { name: 'home-checklist.md', project: 'paws', path: '../paws/home-checklist.md', type: 'Markdown' },
+            { name: 'AI_Agent_Swarms_Research_2025-2026.md', project: 'research', path: 'data/research/AI_Agent_Swarms_Research_2025-2026.md', type: 'Markdown' },
+            { name: 'Beeple_Deep_Dive.md', project: 'research', path: 'data/research/Beeple_Deep_Dive.md', type: 'Markdown' }
         ];
 
         let currentData = null;

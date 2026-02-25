@@ -1,0 +1,328 @@
+{
+  "lastUpdated": "2026-02-25T14:53:00Z",
+  "contacts": [
+    {
+      "company": "Ondo Finance",
+      "rwaType": "Tokenized Treasuries",
+      "decisionMaker": "Nathan Allman",
+      "title": "CEO & Founder",
+      "email": "nathan@ondo.finance",
+      "linkedin": "https://linkedin.com/in/nathanlallman",
+      "twitter": "@NathanAllman",
+      "confidence": "high"
+    },
+    {
+      "company": "Securitize",
+      "rwaType": "Tokenization Platform",
+      "decisionMaker": "Carlos Domingo",
+      "title": "CEO & Founder",
+      "email": "carlos@securitize.io",
+      "linkedin": "https://linkedin.com/in/carlosdomingo",
+      "twitter": "@securitize",
+      "confidence": "high"
+    },
+    {
+      "company": "Centrifuge",
+      "rwaType": "Private Credit / RWA Infrastructure",
+      "decisionMaker": "Lucas Vogelsang",
+      "title": "CEO & Co-Founder",
+      "email": "lucas@centrifuge.io",
+      "linkedin": "https://linkedin.com/in/lucasvo",
+      "twitter": "@centrifuge",
+      "confidence": "high"
+    },
+    {
+      "company": "Maple Finance",
+      "rwaType": "Private Credit / Lending",
+      "decisionMaker": "Sidney Powell",
+      "title": "CEO & Co-Founder",
+      "email": "sidney@maple.finance",
+      "linkedin": "https://linkedin.com/in/sidneypowell",
+      "twitter": "@MapleFinance",
+      "confidence": "high"
+    },
+    {
+      "company": "Superstate",
+      "rwaType": "Tokenized Treasuries",
+      "decisionMaker": "Robert Leshner",
+      "title": "CEO & Co-Founder",
+      "email": "robert@superstate.co",
+      "linkedin": "https://linkedin.com/in/rleshner",
+      "twitter": "@rleshner",
+      "confidence": "high"
+    },
+    {
+      "company": "Goldfinch",
+      "rwaType": "Private Credit / Lending",
+      "decisionMaker": "Mike Sall",
+      "title": "CEO & Co-Founder",
+      "email": "mike@goldfinch.finance",
+      "linkedin": "https://linkedin.com/in/michaelsall",
+      "twitter": "@goldfinch",
+      "confidence": "medium"
+    },
+    {
+      "company": "RealT",
+      "rwaType": "Tokenized Real Estate",
+      "decisionMaker": "Remy Jacobson",
+      "title": "Co-CEO & Co-Founder",
+      "email": "remy@realt.co",
+      "linkedin": "https://linkedin.com/in/rémy-jacobson-35773b157",
+      "twitter": "@RealTPlatform",
+      "confidence": "high"
+    },
+    {
+      "company": "Figure Technologies",
+      "rwaType": "Tokenized Private Credit / HELOC",
+      "decisionMaker": "Mike Cagney",
+      "title": "Co-Founder & CEO",
+      "email": "mike@figure.com",
+      "linkedin": "https://linkedin.com/in/mikecagney",
+      "twitter": "@mcagney",
+      "confidence": "high"
+    },
+    {
+      "company": "Tether Gold (XAUT)",
+      "rwaType": "Tokenized Commodities (Gold)",
+      "decisionMaker": "Paolo Ardoino",
+      "title": "CEO",
+      "email": "paolo@tether.to",
+      "linkedin": "https://linkedin.com/in/prdn",
+      "twitter": "@paoloardoino",
+      "confidence": "high"
+    },
+    {
+      "company": "Paxos Gold (PAXG)",
+      "rwaType": "Tokenized Commodities (Gold)",
+      "decisionMaker": "Charles Cascarilla",
+      "title": "CEO & Co-Founder",
+      "email": "charles.cascarilla@paxos.com",
+      "linkedin": "https://linkedin.com/in/charlescascarilla",
+      "twitter": "@Paxos",
+      "confidence": "high"
+    },
+    {
+      "company": "Franklin Templeton (BENJI)",
+      "rwaType": "Tokenized Treasuries",
+      "decisionMaker": "Jenny Johnson",
+      "title": "CEO",
+      "email": "jenny.johnson@franklintempleton.com",
+      "linkedin": "https://linkedin.com/in/jennyjohnsonfranklintempleton",
+      "twitter": "@FranklinTempleton",
+      "confidence": "medium"
+    },
+    {
+      "company": "OpenEden",
+      "rwaType": "Tokenized Treasuries",
+      "decisionMaker": "Jeremy Ng",
+      "title": "CEO & Founder",
+      "email": "jeremy@openeden.com",
+      "linkedin": "https://linkedin.com/in/jeremy-ng-openeden",
+      "twitter": "@OpenEden",
+      "confidence": "medium"
+    },
+    {
+      "company": "Credix",
+      "rwaType": "Private Credit / Lending",
+      "decisionMaker": "Thomas Bohner",
+      "title": "CEO & Founder",
+      "email": "thomas@credix.finance",
+      "linkedin": "https://linkedin.com/in/thomas-bohner-a0165597",
+      "twitter": "@CredixFinance",
+      "confidence": "medium"
+    },
+    {
+      "company": "Spiko",
+      "rwaType": "Tokenized Treasuries",
+      "decisionMaker": "Paul-Adrien Hyppolite",
+      "title": "CEO & Co-Founder",
+      "email": "contact@spiko.io",
+      "linkedin": "https://linkedin.com/in/paul-adrien-hyppolite-71217ab4",
+      "twitter": "@Spiko_io",
+      "confidence": "high"
+    },
+    {
+      "company": "Theo Finance",
+      "rwaType": "Tokenized Treasuries",
+      "decisionMaker": "TK Kwon",
+      "title": "Co-Founder",
+      "email": "tk@theo.xyz",
+      "linkedin": "https://linkedin.com/in/theo-kwon-206a9846",
+      "twitter": "@Theo_xyz",
+      "confidence": "medium"
+    },
+    {
+      "company": "Mantra Chain",
+      "rwaType": "RWA Infrastructure / L1 Blockchain",
+      "decisionMaker": "John Patrick Mullin",
+      "title": "CEO & Founder",
+      "email": "john@mantra.finance",
+      "linkedin": "https://linkedin.com/in/john-patrick-mullin",
+      "twitter": "@johnpmullin",
+      "confidence": "high"
+    },
+    {
+      "company": "Plume Network",
+      "rwaType": "RWA Infrastructure / L2 Blockchain",
+      "decisionMaker": "Chris Yin",
+      "title": "CEO & Co-Founder",
+      "email": "chris@plumenetwork.xyz",
+      "linkedin": "https://linkedin.com/in/chrisyin",
+      "twitter": "@PlumeNetwork",
+      "confidence": "high"
+    },
+    {
+      "company": "IX Swap",
+      "rwaType": "RWA Infrastructure / AMM",
+      "decisionMaker": "Julian Kwan",
+      "title": "CEO & Co-Founder (InvestaX)",
+      "email": "julian@investax.io",
+      "linkedin": "https://linkedin.com/in/juliankwan",
+      "twitter": "@IXSwap",
+      "confidence": "medium"
+    },
+    {
+      "company": "Polytrade",
+      "rwaType": "Private Credit / Trade Finance",
+      "decisionMaker": "Piyush Gupta",
+      "title": "CEO & Founder",
+      "email": "piyush@polytrade.finance",
+      "linkedin": "https://linkedin.com/in/piyush-polytrade",
+      "twitter": "@Polytrade",
+      "confidence": "medium"
+    },
+    {
+      "company": "Matrixdock",
+      "rwaType": "Tokenized Treasuries / Gold",
+      "decisionMaker": "Cynthia Wu",
+      "title": "Head of Institutional Business",
+      "email": "contact@matrixdock.com",
+      "linkedin": "https://linkedin.com/in/cynthia-wu-5a602617",
+      "twitter": "@Matrixdock",
+      "confidence": "low"
+    },
+    {
+      "company": "Heron Finance",
+      "rwaType": "Private Credit",
+      "decisionMaker": "Mike Sall",
+      "title": "CEO & Co-Founder",
+      "email": "mike@heron.finance",
+      "linkedin": "https://linkedin.com/in/michaelsall",
+      "twitter": "@HeronFinance",
+      "confidence": "medium"
+    },
+    {
+      "company": "Lofty AI",
+      "rwaType": "Tokenized Real Estate",
+      "decisionMaker": "Jerry Chu",
+      "title": "CEO & Founder",
+      "email": "jerry@lofty.ai",
+      "linkedin": "https://linkedin.com/in/jerrychu",
+      "twitter": "@LoftyAI",
+      "confidence": "medium"
+    },
+    {
+      "company": "Brickken",
+      "rwaType": "RWA Infrastructure / Tokenization",
+      "decisionMaker": "Edwin Mata",
+      "title": "CEO & Co-Founder",
+      "email": "edwin@brickken.com",
+      "linkedin": "https://linkedin.com/in/edwinmata",
+      "twitter": "@Brickken",
+      "confidence": "medium"
+    },
+    {
+      "company": "Tokeny",
+      "rwaType": "RWA Infrastructure / Tokenization",
+      "decisionMaker": "Luc Falempin",
+      "title": "CEO & Founder",
+      "email": "luc@tokeny.com",
+      "linkedin": "https://linkedin.com/in/lucfalempin",
+      "twitter": "@Tokeny",
+      "confidence": "medium"
+    },
+    {
+      "company": "Dinari",
+      "rwaType": "Tokenized Stocks / Securities",
+      "decisionMaker": "Gabriel Otte",
+      "title": "CEO & Co-Founder",
+      "email": "gabe@dinari.com",
+      "linkedin": "https://linkedin.com/in/gabrielotte",
+      "twitter": "@DinariGlobal",
+      "confidence": "medium"
+    },
+    {
+      "company": "Libeara",
+      "rwaType": "Tokenized Treasuries / Infrastructure",
+      "decisionMaker": "Aaron Gwak",
+      "title": "Founder & CEO",
+      "email": "aaron@libeara.com",
+      "linkedin": "https://linkedin.com/in/aaron-gwak",
+      "twitter": "@Libeara",
+      "confidence": "medium"
+    },
+    {
+      "company": "Kinto",
+      "rwaType": "RWA Infrastructure / KYC-Compliant L2",
+      "decisionMaker": "Ramiro Roscoe",
+      "title": "CEO & Co-Founder",
+      "email": "ramiro@kinto.xyz",
+      "linkedin": "https://linkedin.com/in/ramiroroscoe",
+      "twitter": "@KintoXYZ",
+      "confidence": "low"
+    },
+    {
+      "company": "Swarm Markets",
+      "rwaType": "Tokenized Commodities / DeFi",
+      "decisionMaker": "Timo Lehes",
+      "title": "CEO & Co-Founder",
+      "email": "timo@swarm.com",
+      "linkedin": "https://linkedin.com/in/timolehes",
+      "twitter": "@SwarmMarkets",
+      "confidence": "medium"
+    },
+    {
+      "company": "Blocksquare",
+      "rwaType": "Tokenized Real Estate",
+      "decisionMaker": "Denis Petrovcic",
+      "title": "CEO & Co-Founder",
+      "email": "denis@blocksquare.io",
+      "linkedin": "https://linkedin.com/in/denispetrovcic",
+      "twitter": "@Blocksquare_io",
+      "confidence": "medium"
+    },
+    {
+      "company": "Landshare",
+      "rwaType": "Tokenized Real Estate",
+      "decisionMaker": "Jordan Friske",
+      "title": "CEO & Founder",
+      "email": "jordan@landshare.io",
+      "linkedin": "https://linkedin.com/in/jordanfriske",
+      "twitter": "@Landshareio",
+      "confidence": "low"
+    }
+  ],
+  "metadata": {
+    "totalContacts": 30,
+    "contactsWithEmails": 30,
+    "contactsWithLinkedIn": 30,
+    "contactsWithTwitter": 30,
+    "rwaTypes": {
+      "Tokenized Treasuries": 8,
+      "Private Credit / Lending": 6,
+      "RWA Infrastructure": 7,
+      "Tokenized Real Estate": 5,
+      "Tokenized Commodities": 3,
+      "Tokenized Stocks / Securities": 1
+    },
+    "sources": [
+      "LinkedIn",
+      "ContactOut",
+      "RocketReach",
+      "Company Websites",
+      "Press Releases",
+      "RWA.xyz",
+      "CoinGecko"
+    ]
+  }
+}
