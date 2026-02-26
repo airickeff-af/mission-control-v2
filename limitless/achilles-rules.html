@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Achilles Rules | Limitless Trading</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --accent-green: #00ff88;
+            --accent-red: #ff4444;
+            --accent-cyan: #00f0ff;
+            --accent-yellow: #ffd93d;
+            --accent-orange: #ff9f43;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-color: #2a2a3e;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            border-radius: 8px;
+        }
+        
+        .header h1 {
+            font-family: var(--font-header);
+            font-size: 1rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+        
+        .mode-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--accent-yellow);
+            color: #000;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .nav-link {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+        }
+        
+        .nav-link:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+        }
+        
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .rule-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .rule-card h2 {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .rule-card h3 {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            color: var(--accent-cyan);
+            margin: 1rem 0 0.5rem;
+        }
+        
+        .rule-item {
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .rule-item.important {
+            border-left-color: var(--accent-red);
+            background: rgba(255, 68, 68, 0.1);
+        }
+        
+        .rule-item.success {
+            border-left-color: var(--accent-green);
+        }
+        
+        .checklist {
+            list-style: none;
+        }
+        
+        .checklist li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .checklist li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+        
+        .warning-box {
+            background: rgba(255, 68, 68, 0.1);
+            border: 2px solid var(--accent-red);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .warning-box h3 {
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-box {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-green);
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        .layer-list {
+            list-style: none;
+        }
+        
+        .layer-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .layer-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .weight {
+            color: var(--accent-yellow);
+            font-weight: bold;
+        }
+        
+        .red-flag {
+            color: var(--accent-red);
+        }
+        
+        .note {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 ACHILLES TRADING RULES</h1>
+        <div class="mode-badge">🧪 PAPER TRADING MODE</div>
+        
+        <div class="nav-links">
+            <a href="../mission-control-v2/index.html" class="nav-link">🏢 Mission Control</a>
+            <a href="wallet-viewer.html" class="nav-link">💰 Wallet</a>
+        </div>
+    </div>
+    
+    <div class="rules-grid">
+        <!-- Risk Management -->
+        <div class="rule-card">
+            <h2>🛡️ RISK MANAGEMENT</h2>
+            
+            <h3>Two-Loss Cooldown</h3>
+            <div class="rule-item important">
+                <strong>After 2 consecutive losses → sit out 3 full cycles (~90 minutes)</strong><br>
+                Resets streak to zero when cooldown expires. Prevents chasing losses on bad streaks.
+            </div>
+            
+            <h3>Per-Asset Tracking</h3>
+            <div class="rule-item">
+                <strong>BTC, ETH, SOL tracked independently</strong><br>
+                Separate win/loss streaks, separate cooldowns, separate pending bets.<br>
+                A BTC loss doesn't affect ETH sizing and vice versa.
+            </div>
+            
+            <h3>Capital Protection</h3>
+            <div class="rule-item">
+                <strong>Never bet more than ~20% of bankroll per trade</strong><br>
+                All 3 assets running simultaneously = each capped lower so total exposure stays sane.
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value">20%</div>
+                    <div class="stat-label">Max Per Trade</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">60%</div>
+                    <div class="stat-label">Max Total Exposure</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Losses Before Cooldown</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pre-Trade Gates -->
+        <div class="rule-card">
+            <h2>🚪 PRE-TRADE GATES</h2>
+            
+            <div class="rule-item">
+                <strong>Skip YES below 15¢</strong> — too expensive, not enough upside
+            </div>
+            <div class="rule-item">
+                <strong>Skip YES above 85¢</strong> — too cheap, risk/reward sucks
+            </div>
+            <div class="rule-item">
+                <strong>Skip if empty order book</strong> — no liquidity to trade against
+            </div>
+            <div class="rule-item">
+                <strong>Skip if less than 5 minutes left</strong> — not enough time for edge to play out
+            </div>
+            
+            <div class="warning-box">
+                <h3>⚠️ CRITICAL MATH RULE</h3>
+                <strong>Betting YES at 70¢ to win 30¢ is BAD MATH</strong><br>
+                We need at least <strong style="color: var(--accent-green);">1.2:1 risk/reward</strong> for the risk taken.
+            </div>
+        </div>
+        
+        <!-- Signal Layers -->
+        <div class="rule-card">
+            <h2>📊 SIGNAL LAYERS (10 Total)</h2>
+            
+            <ul class="layer-list">
+                <li>Higher Timeframe Bias (1H + 4H) <span class="weight">1.5x</span></li>
+                <li>60-Minute Momentum <span class="weight">1.2x</span></li>
+                <li>Multi-Timeframe Alignment (3m,5m,15m) <span class="weight">1.3x</span></li>
+                <li>5-Minute Momentum <span class="weight">1.0x</span></li>
+                <li>Liquidity Sweep (Smart Money) <span class="weight">1.1x</span></li>
+                <li>Order Book Imbalance <span class="weight">0.9x</span></li>
+                <li>Mean Reversion vs Breakout <span class="weight">1.0x</span></li>
+                <li>Volume Divergence <span class="weight">0.8x</span></li>
+                <li>RSI (14-period) <span class="weight">0.7x</span></li>
+                <li>Sentiment + Funding Rate <span class="weight">0.8x</span></li>
+            </ul>
+            
+            <div class="note">
+                Composite score range: -1 to +1. Higher = stronger signal.
+            </div>
+        </div>
+        
+        <!-- Good Trade Criteria -->
+        <div class="rule-card">
+            <h2>✅ GOOD TRADE CRITERIA</h2>
+            
+            <p style="margin-bottom: 1rem;">The bot looks for windows where multiple layers agree:</p>
+            
+            <ul class="checklist">
+                <li>60m momentum aligns with short-term direction</li>
+                <li>RSI not overbought/oversold against the direction</li>
+                <li>Price above/below VWAP in our favor</li>
+                <li>OBI confirming (bid-heavy for YES, ask-heavy for NO)</li>
+                <li>Market pricing gives at least 1.2:1 R/R</li>
+                <li>At least 5 minutes left in the window</li>
+                <li>Not in a no-trade zone or ATR lock</li>
+            </ul>
+            
+            <div class="rule-item success" style="margin-top: 1rem;">
+                <strong>When all that lines up, the bot bets.</strong><br>
+                When it doesn't, it waits — and most windows won't be perfect, which is fine.
+            </div>
+        </div>
+        
+        <!-- Discipline Override -->
+        <div class="rule-card">
+            <h2>🛑 DISCIPLINE OVERRIDE (Red Flags)</h2>
+            
+            <p style="margin-bottom: 1rem;">3+ red flags = <strong class="red-flag">VETO — NO TRADE</strong></p>
+            
+            <div class="rule-item">
+                <span class="red-flag">🚩</span> Contracting volatility in choppy market
+            </div>
+            <div class="rule-item">
+                <span class="red-flag">🚩</span> Betting against HTF trend with weak signal
+            </div>
+            <div class="rule-item">
+                <span class="red-flag">🚩</span> High sentiment crowding risk
+            </div>
+            <div class="rule-item">
+                <span class="red-flag">🚩</span> Volume divergence against direction
+            </div>
+            <div class="rule-item">
+                <span class="red-flag">🚩</span> Mean reversion but chasing extreme
+            </div>
+            <div class="rule-item">
+                <span class="red-flag">🚩</span> Liquidity sweep against intended direction
+            </div>
+            <div class="rule-item">
+                <span class="red-flag">🚩</span> 60-minute momentum against direction
+            </div>
+        </div>
+        
+        <!-- Bet Sizing -->
+        <div class="rule-card">
+            <h2>💰 BET SIZING (Kelly Criterion)</h2>
+            
+            <div class="rule-item">
+                <strong>Formula:</strong> Quarter-Kelly (conservative)
+            </div>
+            
+            <h3>Confidence Levels</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" style="font-size: 1.2rem;">75%</div>
+                    <div class="stat-label">Low Confidence</div>
+                    <div style="color: var(--accent-yellow); margin-top: 0.5rem;">Max $5</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="font-size: 1.2rem;">87.5%</div>
+                    <div class="stat-label">High Confidence</div>
+                    <div style="color: var(--accent-green); margin-top: 0.5rem;">Max $20</div>
+                </div>
+            </div>
+            
+            <div class="warning-box" style="margin-top: 1rem;">
+                <strong>Hard Cap: $20 per trade</strong> — never exceed, even with 100% confidence
+            </div>
+        </div>
+        
+        <!-- Platform Info -->
+        <div class="rule-card">
+            <h2>🌐 PLATFORM INFO</h2>
+            
+            <div class="rule-item">
+                <strong>Platform:</strong> Limitless Exchange (Base L2)
+            </div>
+            <div class="rule-item">
+                <strong>Markets:</strong> BTC, ETH, SOL
+            </div>
+            <div class="rule-item">
+                <strong>Timeframes:</strong> 30min, 60min
+            </div>
+            <div class="rule-item">
+                <strong>Starting Capital:</strong> $100 (Paper Trading)
+            </div>
+            <div class="rule-item success">
+                <strong>Target:</strong> $100 → $5,000 (50x)
+            </div>
+        </div>
+    </div>
+</body>
+</html>

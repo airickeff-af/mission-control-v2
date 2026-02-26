@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limitless Trading Bot - Wallet Balance Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --accent-primary: #00d4ff;
+      --accent-secondary: #7c3aed;
+      --accent-success: #10b981;
+      --accent-danger: #ef4444;
+      --accent-warning: #f59e0b;
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --border-color: #27273a;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .wallet-connect {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .wallet-btn {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    
+    .wallet-btn:hover {
+      opacity: 0.9;
+    }
+    
+    .wallet-btn.connected {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--accent-success);
+      color: var(--accent-success);
+    }
+    
+    .container {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-value.positive { color: var(--accent-success); }
+    .card-value.negative { color: var(--accent-danger); }
+    
+    .card-change {
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 1024px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .chart-container {
+      height: 300px;
+      position: relative;
+    }
+    
+    .assets-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .assets-table th,
+    .assets-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .assets-table th {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    
+    .assets-table tr:hover {
+      background: var(--bg-tertiary);
+    }
+    
+    .asset-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    
+    .asset-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .asset-name {
+      font-weight: 600;
+    }
+    
+    .asset-symbol {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    .allocation-bar {
+      width: 100px;
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .allocation-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .tab {
+      padding: 0.5rem 1rem;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .tab:hover {
+      background: var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .tab.active {
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+    }
+    
+    .positions-grid {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .position-card {
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .position-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .position-side {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .position-side.long {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-success);
+    }
+    
+    .position-side.short {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--accent-danger);
+    }
+    
+    .position-pnl {
+      font-weight: 700;
+    }
+    
+    .position-pnl.positive { color: var(--accent-success); }
+    .position-pnl.negative { color: var(--accent-danger); }
+    
+    .close-btn {
+      background: var(--accent-danger);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      color: white;
+      font-size: 0.75rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    
+    .close-btn:hover {
+      opacity: 1;
+    }
+    
+    .history-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    
+    .history-type {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .history-type.deposit {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-success);
+    }
+    
+    .history-type.withdrawal {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--accent-danger);
+    }
+    
+    .history-type.trade {
+      background: rgba(0, 212, 255, 0.2);
+      color: var(--accent-primary);
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>💰 Wallet Balance Viewer</h1>
+    <div class="wallet-connect">
+      <span id="wallet-address" style="color: var(--text-secondary); font-size: 0.875rem;"></span>
+      <button class="wallet-btn" id="connect-btn">Connect Wallet</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="loading-state" class="loading">
+      <div class="spinner"></div>
+      <p>Connect your wallet to view balances</p>
+    </div>
+
+    <div id="wallet-content" style="display: none;">
+      <!-- Overview Cards -->
+      <div class="overview-grid">
+        <div class="card">
+          <div class="card-title">Total Balance</div>
+          <div class="card-value" id="total-balance">$0.00</div>
+          <div class="card-change" id="balance-change">
+            <span>+0.00%</span> <span style="color: var(--text-secondary);">24h</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Available Balance</div>
+          <div class="card-value" id="available-balance">$0.00</div>
+          <div class="card-change" style="color: var(--text-secondary);">
+            Free to trade
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">In Positions</div>
+          <div class="card-value" id="position-value">$0.00</div>
+          <div class="card-change" id="position-pnl">
+            <span>$0.00</span> unrealized PnL
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Margin Used</div>
+          <div class="card-value" id="margin-used">0.00%</div>
+          <div class="card-change" id="margin-health">
+            <span style="color: var(--accent-success);">Healthy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="main-grid">
+        <!-- Assets Allocation -->
+        <div class="card">
+          <h3 class="card-title">Asset Allocation</h3>
+          <div class="chart-container">
+            <canvas id="allocation-chart"></canvas>
+          </div>
+        </div>
+        
+        <!-- Balance History -->
+        <div class="card">
+          <h3 class="card-title">Balance History</h3>
+          <div class="chart-container">
+            <canvas id="history-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assets Table -->
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <h3 class="card-title">Your Assets</h3>
+        <table class="assets-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Balance</th>
+              <th>Price</th>
+              <th>Value (USD)</th>
+              <th>24h Change</th>
+              <th>Allocation</th>
+            </tr>
+          </thead>
+          <tbody id="assets-body">
+            <!-- Assets will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Positions & History Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="positions">Open Positions</button>
+        <button class="tab" data-tab="history">Transaction History</button>
+      </div>
+
+      <div id="positions-panel">
+        <div class="card">
+          <div id="positions-list" class="positions-grid">
+            <!-- Positions will be inserted here -->
+          </div>
+        </div>
+      </div>
+
+      <div id="history-panel" style="display: none;">
+        <div class="card">
+          <div id="history-list" class="history-list">
+            <!-- History will be inserted here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Wallet State
+    let walletState = {
+      connected: false,
+      address: null,
+      balances: [],
+      positions: [],
+      history: [],
+      totalBalance: 0,
+      availableBalance: 0,
+      positionValue: 0,
+      unrealizedPnl: 0
+    };
+
+    // Charts
+    let allocationChart = null;
+    let historyChart = null;
+
+    // DOM Elements
+    const connectBtn = document.getElementById('connect-btn');
+    const walletAddress = document.getElementById('wallet-address');
+    const loadingState = document.getElementById('loading-state');
+    const walletContent = document.getElementById('wallet-content');
+    const tabs = document.querySelectorAll('.tab');
+    const positionsPanel = document.getElementById('positions-panel');
+    const historyPanel = document.getElementById('history-panel');
+
+    // Mock data generator
+    function generateMockData() {
+      const assets = [
+        { symbol: 'USDC', name: 'USD Coin', balance: 25000, price: 1, change24h: 0 },
+        { symbol: 'BTC', name: 'Bitcoin', balance: 0.5, price: 55000, change24h: 2.5 },
+        { symbol: 'ETH', name: 'Ethereum', balance: 5, price: 3200, change24h: -1.2 },
+        { symbol: 'SOL', name: 'Solana', balance: 100, price: 145, change24h: 5.8 },
+        { symbol: 'AVAX', name: 'Avalanche', balance: 200, price: 35, change24h: -3.4 }
+      ];
+
+      const positions = [
+        { symbol: 'BTC-PERP', side: 'long', size: 0.3, entryPrice: 54000, markPrice: 55000, leverage: 5 },
+        { symbol: 'ETH-PERP', side: 'short', size: 2, entryPrice: 3250, markPrice: 3200, leverage: 3 },
+        { symbol: 'SOL-PERP', side: 'long', size: 50, entryPrice: 140, markPrice: 145, leverage: 4 }
+      ];
+
+      const history = [
+        { type: 'deposit', asset: 'USDC', amount: 10000, timestamp: Date.now() - 86400000 },
+        { type: 'trade', asset: 'BTC-PERP', amount: 0.3, value: 16200, timestamp: Date.now() - 43200000 },
+        { type: 'trade', asset: 'ETH-PERP', amount: -2, value: -6500, timestamp: Date.now() - 3600000 },
+        { type: 'deposit', asset: 'SOL', amount: 100, value: 14500, timestamp: Date.now() - 1800000 }
+      ];
+
+      return { assets, positions, history };
+    }
+
+    // Calculate position PnL
+    function calculatePositionPnL(position) {
+      const { side, size, entryPrice, markPrice } = position;
+      const priceDiff = markPrice - entryPrice;
+      const pnl = side === 'long' ? priceDiff * size : -priceDiff * size;
+      const pnlPercent = (pnl / (entryPrice * size)) * 100;
+      return { pnl, pnlPercent };
+    }
+
+    // Format currency
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(value);
+    }
+
+    // Format number
+    function formatNumber(value, decimals = 4) {
+      return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: decimals
+      }).format(value);
+    }
+
+    // Connect wallet
+    async function connectWallet() {
+      // Simulate wallet connection
+      connectBtn.textContent = 'Connecting...';
+      connectBtn.disabled = true;
+
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      const mockAddress = '0x' + Array(40).fill(0).map(() => 
+        Math.floor(Math.random() * 16).toString(16)
+      ).join('');
+
+      walletState.connected = true;
+      walletState.address = mockAddress;
+
+      // Load mock data
+      const mockData = generateMockData();
+      walletState.balances = mockData.assets;
+      walletState.positions = mockData.positions;
+      walletState.history = mockData.history;
+
+      // Calculate totals
+      walletState.totalBalance = walletState.balances.reduce((sum, asset) => 
+        sum + (asset.balance * asset.price), 0
+      );
+
+      walletState.positionValue = walletState.positions.reduce((sum, pos) => sum + (pos.size * pos.markPrice), 0
+      );
+
+      walletState.unrealizedPnl = walletState.positions.reduce((sum, pos) => {
+        const { pnl } = calculatePositionPnL(pos);
+        return sum + pnl;
+      }, 0);
+
+      walletState.availableBalance = walletState.totalBalance - walletState.positionValue;
+
+      // Update UI
+      updateUI();
+    }
+
+    // Update UI
+    function updateUI() {
+      // Hide loading, show content
+      loadingState.style.display = 'none';
+      walletContent.style.display = 'block';
+
+      // Update connect button
+      connectBtn.textContent = 'Connected';
+      connectBtn.classList.add('connected');
+      connectBtn.disabled = false;
+
+      // Show truncated address
+      const addr = walletState.address;
+      walletAddress.textContent = `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+
+      // Update overview cards
+      document.getElementById('total-balance').textContent = formatCurrency(walletState.totalBalance);
+      document.getElementById('available-balance').textContent = formatCurrency(walletState.availableBalance);
+      document.getElementById('position-value').textContent = formatCurrency(walletState.positionValue);
+
+      const pnlElement = document.getElementById('position-pnl');
+      const pnlClass = walletState.unrealizedPnl >= 0 ? 'positive' : 'negative';
+      pnlElement.innerHTML = `
+        <span class="${pnlClass}">${walletState.unrealizedPnl >= 0 ? '+' : ''}${formatCurrency(walletState.unrealizedPnl)}</span> 
+        <span style="color: var(--text-secondary);">unrealized PnL</span>
+      `;
+
+      const marginPercent = (walletState.positionValue / walletState.totalBalance) * 100;
+      document.getElementById('margin-used').textContent = marginPercent.toFixed(2) + '%';
+
+      // Update assets table
+      updateAssetsTable();
+
+      // Update charts
+      updateCharts();
+
+      // Update positions
+      updatePositions();
+
+      // Update history
+      updateHistory();
+    }
+
+    // Update assets table
+    function updateAssetsTable() {
+      const tbody = document.getElementById('assets-body');
+      const totalValue = walletState.balances.reduce((sum, a) => sum + (a.balance * a.price), 0);
+
+      tbody.innerHTML = walletState.balances.map(asset => {
+        const value = asset.balance * asset.price;
+        const allocation = (value / totalValue) * 100;
+        const changeClass = asset.change24h >= 0 ? 'positive' : 'negative';
+        const colors = ['#00d4ff', '#7c3aed', '#10b981', '#f59e0b', '#ef4444'];
+        const color = colors[walletState.balances.indexOf(asset) % colors.length];
+
+        return `
+          <tr>
+            <td>
+              <div class="asset-info">
+                <div class="asset-icon" style="background: ${color}20; color: ${color};">${asset.symbol[0]}</div>
+                <div>
+                  <div class="asset-name">${asset.name}</div>
+                  <div class="asset-symbol">${asset.symbol}</div>
+                </div>
+              </div>
+            </td>
+            <td>${formatNumber(asset.balance)} ${asset.symbol}</td>
+            <td>${formatCurrency(asset.price)}</td>
+            <td>${formatCurrency(value)}</td>
+            <td class="${changeClass}">${asset.change24h >= 0 ? '+' : ''}${asset.change24h.toFixed(2)}%</td>
+            <td>
+              <div class="allocation-bar">
+                <div class="allocation-fill" style="width: ${allocation}%; background: ${color};"></div>
+              </div>
+              ${allocation.toFixed(1)}%
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Update charts
+    function updateCharts() {
+      // Allocation pie chart
+      const allocationCtx = document.getElementById('allocation-chart').getContext('2d');
+      
+      if (allocationChart) allocationChart.destroy();
+      
+      allocationChart = new Chart(allocationCtx, {
+        type: 'doughnut',
+        data: {
+          labels: walletState.balances.map(a => a.symbol),
+          datasets: [{
+            data: walletState.balances.map(a => a.balance * a.price),
+            backgroundColor: ['#00d4ff', '#7c3aed', '#10b981', '#f59e0b', '#ef4444'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                color: '#a1a1aa',
+                padding: 15,
+                font: { size: 12 }
+              }
+            }
+          }
+        }
+      });
+
+      // History line chart
+      const historyCtx = document.getElementById('history-chart').getContext('2d');
+      
+      // Generate mock history data
+      const historyData = [];
+      let balance = walletState.totalBalance * 0.8;
+      const now = Date.now();
+      for (let i = 30; i >= 0; i--) {
+        balance *= (1 + (Math.random() - 0.48) * 0.02);
+        historyData.push({
+          x: new Date(now - i * 86400000).toLocaleDateString(),
+          y: balance
+        });
+      }
+
+      if (historyChart) historyChart.destroy();
+
+      historyChart = new Chart(historyCtx, {
+        type: 'line',
+        data: {
+          labels: historyData.map(d => d.x),
+          datasets: [{
+            label: 'Portfolio Value',
+            data: historyData.map(d => d.y),
+            borderColor: '#00d4ff',
+            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { color: '#27273a' },
+              ticks: { color: '#a1a1aa' }
+            },
+            y: {
+              grid: { color: '#27273a' },
+              ticks: {
+                color: '#a1a1aa',
+                callback: value => '$' + (value / 1000).toFixed(1) + 'k'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Update positions
+    function updatePositions() {
+      const container = document.getElementById('positions-list');
+
+      if (walletState.positions.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📊</div>
+            <p>No open positions</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = walletState.positions.map(pos => {
+        const { pnl, pnlPercent } = calculatePositionPnL(pos);
+        const pnlClass = pnl >= 0 ? 'positive' : 'negative';
+        const notional = pos.size * pos.markPrice;
+
+        return `
+          <div class="position-card">
+            <div class="position-header">
+              <span class="position-side ${pos.side}">${pos.side}</span>
+              <div>
+                <div class="asset-name">${pos.symbol}</div>
+                <div class="asset-symbol">${pos.leverage}x leverage</div>
+              </div>
+            </div>
+            <div>
+              <div class="asset-name">${formatNumber(pos.size)}</div>
+              <div class="asset-symbol">Size</div>
+            </div>
+            <div>
+              <div class="asset-name">${formatCurrency(pos.entryPrice)}</div>
+              <div class="asset-symbol">Entry</div>
+            </div>
+            <div>
+              <div class="asset-name">${formatCurrency(pos.markPrice)}</div>
+              <div class="asset-symbol">Mark</div>
+            </div>
+            <div class="position-pnl ${pnlClass}">
+              <div>${pnl >= 0 ? '+' : ''}${formatCurrency(pnl)}</div>
+              <div class="asset-symbol">${pnlPercent >= 0 ? '+' : ''}${pnlPercent.toFixed(2)}%</div>
+            </div>
+            <button class="close-btn" onclick="closePosition('${pos.symbol}')">Close</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Update history
+    function updateHistory() {
+      const container = document.getElementById('history-list');
+
+      container.innerHTML = walletState.history.map(tx => {
+        const timeAgo = Math.floor((Date.now() - tx.timestamp) / 3600000);
+        const timeText = timeAgo < 1 ? 'Just now' : timeAgo < 24 ? `${timeAgo}h ago` : `${Math.floor(timeAgo / 24)}d ago`;
+
+        return `
+          <div class="history-item">
+            <div class="asset-info">
+              <span class="history-type ${tx.type}">${tx.type}</span>
+              <div>
+                <div class="asset-name">${tx.type === 'trade' ? tx.asset : tx.asset}</div>
+                <div class="asset-symbol">${timeText}</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div class="asset-name">${tx.amount > 0 ? '+' : ''}${formatNumber(Math.abs(tx.amount))} ${tx.asset}</div>
+              <div class="asset-symbol">${tx.value ? formatCurrency(tx.value) : ''}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Close position
+    function closePosition(symbol) {
+      alert(`Closing position: ${symbol}`);
+      // In real implementation, this would call the API
+    }
+
+    // Tab switching
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const tabName = tab.dataset.tab;
+        if (tabName === 'positions') {
+          positionsPanel.style.display = 'block';
+          historyPanel.style.display = 'none';
+        } else {
+          positionsPanel.style.display = 'none';
+          historyPanel.style.display = 'block';
+        }
+      });
+    });
+
+    // Event listeners
+    connectBtn.addEventListener('click', connectWallet);
+
+    // Auto-connect for demo
+    setTimeout(connectWallet, 500);
+  </script>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limitless Trading Bot - Signal Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --accent-primary: #00d4ff;
+      --accent-secondary: #7c3aed;
+      --accent-success: #10b981;
+      --accent-danger: #ef4444;
+      --accent-warning: #f59e0b;
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --border-color: #27273a;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-success);
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .container {
+      padding: 2rem;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .symbol-badge {
+      background: var(--bg-tertiary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+    }
+    
+    .signal-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .signal-gauge {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 180deg,
+        var(--accent-danger) 0deg,
+        var(--accent-warning) 60deg,
+        var(--accent-success) 120deg,
+        var(--accent-success) 180deg,
+        var(--accent-success) 240deg,
+        var(--accent-warning) 300deg,
+        var(--accent-danger) 360deg
+      );
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .signal-gauge::before {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: var(--bg-secondary);
+      border-radius: 50%;
+    }
+    
+    .signal-value {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    
+    .signal-direction {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .signal-direction.buy { color: var(--accent-success); }
+    .signal-direction.sell { color: var(--accent-danger); }
+    .signal-direction.neutral { color: var(--text-secondary); }
+    
+    .signal-strength {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+    
+    .signal-needle {
+      position: absolute;
+      width: 4px;
+      height: 70px;
+      background: var(--text-primary);
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom center;
+      transform: translateX(-50%) rotate(0deg);
+      transition: transform 0.5s ease;
+      border-radius: 2px;
+    }
+    
+    .signal-needle::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--text-primary);
+      border-radius: 50%;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .metric {
+      text-align: center;
+      padding: 0.75rem;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+    }
+    
+    .metric-label {
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+    
+    .metric-value {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-top: 0.25rem;
+    }
+    
+    .metric-value.positive { color: var(--accent-success); }
+    .metric-value.negative { color: var(--accent-danger); }
+    
+    .layers-section {
+      margin-top: 1.5rem;
+    }
+    
+    .layers-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    .layer-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
+    }
+    
+    .layer-name {
+      width: 100px;
+      color: var(--text-secondary);
+    }
+    
+    .layer-track {
+      flex: 1;
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      position: relative;
+      margin: 0 0.5rem;
+    }
+    
+    .layer-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+      position: relative;
+    }
+    
+    .layer-fill.positive {
+      background: var(--accent-success);
+      margin-left: 50%;
+    }
+    
+    .layer-fill.negative {
+      background: var(--accent-danger);
+      margin-right: 50%;
+    }
+    
+    .layer-value {
+      width: 40px;
+      text-align: right;
+      font-family: monospace;
+    }
+    
+    .opportunities-section {
+      margin-top: 2rem;
+    }
+    
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .opportunity-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .opportunity-table th,
+    .opportunity-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .opportunity-table th {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    
+    .opportunity-table tr:hover {
+      background: var(--bg-tertiary);
+    }
+    
+    .direction-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .direction-badge.buy {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-success);
+    }
+    
+    .direction-badge.sell {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--accent-danger);
+    }
+    
+    .confidence-bar {
+      width: 100px;
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .confidence-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    
+    .timeframe-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .timeframe-tab {
+      padding: 0.5rem 1rem;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .timeframe-tab:hover {
+      background: var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .timeframe-tab.active {
+      background: var(--accent-primary);
+      color: var(--bg-primary);
+    }
+    
+    .chart-container {
+      height: 200px;
+      margin-top: 1rem;
+    }
+    
+    .last-updated {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      margin-top: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>🔮 Limitless Signal Dashboard</h1>
+    <div class="status-indicator">
+      <span class="status-dot"></span>
+      <span id="connection-status">Connected</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="timeframe-tabs">
+      <button class="timeframe-tab active" data-tf="15m">15m</button>
+      <button class="timeframe-tab" data-tf="1h">1h</button>
+      <button class="timeframe-tab" data-tf="4h">4h</button>
+      <button class="timeframe-tab" data-tf="aggregated">Aggregated</button>
+    </div>
+
+    <div class="grid" id="signals-grid">
+      <!-- Signal cards will be inserted here -->
+    </div>
+
+    <div class="opportunities-section">
+      <h2 class="section-title">🎯 Top Opportunities</h2>
+      <table class="opportunity-table">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Direction</th>
+            <th>Confidence</th>
+            <th>Strength</th>
+            <th>Consensus</th>
+            <th>Signal Value</th>
+          </tr>
+        </thead>
+        <tbody id="opportunities-body">
+          <!-- Opportunities will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="last-updated">
+      Last updated: <span id="last-updated">-</span>
+    </div>
+  </div>
+
+  <script type="module">
+    import { SignalService } from './signals/SignalService.js';
+
+    // Initialize signal service with mock data
+    const service = new SignalService({
+      useMock: true,
+      updateInterval: 30000,
+      symbols: ['BTC-PERP', 'ETH-PERP', 'SOL-PERP', 'AVAX-PERP', 'ARB-PERP'],
+      timeframes: ['15m', '1h', '4h']
+    });
+
+    let currentTimeframe = '15m';
+    let updateInterval;
+
+    // DOM elements
+    const grid = document.getElementById('signals-grid');
+    const opportunitiesBody = document.getElementById('opportunities-body');
+    const lastUpdated = document.getElementById('last-updated');
+    const timeframeTabs = document.querySelectorAll('.timeframe-tab');
+
+    // Timeframe tab switching
+    timeframeTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        timeframeTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentTimeframe = tab.dataset.tf;
+        updateDashboard();
+      });
+    });
+
+    // Create signal card HTML
+    function createSignalCard(symbol, data) {
+      const composite = data.composite;
+      const signal = composite.signal;
+      const direction = composite.direction;
+      const strength = composite.strength;
+      const confidence = composite.confidence;
+      
+      // Calculate gauge rotation (-90 to 90 degrees)
+      const rotation = signal * 90;
+      
+      // Layer breakdown
+      const layers = [
+        { name: 'Price Action', key: 'priceAction' },
+        { name: 'Volume', key: 'volume' },
+        { name: 'Moving Avg', key: 'movingAverage' },
+        { name: 'Momentum', key: 'momentum' },
+        { name: 'S/R Levels', key: 'supportResistance' },
+        { name: 'Trend', key: 'trend' },
+        { name: 'Volatility', key: 'volatility' },
+        { name: 'Structure', key: 'marketStructure' },
+        { name: 'Order Flow', key: 'orderFlow' }
+      ];
+
+      const layerBars = layers.map(layer => {
+        const layerData = data[layer.key];
+        if (!layerData) return '';
+        
+        const value = layerData.signal;
+        const width = Math.abs(value) * 50;
+        const isPositive = value >= 0;
+        
+        return `
+          <div class="layer-bar">
+            <span class="layer-name">${layer.name}</span>
+            <div class="layer-track">
+              <div class="layer-fill ${isPositive ? 'positive' : 'negative'}" 
+                   style="width: ${width}%; margin-${isPositive ? 'left' : 'right'}: 50%;"></div>
+            </div>
+            <span class="layer-value ${isPositive ? 'positive' : 'negative'}">${value > 0 ? '+' : ''}${value.toFixed(2)}</span>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="card" data-symbol="${symbol}">
+          <div class="card-header">
+            <h3 class="card-title">${symbol}</h3>
+            <span class="symbol-badge">${data.timeframe}</span>
+          </div>
+          
+          <div class="signal-display">
+            <div class="signal-gauge">
+              <div class="signal-needle" style="transform: translateX(-50%) rotate(${rotation}deg)"></div>
+              <div class="signal-value">
+                <div class="signal-direction ${direction}">${direction}</div>
+                <div class="signal-strength">${strength}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="metrics-grid">
+            <div class="metric">
+              <div class="metric-label">Confidence</div>
+              <div class="metric-value">${(confidence * 100).toFixed(0)}%</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Signal</div>
+              <div class="metric-value ${signal >= 0 ? 'positive' : 'negative'}">${signal > 0 ? '+' : ''}${signal.toFixed(2)}</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Agreement</div>
+              <div class="metric-value">${(composite.agreementRatio * 100).toFixed(0)}%</div>
+            </div>
+          </div>
+          
+          <div class="layers-section">
+            <div class="layers-title">10-Layer Analysis</div>
+            ${layerBars}
+          </div>
+        </div>
+      `;
+    }
+
+    // Update opportunities table
+    function updateOpportunities(opportunities) {
+      if (!opportunities || opportunities.length === 0) {
+        opportunitiesBody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; color: var(--text-secondary);">
+              No high-confidence opportunities at the moment
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      opportunitiesBody.innerHTML = opportunities.map(opp => `
+        <tr>
+          <td><strong>${opp.symbol}</strong></td>
+          <td><span class="direction-badge ${opp.direction}">${opp.direction}</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="confidence-fill" style="width: ${opp.confidence * 100}%"></div>
+            </div>
+            ${(opp.confidence * 100).toFixed(0)}%
+          </td>
+          <td>${opp.strength}</td>
+          <td>${opp.consensus}</td>
+          <td class="${opp.signal >= 0 ? 'positive' : 'negative'}">${opp.signal > 0 ? '+' : ''}${opp.signal.toFixed(3)}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Update dashboard
+    async function updateDashboard() {
+      try {
+        // Update signals for all symbols
+        for (const symbol of service.config.symbols) {
+          if (currentTimeframe === 'aggregated') {
+            // Show aggregated view
+            await service.updateSignal(symbol, '1h');
+          } else {
+            await service.updateSignal(symbol, currentTimeframe);
+          }
+        }
+
+        // Get all signals
+        const signals = service.getAllSignals();
+        
+        // Update grid
+        if (currentTimeframe === 'aggregated') {
+          // Show aggregated cards
+          grid.innerHTML = service.config.symbols.map(symbol => {
+            const agg = service.getAggregatedSignal(symbol);
+            if (!agg) return '';
+            
+            // Create mock data structure for aggregated view
+            const mockData = {
+              timeframe: 'AGG',
+              composite: {
+                signal: agg.signal,
+                direction: agg.direction,
+                strength: agg.strength,
+                confidence: agg.confidence,
+                agreementRatio: (agg.timeframeBreakdown.buy + agg.timeframeBreakdown.sell) / agg.timeframeBreakdown.total
+              }
+            };
+            
+            // Add layer data from individual timeframes
+            for (const tf of service.config.timeframes) {
+              const tfSignal = signals[symbol]?.[tf];
+              if (tfSignal) {
+                Object.assign(mockData, tfSignal);
+                break;
+              }
+            }
+            
+            return createSignalCard(symbol, mockData);
+          }).join('');
+        } else {
+          // Show individual timeframe cards
+          grid.innerHTML = service.config.symbols.map(symbol => {
+            const data = signals[symbol]?.[currentTimeframe];
+            if (!data) return '';
+            return createSignalCard(symbol, data);
+          }).join('');
+        }
+
+        // Update opportunities
+        const opportunities = service.getOpportunities(0.4);
+        updateOpportunities(opportunities);
+
+        // Update timestamp
+        lastUpdated.textContent = new Date().toLocaleString();
+        
+      } catch (error) {
+        console.error('Dashboard update error:', error);
+      }
+    }
+
+    // Initialize
+    async function init() {
+      await service.start();
+      await updateDashboard();
+      
+      // Auto-update every 30 seconds
+      updateInterval = setInterval(updateDashboard, 30000);
+    }
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (updateInterval) clearInterval(updateInterval);
+      service.stop();
+    });
+
+    // Start
+    init();
+  </script>
+</body>
+</html>
