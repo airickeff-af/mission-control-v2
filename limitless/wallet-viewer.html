@@ -50,6 +50,16 @@
       -webkit-text-fill-color: transparent;
     }
     
+    .network-badge {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--accent-primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: var(--accent-primary);
+      margin-left: 1rem;
+    }
+    
     .wallet-connect {
       display: flex;
       align-items: center;
@@ -366,7 +376,7 @@
 </head>
 <body>
   <header class="header">
-    <h1>💰 Wallet Balance Viewer</h1>
+    <h1>💰 Wallet Balance Viewer <span class="network-badge">Base L2</span></h1>
     <div class="wallet-connect">
       <span id="wallet-address" style="color: var(--text-secondary); font-size: 0.875rem;"></span>
       <button class="wallet-btn" id="connect-btn">Connect Wallet</button>
@@ -508,24 +518,18 @@
     // Mock data generator
     function generateMockData() {
       const assets = [
-        { symbol: 'USDC', name: 'USD Coin', balance: 25000, price: 1, change24h: 0 },
-        { symbol: 'BTC', name: 'Bitcoin', balance: 0.5, price: 55000, change24h: 2.5 },
-        { symbol: 'ETH', name: 'Ethereum', balance: 5, price: 3200, change24h: -1.2 },
-        { symbol: 'SOL', name: 'Solana', balance: 100, price: 145, change24h: 5.8 },
-        { symbol: 'AVAX', name: 'Avalanche', balance: 200, price: 35, change24h: -3.4 }
+        { symbol: 'USDC', name: 'USD Coin (Base L2)', balance: 100, price: 1, change24h: 0 }
       ];
 
       const positions = [
-        { symbol: 'BTC-PERP', side: 'long', size: 0.3, entryPrice: 54000, markPrice: 55000, leverage: 5 },
-        { symbol: 'ETH-PERP', side: 'short', size: 2, entryPrice: 3250, markPrice: 3200, leverage: 3 },
-        { symbol: 'SOL-PERP', side: 'long', size: 50, entryPrice: 140, markPrice: 145, leverage: 4 }
+        { symbol: 'BTC-30min', side: 'long', size: 10, entryPrice: 0.65, markPrice: 0.68, market: 'Limitless' },
+        { symbol: 'ETH-60min', side: 'short', size: 5, entryPrice: 0.42, markPrice: 0.40, market: 'Limitless' }
       ];
 
       const history = [
-        { type: 'deposit', asset: 'USDC', amount: 10000, timestamp: Date.now() - 86400000 },
-        { type: 'trade', asset: 'BTC-PERP', amount: 0.3, value: 16200, timestamp: Date.now() - 43200000 },
-        { type: 'trade', asset: 'ETH-PERP', amount: -2, value: -6500, timestamp: Date.now() - 3600000 },
-        { type: 'deposit', asset: 'SOL', amount: 100, value: 14500, timestamp: Date.now() - 1800000 }
+        { type: 'deposit', asset: 'USDC', amount: 100, timestamp: Date.now() - 86400000, network: 'Base L2' },
+        { type: 'trade', asset: 'BTC-30min', amount: 10, value: 6.5, timestamp: Date.now() - 43200000, market: 'Limitless' },
+        { type: 'trade', asset: 'ETH-60min', amount: -5, value: -2.1, timestamp: Date.now() - 3600000, market: 'Limitless' }
       ];
 
       return { assets, positions, history };
