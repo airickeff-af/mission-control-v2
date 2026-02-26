@@ -402,6 +402,53 @@
   </header>
 
   <div class="container">
+    <!-- Exchange Balance Windows -->
+    <div class="overview-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 1.5rem;">
+      <!-- Limitless Window -->
+      <div class="card" style="border: 3px solid var(--accent-primary);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="font-family: var(--font-header); font-size: 0.7rem; color: var(--accent-primary);">🔵 LIMITLESS</h3>
+          <span class="network-badge" style="font-size: 0.7rem;">Base L2</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <div class="card-title" style="font-size: 0.8rem;">Balance</div>
+            <div class="card-value" id="limitless-balance" style="font-size: 1.8rem; color: var(--accent-primary);">$97.50</div>
+          </div>
+          <div>
+            <div class="card-title" style="font-size: 0.8rem;">Mode</div>
+            <div style="font-size: 1.2rem; color: var(--accent-warning);">🧪 PAPER</div>
+          </div>
+        </div>
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--border-color);">
+          <div class="card-title" style="font-size: 0.8rem;">Status</div>
+          <div id="limitless-status" style="color: var(--accent-success);">● Trading Active</div>
+        </div>
+      </div>
+      
+      <!-- Polymarket Window -->
+      <div class="card" style="border: 3px solid var(--accent-secondary);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="font-family: var(--font-header); font-size: 0.7rem; color: var(--accent-secondary);">🟣 POLYMARKET</h3>
+          <span class="network-badge" style="font-size: 0.7rem; background: var(--accent-secondary); border-color: var(--accent-secondary); color: var(--bg-primary);">Polygon</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <div class="card-title" style="font-size: 0.8rem;">Balance</div>
+            <div class="card-value" id="polymarket-balance" style="font-size: 1.8rem; color: var(--accent-secondary);">$0.00</div>
+          </div>
+          <div>
+            <div class="card-title" style="font-size: 0.8rem;">Mode</div>
+            <div style="font-size: 1.2rem; color: var(--text-secondary);">⏸️ STANDBY</div>
+          </div>
+        </div>
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--border-color);">
+          <div class="card-title" style="font-size: 0.8rem;">Status</div>
+          <div id="polymarket-status" style="color: var(--text-secondary);">○ Awaiting Funding</div>
+        </div>
+      </div>
+    </div>
+
     <div id="loading-state" class="loading">
       <div class="spinner"></div>
       <p>Connect your wallet to view balances</p>
