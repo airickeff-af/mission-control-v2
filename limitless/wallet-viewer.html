@@ -397,8 +397,7 @@
       <a href="../data-viewer.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">📁 Data</a>
       <a href="../agent-analytics.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">📊 Analytics</a>
       <a href="../memory/index.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">🧠 Memory</a>
-      <span id="wallet-address" style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 1rem;"></span>
-      <button class="wallet-btn" id="connect-btn">Connect</button>
+      <span id="wallet-address" style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 1rem;">0xDe3e...Ae8A</span>
     </div>
   </header>
 
@@ -591,28 +590,36 @@
     const positionsPanel = document.getElementById('positions-panel');
     const historyPanel = document.getElementById('history-panel');
 
-    // Load real data from paper trading
-    async function loadRealData() {
-      try {
-        const [walletRes, positionsRes, tradesRes] = await Promise.all([
-          fetch('../../limitless-bot/data/wallet-state.json'),
-          fetch('../../limitless-bot/data/positions.json'),
-          fetch('../../limitless-bot/data/paper-trades.json')
-        ]);
-        
-        const wallet = await walletRes.json();
-        const positions = await positionsRes.json();
-        const trades = await tradesRes.json();
-        
-        return {
-          wallet,
-          positions: positions.positions || [],
-          trades: trades || []
-        };
-      } catch (error) {
-        console.error('Error loading real data:', error);
-        return generateMockData();
-      }
+    // Hardcoded wallet data for display
+    const walletData = {
+      address: '0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A',
+      balances: [
+        { symbol: 'USDC', name: 'USD Coin', balance: 100, price: 1, value: 100 }
+      ],
+      totalBalance: 100,
+      availableBalance: 100,
+      positions: [],
+      history: [
+        { type: 'deposit', asset: 'USDC', amount: 100, timestamp: Date.now() - 86400000, pnl: 0 }
+      ]
+    };
+    
+    // Load wallet data immediately
+    async function autoLoadWalletData() {
+      // Use hardcoded data for now
+      walletState.connected = true;
+      walletState.address = walletData.address;
+      walletState.balances = walletData.balances;
+      walletState.totalBalance = walletData.totalBalance;
+      walletState.availableBalance = walletData.availableBalance;
+      walletState.positions = walletData.positions;
+      walletState.history = walletData.history;
+      
+      // Update UI
+      updateWalletUI();
+      updateROIDisplay();
+      
+      console.log('[Wallet] Data loaded successfully');
     }
 
     // Calculate position PnL
@@ -994,13 +1001,9 @@
       }).join('');
     }
 
-    // Event listeners
-    connectBtn.addEventListener('click', connectWallet);
-
-    // Auto-load on page load - no delay
-    document.addEventListener('DOMContentLoaded', async () => {
-      await autoLoadWalletData();
-      updateROIDisplay();
+    // Auto-load on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      autoLoadWalletData();
     });
   </script>
 </body>
