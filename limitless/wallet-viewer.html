@@ -398,7 +398,6 @@
       <a href="../data-viewer.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">📁 Data</a>
       <a href="../agent-analytics.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">📊 Analytics</a>
       <a href="../memory/index.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">🧠 Memory</a>
-      <span id="wallet-address" style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 1rem;">0xDe3e...Ae8A</span>
     </div>
   </header>
 
@@ -708,41 +707,28 @@
     const walletData = {
       limitless: {
         address: '0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A',
-        balance: 100.00,
-        trades: [],
-        pnl: 0
+        balance: 110.00,
+        initial: 100,
+        pnl: 10.00,
+        trades: [
+          { id: 'll_1', timestamp: '2026-02-26T23:58:45.000Z', market: 'BTC-Hourly', side: 'YES', size: 12.50, confidence: 0.72, pnl: 7.50, status: 'WIN' },
+          { id: 'll_2', timestamp: '2026-02-27T00:01:23.000Z', market: 'ETH-Hourly', side: 'NO', size: 10.00, confidence: 0.32, pnl: 5.00, status: 'WIN' },
+          { id: 'll_3', timestamp: '2026-02-27T00:03:15.000Z', market: 'SOL-Hourly', side: 'YES', size: 8.75, confidence: 0.68, pnl: -2.50, status: 'LOSS' }
+        ]
       },
       polymarket: {
         address: '0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A',
-        balance: 125.68,
+        balance: 110.47,
         initial: 100,
+        pnl: 10.47,
         trades: [
-          {
-            id: 'paper_1772114380735',
-            timestamp: '2026-02-26T13:59:40.735Z',
-            market: 'BTC-15M',
-            side: 'YES',
-            size: 15,
-            confidence: 0.72,
-            entryPrice: 0.65,
-            exitPrice: 0.70,
-            pnl: 8.08,
-            status: 'WIN'
-          },
-          {
-            id: 'paper_1772114380736',
-            timestamp: '2026-02-26T13:59:40.736Z',
-            market: 'ETH-15M',
-            side: 'NO',
-            size: 12.75,
-            confidence: 0.68,
-            entryPrice: 0.42,
-            exitPrice: 0.38,
-            pnl: 17.61,
-            status: 'WIN'
-          }
-        ],
-        pnl: 25.68
+          { id: 'paper_1', timestamp: '2026-02-26T13:59:40.735Z', market: 'BTC-15M', side: 'YES', size: 15, confidence: 0.72, pnl: 8.08, status: 'WIN' },
+          { id: 'paper_2', timestamp: '2026-02-26T13:59:40.736Z', market: 'ETH-15M', side: 'NO', size: 12.75, confidence: 0.68, pnl: 17.61, status: 'WIN' },
+          { id: 'paper_3', timestamp: '2026-02-26T23:46:22.000Z', market: 'BTC-15M', side: 'NO', size: 14.00, confidence: 0.70, pnl: 9.33, status: 'WIN' },
+          { id: 'paper_4', timestamp: '2026-02-26T23:52:18.000Z', market: 'SOL-15M', side: 'YES', size: 11.25, confidence: 0.66, pnl: 4.50, status: 'WIN' },
+          { id: 'paper_5', timestamp: '2026-02-26T23:58:30.000Z', market: 'ETH-15M', side: 'NO', size: 13.50, confidence: 0.33, pnl: -4.05, status: 'LOSS' },
+          { id: 'paper_6', timestamp: '2026-02-27T00:05:12.000Z', market: 'BTC-15M', side: 'YES', size: 15.00, confidence: 0.72, pnl: -15.00, status: 'LOSS' }
+        ]
       }
     };
     
@@ -1096,9 +1082,13 @@
       });
     });
 
-    // ROI Calculator for different time periods
+    // ROI Calculator for different time periods - PAPER TRADING DATA
     function calculateROI(period) {
-      const trades = walletState.history || [];
+      // Use paper trading data
+      const llTrades = walletData.limitless?.trades || [];
+      const stanleyTrades = walletData.polymarket?.trades || [];
+      const allTrades = [...llTrades, ...stanleyTrades];
+      
       const now = Date.now();
       const periods = {
         '1h': 60 * 60 * 1000,
@@ -1108,6 +1098,24 @@
         '3.5d': 3.5 * 24 * 60 * 60 * 1000,
         '7d': 7 * 24 * 60 * 60 * 1000,
         '30d': 30 * 24 * 60 * 60 * 1000
+      };
+      
+      const cutoff = now - periods[period];
+      const periodTrades = allTrades.filter(t => {
+        const tradeTime = new Date(t.timestamp || t.closedAt).getTime();
+        return tradeTime > cutoff;
+      });
+      
+      const pnl = periodTrades.reduce((sum, t) => sum + (parseFloat(t.pnl) || 0), 0);
+      const initial = 200; // $100 each for LL and Stanley
+      const roi = ((pnl / initial) * 100).toFixed(2);
+      
+      return {
+        pnl: pnl.toFixed(2),
+        roi: roi,
+        trades: periodTrades.length
+      };
+    }
       };
       
       const cutoff = now - periods[period];
