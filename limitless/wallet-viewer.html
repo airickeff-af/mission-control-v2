@@ -577,8 +577,10 @@
       </div>
     </div>
 
+    <!-- ROI Windows -->
+    <div class="card" style="margin-bottom: 1.5rem;">
       <h3 style="font-family: var(--font-header); font-size: 0.6rem; color: var(--accent-warning); margin-bottom: 1rem;">📊 ROI WINDOWS</h3>
-      <div id="roi-windows" class="stats-grid" style="grid-template-columns: repeat(7, 1fr);">
+      <div id="roi-windows" class="stats-grid" style="grid-template-columns: repeat(5, 1fr); gap: 0.5rem;">
         <!-- ROI windows will be inserted here -->
       </div>
     </div>
@@ -1090,68 +1092,52 @@
 
     // ROI Calculator for different time periods - PAPER TRADING DATA
     function calculateROI(period) {
-      // Use paper trading data
+      // Use paper trading data from walletData
       const llTrades = walletData.limitless?.trades || [];
       const stanleyTrades = walletData.polymarket?.trades || [];
       const allTrades = [...llTrades, ...stanleyTrades];
-      
+
       const now = Date.now();
       const periods = {
         '1h': 60 * 60 * 1000,
         '6h': 6 * 60 * 60 * 1000,
         '12h': 12 * 60 * 60 * 1000,
         '24h': 24 * 60 * 60 * 1000,
-        '3.5d': 3.5 * 24 * 60 * 60 * 1000,
-        '7d': 7 * 24 * 60 * 60 * 1000,
-        '30d': 30 * 24 * 60 * 60 * 1000
+        '7d': 7 * 24 * 60 * 60 * 1000
       };
-      
+
       const cutoff = now - periods[period];
       const periodTrades = allTrades.filter(t => {
         const tradeTime = new Date(t.timestamp || t.closedAt).getTime();
         return tradeTime > cutoff;
       });
-      
+
       const pnl = periodTrades.reduce((sum, t) => sum + (parseFloat(t.pnl) || 0), 0);
       const initial = 200; // $100 each for LL and Stanley
       const roi = ((pnl / initial) * 100).toFixed(2);
-      
+
       return {
         pnl: pnl.toFixed(2),
         roi: roi,
         trades: periodTrades.length
       };
     }
-      };
-      
-      const cutoff = now - periods[period];
-      const periodTrades = trades.filter(t => new Date(t.timestamp).getTime() > cutoff);
-      
-      const pnl = periodTrades.reduce((sum, t) => sum + parseFloat(t.pnl || 0), 0);
-      const initial = 100;
-      const roi = ((pnl / initial) * 100).toFixed(2);
-      
-      return {
-        pnl: pnl.toFixed(2),
-        roi: roi,
-        trades: periodTrades.length
-      };
-    }
-    
-    // Update ROI display
+
+    // Update ROI display with real data
     function updateROIDisplay() {
-      const periods = ['1h', '6h', '12h', '24h', '3.5d', '7d', '30d'];
+      const periods = ['1h', '6h', '12h', '24h', '7d'];
       const roiContainer = document.getElementById('roi-windows');
       if (!roiContainer) return;
-      
+
       roiContainer.innerHTML = periods.map(period => {
         const stats = calculateROI(period);
         const color = parseFloat(stats.roi) >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)';
+        const bgColor = parseFloat(stats.roi) >= 0 ? 'rgba(107, 207, 127, 0.1)' : 'rgba(255, 68, 68, 0.1)';
         return `
-          <div class="stat-box" style="padding: 0.5rem;">
-            <div class="stat-value" style="font-size: 1rem; color: ${color};">${stats.roi}%</div>
-            <div class="stat-label" style="font-size: 0.7rem;">${period}</div>
-            <div style="font-size: 0.6rem; color: var(--text-secondary);">$${stats.pnl}</div>
+          <div class="stat-box" style="padding: 0.75rem; background: ${bgColor}; border: 1px solid ${color}; border-radius: 4px;">
+            <div class="stat-value" style="font-size: 1.2rem; color: ${color}; font-weight: bold;">${stats.roi}%</div>
+            <div class="stat-label" style="font-size: 0.7rem; color: var(--text-secondary);">${period}</div>
+            <div style="font-size: 0.6rem; color: var(--text-secondary); margin-top: 2px;">$${stats.pnl} · ${stats.trades}t</div>
           </div>
         `;
       }).join('');
