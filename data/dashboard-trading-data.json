@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-02-26T15:23:38.091Z",
+  "limitless": {
+    "balance": 100,
+    "initial": 100,
+    "pnl": 0,
+    "roi": 0,
+    "trades": [],
+    "winRate": 0,
+    "status": "Ready - Awaiting first trade"
+  },
+  "polymarket": {
+    "balance": 125.68406593406593,
+    "initial": 100,
+    "pnl": 25.684065934065934,
+    "roi": "25.68",
+    "trades": [
+      {
+        "id": "paper_1772114380735",
+        "timestamp": "2026-02-26T13:59:40.735Z",
+        "market": "BTC-15M",
+        "side": "YES",
+        "size": 15,
+        "confidence": 0.72,
+        "odds": 0.65,
+        "status": "closed",
+        "entryPrice": 0.65,
+        "pnl": 8.076923076923075,
+        "exitPrice": 0.7,
+        "closedAt": "2026-02-26T13:59:45.741Z"
+      },
+      {
+        "id": "paper_1772114380736",
+        "timestamp": "2026-02-26T13:59:40.736Z",
+        "market": "ETH-15M",
+        "side": "NO",
+        "size": 12.75,
+        "confidence": 0.68,
+        "odds": 0.42,
+        "status": "closed",
+        "entryPrice": 0.42,
+        "pnl": 17.607142857142858,
+        "exitPrice": 0.38,
+        "closedAt": "2026-02-26T13:59:45.742Z"
+      }
+    ],
+    "winRate": "100.0%",
+    "status": "Active - Paper trading profitable"
+  },
+  "combined": {
+    "totalBalance": 225.68406593406593,
+    "totalInitial": 200,
+    "totalPnL": 25.684065934065934,
+    "totalROI": "12.84",
+    "totalTrades": 2,
+    "winRate": 100
+  }
+}

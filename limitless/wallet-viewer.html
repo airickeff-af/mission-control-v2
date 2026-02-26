@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="1800">
   <title>Limitless Trading Bot - Wallet Balance Viewer</title>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1068,9 +1069,35 @@
       }).join('');
     }
 
+    // Load live dashboard data
+    async function loadLiveData() {
+      try {
+        const response = await fetch('../data/dashboard-trading-data.json?t=' + Date.now());
+        const data = await response.json();
+        
+        // Update Limitless
+        document.getElementById('limitless-balance').textContent = '$' + data.limitless.balance.toFixed(2);
+        
+        // Update Polymarket
+        document.getElementById('polymarket-balance').textContent = '$' + data.polymarket.balance.toFixed(2);
+        
+        console.log('[Dashboard] Live data loaded at', new Date().toLocaleTimeString());
+        console.log('[Dashboard] Combined PnL:', data.combined.totalPnL.toFixed(2));
+        
+        return data;
+      } catch (error) {
+        console.error('[Dashboard] Error loading live data:', error);
+        return null;
+      }
+    }
+
     // Auto-load on page load
     document.addEventListener('DOMContentLoaded', () => {
       autoLoadWalletData();
+      loadLiveData();
+      
+      // Refresh every 30 seconds for live updates
+      setInterval(loadLiveData, 30000);
     });
   </script>
 </body>
