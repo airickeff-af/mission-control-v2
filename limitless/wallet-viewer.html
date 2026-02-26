@@ -4,38 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Limitless Trading Bot - Wallet Balance Viewer</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      image-rendering: pixelated;
     }
     
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --bg-tertiary: #1a1a25;
-      --accent-primary: #00d4ff;
-      --accent-secondary: #7c3aed;
-      --accent-success: #10b981;
-      --accent-danger: #ef4444;
-      --accent-warning: #f59e0b;
+      --bg-primary: #2d1b4e;
+      --bg-secondary: #1a0f2e;
+      --bg-tertiary: #3d2b5e;
+      --accent-primary: #00f0ff;
+      --accent-secondary: #ff6b9d;
+      --accent-success: #6bcf7f;
+      --accent-danger: #ff4444;
+      --accent-warning: #ffd93d;
       --text-primary: #ffffff;
-      --text-secondary: #a1a1aa;
-      --border-color: #27273a;
+      --text-secondary: #b8a9d9;
+      --border-color: #5d4b7e;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+      --font-pixel: 'VT323', monospace;
+      --font-header: 'Press Start 2P', cursive;
     }
     
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-pixel);
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
+      font-size: 18px;
     }
     
     .header {
       background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 4px solid var(--border-color);
+      box-shadow: 0 4px 0 var(--shadow-color);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -43,21 +50,22 @@
     }
     
     .header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: var(--font-header);
+      font-size: 0.9rem;
+      color: var(--accent-primary);
+      text-shadow: 2px 2px 0 var(--shadow-color);
+      line-height: 1.6;
     }
     
     .network-badge {
       background: var(--bg-tertiary);
-      border: 1px solid var(--accent-primary);
+      border: 3px solid var(--accent-primary);
       padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
       color: var(--accent-primary);
       margin-left: 1rem;
+      box-shadow: 3px 3px 0 var(--shadow-color);
     }
     
     .wallet-connect {
@@ -67,23 +75,26 @@
     }
     
     .wallet-btn {
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-      border: none;
+      background: var(--accent-primary);
+      border: 3px solid var(--text-primary);
       padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      color: white;
-      font-weight: 600;
+      border-radius: 4px;
+      color: var(--bg-primary);
+      font-family: var(--font-pixel);
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: opacity 0.2s;
+      box-shadow: 4px 4px 0 var(--shadow-color);
+      transition: all 0.1s;
     }
     
     .wallet-btn:hover {
-      opacity: 0.9;
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--shadow-color);
     }
     
     .wallet-btn.connected {
       background: var(--bg-tertiary);
-      border: 1px solid var(--accent-success);
+      border: 3px solid var(--accent-success);
       color: var(--accent-success);
     }
     
@@ -102,23 +113,25 @@
     
     .card {
       background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
+      border: 3px solid var(--border-color);
+      border-radius: 8px;
       padding: 1.5rem;
+      box-shadow: 4px 4px 0 var(--shadow-color);
     }
     
     .card-title {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
+      font-family: var(--font-header);
+      font-size: 0.6rem;
+      color: var(--accent-warning);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
       margin-bottom: 0.5rem;
     }
     
     .card-value {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      font-family: var(--font-pixel);
     }
     
     .card-value.positive { color: var(--accent-success); }
