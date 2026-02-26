@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-26T17:40:00+08:00",
+  "lastUpdated": "2026-02-26T18:22:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -99,11 +99,7 @@
         "profilesCompleted": 2,
         "profilesPending": 0,
         "wordsPerProfile": "3500-4000",
-        "topics": [
-          "Crypto",
-          "AI",
-          "Tech"
-        ]
+        "topics": ["Crypto", "AI", "Tech"]
       }
     },
     {
@@ -128,48 +124,16 @@
         "lastSync": "2026-02-26T06:41:00+08:00",
         "reposTracked": 4,
         "memoryFiles": [
-          {
-            "name": "2026-02-26.md",
-            "type": "daily-log",
-            "lastModified": "2026-02-26T02:01:00+08:00",
-            "size": "2.1 KB"
-          },
-          {
-            "name": "heartbeat-state.json",
-            "type": "state-tracking",
-            "lastModified": "2026-02-26T06:00:00+08:00",
-            "size": "2.1 KB"
-          },
-          {
-            "name": "git-sync-state.json",
-            "type": "sync-tracking",
-            "lastModified": "2026-02-26T06:42:00+08:00",
-            "size": "0.9 KB"
-          },
-          {
-            "name": "git-auto-sync-report-2026-02-26.md",
-            "type": "sync-report",
-            "lastModified": "2026-02-26T06:43:00+08:00",
-            "size": "4.9 KB"
-          }
+          {"name": "2026-02-26.md", "type": "daily-log", "lastModified": "2026-02-26T02:01:00+08:00", "size": "2.1 KB"},
+          {"name": "heartbeat-state.json", "type": "state-tracking", "lastModified": "2026-02-26T06:00:00+08:00", "size": "2.1 KB"},
+          {"name": "git-sync-state.json", "type": "sync-tracking", "lastModified": "2026-02-26T06:42:00+08:00", "size": "0.9 KB"},
+          {"name": "git-auto-sync-report-2026-02-26.md", "type": "sync-report", "lastModified": "2026-02-26T06:43:00+08:00", "size": "4.9 KB"}
         ],
         "repoStatus": {
-          "mission-control-v2": {
-            "lastCommit": "2026-02-26T05:24:14+08:00",
-            "status": "synced"
-          },
-          "mc-project": {
-            "lastCommit": "2026-02-25T07:22:49+08:00",
-            "status": "synced"
-          },
-          "dealflow": {
-            "lastCommit": "2026-02-25T23:35:33+08:00",
-            "status": "synced"
-          },
-          "pixel-sanctuary": {
-            "lastCommit": "2026-02-25T23:12:26+08:00",
-            "status": "synced"
-          }
+          "mission-control-v2": {"lastCommit": "2026-02-26T05:24:14+08:00", "status": "synced"},
+          "mc-project": {"lastCommit": "2026-02-25T07:22:49+08:00", "status": "synced"},
+          "dealflow": {"lastCommit": "2026-02-25T23:35:33+08:00", "status": "synced"},
+          "pixel-sanctuary": {"lastCommit": "2026-02-25T23:12:26+08:00", "status": "synced"}
         }
       }
     },
@@ -214,7 +178,7 @@
       "name": "Limitless Trading Bot",
       "status": "active",
       "completion": 15,
-      "url": null,
+      "url": "https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html",
       "pendingTasks": 14,
       "lead": "Limitless",
       "targetCompletion": "2026-02-27",
@@ -250,24 +214,23 @@
         "riskManagement": {
           "twoLossCooldown": {
             "enabled": true,
-            "description": "After 2 consecutive losses, bot sits out for 3 full cycles (~90 minutes). Resets streak to zero when cooldown expires. Prevents chasing losses on bad streaks."
+            "description": "After 2 consecutive losses, bot sits out for 3 full cycles (~90 minutes). Resets streak to zero when cooldown expires."
           },
           "perAssetTracking": {
             "enabled": true,
-            "description": "BTC, ETH, SOL tracked independently — separate win/loss streaks, separate cooldowns, separate pending bets. A BTC loss doesn't affect ETH sizing and vice versa."
+            "description": "BTC, ETH, SOL tracked independently — separate win/loss streaks, separate cooldowns, separate pending bets."
           },
           "capitalProtection": {
             "maxRiskPerTrade": "20%",
             "maxTotalExposure": "60%",
-            "description": "Never bet more than ~20% of bankroll per trade. All 3 assets running simultaneously = each capped lower so total exposure stays sane."
+            "description": "Never bet more than ~20% of bankroll per trade."
           }
         },
         "preTradeGates": {
           "skipYesBelow": "15¢",
           "skipYesAbove": "85¢",
           "minRiskReward": "1.2:1",
-          "minTimeRemaining": "5 minutes",
-          "note": "Betting YES at 70¢ to win 30¢ is bad math — need at least 1.2x return for the risk taken"
+          "minTimeRemaining": "5 minutes"
         },
         "signalLayers": [
           "Higher Timeframe Bias (1H + 4H) - weight 1.5",
@@ -311,29 +274,6 @@
           "hardCap": "$20 per trade"
         }
       },
-      "p0Tasks": {
-        "completed": ["LIM-P0-001: Limitless Exchange API Integration"],
-        "inProgress": [],
-        "pending": [
-          "LIM-P0-002: Market Data Fetcher",
-          "LIM-P0-003: Signal Calculator (10 Layers)",
-          "LIM-P0-004: Decision Engine",
-          "LIM-P0-005: Discipline Override System",
-          "LIM-P0-006: Position Sizer (Kelly)",
-          "LIM-P0-007: Paper Trade Executor",
-          "LIM-P0-008: Trade Logger",
-          "LIM-P0-009: Wallet Balance Viewer",
-          "LIM-P0-010: P&L Tracker",
-          "LIM-P0-011: Hourly Status Report",
-          "LIM-P0-012: Trade History Viewer",
-          "LIM-P0-013: Signal Dashboard",
-          "LIM-P0-014: Alert System",
-          "LIM-P0-015: Achilles Rules Enforcement Engine",
-          "LIM-P0-016: Start Paper Trading"
-        ],
-        "progress": "1/16 (6%)",
-        "nextTask": "LIM-P0-002: Market Data Fetcher (Due: Today 3 PM)"
-      },
       "walletStatus": "connected",
       "walletAddress": "0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A",
       "walletType": "Base L2 Wallet",
@@ -344,8 +284,8 @@
       "p0Completed": 1,
       "p0Total": 16,
       "p0Progress": "6%",
-      "lastUpdated": "2026-02-26T17:40:00+08:00",
-      "nextUpdate": "2026-02-26T18:40:00+08:00",
+      "lastUpdated": "2026-02-26T18:22:00+08:00",
+      "nextUpdate": "2026-02-26T19:22:00+08:00",
       "liveTradingReady": false,
       "liveTradingETA": "2026-02-27T08:00:00+08:00",
       "stats": {
@@ -357,187 +297,33 @@
         "totalPnL": 0,
         "totalPnLPercent": 0,
         "timeframes": {
-          "1h": {
-            "capital": 100,
-            "pnl": 0,
-            "pnlPercent": 0,
-            "trades": 0,
-            "wins": 0,
-            "losses": 0
-          },
-          "3h": {
-            "capital": 100,
-            "pnl": 0,
-            "pnlPercent": 0,
-            "trades": 0,
-            "wins": 0,
-            "losses": 0
-          },
-          "6h": {
-            "capital": 100,
-            "pnl": 0,
-            "pnlPercent": 0,
-            "trades": 0,
-            "wins": 0,
-            "losses": 0
-          },
-          "12h": {
-            "capital": 100,
-            "pnl": 0,
-            "pnlPercent": 0,
-            "trades": 0,
-            "wins": 0,
-            "losses": 0
-          },
-          "24h": {
-            "capital": 100,
-            "pnl": 0,
-            "pnlPercent": 0,
-            "trades": 0,
-            "wins": 0,
-            "losses": 0
-          },
-          "7d": {
-            "capital": 100,
-            "pnl": 0,
-            "pnlPercent": 0,
-            "trades": 0,
-            "wins": 0,
-            "losses": 0
-          },
-          "14d": {
-            "capital": 100,
-            "pnl": 0,
-            "pnlPercent": 0,
-            "trades": 0,
-            "wins": 0,
-            "losses": 0
-          },
-          "30d": {
-            "capital": 100,
-            "pnl": 0,
-            "pnlPercent": 0,
-            "trades": 0,
-            "wins": 0,
-            "losses": 0
-          }
+          "1h": {"capital": 100, "pnl": 0, "pnlPercent": 0, "trades": 0, "wins": 0, "losses": 0},
+          "3h": {"capital": 100, "pnl": 0, "pnlPercent": 0, "trades": 0, "wins": 0, "losses": 0},
+          "6h": {"capital": 100, "pnl": 0, "pnlPercent": 0, "trades": 0, "wins": 0, "losses": 0},
+          "12h": {"capital": 100, "pnl": 0, "pnlPercent": 0, "trades": 0, "wins": 0, "losses": 0},
+          "24h": {"capital": 100, "pnl": 0, "pnlPercent": 0, "trades": 0, "wins": 0, "losses": 0},
+          "7d": {"capital": 100, "pnl": 0, "pnlPercent": 0, "trades": 0, "wins": 0, "losses": 0},
+          "14d": {"capital": 100, "pnl": 0, "pnlPercent": 0, "trades": 0, "wins": 0, "losses": 0},
+          "30d": {"capital": 100, "pnl": 0, "pnlPercent": 0, "trades": 0, "wins": 0, "losses": 0}
         },
         "recentTrades": [],
         "tradeHistory": [],
         "logs": [
-          {
-            "timestamp": "2026-02-26T17:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."
-          },
-          {
-            "timestamp": "2026-02-26T16:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."
-          },
-          {
-            "timestamp": "2026-02-26T16:22:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Last decision: SKIP (all assets below 30% confidence threshold)."
-          },
-          {
-            "timestamp": "2026-02-26T15:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Last decision: SKIP (all assets below 30% confidence threshold)."
-          },
-          {
-            "timestamp": "2026-02-26T14:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Last decision: SKIP (all assets below 30% confidence threshold)."
-          },
-          {
-            "timestamp": "2026-02-26T13:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Last decision: SKIP (all assets below 30% confidence threshold)."
-          },
-          {
-            "timestamp": "2026-02-26T13:22:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. All timeframes: No trades yet."
-          },
-          {
-            "timestamp": "2026-02-26T12:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade. All timeframes: No trades yet."
-          },
-          {
-            "timestamp": "2026-02-26T12:06:00+08:00",
-            "level": "info",
-            "message": "P0-001 Complete: Limitless Exchange API connected. 463 markets available, 25 crypto markets. P0 Progress: 1/15 (7%). Next: Market Data Fetcher (Due 3 PM)."
-          },
-          {
-            "timestamp": "2026-02-26T07:59:00+08:00",
-            "level": "info",
-            "message": "Limitless bot initialized. Starting capital: $100. Target: $5000."
-          },
-          {
-            "timestamp": "2026-02-26T08:22:00+08:00",
-            "level": "info",
-            "message": "Hourly dashboard update completed. No trades executed yet."
-          },
-          {
-            "timestamp": "2026-02-26T08:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Bot scanning markets. 1 scan completed at 08:15. Awaiting first trade opportunity."
-          },
-          {
-            "timestamp": "2026-02-26T09:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Dashboard data refreshed. Bot scanning for BTC/ETH/SOL trade opportunities."
-          },
-          {
-            "timestamp": "2026-02-26T09:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: No new trades. Capital: $100.00 | Trades: 0 | Last scan: 08:15 (BTC $65,948, signal +0.108 bullish). Awaiting Kalshi market access."
-          },
-          {
-            "timestamp": "2026-02-26T10:22:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Dashboard data refreshed. Capital: $100.00 | Trades: 0 | Status: Scanning for opportunities."
-          },
-          {
-            "timestamp": "2026-02-26T10:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade. All timeframes initialized."
-          },
-          {
-            "timestamp": "2026-02-26T11:22:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Dashboard refreshed. Capital $100.00 | P&L $0.00 | Trades: 0 | Status: Awaiting first trade opportunity."
-          },
-          {
-            "timestamp": "2026-02-26T11:40:00+08:00",
-            "level": "info",
-            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Markets scanned: 12 (BTC/ETH/SOL). Status: No trades meeting Achilles criteria. Awaiting high-confidence setup."
-          }
+          {"timestamp": "2026-02-26T18:22:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
+          {"timestamp": "2026-02-26T17:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
+          {"timestamp": "2026-02-26T16:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Last decision: SKIP (all assets below 30% confidence threshold)."},
+          {"timestamp": "2026-02-26T15:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Last decision: SKIP (all assets below 30% confidence threshold)."},
+          {"timestamp": "2026-02-26T14:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Last decision: SKIP (all assets below 30% confidence threshold)."},
+          {"timestamp": "2026-02-26T13:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Last decision: SKIP (all assets below 30% confidence threshold)."},
+          {"timestamp": "2026-02-26T12:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade. All timeframes: No trades yet."},
+          {"timestamp": "2026-02-26T12:06:00+08:00", "level": "info", "message": "P0-001 Complete: Limitless Exchange API connected. 463 markets available, 25 crypto markets. P0 Progress: 1/15 (7%). Next: Market Data Fetcher (Due 3 PM)."}
         ],
         "scanLog": [
-          {
-            "timestamp": "2026-02-26T08:15:00+08:00",
-            "btc_price": 65948,
-            "signal_composite": 0.108,
-            "direction": "BULLISH",
-            "decision": "NO_TRADE",
-            "reason": "Cannot access Kalshi market data - need direct browser/API access for EV edge and order book",
-            "red_flags": 0
-          }
+          {"timestamp": "2026-02-26T08:15:00+08:00", "btc_price": 65948, "signal_composite": 0.108, "direction": "BULLISH", "decision": "NO_TRADE", "reason": "Cannot access Kalshi market data - need direct browser/API access for EV edge and order book", "red_flags": 0}
         ],
         "lastScan": "2026-02-26T08:15:00+08:00",
-        "markets": [
-          "BTC",
-          "ETH",
-          "SOL"
-        ],
-        "status": [
-          "active",
-          "completed",
-          "pending"
-        ]
+        "markets": ["BTC", "ETH", "SOL"],
+        "status": ["active", "completed", "pending"]
       }
     }
   ]
