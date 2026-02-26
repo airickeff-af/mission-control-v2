@@ -1,46 +1,23 @@
 {
-  "timestamp": "2026-02-26T15:44:25.931Z",
+  "timestamp": "2026-02-26T15:53:40.458Z",
   "limitless": {
     "balance": 100,
     "initial": 100,
-    "pnl": 10,
-    "roi": "10.00",
+    "pnl": 7.045556432617582,
+    "roi": "7.05",
     "trades": [
       {
-        "id": "ll_1772120644427",
-        "timestamp": "2026-02-26T15:44:04.427Z",
-        "market": "BTC-Hourly",
-        "side": "YES",
-        "size": 12.5,
-        "confidence": 0.72,
-        "entryPrice": 0.65,
-        "exitPrice": 0.71,
-        "pnl": 7.5,
-        "status": "WIN"
-      },
-      {
-        "id": "ll_1772120644428",
-        "timestamp": "2026-02-26T15:45:04.427Z",
+        "id": "ll_1772120097771",
+        "timestamp": "2026-02-26T15:34:57.771Z",
         "market": "ETH-Hourly",
-        "side": "NO",
-        "size": 10,
-        "confidence": 0.32,
-        "entryPrice": 0.4,
-        "exitPrice": 0.35,
-        "pnl": 5,
-        "status": "WIN"
-      },
-      {
-        "id": "ll_1772120644429",
-        "timestamp": "2026-02-26T15:46:04.427Z",
-        "market": "SOL-Hourly",
         "side": "YES",
-        "size": 8.75,
-        "confidence": 0.68,
-        "entryPrice": 0.55,
-        "exitPrice": 0.52,
-        "pnl": -2.5,
-        "status": "LOSS"
+        "size": 15,
+        "confidence": 0.86,
+        "entryPrice": 0.53,
+        "exitPrice": 0.54,
+        "pnl": 7.05,
+        "status": "closed",
+        "closedAt": "2026-02-26T15:42:49.849Z"
       }
     ],
     "winRate": 0,
@@ -129,9 +106,9 @@
   "combined": {
     "totalBalance": 202.85692307692307,
     "totalInitial": 200,
-    "totalPnL": 12.856923076923074,
-    "totalROI": "6.43",
-    "totalTrades": 8,
+    "totalPnL": 9.902479509540658,
+    "totalROI": "4.95",
+    "totalTrades": 6,
     "winRate": 100
   }
 }
