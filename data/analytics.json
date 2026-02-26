@@ -1,11 +1,14 @@
 {
-  "lastUpdated": "2026-02-26T11:30:00+08:00",
+  "lastUpdated": "2026-02-26T18:47:00+08:00",
   "summary": {
-    "totalTasksCompleted": 45,
+    "totalTasksCompleted": 52,
     "totalTasksFailed": 2,
-    "overallSuccessRate": 95.7,
+    "overallSuccessRate": 96.3,
     "avgResponseTime": 28,
-    "avgTokenEfficiency": 15200
+    "avgTokenEfficiency": 15200,
+    "tasksToday": 9,
+    "tasksLast24Hours": 12,
+    "tasksLast30Days": 52
   },
   "agentMetrics": [
     {
@@ -24,7 +27,7 @@
         {"date": "2026-02-23", "tasks": 3, "responseTime": 14, "successRate": 100},
         {"date": "2026-02-24", "tasks": 1, "responseTime": 16, "successRate": 100},
         {"date": "2026-02-25", "tasks": 2, "responseTime": 15, "successRate": 100},
-        {"date": "2026-02-26", "tasks": 1, "responseTime": 10, "successRate": 100}
+        {"date": "2026-02-26", "tasks": 4, "responseTime": 10, "successRate": 100}
       ]
     },
     {
@@ -149,7 +152,7 @@
       {"date": "2026-02-23", "totalTasks": 5, "avgResponseTime": 20, "successRate": 100},
       {"date": "2026-02-24", "totalTasks": 6, "avgResponseTime": 28, "successRate": 100},
       {"date": "2026-02-25", "totalTasks": 20, "avgResponseTime": 35, "successRate": 100},
-      {"date": "2026-02-26", "totalTasks": 5, "avgResponseTime": 30, "successRate": 80}
+      {"date": "2026-02-26", "totalTasks": 9, "avgResponseTime": 30, "successRate": 89}
     ],
     "weekly": [
       {"week": "Week 1 Feb", "totalTasks": 12, "avgResponseTime": 24, "successRate": 100},
@@ -189,6 +192,20 @@
       {"name": "Quill", "value": 9615, "unit": "tokens/task"},
       {"name": "Glasses", "value": 9467, "unit": "tokens/task"},
       {"name": "ZooKeeper", "value": 14833, "unit": "tokens/task"}
+    ],
+    "top24Hours": [
+      {"name": "Nexus", "value": 4, "unit": "tasks today"},
+      {"name": "Olivia", "value": 3, "unit": "tasks today"},
+      {"name": "Quill", "value": 3, "unit": "tasks today"},
+      {"name": "Sentry", "value": 2, "unit": "tasks today"},
+      {"name": "Glasses", "value": 2, "unit": "tasks today"}
+    ],
+    "top30Days": [
+      {"name": "Nexus", "value": 16, "unit": "tasks this month"},
+      {"name": "Olivia", "value": 8, "unit": "tasks this month"},
+      {"name": "ZooKeeper", "value": 6, "unit": "tasks this month"},
+      {"name": "Quill", "value": 5, "unit": "tasks this month"},
+      {"name": "Meemo-Replacement", "value": 4, "unit": "tasks this month"}
     ]
   }
 }
