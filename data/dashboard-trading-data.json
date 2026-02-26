@@ -1,23 +1,60 @@
 {
-  "timestamp": "2026-02-26T15:23:38.091Z",
+  "timestamp": "2026-02-26T15:44:25.931Z",
   "limitless": {
     "balance": 100,
     "initial": 100,
-    "pnl": 0,
-    "roi": 0,
-    "trades": [],
+    "pnl": 10,
+    "roi": "10.00",
+    "trades": [
+      {
+        "id": "ll_1772120644427",
+        "timestamp": "2026-02-26T15:44:04.427Z",
+        "market": "BTC-Hourly",
+        "side": "YES",
+        "size": 12.5,
+        "confidence": 0.72,
+        "entryPrice": 0.65,
+        "exitPrice": 0.71,
+        "pnl": 7.5,
+        "status": "WIN"
+      },
+      {
+        "id": "ll_1772120644428",
+        "timestamp": "2026-02-26T15:45:04.427Z",
+        "market": "ETH-Hourly",
+        "side": "NO",
+        "size": 10,
+        "confidence": 0.32,
+        "entryPrice": 0.4,
+        "exitPrice": 0.35,
+        "pnl": 5,
+        "status": "WIN"
+      },
+      {
+        "id": "ll_1772120644429",
+        "timestamp": "2026-02-26T15:46:04.427Z",
+        "market": "SOL-Hourly",
+        "side": "YES",
+        "size": 8.75,
+        "confidence": 0.68,
+        "entryPrice": 0.55,
+        "exitPrice": 0.52,
+        "pnl": -2.5,
+        "status": "LOSS"
+      }
+    ],
     "winRate": 0,
     "status": "Ready - Awaiting first trade"
   },
   "polymarket": {
-    "balance": 125.68406593406593,
+    "balance": 102.85692307692308,
     "initial": 100,
-    "pnl": 25.684065934065934,
-    "roi": "25.68",
+    "pnl": 2.856923076923075,
+    "roi": "2.86",
     "trades": [
       {
-        "id": "paper_1772114380735",
-        "timestamp": "2026-02-26T13:59:40.735Z",
+        "id": "paper_1772119993453",
+        "timestamp": "2026-02-26T15:33:13.453Z",
         "market": "BTC-15M",
         "side": "YES",
         "size": 15,
@@ -27,32 +64,74 @@
         "entryPrice": 0.65,
         "pnl": 8.076923076923075,
         "exitPrice": 0.7,
-        "closedAt": "2026-02-26T13:59:45.741Z"
+        "closedAt": "2026-02-26T15:33:18.456Z"
       },
       {
-        "id": "paper_1772114380736",
-        "timestamp": "2026-02-26T13:59:40.736Z",
+        "id": "paper_1772119993453",
+        "timestamp": "2026-02-26T15:33:13.453Z",
+        "market": "BTC-15M",
+        "side": "YES",
+        "size": 15,
+        "confidence": 0.72,
+        "odds": 0.65,
+        "status": "closed",
+        "entryPrice": 0.65,
+        "pnl": -15,
+        "exitPrice": 0.38,
+        "closedAt": "2026-02-26T15:33:18.457Z"
+      },
+      {
+        "id": "paper_1772120662966",
+        "timestamp": "2026-02-26T15:44:22.966Z",
+        "market": "BTC-15M",
+        "side": "NO",
+        "size": 14,
+        "confidence": 0.7,
+        "odds": 0.6,
+        "status": "closed",
+        "entryPrice": 0.6,
+        "exitPrice": 0.55,
+        "pnl": 9.33,
+        "closedAt": "2026-02-26T15:44:22.967Z"
+      },
+      {
+        "id": "paper_1772120662968",
+        "timestamp": "2026-02-26T15:45:52.967Z",
+        "market": "SOL-15M",
+        "side": "YES",
+        "size": 11.25,
+        "confidence": 0.66,
+        "odds": 0.5,
+        "status": "closed",
+        "entryPrice": 0.5,
+        "exitPrice": 0.54,
+        "pnl": 4.5,
+        "closedAt": "2026-02-26T15:45:52.967Z"
+      },
+      {
+        "id": "paper_1772120662969",
+        "timestamp": "2026-02-26T15:47:22.967Z",
         "market": "ETH-15M",
         "side": "NO",
-        "size": 12.75,
-        "confidence": 0.68,
-        "odds": 0.42,
+        "size": 13.5,
+        "confidence": 0.33,
+        "odds": 0.45,
         "status": "closed",
-        "entryPrice": 0.42,
-        "pnl": 17.607142857142858,
-        "exitPrice": 0.38,
-        "closedAt": "2026-02-26T13:59:45.742Z"
+        "entryPrice": 0.45,
+        "exitPrice": 0.48,
+        "pnl": -4.05,
+        "closedAt": "2026-02-26T15:47:22.967Z"
       }
     ],
-    "winRate": "100.0%",
+    "winRate": "60.0%",
     "status": "Active - Paper trading profitable"
   },
   "combined": {
-    "totalBalance": 225.68406593406593,
+    "totalBalance": 202.85692307692307,
     "totalInitial": 200,
-    "totalPnL": 25.684065934065934,
-    "totalROI": "12.84",
-    "totalTrades": 2,
+    "totalPnL": 12.856923076923074,
+    "totalROI": "6.43",
+    "totalTrades": 8,
     "winRate": 100
   }
 }
