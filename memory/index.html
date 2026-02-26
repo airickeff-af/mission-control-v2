@@ -189,7 +189,13 @@
         <h1>🧠 MEMORY SYSTEM</h1>
         <div class="nav-links">
             <a href="../index.html" class="nav-link">🏢 Dashboard</a>
-            <a href="../data-viewer.html" class="nav-link">📁 Data Viewer</a>
+            <a href="../data-viewer.html" class="nav-link">📁 Data</a>
+            <a href="../agent-analytics.html" class="nav-link">📊 Analytics</a>
+            <div class="theme-toggle" style="display: flex; gap: 0.5rem; background: var(--bg-tertiary); padding: 0.5rem; border: 2px solid var(--border-color); margin-left: 1rem;">
+                <button class="theme-btn" data-theme="light" title="Light Mode" style="background: var(--bg-secondary); border: 2px solid var(--border-color); padding: 0.25rem 0.5rem; cursor: pointer;">☀️</button>
+                <button class="theme-btn active" data-theme="auto" title="Auto" style="background: var(--accent-primary); border: 2px solid var(--border-color); padding: 0.25rem 0.5rem; cursor: pointer;">🌓</button>
+                <button class="theme-btn" data-theme="dark" title="Dark Mode" style="background: var(--bg-secondary); border: 2px solid var(--border-color); padding: 0.25rem 0.5rem; cursor: pointer;">🌙</button>
+            </div>
         </div>
     </header>
 
@@ -197,20 +203,20 @@
         <!-- Stats -->
         <div class="stats-grid">
             <div class="stat-box">
-                <div class="stat-value">2</div>
-                <div class="stat-label">Daily Logs</div>
+                <div class="stat-value">9</div>
+                <div class="stat-label">Tasks Today</div>
             </div>
             <div class="stat-box">
-                <div class="stat-value">36</div>
-                <div class="stat-label">Heartbeat Checks</div>
+                <div class="stat-value">52</div>
+                <div class="stat-label">Total Tasks</div>
             </div>
             <div class="stat-box">
-                <div class="stat-value">7</div>
-                <div class="stat-label">Archived Sessions</div>
+                <div class="stat-value">9</div>
+                <div class="stat-label">Active Agents</div>
             </div>
             <div class="stat-box">
-                <div class="stat-value">4</div>
-                <div class="stat-label">Repos Tracked</div>
+                <div class="stat-value">2.89M</div>
+                <div class="stat-label">Tokens Used</div>
             </div>
         </div>
 
@@ -292,5 +298,16 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        // Theme toggle functionality
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.theme-btn').forEach(b => b.style.background = 'var(--bg-secondary)');
+                btn.style.background = 'var(--accent-primary)';
+                document.documentElement.setAttribute('data-theme', btn.dataset.theme);
+            });
+        });
+    </script>
 </body>
 </html>
