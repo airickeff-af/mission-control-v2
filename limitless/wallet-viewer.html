@@ -533,27 +533,28 @@
     const positionsPanel = document.getElementById('positions-panel');
     const historyPanel = document.getElementById('history-panel');
 
-    // Mock data generator - using real wallet data
-    function generateMockData() {
-      // Real wallet: 0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A
-      // Started with 100 USDC, Limitless took ~2.5 in fees
-      const assets = [
-        { symbol: 'USDC', name: 'USD Coin (Base L2)', balance: 97.5, price: 1, change24h: 0 }
-      ];
-
-      const positions = [
-        { symbol: 'BTC-30min', side: 'long', size: 10, entryPrice: 0.65, markPrice: 0.68, market: 'Limitless' },
-        { symbol: 'ETH-60min', side: 'short', size: 5, entryPrice: 0.42, markPrice: 0.40, market: 'Limitless' }
-      ];
-
-      const history = [
-        { type: 'deposit', asset: 'USDC', amount: 100, timestamp: Date.now() - 86400000, network: 'Base L2' },
-        { type: 'fee', asset: 'USDC', amount: -2.5, value: -2.5, timestamp: Date.now() - 86000000, note: 'Limitless fees (2.5%)' },
-        { type: 'trade', asset: 'BTC-30min', amount: 10, value: 6.5, timestamp: Date.now() - 43200000, market: 'Limitless' },
-        { type: 'trade', asset: 'ETH-60min', amount: -5, value: -2.1, timestamp: Date.now() - 3600000, market: 'Limitless' }
-      ];
-
-      return { assets, positions, history };
+    // Load real data from paper trading
+    async function loadRealData() {
+      try {
+        const [walletRes, positionsRes, tradesRes] = await Promise.all([
+          fetch('../../limitless-bot/data/wallet-state.json'),
+          fetch('../../limitless-bot/data/positions.json'),
+          fetch('../../limitless-bot/data/paper-trades.json')
+        ]);
+        
+        const wallet = await walletRes.json();
+        const positions = await positionsRes.json();
+        const trades = await tradesRes.json();
+        
+        return {
+          wallet,
+          positions: positions.positions || [],
+          trades: trades || []
+        };
+      } catch (error) {
+        console.error('Error loading real data:', error);
+        return generateMockData();
+      }
     }
 
     // Calculate position PnL
