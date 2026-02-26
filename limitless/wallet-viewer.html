@@ -528,10 +528,12 @@
     const positionsPanel = document.getElementById('positions-panel');
     const historyPanel = document.getElementById('history-panel');
 
-    // Mock data generator
+    // Mock data generator - using real wallet data
     function generateMockData() {
+      // Real wallet: 0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A
+      // Started with 100 USDC, Limitless took ~2.5 in fees
       const assets = [
-        { symbol: 'USDC', name: 'USD Coin (Base L2)', balance: 100, price: 1, change24h: 0 }
+        { symbol: 'USDC', name: 'USD Coin (Base L2)', balance: 97.5, price: 1, change24h: 0 }
       ];
 
       const positions = [
@@ -541,6 +543,7 @@
 
       const history = [
         { type: 'deposit', asset: 'USDC', amount: 100, timestamp: Date.now() - 86400000, network: 'Base L2' },
+        { type: 'fee', asset: 'USDC', amount: -2.5, value: -2.5, timestamp: Date.now() - 86000000, note: 'Limitless fees (2.5%)' },
         { type: 'trade', asset: 'BTC-30min', amount: 10, value: 6.5, timestamp: Date.now() - 43200000, market: 'Limitless' },
         { type: 'trade', asset: 'ETH-60min', amount: -5, value: -2.1, timestamp: Date.now() - 3600000, market: 'Limitless' }
       ];
@@ -577,24 +580,23 @@
 
     // Connect wallet
     async function connectWallet() {
-      // Simulate wallet connection
+      // Use real wallet address
       connectBtn.textContent = 'Connecting...';
       connectBtn.disabled = true;
 
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      const mockAddress = '0x' + Array(40).fill(0).map(() => 
-        Math.floor(Math.random() * 16).toString(16)
-      ).join('');
+      // Real wallet address provided by user
+      const realAddress = '0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A';
 
       walletState.connected = true;
-      walletState.address = mockAddress;
+      walletState.address = realAddress;
 
-      // Load mock data
-      const mockData = generateMockData();
-      walletState.balances = mockData.assets;
-      walletState.positions = mockData.positions;
-      walletState.history = mockData.history;
+      // Load wallet data
+      const walletData = generateMockData();
+      walletState.balances = walletData.assets;
+      walletState.positions = walletData.positions;
+      walletState.history = walletData.history;
 
       // Calculate totals
       walletState.totalBalance = walletState.balances.reduce((sum, asset) => 
