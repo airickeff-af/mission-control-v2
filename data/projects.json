@@ -334,9 +334,10 @@
         "progress": "1/16 (6%)",
         "nextTask": "LIM-P0-002: Market Data Fetcher (Due: Today 3 PM)"
       },
-      "walletStatus": "pending",
-      "walletAddress": null,
-      "walletType": "Base L2 Wallet (to be connected)",
+      "walletStatus": "connected",
+      "walletAddress": "0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A",
+      "walletType": "Base L2 Wallet",
+      "dashboardUrl": "https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html",
       "apiStatus": "connected",
       "marketsAvailable": 463,
       "cryptoMarkets": 25,
