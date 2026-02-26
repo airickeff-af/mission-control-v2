@@ -498,7 +498,52 @@
         </div>
       </div>
     </div>
-    <!-- Learning Section -->
+    <!-- Logs Section -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <h3 style="font-family: var(--font-header); font-size: 0.6rem; color: var(--accent-warning); margin-bottom: 1rem;">📋 TRADING LOGS</h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+        <!-- LL Logs -->
+        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 4px;">
+          <div style="font-size: 0.8rem; color: var(--accent-primary); margin-bottom: 0.5rem;">🔵 LL LOGS</div>
+          <div id="ll-logs" style="font-family: monospace; font-size: 0.7rem; color: var(--text-secondary); max-height: 150px; overflow-y: auto;">
+            <div>[23:58:02] 🚀 LL Paper Trading Bot Started</div>
+            <div>[23:58:02] 💰 Initial Capital: $100</div>
+            <div>[23:58:02] 🎯 Strategy: YES >65% | NO <35%</div>
+            <div>[23:58:45] 🟢 NEW TRADE: BTC-Hourly YES $12.50 @ 72%</div>
+            <div>[23:59:12] ✅ CLOSED: BTC-Hourly YES | PnL: +$7.50</div>
+            <div>[00:01:23] 🟢 NEW TRADE: ETH-Hourly NO $10.00 @ 32%</div>
+            <div>[00:02:15] ✅ CLOSED: ETH-Hourly NO | PnL: +$5.00</div>
+          </div>
+          <a href="../../limitless-bot/logs/ll-trading.log" style="color: var(--accent-primary); font-size: 0.7rem;">📄 Full Log →</a>
+        </div>
+        
+        <!-- Stanley Logs -->
+        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 4px;">
+          <div style="font-size: 0.8rem; color: var(--accent-secondary); margin-bottom: 0.5rem;">🟣 STANLEY LOGS</div>
+          <div id="stanley-logs" style="font-family: monospace; font-size: 0.7rem; color: var(--text-secondary); max-height: 150px; overflow-y: auto;">
+            <div>[23:45:10] 🚀 Stanley Paper Trading Bot Started</div>
+            <div>[23:45:10] 💰 Initial Capital: $100</div>
+            <div>[23:45:10] 🎯 Strategy: YES/NO >65%</div>
+            <div>[23:46:22] 🟢 NEW TRADE: BTC-15M NO $14.00 @ 70%</div>
+            <div>[23:47:05] ✅ CLOSED: BTC-15M NO | PnL: +$9.33</div>
+            <div>[23:52:18] 🟢 NEW TRADE: SOL-15M YES $11.25 @ 66%</div>
+            <div>[23:53:42] ✅ CLOSED: SOL-15M YES | PnL: +$4.50</div>
+          </div>
+          <a href="../../limitless-bot/logs/stanley-trading.log" style="color: var(--accent-secondary); font-size: 0.7rem;">📄 Full Log →</a>
+        </div>
+      </div>
+      
+      <div style="background: var(--bg-tertiary); padding: 0.75rem; border-radius: 4px; text-align: center;">
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">📁 All Log Files</div>
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+          <a href="../../limitless-bot/logs/ll-trading.log" style="color: var(--accent-primary); font-size: 0.7rem;">🔵 LL Trading Log</a>
+          <a href="../../limitless-bot/logs/stanley-trading.log" style="color: var(--accent-secondary); font-size: 0.7rem;">🟣 Stanley Trading Log</a>
+          <a href="../../limitless-bot/logs/paper-trading.log" style="color: var(--accent-warning); font-size: 0.7rem;">📊 Paper Trading Log</a>
+          <a href="../../limitless-bot/logs/market-fetcher.log" style="color: var(--text-secondary); font-size: 0.7rem;">📡 Market Fetcher</a>
+        </div>
+      </div>
+    </div>
     <div class="card" style="margin-bottom: 1.5rem;">
       <h3 style="font-family: var(--font-header); font-size: 0.6rem; color: var(--accent-warning); margin-bottom: 1rem;">🧠 AGENT LEARNING</h3>
       
