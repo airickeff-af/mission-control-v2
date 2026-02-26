@@ -389,10 +389,16 @@
 </head>
 <body>
   <header class="header">
-    <h1>💰 Wallet Balance Viewer <span class="network-badge">Base L2</span></h1>
-    <div class="wallet-connect">
-      <span id="wallet-address" style="color: var(--text-secondary); font-size: 0.875rem;"></span>
-      <button class="wallet-btn" id="connect-btn">Connect Wallet</button>
+    <div style="display: flex; align-items: center;">
+      <h1>💰 Wallet <span class="network-badge">Base L2</span></h1>
+    </div>
+    <div class="nav-links" style="display: flex; gap: 1rem; align-items: center;">
+      <a href="../index.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">🏢 Dashboard</a>
+      <a href="../data-viewer.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">📁 Data</a>
+      <a href="../agent-analytics.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">📊 Analytics</a>
+      <a href="../memory/index.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">🧠 Memory</a>
+      <span id="wallet-address" style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 1rem;"></span>
+      <button class="wallet-btn" id="connect-btn">Connect</button>
     </div>
   </header>
 

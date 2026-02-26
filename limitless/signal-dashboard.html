@@ -4,38 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Limitless Trading Bot - Signal Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      image-rendering: pixelated;
     }
     
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --bg-tertiary: #1a1a25;
-      --accent-primary: #00d4ff;
-      --accent-secondary: #7c3aed;
-      --accent-success: #10b981;
-      --accent-danger: #ef4444;
-      --accent-warning: #f59e0b;
+      --bg-primary: #2d1b4e;
+      --bg-secondary: #1a0f2e;
+      --bg-tertiary: #3d2b5e;
+      --accent-primary: #00f0ff;
+      --accent-secondary: #ff6b9d;
+      --accent-success: #6bcf7f;
+      --accent-danger: #ff4444;
+      --accent-warning: #ffd93d;
       --text-primary: #ffffff;
-      --text-secondary: #a1a1aa;
-      --border-color: #27273a;
+      --text-secondary: #b8a9d9;
+      --border-color: #5d4b7e;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+      --font-pixel: 'VT323', monospace;
+      --font-header: 'Press Start 2P', cursive;
     }
     
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-pixel);
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
+      font-size: 18px;
     }
     
     .header {
       background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 4px solid var(--border-color);
+      box-shadow: 0 4px 0 var(--shadow-color);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -43,11 +50,11 @@
     }
     
     .header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: var(--font-header);
+      font-size: 0.9rem;
+      color: var(--accent-primary);
+      text-shadow: 2px 2px 0 var(--shadow-color);
+    }
     }
     
     .status-indicator {
@@ -409,10 +416,16 @@
 </head>
 <body>
   <header class="header">
-    <h1>🔮 Limitless Signal Dashboard</h1>
-    <div class="status-indicator">
-      <span class="status-dot"></span>
-      <span id="connection-status">Connected</span>
+    <h1>📈 Signals</h1>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <a href="../index.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">🏢 Dashboard</a>
+      <a href="../data-viewer.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">📁 Data</a>
+      <a href="../agent-analytics.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">📊 Analytics</a>
+      <a href="../memory/index.html" class="nav-link" style="color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border: 2px solid var(--border-color); border-radius: 4px; font-size: 1rem;">🧠 Memory</a>
+      <div class="status-indicator" style="margin-left: 1rem;">
+        <span class="status-dot"></span>
+        <span id="connection-status">Connected</span>
+      </div>
     </div>
   </header>
 
