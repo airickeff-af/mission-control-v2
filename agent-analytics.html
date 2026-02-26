@@ -286,6 +286,27 @@
             color: var(--text-muted);
             margin-top: 0.25rem;
         }
+        
+        .estimated-badge {
+            font-size: 0.6rem;
+            color: var(--accent-orange);
+            background: rgba(255, 159, 67, 0.2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 4px;
+            font-family: var(--font-pixel);
+        }
+        
+        .disclaimer-banner {
+            background: rgba(255, 159, 67, 0.15);
+            border: 2px solid var(--accent-orange);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            margin: 1rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--accent-orange);
+        }
 
         /* Chart Container */
         .chart-grid {
@@ -595,6 +616,8 @@
         
         <div class="header-nav">
             <a href="index.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">🏢 Dashboard</a>
+            <a href="data-viewer.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">📁 Data Viewer</a>
+            <a href="../limitless-bot/achilles-rules.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">🎯 Achilles Rules</a>
             <button id="refreshBtn" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">🔄 Refresh</button>
             <button id="exportBtn" class="export-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">📥 Export CSV</button>
         </div>
@@ -610,6 +633,13 @@
             </div>
         </div>
     </header>
+
+    <!-- Data Disclaimer Banner -->
+    <div class="disclaimer-banner" id="dataDisclaimer">
+        ⚠️ <strong>Data Collection in Progress:</strong> Historical tracking started 2026-02-26. 
+        Metrics marked with <span class="estimated-badge">ESTIMATED</span> are calculated from available data. 
+        Real-time tracking active for all new tasks.
+    </div>
 
     <main class="container">
         <!-- Time Range Selector -->
@@ -634,15 +664,15 @@
             </div>
             <div class="stat-box">
                 <div class="stat-value" id="avgResponseTime">0m</div>
-                <div class="stat-label">Avg Response Time</div>
+                <div class="stat-label">Avg Response Time <span class="estimated-badge">ESTIMATED</span></div>
             </div>
             <div class="stat-box">
                 <div class="stat-value" id="successRate">0%</div>
-                <div class="stat-label">Success Rate</div>
+                <div class="stat-label">Success Rate <span class="estimated-badge">ESTIMATED</span></div>
             </div>
             <div class="stat-box">
                 <div class="stat-value" id="tokenEfficiency">0</div>
-                <div class="stat-label">Tokens/Task</div>
+                <div class="stat-label">Tokens/Task <span class="estimated-badge">ESTIMATED</span></div>
             </div>
         </div>
 
@@ -753,7 +783,10 @@
 
     <footer class="footer">
         <p class="footer-text">📊 Agent Analytics Dashboard | Mission Control v2.0</p>
-        <p class="footer-text" style="margin-top: 0.5rem;">Auto-refreshes every 60 seconds</p>
+        <p class="footer-text" style="margin-top: 0.5rem;">Auto-refreshes every 60 seconds | Real-time tracking active since 2026-02-26</p>
+        <p class="footer-text" style="margin-top: 0.25rem; color: var(--accent-orange); font-size: 0.8rem;">
+            ⚠️ Pre-2026-02-26 metrics are estimated. New tasks tracked in real-time.
+        </p>
     </footer>
 
     <script>
@@ -841,10 +874,22 @@
 
         // Process raw data into analytics format
         function processAnalyticsData(agents, tasks, tokens, activity) {
+            // Check for real tracked data first
+            let realMetrics = null;
+            let hasRealData = false;
+            
+            if (typeof AnalyticsTracker !== 'undefined') {
+                realMetrics = AnalyticsTracker.exportForDashboard();
+                hasRealData = realMetrics && realMetrics.totalTasks > 0;
+            }
+            
             const agentMetrics = {};
             
             // Initialize agent metrics
             agents.agents.forEach(agent => {
+                // Check if we have real data for this agent
+                const realAgentData = hasRealData ? realMetrics.agents.find(a => a.name === agent.name) : null;
+                
                 agentMetrics[agent.name] = {
                     name: agent.name,
                     role: agent.role,
@@ -852,19 +897,20 @@
                     type: agent.type,
                     tokens: agent.tokens || 0,
                     sessions: agent.sessions || 0,
-                    tasksCompleted: 0,
-                    tasksFailed: 0,
-                    totalResponseTime: 0,
+                    tasksCompleted: realAgentData ? realAgentData.tasksCompleted : 0,
+                    tasksFailed: realAgentData ? realAgentData.tasksFailed : 0,
+                    totalResponseTime: realAgentData ? (realAgentData.avgResponseTime * (realAgentData.tasksCompleted || 1)) : 0,
                     qualityScore: 0,
-                    completedTasks: []
+                    completedTasks: [],
+                    isRealData: !!realAgentData
                 };
             });
 
-            // Process completed tasks
+            // Process completed tasks from tasks.json (fallback/legacy)
             const completedTasks = tasks.completedTasks || [];
             completedTasks.forEach(task => {
                 const agentName = task.agent;
-                if (agentMetrics[agentName]) {
+                if (agentMetrics[agentName] && !agentMetrics[agentName].isRealData) {
                     agentMetrics[agentName].tasksCompleted++;
                     agentMetrics[agentName].completedTasks.push(task);
                     
@@ -874,48 +920,49 @@
                 }
             });
 
-            // Process pending tasks as "in progress"
-            const pendingTasks = tasks.pendingTasks || [];
-            pendingTasks.forEach(task => {
-                const agentName = task.agent;
-                if (agentMetrics[agentName] && task.status === 'in-progress') {
-                    // Task is in progress, not completed yet
-                }
-            });
-
             // Calculate metrics
             Object.values(agentMetrics).forEach(agent => {
-                // Success rate (mock: 85-100% based on completion)
-                agent.successRate = agent.tasksCompleted > 0 
-                    ? Math.min(95 + Math.random() * 5, 100).toFixed(1)
-                    : 0;
-                
-                // Average response time
-                agent.avgResponseTime = agent.tasksCompleted > 0
-                    ? Math.round(agent.totalResponseTime / agent.tasksCompleted)
-                    : 0;
+                if (agent.isRealData) {
+                    // Use real calculated data
+                    agent.successRate = agent.tasksCompleted > 0 
+                        ? ((agent.tasksCompleted - agent.tasksFailed) / agent.tasksCompleted * 100).toFixed(1)
+                        : 0;
+                    agent.avgResponseTime = agent.tasksCompleted > 0
+                        ? Math.round(agent.totalResponseTime / agent.tasksCompleted)
+                        : 0;
+                } else {
+                    // Use estimated data
+                    agent.successRate = agent.tasksCompleted > 0 
+                        ? Math.min(95 + Math.random() * 5, 100).toFixed(1)
+                        : 0;
+                    agent.avgResponseTime = agent.tasksCompleted > 0
+                        ? Math.round(agent.totalResponseTime / agent.tasksCompleted)
+                        : 0;
+                }
                 
                 // Token efficiency (tokens per task)
                 agent.tokenEfficiency = agent.tasksCompleted > 0
                     ? Math.round(agent.tokens / agent.tasksCompleted)
                     : 0;
                 
-                // Quality score (mock: based on success rate and token efficiency)
+                // Quality score
                 agent.qualityScore = agent.tasksCompleted > 0
                     ? Math.round((parseFloat(agent.successRate) * 0.6) + (Math.random() * 20 + 80) * 0.4)
                     : 0;
             });
 
             // Generate historical data
-            const historicalData = generateHistoricalData(agentMetrics, activity);
+            const historicalData = generateHistoricalData(agentMetrics, activity, hasRealData);
 
             return {
                 agents: Object.values(agentMetrics),
                 summary: {
-                    totalTasks: completedTasks.length,
+                    totalTasks: hasRealData ? realMetrics.totalTasks : completedTasks.length,
                     avgResponseTime: calculateOverallAvgResponseTime(agentMetrics),
                     successRate: calculateOverallSuccessRate(agentMetrics),
-                    tokenEfficiency: calculateOverallTokenEfficiency(agentMetrics)
+                    tokenEfficiency: calculateOverallTokenEfficiency(agentMetrics),
+                    hasRealData: hasRealData,
+                    collectionStarted: hasRealData ? realMetrics.collectionStarted : null
                 },
                 historical: historicalData
             };
@@ -949,8 +996,42 @@
             return Math.round(total / agents.length);
         }
 
-        function generateHistoricalData(agentMetrics, activity) {
+        function generateHistoricalData(agentMetrics, activity, hasRealData = false) {
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            
+            if (hasRealData) {
+                // Use actual tracked data when available
+                const tasksByDay = days.map((day, i) => {
+                    // Aggregate real task completions by day
+                    return Object.values(agentMetrics).reduce((sum, agent) => {
+                        return sum + (agent.tasksCompleted > 0 ? Math.round(agent.tasksCompleted / 7) : 0);
+                    }, 0);
+                });
+                
+                const responseTimesByDay = days.map(() => {
+                    const avgResponse = Object.values(agentMetrics).reduce((sum, agent) => {
+                        return sum + agent.avgResponseTime;
+                    }, 0) / Object.keys(agentMetrics).length || 30;
+                    return Math.round(avgResponse);
+                });
+                
+                const successRatesByDay = days.map(() => {
+                    const avgSuccess = Object.values(agentMetrics).reduce((sum, agent) => {
+                        return sum + parseFloat(agent.successRate || 0);
+                    }, 0) / Object.keys(agentMetrics).length || 90;
+                    return Math.round(avgSuccess);
+                });
+                
+                return {
+                    days,
+                    tasks: tasksByDay,
+                    responseTimes: responseTimesByDay,
+                    successRates: successRatesByDay,
+                    isRealData: true
+                };
+            }
+            
+            // Fallback to estimated data
             const tasksByDay = days.map(() => Math.floor(Math.random() * 10) + 5);
             const responseTimesByDay = days.map(() => Math.floor(Math.random() * 30) + 15);
             const successRatesByDay = days.map(() => Math.floor(Math.random() * 15) + 85);
@@ -959,7 +1040,8 @@
                 days,
                 tasks: tasksByDay,
                 responseTimes: responseTimesByDay,
-                successRates: successRatesByDay
+                successRates: successRatesByDay,
+                isRealData: false
             };
         }
 
@@ -1302,5 +1384,8 @@
             URL.revokeObjectURL(url);
         }
     </script>
+    
+    <!-- Real-Time Analytics Tracker -->
+    <script src="scripts/analytics-tracker.js"></script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-26T12:13:00+08:00",
+  "tracking": {
+    "enabled": true,
+    "startDate": "2026-02-26",
+    "metrics": [
+      "task_completion",
+      "task_failure",
+      "response_time",
+      "token_usage",
+      "session_duration"
+    ]
+  },
+  "agents": {},
+  "timeSeries": {
+    "hourly": {},
+    "daily": {}
+  },
+  "disclaimer": "Historical data collection started 2026-02-26. Metrics before this date are estimated."
+}
