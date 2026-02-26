@@ -413,18 +413,18 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div>
             <div class="card-title" style="font-size: 0.8rem;">Balance</div>
-            <div class="card-value" id="limitless-balance" style="font-size: 1.8rem; color: var(--accent-primary);">$100.00</div>
+            <div class="card-value" id="limitless-balance" style="font-size: 1.8rem; color: var(--accent-primary);">$28.41</div>
             <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">Initial: $100.00</div>
           </div>
           <div>
             <div class="card-title" style="font-size: 0.8rem;">PnL</div>
-            <div class="card-value" style="font-size: 1.8rem; color: var(--text-secondary);">$0.00</div>
-            <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">0 trades</div>
+            <div class="card-value" style="font-size: 1.8rem; color: var(--accent-danger);">-$71.59</div>
+            <div style="font-size: 0.7rem; color: var(--accent-danger); margin-top: 0.25rem;">7 trades | 5W/2L</div>
           </div>
         </div>
         <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--border-color);">
           <div class="card-title" style="font-size: 0.8rem;">Status</div>
-          <div style="color: var(--accent-success);">🟢 Ready - Awaiting first trade</div>
+          <div style="color: var(--accent-danger);">🔴 Paper Trading - Down 71.6%</div>
         </div>
       </div>
       
@@ -437,18 +437,18 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div>
             <div class="card-title" style="font-size: 0.8rem;">Balance</div>
-            <div class="card-value" id="polymarket-balance" style="font-size: 1.8rem; color: var(--accent-secondary);">$125.68</div>
+            <div class="card-value" id="polymarket-balance" style="font-size: 1.8rem; color: var(--accent-secondary);">$49.70</div>
             <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">Initial: $100.00</div>
           </div>
           <div>
             <div class="card-title" style="font-size: 0.8rem;">PnL</div>
-            <div class="card-value" style="font-size: 1.8rem; color: var(--accent-success);">+$25.68</div>
-            <div style="font-size: 0.7rem; color: var(--accent-success); margin-top: 0.25rem;">2 trades | 100% win</div>
+            <div class="card-value" style="font-size: 1.8rem; color: var(--accent-danger);">-$50.30</div>
+            <div style="font-size: 0.7rem; color: var(--accent-danger); margin-top: 0.25rem;">27 trades | 14W/13L</div>
           </div>
         </div>
         <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--border-color);">
           <div class="card-title" style="font-size: 0.8rem;">Status</div>
-          <div style="color: var(--accent-success);">🟢 Active - Paper trading profitable</div>
+          <div style="color: var(--accent-danger);">🔴 Paper Trading - Down 50.3%</div>
         </div>
       </div>
     </div>
@@ -715,27 +715,52 @@
     const walletData = {
       limitless: {
         address: '0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A',
-        balance: 110.00,
+        balance: 28.41,
         initial: 100,
-        pnl: 10.00,
+        pnl: -71.59,
         trades: [
-          { id: 'll_1', timestamp: '2026-02-26T23:58:45.000Z', market: 'BTC-Hourly', side: 'YES', size: 12.50, confidence: 0.72, pnl: 7.50, status: 'WIN' },
-          { id: 'll_2', timestamp: '2026-02-27T00:01:23.000Z', market: 'ETH-Hourly', side: 'NO', size: 10.00, confidence: 0.32, pnl: 5.00, status: 'WIN' },
-          { id: 'll_3', timestamp: '2026-02-27T00:03:15.000Z', market: 'SOL-Hourly', side: 'YES', size: 8.75, confidence: 0.68, pnl: -2.50, status: 'LOSS' }
+          { id: 'll_1', timestamp: '2026-02-26T15:34:57.771Z', market: 'ETH-Hourly', side: 'YES', size: 15, confidence: 0.86, pnl: 7.05, status: 'WIN' },
+          { id: 'll_2', timestamp: '2026-02-26T15:48:29.782Z', market: 'SOL-Hourly', side: 'YES', size: 6.86, confidence: 0.84, pnl: 3.28, status: 'WIN' },
+          { id: 'll_3', timestamp: '2026-02-26T15:48:59.812Z', market: 'SOL-Hourly', side: 'YES', size: 5.83, confidence: 0.87, pnl: 2.77, status: 'WIN' },
+          { id: 'll_4', timestamp: '2026-02-26T15:59:20.472Z', market: 'BTC-Hourly', side: 'YES', size: 7.77, confidence: 0.72, pnl: -3.08, status: 'LOSS' },
+          { id: 'll_5', timestamp: '2026-02-26T16:00:20.497Z', market: 'ETH-Hourly', side: 'YES', size: 6.6, confidence: 0.79, pnl: 4.02, status: 'WIN' },
+          { id: 'll_6', timestamp: '2026-02-26T16:02:20.571Z', market: 'SOL-Hourly', side: 'YES', size: 5.61, confidence: 0.76, pnl: -2.59, status: 'LOSS' },
+          { id: 'll_7', timestamp: '2026-02-26T16:07:20.704Z', market: 'SOL-Hourly', side: 'YES', size: 5.48, confidence: 0.75, pnl: 4.28, status: 'WIN' }
         ]
       },
       polymarket: {
         address: '0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A',
-        balance: 110.47,
+        balance: 49.70,
         initial: 100,
-        pnl: 10.47,
+        pnl: -50.30,
         trades: [
-          { id: 'paper_1', timestamp: '2026-02-26T13:59:40.735Z', market: 'BTC-15M', side: 'YES', size: 15, confidence: 0.72, pnl: 8.08, status: 'WIN' },
-          { id: 'paper_2', timestamp: '2026-02-26T13:59:40.736Z', market: 'ETH-15M', side: 'NO', size: 12.75, confidence: 0.68, pnl: 17.61, status: 'WIN' },
-          { id: 'paper_3', timestamp: '2026-02-26T23:46:22.000Z', market: 'BTC-15M', side: 'NO', size: 14.00, confidence: 0.70, pnl: 9.33, status: 'WIN' },
-          { id: 'paper_4', timestamp: '2026-02-26T23:52:18.000Z', market: 'SOL-15M', side: 'YES', size: 11.25, confidence: 0.66, pnl: 4.50, status: 'WIN' },
-          { id: 'paper_5', timestamp: '2026-02-26T23:58:30.000Z', market: 'ETH-15M', side: 'NO', size: 13.50, confidence: 0.33, pnl: -4.05, status: 'LOSS' },
-          { id: 'paper_6', timestamp: '2026-02-27T00:05:12.000Z', market: 'BTC-15M', side: 'YES', size: 15.00, confidence: 0.72, pnl: -15.00, status: 'LOSS' }
+          { id: 'paper_1', timestamp: '2026-02-26T15:33:13.453Z', market: 'BTC-15M', side: 'YES', size: 15, confidence: 0.72, pnl: 8.08, status: 'WIN' },
+          { id: 'paper_2', timestamp: '2026-02-26T15:33:13.453Z', market: 'BTC-15M', side: 'YES', size: 15, confidence: 0.72, pnl: -15.00, status: 'LOSS' },
+          { id: 'paper_3', timestamp: '2026-02-26T15:44:22.966Z', market: 'BTC-15M', side: 'NO', size: 14, confidence: 0.70, pnl: 9.33, status: 'WIN' },
+          { id: 'paper_4', timestamp: '2026-02-26T15:45:52.967Z', market: 'SOL-15M', side: 'YES', size: 11.25, confidence: 0.66, pnl: 4.50, status: 'WIN' },
+          { id: 'paper_5', timestamp: '2026-02-26T15:47:22.967Z', market: 'ETH-15M', side: 'NO', size: 13.5, confidence: 0.33, pnl: -4.05, status: 'LOSS' },
+          { id: 'paper_6', timestamp: '2026-02-26T15:58:53.981Z', market: 'SOL-15M', side: 'YES', size: 13.11, confidence: 0.87, pnl: -4.51, status: 'LOSS' },
+          { id: 'paper_7', timestamp: '2026-02-26T15:58:13.972Z', market: 'ETH-15M', side: 'NO', size: 15.43, confidence: 0.81, pnl: -5.85, status: 'LOSS' },
+          { id: 'paper_8', timestamp: '2026-02-26T16:00:14.016Z', market: 'BTC-15M', side: 'NO', size: 11.15, confidence: 0.67, pnl: -4.92, status: 'LOSS' },
+          { id: 'paper_9', timestamp: '2026-02-26T16:01:34.037Z', market: 'SOL-15M', side: 'NO', size: 8.05, confidence: 0.77, pnl: 3.29, status: 'WIN' },
+          { id: 'paper_10', timestamp: '2026-02-26T16:02:14.071Z', market: 'BTC-15M', side: 'NO', size: 6.85, confidence: 0.83, pnl: -2.62, status: 'LOSS' },
+          { id: 'paper_11', timestamp: '2026-02-26T16:00:54.036Z', market: 'SOL-15M', side: 'YES', size: 9.48, confidence: 0.76, pnl: -3.13, status: 'LOSS' },
+          { id: 'paper_12', timestamp: '2026-02-26T16:04:14.106Z', market: 'ETH-15M', side: 'YES', size: 5.82, confidence: 0.72, pnl: 3.85, status: 'WIN' },
+          { id: 'paper_13', timestamp: '2026-02-26T16:07:34.131Z', market: 'ETH-15M', side: 'YES', size: 6.48, confidence: 0.77, pnl: -2.76, status: 'LOSS' },
+          { id: 'paper_14', timestamp: '2026-02-26T16:06:14.122Z', market: 'SOL-15M', side: 'NO', size: 6.52, confidence: 0.87, pnl: 2.92, status: 'WIN' },
+          { id: 'paper_15', timestamp: '2026-02-26T16:05:34.112Z', market: 'BTC-15M', side: 'NO', size: 7.67, confidence: 0.79, pnl: 4.97, status: 'WIN' },
+          { id: 'paper_16', timestamp: '2026-02-26T16:08:54.173Z', market: 'SOL-15M', side: 'NO', size: 6.38, confidence: 0.80, pnl: 4.73, status: 'WIN' },
+          { id: 'paper_17', timestamp: '2026-02-26T16:08:14.171Z', market: 'ETH-15M', side: 'NO', size: 5.51, confidence: 0.87, pnl: 3.90, status: 'WIN' },
+          { id: 'paper_18', timestamp: '2026-02-26T16:09:34.173Z', market: 'ETH-15M', side: 'NO', size: 7.01, confidence: 0.84, pnl: -2.66, status: 'LOSS' },
+          { id: 'paper_19', timestamp: '2026-02-26T16:11:34.224Z', market: 'SOL-15M', side: 'NO', size: 5.54, confidence: 0.87, pnl: 4.40, status: 'WIN' },
+          { id: 'paper_20', timestamp: '2026-02-26T16:10:54.222Z', market: 'ETH-15M', side: 'YES', size: 6.52, confidence: 0.78, pnl: 3.18, status: 'WIN' },
+          { id: 'paper_21', timestamp: '2026-02-26T16:10:14.213Z', market: 'SOL-15M', side: 'NO', size: 5.96, confidence: 0.78, pnl: -1.94, status: 'LOSS' },
+          { id: 'paper_22', timestamp: '2026-02-26T16:14:54.331Z', market: 'ETH-15M', side: 'NO', size: 8.58, confidence: 0.81, pnl: 4.90, status: 'WIN' },
+          { id: 'paper_23', timestamp: '2026-02-26T16:15:34.330Z', market: 'BTC-15M', side: 'YES', size: 10.37, confidence: 0.76, pnl: -4.80, status: 'LOSS' },
+          { id: 'paper_24', timestamp: '2026-02-26T16:18:54.391Z', market: 'BTC-15M', side: 'YES', size: 9.95, confidence: 0.82, pnl: 6.83, status: 'WIN' },
+          { id: 'paper_25', timestamp: '2026-02-26T16:16:14.353Z', market: 'SOL-15M', side: 'NO', size: 9.47, confidence: 0.71, pnl: -4.04, status: 'LOSS' },
+          { id: 'paper_26', timestamp: '2026-02-26T16:20:14.392Z', market: 'ETH-15M', side: 'NO', size: 9.21, confidence: 0.79, pnl: -4.31, status: 'LOSS' },
+          { id: 'paper_27', timestamp: '2026-02-26T16:20:54.412Z', market: 'SOL-15M', side: 'NO', size: 7.83, confidence: 0.73, pnl: 3.96, status: 'WIN' }
         ]
       }
     };
