@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T00:40:00+08:00",
+  "lastUpdated": "2026-02-27T01:22:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -180,7 +180,7 @@
       "name": "Limitless Trading Bot",
       "status": "active",
       "completion": 65,
-      "url": "https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html",
+      "url": "https://dashboard-ten-sand-20.vercel.app/limitless/wallet-viewer.html",
       "pendingTasks": 5,
       "lead": "Limitless",
       "targetCompletion": "2026-02-27",
@@ -286,8 +286,8 @@
       "p0Completed": 1,
       "p0Total": 16,
       "p0Progress": "6%",
-      "lastUpdated": "2026-02-27T00:40:00+08:00",
-      "nextUpdate": "2026-02-27T01:40:00+08:00",
+      "lastUpdated": "2026-02-27T01:40:00+08:00",
+      "nextUpdate": "2026-02-27T02:40:00+08:00",
       "liveTradingReady": false,
       "liveTradingETA": "2026-02-27T08:00:00+08:00",
       "stats": {
@@ -311,6 +311,8 @@
         "recentTrades": [],
         "tradeHistory": [],
         "logs": [
+          {"timestamp": "2026-02-27T01:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
+          {"timestamp": "2026-02-27T01:22:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
           {"timestamp": "2026-02-27T00:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
           {"timestamp": "2026-02-27T00:22:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
           {"timestamp": "2026-02-26T23:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
@@ -319,9 +321,7 @@
           {"timestamp": "2026-02-26T21:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
           {"timestamp": "2026-02-26T21:22:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
           {"timestamp": "2026-02-26T20:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
-          {"timestamp": "2026-02-26T19:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
-          {"timestamp": "2026-02-26T19:22:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."},
-          {"timestamp": "2026-02-26T18:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."}
+          {"timestamp": "2026-02-26T19:40:00+08:00", "level": "info", "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."}
         ],
         "scanLog": [
           {"timestamp": "2026-02-26T08:15:00+08:00", "btc_price": 65948, "signal_composite": 0.108, "direction": "BULLISH", "decision": "NO_TRADE", "reason": "Cannot access Kalshi market data - need direct browser/API access for EV edge and order book", "red_flags": 0}
