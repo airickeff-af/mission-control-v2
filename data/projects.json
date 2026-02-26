@@ -107,7 +107,7 @@
       "name": "Memory System",
       "status": "active",
       "completion": 75,
-      "url": null,
+      "url": "https://mission-control-v2-sepia.vercel.app/memory/index.html",
       "pendingTasks": 0,
       "lead": "Nexus",
       "targetCompletion": "2026-02-28",
