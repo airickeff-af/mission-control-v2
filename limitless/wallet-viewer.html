@@ -452,12 +452,20 @@
       </div>
     </div>
 
-    <div id="loading-state" class="loading">
+    <div id="loading-state" class="loading" style="display: none;">
       <div class="spinner"></div>
-      <p>Connect your wallet to view balances</p>
+      <p>Loading balances from API...</p>
     </div>
 
-    <div id="wallet-content" style="display: none;">
+    <!-- ROI Windows -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <h3 style="font-family: var(--font-header); font-size: 0.6rem; color: var(--accent-warning); margin-bottom: 1rem;">📊 ROI WINDOWS</h3>
+      <div id="roi-windows" class="stats-grid" style="grid-template-columns: repeat(7, 1fr);">
+        <!-- ROI windows will be inserted here -->
+      </div>
+    </div>
+
+    <div id="wallet-content" style="display: block;">
       <!-- Overview Cards -->
       <div class="overview-grid">
         <div class="card">
@@ -939,11 +947,61 @@
       });
     });
 
+    // ROI Calculator for different time periods
+    function calculateROI(period) {
+      const trades = walletState.history || [];
+      const now = Date.now();
+      const periods = {
+        '1h': 60 * 60 * 1000,
+        '6h': 6 * 60 * 60 * 1000,
+        '12h': 12 * 60 * 60 * 1000,
+        '24h': 24 * 60 * 60 * 1000,
+        '3.5d': 3.5 * 24 * 60 * 60 * 1000,
+        '7d': 7 * 24 * 60 * 60 * 1000,
+        '30d': 30 * 24 * 60 * 60 * 1000
+      };
+      
+      const cutoff = now - periods[period];
+      const periodTrades = trades.filter(t => new Date(t.timestamp).getTime() > cutoff);
+      
+      const pnl = periodTrades.reduce((sum, t) => sum + parseFloat(t.pnl || 0), 0);
+      const initial = 100;
+      const roi = ((pnl / initial) * 100).toFixed(2);
+      
+      return {
+        pnl: pnl.toFixed(2),
+        roi: roi,
+        trades: periodTrades.length
+      };
+    }
+    
+    // Update ROI display
+    function updateROIDisplay() {
+      const periods = ['1h', '6h', '12h', '24h', '3.5d', '7d', '30d'];
+      const roiContainer = document.getElementById('roi-windows');
+      if (!roiContainer) return;
+      
+      roiContainer.innerHTML = periods.map(period => {
+        const stats = calculateROI(period);
+        const color = parseFloat(stats.roi) >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)';
+        return `
+          <div class="stat-box" style="padding: 0.5rem;">
+            <div class="stat-value" style="font-size: 1rem; color: ${color};">${stats.roi}%</div>
+            <div class="stat-label" style="font-size: 0.7rem;">${period}</div>
+            <div style="font-size: 0.6rem; color: var(--text-secondary);">$${stats.pnl}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
     // Event listeners
     connectBtn.addEventListener('click', connectWallet);
 
-    // Auto-connect immediately on load
-    connectWallet();
+    // Auto-load on page load - no delay
+    document.addEventListener('DOMContentLoaded', async () => {
+      await autoLoadWalletData();
+      updateROIDisplay();
+    });
   </script>
 </body>
 </html>
