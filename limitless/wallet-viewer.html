@@ -504,32 +504,38 @@
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
         <!-- LL Logs -->
         <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 4px;">
-          <div style="font-size: 0.8rem; color: var(--accent-primary); margin-bottom: 0.5rem;">🔵 LL LOGS</div>
-          <div id="ll-logs" style="font-family: monospace; font-size: 0.7rem; color: var(--text-secondary); max-height: 150px; overflow-y: auto;">
-            <div>[23:58:02] 🚀 LL Paper Trading Bot Started</div>
-            <div>[23:58:02] 💰 Initial Capital: $100</div>
-            <div>[23:58:02] 🎯 Strategy: YES >65% | NO <35%</div>
-            <div>[23:58:45] 🟢 NEW TRADE: BTC-Hourly YES $12.50 @ 72%</div>
-            <div>[23:59:12] ✅ CLOSED: BTC-Hourly YES | PnL: +$7.50</div>
-            <div>[00:01:23] 🟢 NEW TRADE: ETH-Hourly NO $10.00 @ 32%</div>
-            <div>[00:02:15] ✅ CLOSED: ETH-Hourly NO | PnL: +$5.00</div>
+          <div style="font-size: 0.8rem; color: var(--accent-primary); margin-bottom: 0.5rem;">🔵 LL LOGS (Last 10)</div>
+          <div id="ll-logs" style="font-family: monospace; font-size: 0.7rem; color: var(--text-secondary); max-height: 200px; overflow-y: auto; display: flex; flex-direction: column-reverse;">
+            <div>[00:07] 🟢 NEW: SOL-Hourly YES $5.48 @ 75%</div>
+            <div>[00:07] ✅ CLOSED: SOL-Hourly YES | PnL: +$4.28</div>
+            <div>[00:02] 🟢 NEW: SOL-Hourly YES $5.61 @ 76%</div>
+            <div>[00:02] ❌ CLOSED: SOL-Hourly YES | PnL: -$2.59</div>
+            <div>[00:00] 🟢 NEW: ETH-Hourly YES $6.60 @ 79%</div>
+            <div>[00:00] ✅ CLOSED: ETH-Hourly YES | PnL: +$4.02</div>
+            <div>[23:59] 🟢 NEW: BTC-Hourly YES $7.77 @ 72%</div>
+            <div>[23:59] ❌ CLOSED: BTC-Hourly YES | PnL: -$3.08</div>
+            <div>[23:48] 🟢 NEW: SOL-Hourly YES $5.83 @ 87%</div>
+            <div>[23:48] ✅ CLOSED: SOL-Hourly YES | PnL: +$2.77</div>
           </div>
-          <a href="../../limitless-bot/logs/ll-trading.log" style="color: var(--accent-primary); font-size: 0.7rem;">📄 Full Log →</a>
+          <a href="../../limitless-bot/logs/ll-trading.log" style="color: var(--accent-primary); font-size: 0.7rem; margin-top: 0.5rem; display: inline-block;">📄 Full Log →</a>
         </div>
         
         <!-- Stanley Logs -->
         <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 4px;">
-          <div style="font-size: 0.8rem; color: var(--accent-secondary); margin-bottom: 0.5rem;">🟣 STANLEY LOGS</div>
-          <div id="stanley-logs" style="font-family: monospace; font-size: 0.7rem; color: var(--text-secondary); max-height: 150px; overflow-y: auto;">
-            <div>[23:45:10] 🚀 Stanley Paper Trading Bot Started</div>
-            <div>[23:45:10] 💰 Initial Capital: $100</div>
-            <div>[23:45:10] 🎯 Strategy: YES/NO >65%</div>
-            <div>[23:46:22] 🟢 NEW TRADE: BTC-15M NO $14.00 @ 70%</div>
-            <div>[23:47:05] ✅ CLOSED: BTC-15M NO | PnL: +$9.33</div>
-            <div>[23:52:18] 🟢 NEW TRADE: SOL-15M YES $11.25 @ 66%</div>
-            <div>[23:53:42] ✅ CLOSED: SOL-15M YES | PnL: +$4.50</div>
+          <div style="font-size: 0.8rem; color: var(--accent-secondary); margin-bottom: 0.5rem;">🟣 STANLEY LOGS (Last 10)</div>
+          <div id="stanley-logs" style="font-family: monospace; font-size: 0.7rem; color: var(--text-secondary); max-height: 200px; overflow-y: auto; display: flex; flex-direction: column-reverse;">
+            <div>[00:11] 🟢 NEW: SOL-15M NO $5.54 @ 87%</div>
+            <div>[00:11] ✅ CLOSED: SOL-15M NO | PnL: +$4.40</div>
+            <div>[00:09] 🟢 NEW: ETH-15M NO $7.01 @ 84%</div>
+            <div>[00:09] ❌ CLOSED: ETH-15M NO | PnL: -$2.66</div>
+            <div>[00:08] 🟢 NEW: SOL-15M NO $6.38 @ 80%</div>
+            <div>[00:08] ✅ CLOSED: SOL-15M NO | PnL: +$4.73</div>
+            <div>[00:08] 🟢 NEW: ETH-15M NO $5.51 @ 87%</div>
+            <div>[00:08] ✅ CLOSED: ETH-15M NO | PnL: +$3.90</div>
+            <div>[00:07] 🟢 NEW: ETH-15M YES $6.48 @ 77%</div>
+            <div>[00:07] ❌ CLOSED: ETH-15M YES | PnL: -$2.76</div>
           </div>
-          <a href="../../limitless-bot/logs/stanley-trading.log" style="color: var(--accent-secondary); font-size: 0.7rem;">📄 Full Log →</a>
+          <a href="../../limitless-bot/logs/stanley-trading.log" style="color: var(--accent-secondary); font-size: 0.7rem; margin-top: 0.5rem; display: inline-block;">📄 Full Log →</a>
         </div>
       </div>
       
