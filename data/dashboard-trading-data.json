@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-26T16:26:20.945Z",
+  "timestamp": "2026-02-26T18:56:13.185Z",
   "limitless": {
     "balance": 100,
     "initial": 100,
@@ -102,10 +102,10 @@
     "status": "Ready - Awaiting first trade"
   },
   "polymarket": {
-    "balance": 44.597155671487485,
+    "balance": 42.38509806627187,
     "initial": 100,
-    "pnl": 4.302338154864973,
-    "roi": "4.30",
+    "pnl": 33.847665577969515,
+    "roi": "33.85",
     "trades": [
       {
         "id": "paper_1772119993453",
@@ -449,17 +449,173 @@
         "pnl": -4.31,
         "status": "closed",
         "closedAt": "2026-02-26T16:26:06.729Z"
+      },
+      {
+        "id": "stanley_1772122854412",
+        "timestamp": "2026-02-26T16:20:54.412Z",
+        "market": "SOL-15M",
+        "side": "NO",
+        "size": 7.83,
+        "confidence": 0.73,
+        "entryPrice": 0.45,
+        "exitPrice": 0.5,
+        "pnl": 3.96,
+        "status": "closed",
+        "closedAt": "2026-02-26T16:26:37.228Z"
+      },
+      {
+        "id": "stanley_1772125564282",
+        "timestamp": "2026-02-26T17:06:04.282Z",
+        "market": "BTC-15M",
+        "side": "NO",
+        "size": 5.39,
+        "confidence": 0.71,
+        "entryPrice": 0.31,
+        "exitPrice": 0.7,
+        "pnl": 4.3,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:11:09.591Z"
+      },
+      {
+        "id": "stanley_1772125484262",
+        "timestamp": "2026-02-26T17:04:44.262Z",
+        "market": "SOL-15M",
+        "side": "NO",
+        "size": 7.45,
+        "confidence": 0.65,
+        "entryPrice": 0.6,
+        "exitPrice": 0.62,
+        "pnl": 5.42,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:12:45.698Z"
+      },
+      {
+        "id": "stanley_1772125524271",
+        "timestamp": "2026-02-26T17:05:24.271Z",
+        "market": "ETH-15M",
+        "side": "NO",
+        "size": 6.34,
+        "confidence": 0.7,
+        "entryPrice": 0.46,
+        "exitPrice": 0.63,
+        "pnl": 3.46,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:13:37.092Z"
+      },
+      {
+        "id": "stanley_1772126004492",
+        "timestamp": "2026-02-26T17:13:24.492Z",
+        "market": "ETH-15M",
+        "side": "NO",
+        "size": 7.06,
+        "confidence": 0.86,
+        "entryPrice": 0.36,
+        "exitPrice": 0.53,
+        "pnl": 3.62,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:19:32.701Z"
+      },
+      {
+        "id": "stanley_1772125884440",
+        "timestamp": "2026-02-26T17:11:24.440Z",
+        "market": "SOL-15M",
+        "side": "YES",
+        "size": 6.03,
+        "confidence": 0.75,
+        "entryPrice": 0.74,
+        "exitPrice": 0.4,
+        "pnl": 2.77,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:20:19.044Z"
+      },
+      {
+        "id": "stanley_1772126124535",
+        "timestamp": "2026-02-26T17:15:24.535Z",
+        "market": "ETH-15M",
+        "side": "YES",
+        "size": 6.35,
+        "confidence": 0.72,
+        "entryPrice": 0.27,
+        "exitPrice": 0.33,
+        "pnl": 2.96,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:20:42.712Z"
+      },
+      {
+        "id": "stanley_1772126164535",
+        "timestamp": "2026-02-26T17:16:04.535Z",
+        "market": "SOL-15M",
+        "side": "YES",
+        "size": 5.4,
+        "confidence": 0.79,
+        "entryPrice": 0.7,
+        "exitPrice": 0.25,
+        "pnl": 2.57,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:21:15.825Z"
+      },
+      {
+        "id": "stanley_1772126084533",
+        "timestamp": "2026-02-26T17:14:44.533Z",
+        "market": "BTC-15M",
+        "side": "YES",
+        "size": 7.47,
+        "confidence": 0.69,
+        "entryPrice": 0.48,
+        "exitPrice": 0.66,
+        "pnl": 3.36,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:23:02.656Z"
+      },
+      {
+        "id": "stanley_1772126404652",
+        "timestamp": "2026-02-26T17:20:04.652Z",
+        "market": "ETH-15M",
+        "side": "NO",
+        "size": 6.19,
+        "confidence": 0.69,
+        "entryPrice": 0.56,
+        "exitPrice": 0.71,
+        "pnl": 2.99,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:27:43.992Z"
+      },
+      {
+        "id": "stanley_1772126484664",
+        "timestamp": "2026-02-26T17:21:24.664Z",
+        "market": "BTC-15M",
+        "side": "YES",
+        "size": 7.98,
+        "confidence": 0.79,
+        "entryPrice": 0.64,
+        "exitPrice": 0.38,
+        "pnl": -2.68,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:28:47.535Z"
+      },
+      {
+        "id": "stanley_1772126524670",
+        "timestamp": "2026-02-26T17:22:04.670Z",
+        "market": "ETH-15M",
+        "side": "NO",
+        "size": 6.78,
+        "confidence": 0.67,
+        "entryPrice": 0.34,
+        "exitPrice": 0.51,
+        "pnl": -3.21,
+        "status": "closed",
+        "closedAt": "2026-02-26T17:29:00.908Z"
       }
     ],
-    "winRate": "50.0%",
+    "winRate": "60.5%",
     "status": "Active - Paper trading profitable"
   },
   "combined": {
-    "totalBalance": 144.59715567148749,
+    "totalBalance": 142.38509806627187,
     "totalInitial": 200,
-    "totalPnL": 20.038025928357133,
-    "totalROI": "10.02",
-    "totalTrades": 33,
+    "totalPnL": 49.583353351461675,
+    "totalROI": "24.79",
+    "totalTrades": 45,
     "winRate": 100
   }
 }
