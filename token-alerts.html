@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Usage Alerts | Mission Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 1rem 2rem;
+      border-bottom: 2px solid #00d4ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .logo { 
+      font-size: 1.5rem; 
+      font-weight: 700; 
+      color: #00d4ff; 
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .nav { 
+      display: flex; 
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .nav a {
+      color: #888;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+    
+    .nav a:hover, .nav a.active { 
+      color: #00d4ff; 
+      background: rgba(0,212,255,0.1); 
+    }
+    
+    .container { 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      padding: 2rem; 
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    h1 { 
+      font-size: 2rem; 
+      color: #00d4ff; 
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    /* Alert Status Banner */
+    .alert-banner {
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      animation: pulse 2s infinite;
+    }
+    
+    .alert-banner.normal {
+      background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,212,255,0.1));
+      border: 2px solid #00ff88;
+    }
+    
+    .alert-banner.warning {
+      background: linear-gradient(135deg, rgba(255,193,7,0.2), rgba(255,152,0,0.2));
+      border: 2px solid #ffc107;
+      animation: pulse-warning 1.5s infinite;
+    }
+    
+    .alert-banner.critical {
+      background: linear-gradient(135deg, rgba(255,68,68,0.2), rgba(255,0,0,0.2));
+      border: 2px solid #ff4444;
+      animation: pulse-critical 1s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.9; }
+    }
+    
+    @keyframes pulse-warning {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,193,7,0.4); }
+      50% { box-shadow: 0 0 20px 5px rgba(255,193,7,0.2); }
+    }
+    
+    @keyframes pulse-critical {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,68,68,0.6); }
+      50% { box-shadow: 0 0 30px 10px rgba(255,68,68,0.3); }
+    }
+    
+    .alert-icon {
+      font-size: 3rem;
+    }
+    
+    .alert-content {
+      flex: 1;
+    }
+    
+    .alert-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .alert-banner.normal .alert-title { color: #00ff88; }
+    .alert-banner.warning .alert-title { color: #ffc107; }
+    .alert-banner.critical .alert-title { color: #ff4444; }
+    
+    .alert-message {
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+    
+    /* Progress Bar Section */
+    .progress-section {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-title {
+      color: #00d4ff;
+      font-weight: 600;
+    }
+    
+    .progress-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    
+    .progress-bar-container {
+      position: relative;
+      height: 40px;
+      background: #1a1a2e;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      border-radius: 8px;
+      transition: all 0.5s ease;
+      position: relative;
+    }
+    
+    .progress-bar.normal {
+      background: linear-gradient(90deg, #00d4ff, #00ff88);
+    }
+    
+    .progress-bar.warning {
+      background: linear-gradient(90deg, #ffc107, #ff9800);
+    }
+    
+    .progress-bar.critical {
+      background: linear-gradient(90deg, #ff4444, #ff0000);
+    }
+    
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      white-space: nowrap;
+    }
+    
+    .threshold-markers {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #888;
+    }
+    
+    .threshold-marker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    .threshold-line {
+      width: 2px;
+      height: 10px;
+      background: currentColor;
+    }
+    
+    .threshold-marker.warning { color: #ffc107; }
+    .threshold-marker.critical { color: #ff4444; }
+    
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    
+    .stat-card:hover {
+      border-color: #00d4ff;
+      transform: translateY(-2px);
+    }
+    
+    .stat-value { 
+      font-size: 2rem; 
+      font-weight: 700; 
+      color: #00d4ff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .stat-label { 
+      color: #888; 
+      font-size: 0.875rem; 
+      margin-top: 0.5rem; 
+    }
+    
+    .stat-sub { 
+      color: #666; 
+      font-size: 0.75rem; 
+      margin-top: 0.25rem; 
+    }
+    
+    /* History Chart */
+    .section-title {
+      color: #00d4ff;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .history-section {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .history-chart {
+      height: 250px;
+      position: relative;
+      margin-top: 1rem;
+    }
+    
+    .chart-svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* Alert History Table */
+    .alert-history-section {
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .alert-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    .alert-table th {
+      background: rgba(0,212,255,0.1);
+      color: #00d4ff;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+    
+    .alert-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #333;
+    }
+    
+    .alert-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .badge.normal {
+      background: rgba(0,255,136,0.1);
+      color: #00ff88;
+    }
+    
+    .badge.warning {
+      background: rgba(255,193,7,0.1);
+      color: #ffc107;
+    }
+    
+    .badge.critical {
+      background: rgba(255,68,68,0.1);
+      color: #ff4444;
+    }
+    
+    .refresh-btn {
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    
+    .refresh-btn:hover:not(:disabled) { 
+      transform: translateY(-2px); 
+      box-shadow: 0 4px 12px rgba(0,212,255,0.3); 
+    }
+    
+    .refresh-btn:disabled { 
+      opacity: 0.6; 
+      cursor: not-allowed; 
+    }
+    
+    .loading { 
+      text-align: center; 
+      padding: 3rem; 
+      color: #888; 
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 3px solid #333;
+      border-top-color: #00d4ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .last-updated { 
+      text-align: center; 
+      color: #666; 
+      margin-top: 2rem; 
+      font-size: 0.875rem; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00ff88;
+      animation: pulse-dot 2s infinite;
+    }
+    
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    @media (max-width: 768px) {
+      .header { padding: 1rem; }
+      .nav { overflow-x: auto; width: 100%; }
+      .container { padding: 1rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-value { font-size: 1.5rem; }
+      h1 { font-size: 1.5rem; }
+      .alert-banner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎯 Mission Control</div>
+    <nav class="nav">
+      <a href="/index.html">HQ</a>
+      <a href="/living-pixel-office.html">Office</a>
+      <a href="/agents.html">Agents</a>
+      <a href="/deals.html">DealFlow</a>
+      <a href="/token-tracker.html">Tokens</a>
+      <a href="/token-alerts.html" class="active">Alerts</a>
+      <a href="/task-board.html">Tasks</a>
+      <a href="/logs-view.html">Logs</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🚨 Token Usage Alerts</h1>
+      <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+        🔄 Refresh
+      </button>
+    </div>
+
+    <!-- Alert Status Banner -->
+    <div id="alert-banner" class="alert-banner normal">
+      <div class="alert-icon" id="alert-icon">✅</div>
+      <div class="alert-content">
+        <div class="alert-title" id="alert-title">System Normal</div>
+        <div class="alert-message" id="alert-message">
+          Token usage is within normal limits. Monitoring continues...
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <span class="progress-title">📊 Token Usage Progress</span>
+        <span class="progress-value" id="progress-value">0 / 250K</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar normal" id="progress-bar" style="width: 0%">
+          <span class="progress-text" id="progress-text">0%</span>
+        </div>
+      </div>
+      <div class="threshold-markers">
+        <div class="threshold-marker">
+          <span>0</span>
+          <div class="threshold-line"></div>
+        </div>
+        <div class="threshold-marker warning">
+          <span>⚠️ 200K</span>
+          <div class="threshold-line"></div>
+        </div>
+        <div class="threshold-marker critical">
+          <span>🚨 250K</span>
+          <div class="threshold-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="total-tokens">-</div>
+        <div class="stat-label">Total Tokens</div>
+        <div class="stat-sub" id="tokens-remaining">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="total-cost">-</div>
+        <div class="stat-label">Est. Cost (USD)</div>
+        <div class="stat-sub">Based on API pricing</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="active-agents">-</div>
+        <div class="stat-label">Active Agents</div>
+        <div class="stat-sub" id="total-agents">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="daily-avg">-</div>
+        <div class="stat-label">Daily Average</div>
+        <div class="stat-sub">tokens/day</div>
+      </div>
+    </div>
+
+    <!-- Usage History Chart -->
+    <div class="history-section">
+      <h2 class="section-title">📈 24-Hour Usage History</h2>
+      <div class="history-chart" id="history-chart">
+        <svg class="chart-svg" id="chart-svg"></svg>
+      </div>
+    </div>
+
+    <!-- Alert History -->
+    <div class="alert-history-section">
+      <h2 class="section-title">🔔 Recent Alerts</h2>
+      <div id="alert-history-content">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <div>Loading alert history...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="last-updated" id="last-updated">
+      <span class="status-dot"></span>
+      <span>Last updated: Never</span>
+    </div>
+  </div>
+
+  <script>
+    // Configuration
+    const CONFIG = {
+      API_URL: 'https://dashboard-ten-sand-20.vercel.app/api/tokens',
+      THRESHOLDS: {
+        WARNING: 200000,
+        CRITICAL: 250000
+      }
+    };
+
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toLocaleString();
+    }
+
+    function formatCurrency(num) {
+      return '$' + num.toFixed(4);
+    }
+
+    function determineAlertLevel(tokenCount) {
+      if (tokenCount >= CONFIG.THRESHOLDS.CRITICAL) return 'CRITICAL';
+      if (tokenCount >= CONFIG.THRESHOLDS.WARNING) return 'WARNING';
+      return 'NORMAL';
+    }
+
+    function updateAlertBanner(level, tokenCount) {
+      const banner = document.getElementById('alert-banner');
+      const icon = document.getElementById('alert-icon');
+      const title = document.getElementById('alert-title');
+      const message = document.getElementById('alert-message');
+      
+      // Reset classes
+      banner.className = 'alert-banner';
+      
+      const remaining = CONFIG.THRESHOLDS.CRITICAL - tokenCount;
+      
+      switch(level) {
+        case 'CRITICAL':
+          banner.classList.add('critical');
+          icon.textContent = '🚨';
+          title.textContent = 'CRITICAL: Token Limit Exceeded!';
+          message.innerHTML = `Token usage has exceeded the critical threshold by <strong>${formatNumber(Math.abs(remaining))} tokens</strong>. ` +
+                             `Consider pausing non-essential agents immediately.`;
+          break;
+        case 'WARNING':
+          banner.classList.add('warning');
+          icon.textContent = '⚠️';
+          title.textContent = 'WARNING: Approaching Token Limit';
+          message.innerHTML = `Token usage is at warning level. <strong>${formatNumber(remaining)} tokens</strong> remaining until critical threshold.`;
+          break;
+        default:
+          banner.classList.add('normal');
+          icon.textContent = '✅';
+          title.textContent = 'System Normal';
+          message.innerHTML = `Token usage is within normal limits. <strong>${formatNumber(remaining)} tokens</strong> remaining until critical threshold.`;
+      }
+    }
+
+    function updateProgressBar(tokenCount) {
+      const percentage = Math.min((tokenCount / CONFIG.THRESHOLDS.CRITICAL) * 100, 100);
+      const level = determineAlertLevel(tokenCount);
+      
+      const bar = document.getElementById('progress-bar');
+      const text = document.getElementById('progress-text');
+      const value = document.getElementById('progress-value');
+      
+      bar.style.width = percentage + '%';
+      bar.className = 'progress-bar ' + level.toLowerCase();
+      text.textContent = percentage.toFixed(1) + '%';
+      value.textContent = `${formatNumber(tokenCount)} / ${formatNumber(CONFIG.THRESHOLDS.CRITICAL)}`;
+    }
+
+    function renderHistoryChart(historyData) {
+      const svg = document.getElementById('chart-svg');
+      
+      if (!historyData || historyData.length === 0) {
+        svg.innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="#888">No history data available</text>';
+        return;
+      }
+      
+      const width = svg.clientWidth || 800;
+      const height = 250;
+      const padding = { top: 20, right: 30, bottom: 40, left: 60 };
+      
+      const chartWidth = width - padding.left - padding.right;
+      const chartHeight = height - padding.top - padding.bottom;
+      
+      const maxTokens = Math.max(...historyData.map(d => d.tokens || 0), CONFIG.THRESHOLDS.WARNING);
+      
+      // Create path for line chart
+      let pathD = '';
+      const points = historyData.map((d, i) => {
+        const x = padding.left + (i / (historyData.length - 1 || 1)) * chartWidth;
+        const y = padding.top + chartHeight - ((d.tokens || 0) / maxTokens) * chartHeight;
+        return { x, y, data: d };
+      });
+      
+      if (points.length > 0) {
+        pathD = `M ${points[0].x} ${points[0].y}`;
+        for (let i = 1; i < points.length; i++) {
+          pathD += ` L ${points[i].x} ${points[i].y}`;
+        }
+      }
+      
+      // Warning and critical lines
+      const warningY = padding.top + chartHeight - (CONFIG.THRESHOLDS.WARNING / maxTokens) * chartHeight;
+      const criticalY = padding.top + chartHeight - (CONFIG.THRESHOLDS.CRITICAL / maxTokens) * chartHeight;
+      
+      let svgContent = `
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#00ff88;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.3" />
+            <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0" />
+          </linearGradient>
+        </defs>
+        
+        <!-- Grid lines -->
+        <line x1="${padding.left}" y1="${warningY}" x2="${width - padding.right}" y2="${warningY}" 
+              stroke="#ffc107" stroke-width="1" stroke-dasharray="5,5" opacity="0.5" />
+        <line x1="${padding.left}" y1="${criticalY}" x2="${width - padding.right}" y2="${criticalY}" 
+              stroke="#ff4444" stroke-width="1" stroke-dasharray="5,5" opacity="0.5" />
+        
+        <!-- Area under curve -->
+        <path d="${pathD} L ${points[points.length-1]?.x || padding.left} ${padding.top + chartHeight} L ${padding.left} ${padding.top + chartHeight} Z" 
+              fill="url(#areaGradient)" />
+        
+        <!-- Line -->
+        <path d="${pathD}" fill="none" stroke="url(#lineGradient)" stroke-width="3" />
+        
+        <!-- Data points -->
+        ${points.map(p => `
+          <circle cx="${p.x}" cy="${p.y}" r="4" fill="#00d4ff" stroke="#fff" stroke-width="2"
+                  onmouseover="showTooltip(evt, '${formatNumber(p.data.tokens)} tokens')" />
+        `).join('')}
+        
+        <!-- Axes -->
+        <line x1="${padding.left}" y1="${padding.top + chartHeight}" x2="${width - padding.right}" y2="${padding.top + chartHeight}" 
+              stroke="#333" stroke-width="1" />
+        <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${padding.top + chartHeight}" 
+              stroke="#333" stroke-width="1" />
+        
+        <!-- Y-axis labels -->
+        <text x="${padding.left - 10}" y="${padding.top}" text-anchor="end" fill="#888" font-size="10">${formatNumber(maxTokens)}</text>
+        <text x="${padding.left - 10}" y="${padding.top + chartHeight}" text-anchor="end" fill="#888" font-size="10">0</text>
+        <text x="${padding.left - 10}" y="${warningY + 3}" text-anchor="end" fill="#ffc107" font-size="10">200K</text>
+        <text x="${padding.left - 10}" y="${criticalY + 3}" text-anchor="end" fill="#ff4444" font-size="10">250K</text>
+      `;
+      
+      svg.innerHTML = svgContent;
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    }
+
+    function renderAlertHistory(alerts) {
+      const container = document.getElementById('alert-history-content');
+      
+      if (!alerts || alerts.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state" style="text-align:center;padding:2rem;color:#888;">
+            <div style="font-size:2rem;margin-bottom:0.5rem;">📭</div>
+            <div>No alerts triggered yet</div>
+          </div>
+        `;
+        return;
+      }
+      
+      const recentAlerts = alerts.slice(-10).reverse();
+      
+      container.innerHTML = `
+        <table class="alert-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Level</th>
+              <th>Token Count</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${recentAlerts.map(alert => `
+              <tr>
+                <td>${new Date(alert.timestamp).toLocaleString()}</td>
+                <td>
+                  <span class="badge ${alert.level.toLowerCase()}">
+                    ${alert.level === 'CRITICAL' ? '🚨' : alert.level === 'WARNING' ? '⚠️' : '✅'} ${alert.level}
+                  </span>
+                </td>
+                <td>${formatNumber(alert.tokenCount)}</td>
+                <td>${alert.level === 'CRITICAL' ? '🔴 Action Required' : alert.level === 'WARNING' ? '🟡 Monitoring' : '🟢 Resolved'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    async function loadData() {
+      const refreshBtn = document.getElementById('refreshBtn');
+      refreshBtn.disabled = true;
+      refreshBtn.textContent = '⏳ Loading...';
+      
+      try {
+        const response = await fetch(`${CONFIG.API_URL}?refresh=true`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+          throw new Error(data.error || 'API error');
+        }
+        
+        const tokenCount = data.summary.totalTokens;
+        const level = determineAlertLevel(tokenCount);
+        
+        // Update alert banner
+        updateAlertBanner(level, tokenCount);
+        
+        // Update progress bar
+        updateProgressBar(tokenCount);
+        
+        // Update stats
+        document.getElementById('total-tokens').textContent = formatNumber(tokenCount);
+        document.getElementById('tokens-remaining').textContent = 
+          `${formatNumber(Math.max(0, CONFIG.THRESHOLDS.CRITICAL - tokenCount))} to critical`;
+        document.getElementById('total-cost').textContent = formatCurrency(data.summary.totalCost);
+        document.getElementById('active-agents').textContent = data.summary.activeAgents;
+        document.getElementById('total-agents').textContent = `${data.summary.totalAgents} total`;
+        document.getElementById('daily-avg').textContent = formatNumber(data.summary.dailyAverage);
+        
+        // Render history chart
+        renderHistoryChart(data.timeline);
+        
+        // Render alert history (mock for now - would come from alert state file)
+        renderAlertHistory([
+          { timestamp: new Date().toISOString(), level: level, tokenCount: tokenCount }
+        ]);
+        
+        document.getElementById('last-updated').innerHTML = `
+          <span class="status-dot"></span>
+          <span>Last updated: ${new Date().toLocaleString()}</span>
+        `;
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+        document.getElementById('alert-banner').className = 'alert-banner critical';
+        document.getElementById('alert-icon').textContent = '❌';
+        document.getElementById('alert-title').textContent = 'Error Loading Data';
+        document.getElementById('alert-message').textContent = error.message;
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.textContent = '🔄 Refresh';
+      }
+    }
+
+    // Load on page load
+    document.addEventListener('DOMContentLoaded', loadData);
+    
+    // Auto-refresh every 2 minutes
+    setInterval(loadData, 2 * 60 * 1000);
+  </script>
+</body>
+</html>

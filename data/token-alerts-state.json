@@ -1,0 +1,12 @@
+{
+  "lastAlertLevel": "CRITICAL",
+  "lastAlertTime": 1772076848070,
+  "totalTokensAtLastAlert": 76512637,
+  "alertHistory": [
+    {
+      "level": "CRITICAL",
+      "tokenCount": 76512637,
+      "timestamp": "2026-02-26T03:34:08.070Z"
+    }
+  ]
+}

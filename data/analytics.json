@@ -1,0 +1,194 @@
+{
+  "lastUpdated": "2026-02-26T11:30:00+08:00",
+  "summary": {
+    "totalTasksCompleted": 45,
+    "totalTasksFailed": 2,
+    "overallSuccessRate": 95.7,
+    "avgResponseTime": 28,
+    "avgTokenEfficiency": 15200
+  },
+  "agentMetrics": [
+    {
+      "name": "Nexus",
+      "role": "Orchestrator",
+      "tasksCompleted": 12,
+      "tasksFailed": 0,
+      "successRate": 100,
+      "avgResponseTime": 15,
+      "tokenEfficiency": 18468,
+      "qualityScore": 96,
+      "dailyStats": [
+        {"date": "2026-02-20", "tasks": 2, "responseTime": 18, "successRate": 100},
+        {"date": "2026-02-21", "tasks": 1, "responseTime": 12, "successRate": 100},
+        {"date": "2026-02-22", "tasks": 2, "responseTime": 20, "successRate": 100},
+        {"date": "2026-02-23", "tasks": 3, "responseTime": 14, "successRate": 100},
+        {"date": "2026-02-24", "tasks": 1, "responseTime": 16, "successRate": 100},
+        {"date": "2026-02-25", "tasks": 2, "responseTime": 15, "successRate": 100},
+        {"date": "2026-02-26", "tasks": 1, "responseTime": 10, "successRate": 100}
+      ]
+    },
+    {
+      "name": "Olivia",
+      "role": "DealFlow Lead + Outreach",
+      "tasksCompleted": 8,
+      "tasksFailed": 0,
+      "successRate": 100,
+      "avgResponseTime": 35,
+      "tokenEfficiency": 31463,
+      "qualityScore": 94,
+      "dailyStats": [
+        {"date": "2026-02-24", "tasks": 1, "responseTime": 40, "successRate": 100},
+        {"date": "2026-02-25", "tasks": 5, "responseTime": 35, "successRate": 100},
+        {"date": "2026-02-26", "tasks": 2, "responseTime": 30, "successRate": 100}
+      ]
+    },
+    {
+      "name": "ZooKeeper",
+      "role": "Pixel Sanctuary Lead",
+      "tasksCompleted": 6,
+      "tasksFailed": 0,
+      "successRate": 100,
+      "avgResponseTime": 45,
+      "tokenEfficiency": 14833,
+      "qualityScore": 92,
+      "dailyStats": [
+        {"date": "2026-02-24", "tasks": 2, "responseTime": 50, "successRate": 100},
+        {"date": "2026-02-25", "tasks": 4, "responseTime": 42, "successRate": 100}
+      ]
+    },
+    {
+      "name": "Quill",
+      "role": "Research Writer",
+      "tasksCompleted": 5,
+      "tasksFailed": 0,
+      "successRate": 100,
+      "avgResponseTime": 120,
+      "tokenEfficiency": 9615,
+      "qualityScore": 98,
+      "dailyStats": [
+        {"date": "2026-02-25", "tasks": 2, "responseTime": 130, "successRate": 100},
+        {"date": "2026-02-26", "tasks": 3, "responseTime": 110, "successRate": 100}
+      ]
+    },
+    {
+      "name": "Meemo-Replacement",
+      "role": "MC Project Lead",
+      "tasksCompleted": 4,
+      "tasksFailed": 0,
+      "successRate": 100,
+      "avgResponseTime": 60,
+      "tokenEfficiency": 10425,
+      "qualityScore": 90,
+      "dailyStats": [
+        {"date": "2026-02-25", "tasks": 4, "responseTime": 60, "successRate": 100}
+      ]
+    },
+    {
+      "name": "Limitless",
+      "role": "Trading Bot",
+      "tasksCompleted": 3,
+      "tasksFailed": 1,
+      "successRate": 75,
+      "avgResponseTime": 25,
+      "tokenEfficiency": 7400,
+      "qualityScore": 85,
+      "dailyStats": [
+        {"date": "2026-02-24", "tasks": 1, "responseTime": 30, "successRate": 100},
+        {"date": "2026-02-25", "tasks": 1, "responseTime": 20, "successRate": 100},
+        {"date": "2026-02-26", "tasks": 1, "responseTime": 25, "successRate": 0}
+      ]
+    },
+    {
+      "name": "Sentry",
+      "role": "DevOps Monitor",
+      "tasksCompleted": 4,
+      "tasksFailed": 0,
+      "successRate": 100,
+      "avgResponseTime": 10,
+      "tokenEfficiency": 3850,
+      "qualityScore": 95,
+      "dailyStats": [
+        {"date": "2026-02-24", "tasks": 1, "responseTime": 12, "successRate": 100},
+        {"date": "2026-02-25", "tasks": 2, "responseTime": 10, "successRate": 100},
+        {"date": "2026-02-26", "tasks": 1, "responseTime": 8, "successRate": 100}
+      ]
+    },
+    {
+      "name": "Glasses",
+      "role": "Researcher",
+      "tasksCompleted": 2,
+      "tasksFailed": 0,
+      "successRate": 100,
+      "avgResponseTime": 55,
+      "tokenEfficiency": 9467,
+      "qualityScore": 93,
+      "dailyStats": [
+        {"date": "2026-02-25", "tasks": 1, "responseTime": 60, "successRate": 100},
+        {"date": "2026-02-26", "tasks": 1, "responseTime": 50, "successRate": 100}
+      ]
+    },
+    {
+      "name": "Paws-Replacement",
+      "role": "Personal Assistant",
+      "tasksCompleted": 1,
+      "tasksFailed": 0,
+      "successRate": 100,
+      "avgResponseTime": 30,
+      "tokenEfficiency": 13000,
+      "qualityScore": 88,
+      "dailyStats": [
+        {"date": "2026-02-26", "tasks": 1, "responseTime": 30, "successRate": 100}
+      ]
+    }
+  ],
+  "historicalTrends": {
+    "daily": [
+      {"date": "2026-02-20", "totalTasks": 3, "avgResponseTime": 22, "successRate": 100},
+      {"date": "2026-02-21", "totalTasks": 2, "avgResponseTime": 18, "successRate": 100},
+      {"date": "2026-02-22", "totalTasks": 4, "avgResponseTime": 25, "successRate": 100},
+      {"date": "2026-02-23", "totalTasks": 5, "avgResponseTime": 20, "successRate": 100},
+      {"date": "2026-02-24", "totalTasks": 6, "avgResponseTime": 28, "successRate": 100},
+      {"date": "2026-02-25", "totalTasks": 20, "avgResponseTime": 35, "successRate": 100},
+      {"date": "2026-02-26", "totalTasks": 5, "avgResponseTime": 30, "successRate": 80}
+    ],
+    "weekly": [
+      {"week": "Week 1 Feb", "totalTasks": 12, "avgResponseTime": 24, "successRate": 100},
+      {"week": "Week 2 Feb", "totalTasks": 21, "avgResponseTime": 30, "successRate": 98},
+      {"week": "Week 3 Feb", "totalTasks": 12, "avgResponseTime": 32, "successRate": 95}
+    ],
+    "monthly": [
+      {"month": "January 2026", "totalTasks": 85, "avgResponseTime": 35, "successRate": 94},
+      {"month": "February 2026", "totalTasks": 45, "avgResponseTime": 30, "successRate": 96}
+    ]
+  },
+  "leaderboards": {
+    "mostProductive": [
+      {"name": "Nexus", "value": 12, "unit": "tasks"},
+      {"name": "Olivia", "value": 8, "unit": "tasks"},
+      {"name": "ZooKeeper", "value": 6, "unit": "tasks"},
+      {"name": "Quill", "value": 5, "unit": "tasks"},
+      {"name": "Meemo-Replacement", "value": 4, "unit": "tasks"}
+    ],
+    "highestQuality": [
+      {"name": "Quill", "value": 98, "unit": "score"},
+      {"name": "Nexus", "value": 96, "unit": "score"},
+      {"name": "Sentry", "value": 95, "unit": "score"},
+      {"name": "Olivia", "value": 94, "unit": "score"},
+      {"name": "Glasses", "value": 93, "unit": "score"}
+    ],
+    "fastestResponse": [
+      {"name": "Sentry", "value": 10, "unit": "minutes"},
+      {"name": "Nexus", "value": 15, "unit": "minutes"},
+      {"name": "Limitless", "value": 25, "unit": "minutes"},
+      {"name": "Paws-Replacement", "value": 30, "unit": "minutes"},
+      {"name": "Olivia", "value": 35, "unit": "minutes"}
+    ],
+    "mostEfficient": [
+      {"name": "Sentry", "value": 3850, "unit": "tokens/task"},
+      {"name": "Limitless", "value": 7400, "unit": "tokens/task"},
+      {"name": "Quill", "value": 9615, "unit": "tokens/task"},
+      {"name": "Glasses", "value": 9467, "unit": "tokens/task"},
+      {"name": "ZooKeeper", "value": 14833, "unit": "tokens/task"}
+    ]
+  }
+}
