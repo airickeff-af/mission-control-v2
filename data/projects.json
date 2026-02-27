@@ -1,1 +1,672 @@
-{\n  \"lastUpdated\": \"2026-02-28T01:22:00+08:00\",\n  \"projects\": [\n    {\n      \"id\": \"dealflow\",\n      \"name\": \"DealFlow\",\n      \"status\": \"deployed\",\n      \"completion\": 95,\n      \"url\": \"https://dealflow-psi.vercel.app\",\n      \"pendingTasks\": 2,\n      \"lead\": \"Olivia\",\n      \"targetCompletion\": \"2026-02-26\",\n      \"targetPercent\": 100,\n      \"priority\": 1,\n      \"deployBy\": \"2026-02-26\",\n      \"stats\": {\n        \"totalContacts\": 90,\n        \"withEmails\": 79,\n        \"readyForOutreach\": 80,\n        \"stablecoins\": 40,\n        \"rwa\": 30,\n        \"original\": 20\n      }\n    },\n    {\n      \"id\": \"mission-control\",\n      \"name\": \"Mission Control\",\n      \"status\": \"deployed\",\n      \"completion\": 94,\n      \"url\": \"https://mission-control-v2-sepia.vercel.app\",\n      \"pendingTasks\": 8,\n      \"lead\": \"Nexus\",\n      \"targetCompletion\": \"2026-02-26\",\n      \"targetPercent\": 100,\n      \"priority\": 2,\n      \"deployBy\": \"2026-02-26\"\n    },\n    {\n      \"id\": \"paws\",\n      \"name\": \"Paws\",\n      \"status\": \"deployed\",\n      \"completion\": 95,\n      \"url\": \"https://paws-mu.vercel.app\",\n      \"pendingTasks\": 2,\n      \"lead\": \"Paws-Replacement\",\n      \"targetCompletion\": \"2026-02-26\",\n      \"targetPercent\": 100,\n      \"priority\": 3,\n      \"deployBy\": \"2026-02-26\"\n    },\n    {\n      \"id\": \"mc-project\",\n      \"name\": \"MC Project\",\n      \"status\": \"deployed\",\n      \"completion\": 100,\n      \"url\": \"https://airickeff-af.github.io/mc-project/\",\n      \"pendingTasks\": 0,\n      \"lead\": \"Meemo-Replacement\",\n      \"targetCompletion\": \"2026-02-25\",\n      \"targetPercent\": 100,\n      \"priority\": 4,\n      \"deployBy\": \"2026-02-25\"\n    },\n    {\n      \"id\": \"pixel-sanctuary\",\n      \"name\": \"Pixel Sanctuary\",\n      \"status\": \"deployed\",\n      \"completion\": 100,\n      \"url\": \"https://pixel-sanctuary.vercel.app\",\n      \"pendingTasks\": 0,\n      \"lead\": \"ZooKeeper\",\n      \"targetCompletion\": \"2026-02-27\",\n      \"targetPercent\": 100,\n      \"priority\": 5,\n      \"deployBy\": \"2026-02-27\",\n      \"features\": [\n        \"8-directional movement\",\n        \"12 color palettes\",\n        \"Steak feeding system\",\n        \"Proportional food spawning\"\n      ]\n    },\n    {\n      \"id\": \"quill-research\",\n      \"name\": \"Quill Research\",\n      \"status\": \"active\",\n      \"completion\": 50,\n      \"url\": null,\n      \"pendingTasks\": 0,\n      \"lead\": \"Quill\",\n      \"targetCompletion\": \"2026-02-28\",\n      \"targetPercent\": 100,\n      \"priority\": 6,\n      \"deployBy\": \"2026-02-28\",\n      \"description\": \"Deep-dive research profiles on crypto/AI/tech industry figures\",\n      \"outputLocation\": \"/root/.openclaw/workspace/quill/profiles/\",\n      \"profilesUrl\": \"https://github.com/airickeff-af/mission-control-v2/tree/main/quill/profiles\",\n      \"articlesUrl\": \"TBD - Local workspace first\",\n      \"publishingWorkflow\": {\n        \"step1\": \"Save to /root/.openclaw/workspace/quill/profiles/\",\n        \"step2\": \"Polish and finalize locally\",\n        \"step3\": \"Suggest to EricF for publishing\",\n        \"publishOptions\": [\n          \"X Articles (ericclfung)\",\n          \"Medium (ericclfung.medium.com)\",\n          \"Both\"\n        ]\n      },\n      \"dailyTarget\": \"2 profiles (3500-4000 words each)\",\n      \"stats\": {\n        \"profilesCompleted\": 2,\n        \"profilesPending\": 0,\n        \"wordsPerProfile\": \"3500-4000\",\n        \"topics\": [\n          \"Crypto\",\n          \"AI\",\n          \"Tech\"\n        ]\n      }\n    },\n    {\n      \"id\": \"memory-system\",\n      \"name\": \"Memory System\",\n      \"status\": \"active\",\n      \"completion\": 75,\n      \"url\": \"https://dashboard-ten-sand-20.vercel.app/memory/index.html\",\n      \"pendingTasks\": 0,\n      \"lead\": \"Nexus\",\n      \"targetCompletion\": \"2026-02-28\",\n      \"targetPercent\": 100,\n      \"priority\": 7,\n      \"deployBy\": \"2026-02-28\",\n      \"description\": \"Long-term memory storage and session tracking for all agents\",\n      \"outputLocation\": \"/root/.openclaw/workspace/memory/\",\n      \"dashboardUrl\": \"https://dashboard-ten-sand-20.vercel.app/memory/index.html\",\n      \"stats\": {\n        \"dailyLogs\": 3,\n        \"gitSyncReports\": 1,\n        \"heartbeatChecks\": 38,\n        \"archivedSessions\": 7,\n        \"lastSync\": \"2026-02-27T19:22:00+08:00\",\n        \"reposTracked\": 4,\n        \"memoryFiles\": [\n          {\n            \"name\": \"2026-02-27.md\",\n            \"type\": \"daily-log\",\n            \"lastModified\": \"2026-02-27T19:22:00+08:00\",\n            \"size\": \"2.5 KB\"\n          },\n          {\n            \"name\": \"heartbeat-state.json\",\n            \"type\": \"state-tracking\",\n            \"lastModified\": \"2026-02-27T19:00:00+08:00\",\n            \"size\": \"2.1 KB\"\n          },\n          {\n            \"name\": \"git-sync-state.json\",\n            \"type\": \"sync-tracking\",\n            \"lastModified\": \"2026-02-26T06:42:00+08:00\",\n            \"size\": \"0.9 KB\"\n          },\n          {\n            \"name\": \"git-auto-sync-report-2026-02-26.md\",\n            \"type\": \"sync-report\",\n            \"lastModified\": \"2026-02-26T06:43:00+08:00\",\n            \"size\": \"4.9 KB\"\n          }\n        ],\n        \"repoStatus\": {\n          \"mission-control-v2\": {\n            \"lastCommit\": \"2026-02-28T01:15:00+08:00\",\n            \"status\": \"synced\"\n          },\n          \"mc-project\": {\n            \"lastCommit\": \"2026-02-25T07:22:49+08:00\",\n            \"status\": \"synced\"\n          },\n          \"dealflow\": {\n            \"lastCommit\": \"2026-02-25T23:35:33+08:00\",\n            \"status\": \"synced\"\n          },\n          \"pixel-sanctuary\": {\n            \"lastCommit\": \"2026-02-25T23:12:26+08:00\",\n            \"status\": \"synced\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"sentry-maintenance\",\n      \"name\": \"Sentry Maintenance\",\n      \"status\": \"active\",\n      \"completion\": 0,\n      \"url\": null,\n      \"pendingTasks\": 0,\n      \"lead\": \"Sentry\",\n      \"targetCompletion\": \"2026-02-28\",\n      \"targetPercent\": 100,\n      \"priority\": 8,\n      \"deployBy\": \"2026-02-28\",\n      \"description\": \"72-hour automated memory maintenance — deduplication, rule consolidation, archival\",\n      \"outputLocation\": \"/root/.openclaw/workspace/memory/maintenance-reports/\",\n      \"schedule\": \"Every 72 hours\",\n      \"lastRun\": null,\n      \"nextRun\": \"2026-03-01T07:44:00+08:00\",\n      \"stats\": {\n        \"totalRuns\": 0,\n        \"duplicatesRemoved\": 0,\n        \"rulesConsolidated\": 0,\n        \"itemsArchived\": 0,\n        \"maintenanceHistory\": [],\n        \"currentRun\": {\n          \"status\": \"scheduled\",\n          \"startedAt\": null,\n          \"completedAt\": null,\n          \"tasks\": {\n            \"deduplication\": \"pending\",\n            \"ruleConsolidation\": \"pending\",\n            \"archival\": \"pending\",\n            \"digestSent\": \"pending\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"limitless-bot\",\n      \"name\": \"Limitless Trading Bot\",\n      \"status\": \"active\",\n      \"completion\": 75,\n      \"url\": \"https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html\",\n      \"pendingTasks\": 4,\n      \"lead\": \"Limitless\",\n      \"targetCompletion\": \"2026-02-27\",\n      \"targetPercent\": 100,\n      \"priority\": 9,\n      \"deployBy\": \"2026-02-27\",\n      \"lastUpdated\": \"2026-02-28T01:22:00+08:00\",\n      \"nextUpdate\": \"2026-02-28T02:22:00+08:00\",\n      \"description\": \"Automated BTC/ETH/SOL trading bot using Achilles Trading Rules on Limitless Exchange. Paper trading now, live trading target $100→$5000.\",\n      \"tradingSystem\": \"Achilles BTC Trading Rules (Kalshi 15-min binary options)\",\n      \"botResponsibilities\": [\n        \"Self-build trading infrastructure\",\n        \"Research BTC/ETH/SOL markets continuously\",\n        \"Execute trades following Achilles rules\",\n        \"Report progress every 30 minutes\"\n      ],\n      \"outputLocation\": \"/root/.openclaw/workspace/limitless-bot/\",\n      \"platform\": \"Limitless Exchange (Base L2)\",\n      \"strategy\": \"High-frequency hourly BTC/ETH/SOL up/down predictions\",\n      \"initialCapital\": 100,\n      \"targetCapital\": 5000,\n      \"riskPerTrade\": \"2-5%\",\n      \"schedule\": \"Hourly updates\",\n      \"mode\": \"🧪 PAPER TRADING - ACHILLES RULES\",\n      \"modeIndicator\": \"🧪 PAPER TRADING - NOT REAL MONEY\",\n      \"tradingStrategy\": \"Achilles Trading Rules (Limitless Exchange)\",\n      \"strategyUrl\": \"https://limitless.exchange/markets/page/crypto\",\n      \"achillesRulesUrl\": \"../limitless-bot/achilles-rules.html\",\n      \"walletViewerUrl\": \"https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html\",\n      \"achillesRules\": {\n        \"version\": \"1.1.0\",\n        \"platform\": \"Limitless Exchange (Base L2)\",\n        \"markets\": [\n          \"BTC\",\n          \"ETH\",\n          \"SOL\"\n        ],\n        \"timeframes\": [\n          \"30min\",\n          \"60min\"\n        ],\n        \"riskManagement\": {\n          \"twoLossCooldown\": {\n            \"enabled\": true,\n            \"description\": \"After 2 consecutive losses, bot sits out for 3 full cycles (~90 minutes). Resets streak to zero when cooldown expires.\"\n          },\n          \"perAssetTracking\": {\n            \"enabled\": true,\n            \"description\": \"BTC, ETH, SOL tracked independently — separate win/loss streaks, separate cooldowns, separate pending bets.\"\n          },\n          \"capitalProtection\": {\n            \"maxRiskPerTrade\": \"20%\",\n            \"maxTotalExposure\": \"60%\",\n            \"description\": \"Never bet more than ~20% of bankroll per trade.\"\n          }\n        },\n        \"preTradeGates\": {\n          \"skipYesBelow\": \"15¢\",\n          \"skipYesAbove\": \"85¢\",\n          \"minRiskReward\": \"1.2:1\",\n          \"minTimeRemaining\": \"5 minutes\"\n        },\n        \"signalLayers\": [\n          \"Higher Timeframe Bias (1H + 4H) - weight 1.5\",\n          \"60-Minute Momentum - weight 1.2\",\n          \"Multi-Timeframe Momentum Alignment (3m,5m,15m) - weight 1.3\",\n          \"5-Minute Momentum - weight 1.0\",\n          \"Liquidity Sweep (Smart Money) - weight 1.1\",\n          \"Order Book Imbalance - weight 0.9\",\n          \"Mean Reversion vs Breakout - weight 1.0\",\n          \"Volume Divergence - weight 0.8\",\n          \"RSI (14-period) - weight 0.7\",\n          \"Sentiment + Funding Rate - weight 0.8\"\n        ],\n        \"goodTradeCriteria\": [\n          \"✅ 60m momentum aligns with short-term direction\",\n          \"✅ RSI not overbought/oversold against the direction\",\n          \"✅ Price above/below VWAP in our favor\",\n          \"✅ OBI confirming (bid-heavy for YES, ask-heavy for NO)\",\n          \"✅ Market pricing gives at least 1.2:1 R/R\",\n          \"✅ At least 5 minutes left in the window\",\n          \"✅ Not in a no-trade zone or ATR lock\"\n        ],\n        \"disciplineOverride\": {\n          \"redFlags\": [\n            \"Contracting volatility in choppy market\",\n            \"Betting against HTF trend with weak signal\",\n            \"High sentiment crowding risk\",\n            \"Volume divergence against direction\",\n            \"Mean reversion but chasing extreme\",\n            \"Liquidity sweep against intended direction\",\n            \"60-minute momentum against direction\"\n          ],\n          \"vetoThreshold\": \"3+ flags = NO TRADE\"\n        },\n        \"betSizing\": {\n          \"formula\": \"Quarter-Kelly\",\n          \"confidenceLevels\": {\n            \"low\": {\n              \"threshold\": \"75%\",\n              \"maxBet\": \"$5\"\n            },\n            \"high\": {\n              \"threshold\": \"87.5%\",\n              \"maxBet\": \"$20\"\n            }\n          },\n          \"hardCap\": \"$20 per trade\"\n        }\n      },\n      \"walletStatus\": \"connected\",\n      \"walletAddress\": \"0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A\",\n      \"walletType\": \"Base L2 Wallet\",\n      \"dashboardUrl\": \"https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html\",\n      \"apiStatus\": \"connected\",\n      \"marketsAvailable\": 463,\n      \"cryptoMarkets\": 25,\n      \"p0Completed\": 1,\n      \"p0Total\": 16,\n      \"p0Progress\": \"6%\",\n      \"lastUpdatedTime\": \"01:22 AM\",\n      \"liveTradingReady\": false,\n      \"liveTradingETA\": \"2026-02-27T20:18:00+08:00\",\n      \"stats\": {\n        \"currentCapital\": 1414.12,\n        \"totalTrades\": 132,\n        \"winningTrades\": 89,\n        \"losingTrades\": 43,\n        \"winRate\": 67.42,\n        \"totalPnL\": 1314.12,\n        \"totalPnLPercent\": 1314.12,\n        \"botStatus\": \"ONLINE - AWAITING OPPORTUNITIES\",\n        \"processManager\": \"PM2\",\n        \"capital\": \"$1414.12 PAPER (mirrors live)\",\n        \"achillesRules\": \"ACTIVE\",\n        \"lastRestart\": \"2026-02-27T08:18:00+08:00\",\n        \"notes\": \"132 total trades, 67.42% win rate. No new trades in 20.3+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\",\n        \"timeframes\": {\n          \"1h\": {\n            \"capital\": 1414.12,\n            \"pnl\": 0,\n            \"pnlPercent\": 0,\n            \"trades\": 0,\n            \"wins\": 0,\n            \"losses\": 0\n          },\n          \"3h\": {\n            \"capital\": 1414.12,\n            \"pnl\": 0,\n            \"pnlPercent\": 0,\n            \"trades\": 0,\n            \"wins\": 0,\n            \"losses\": 0\n          },\n          \"6h\": {\n            \"capital\": 1414.12,\n            \"pnl\": 0,\n            \"pnlPercent\": 0,\n            \"trades\": 0,\n            \"wins\": 0,\n            \"losses\": 0\n          },\n          \"12h\": {\n            \"capital\": 1414.12,\n            \"pnl\": 0,\n            \"pnlPercent\": 0,\n            \"trades\": 0,\n            \"wins\": 0,\n            \"losses\": 0\n          },\n          \"24h\": {\n            \"capital\": 1414.12,\n            \"pnl\": 0,\n            \"pnlPercent\": 0,\n            \"trades\": 0,\n            \"wins\": 0,\n            \"losses\": 0\n          },\n          \"7d\": {\n            \"capital\": 1414.12,\n            \"pnl\": 1314.12,\n            \"pnlPercent\": 1314.12,\n            \"trades\": 132,\n            \"wins\": 89,\n            \"losses\": 43\n          },\n          \"14d\": {\n            \"capital\": 1414.12,\n            \"pnl\": 1314.12,\n            \"pnlPercent\": 1314.12,\n            \"trades\": 132,\n            \"wins\": 89,\n            \"losses\": 43\n          },\n          \"30d\": {\n            \"capital\": 1414.12,\n            \"pnl\": 1314.12,\n            \"pnlPercent\": 1314.12,\n            \"trades\": 132,\n            \"wins\": 89,\n            \"losses\": 43\n          }\n        },\n        \"recentTrades\": [\n          {\n            \"id\": \"ll_1772168079718\",\n            \"timestamp\": \"2026-02-27T04:54:39.718Z\",\n            \"market\": \"BTC-Hourly\",\n            \"side\": \"YES\",\n            \"size\": 154.12,\n            \"confidence\": 0.88,\n            \"entryPrice\": 0.31,\n            \"exitPrice\": 0.61,\n            \"pnl\": 72.72,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T05:00:41.715Z\"\n          },\n          {\n            \"id\": \"ll_1772167539715\",\n            \"timestamp\": \"2026-02-27T04:45:39.715Z\",\n            \"market\": \"SOL-Hourly\",\n            \"side\": \"YES\",\n            \"size\": 129.84,\n            \"confidence\": 0.7,\n            \"entryPrice\": 0.43,\n            \"exitPrice\": 0.44,\n            \"pnl\": 76.76,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T05:00:02.824Z\"\n          },\n          {\n            \"id\": \"ll_1772167659714\",\n            \"timestamp\": \"2026-02-27T04:47:39.714Z\",\n            \"market\": \"ETH-Hourly\",\n            \"side\": \"YES\",\n            \"size\": 121.49,\n            \"confidence\": 0.73,\n            \"entryPrice\": 0.53,\n            \"exitPrice\": 0.29,\n            \"pnl\": 85.47,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T04:59:39.057Z\"\n          },\n          {\n            \"id\": \"ll_1772167719715\",\n            \"timestamp\": \"2026-02-27T04:48:39.715Z\",\n            \"market\": \"SOL-Hourly\",\n            \"side\": \"NO\",\n            \"size\": 39.58,\n            \"confidence\": 0.23,\n            \"entryPrice\": 0.47,\n            \"exitPrice\": 0.27,\n            \"pnl\": -13.28,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T04:54:38.982Z\"\n          },\n          {\n            \"id\": \"ll_1772167239714\",\n            \"timestamp\": \"2026-02-27T04:40:39.714Z\",\n            \"market\": \"ETH-Hourly\",\n            \"side\": \"YES\",\n            \"size\": 177.83,\n            \"confidence\": 0.69,\n            \"entryPrice\": 0.35,\n            \"exitPrice\": 0.55,\n            \"pnl\": 139.27,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T04:51:15.021Z\"\n          },\n          {\n            \"id\": \"ll_1772167299714\",\n            \"timestamp\": \"2026-02-27T04:41:39.714Z\",\n            \"market\": \"SOL-Hourly\",\n            \"side\": \"NO\",\n            \"size\": 85.66,\n            \"confidence\": 0.34,\n            \"entryPrice\": 0.5,\n            \"exitPrice\": 0.4,\n            \"pnl\": 65.32,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T04:50:23.994Z\"\n          },\n          {\n            \"id\": \"ll_1772166999711\",\n            \"timestamp\": \"2026-02-27T04:36:39.711Z\",\n            \"market\": \"ETH-Hourly\",\n            \"side\": \"NO\",\n            \"size\": 70.44,\n            \"confidence\": 0.34,\n            \"entryPrice\": 0.51,\n            \"exitPrice\": 0.34,\n            \"pnl\": 36.89,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T04:49:55.851Z\"\n          },\n          {\n            \"id\": \"ll_1772167359714\",\n            \"timestamp\": \"2026-02-27T04:42:39.714Z\",\n            \"market\": \"SOL-Hourly\",\n            \"side\": \"NO\",\n            \"size\": 71.46,\n            \"confidence\": 0.31,\n            \"entryPrice\": 0.51,\n            \"exitPrice\": 0.5,\n            \"pnl\": -22.39,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T04:48:44.902Z\"\n          },\n          {\n            \"id\": \"ll_1772166759707\",\n            \"timestamp\": \"2026-02-27T04:32:39.707Z\",\n            \"market\": \"ETH-Hourly\",\n            \"side\": \"YES\",\n            \"size\": 110.03,\n            \"confidence\": 0.67,\n            \"entryPrice\": 0.47,\n            \"exitPrice\": 0.55,\n            \"pnl\": -35.86,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T04:46:43.794Z\"\n          },\n          {\n            \"id\": \"ll_1772166579705\",\n            \"timestamp\": \"2026-02-27T04:29:39.705Z\",\n            \"market\": \"SOL-Hourly\",\n            \"side\": \"NO\",\n            \"size\": 23.78,\n            \"confidence\": 0.24,\n            \"entryPrice\": 0.68,\n            \"exitPrice\": 0.28,\n            \"pnl\": -8.78,\n            \"status\": \"closed\",\n            \"closedAt\": \"2026-02-27T04:43:27.669Z\"\n          }\n        ],\n        \"logs\": [\n          {\n            \"timestamp\": \"2026-02-28T01:22:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 20.3+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\"\n          },\n          {\n            \"timestamp\": \"2026-02-28T00:40:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 11.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\"\n          },\n          {\n            \"timestamp\": \"2026-02-28T00:22:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 19.3+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\"\n          },\n          {\n            \"timestamp\": \"2026-02-27T23:40:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 18.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\"\n          },\n          {\n            \"timestamp\": \"2026-02-27T23:22:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 9.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\"\n          },\n          {\n            \"timestamp\": \"2026-02-27T22:40:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 9.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\"\n          },\n          {\n            \"timestamp\": \"2026-02-27T22:22:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1685.91 (+1685.91%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 17+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\"\n          },\n          {\n            \"timestamp\": \"2026-02-27T21:40:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1685.91 (+1685.91%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 16+ hours. Last trade closed 05:00 UTC. 4 open positions pending.\"\n          },\n          {\n            \"timestamp\": \"2026-02-27T20:40:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1685.91 (+1685.91%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 15+ hours. Last trade closed 05:00 UTC.\"\n          },\n          {\n            \"timestamp\": \"2026-02-27T19:40:00+08:00\",\n            \"level\": \"info\",\n            \"message\": \"Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 14+ hours. Last trade closed 05:00 UTC.\"\n          }\n        ],\n        \"openPositions\": [\n          {\n            \"id\": \"ll_1772167959717\",\n            \"market\": \"BTC-Hourly\",\n            \"side\": \"NO\",\n            \"size\": 95.5,\n            \"entryPrice\": 0.7,\n            \"timestamp\": \"2026-02-27T04:52:39.717Z\"\n          },\n          {\n            \"id\": \"ll_1772168019717\",\n            \"market\": \"ETH-Hourly\",\n            \"side\": \"YES\",\n            \"size\": 176.67,\n            \"entryPrice\": 0.56,\n            \"timestamp\": \"2026-02-27T04:53:39.717Z\"\n          },\n          {\n            \"id\": \"ll_1772168199719\",\n            \"market\": \"SOL-Hourly\",\n            \"side\": \"NO\",\n            \"size\": 54.58,\n            \"entryPrice\": 0.58,\n            \"timestamp\": \"2026-02-27T04:56:39.719Z\"\n          },\n          {\n            \"id\": \"ll_1772168319720\",\n            \"market\": \"ETH-Hourly\",\n            \"side\": \"NO\",\n            \"size\": 45.03,\n            \"entryPrice\": 0.63,\n            \"timestamp\": \"2026-02-27T04:58:39.720Z\"\n          }\n        ],\n        \"scanLog\": [\n          {\n            \"timestamp\": \"2026-02-26T08:15:00+08:00\",\n            \"btc_price\": 65948,\n            \"signal_composite\": 0.108,\n            \"direction\": \"BULLISH\",\n            \"decision\": \"NO_TRADE\",\n            \"reason\": \"Cannot access Kalshi market data - need direct browser/API access for EV edge and order book\",\n            \"red_flags\": 0\n          }\n        ],\n        \"lastScan\": \"2026-02-26T08:15:00+08:00\",\n        \"markets\": [\n          \"BTC\",\n          \"ETH\",\n          \"SOL\"\n        ]\n      }\n    }\n  ]\n}
+{
+  "lastUpdated": "2026-02-28T01:40:00+08:00",
+  "projects": [
+    {
+      "id": "dealflow",
+      "name": "DealFlow",
+      "status": "deployed",
+      "completion": 95,
+      "url": "https://dealflow-psi.vercel.app",
+      "pendingTasks": 2,
+      "lead": "Olivia",
+      "targetCompletion": "2026-02-26",
+      "targetPercent": 100,
+      "priority": 1,
+      "deployBy": "2026-02-26",
+      "stats": {
+        "totalContacts": 90,
+        "withEmails": 79,
+        "readyForOutreach": 80,
+        "stablecoins": 40,
+        "rwa": 30,
+        "original": 20
+      }
+    },
+    {
+      "id": "mission-control",
+      "name": "Mission Control",
+      "status": "deployed",
+      "completion": 94,
+      "url": "https://mission-control-v2-sepia.vercel.app",
+      "pendingTasks": 8,
+      "lead": "Nexus",
+      "targetCompletion": "2026-02-26",
+      "targetPercent": 100,
+      "priority": 2,
+      "deployBy": "2026-02-26"
+    },
+    {
+      "id": "paws",
+      "name": "Paws",
+      "status": "deployed",
+      "completion": 95,
+      "url": "https://paws-mu.vercel.app",
+      "pendingTasks": 2,
+      "lead": "Paws-Replacement",
+      "targetCompletion": "2026-02-26",
+      "targetPercent": 100,
+      "priority": 3,
+      "deployBy": "2026-02-26"
+    },
+    {
+      "id": "mc-project",
+      "name": "MC Project",
+      "status": "deployed",
+      "completion": 100,
+      "url": "https://airickeff-af.github.io/mc-project/",
+      "pendingTasks": 0,
+      "lead": "Meemo-Replacement",
+      "targetCompletion": "2026-02-25",
+      "targetPercent": 100,
+      "priority": 4,
+      "deployBy": "2026-02-25"
+    },
+    {
+      "id": "pixel-sanctuary",
+      "name": "Pixel Sanctuary",
+      "status": "deployed",
+      "completion": 100,
+      "url": "https://pixel-sanctuary.vercel.app",
+      "pendingTasks": 0,
+      "lead": "ZooKeeper",
+      "targetCompletion": "2026-02-27",
+      "targetPercent": 100,
+      "priority": 5,
+      "deployBy": "2026-02-27",
+      "features": [
+        "8-directional movement",
+        "12 color palettes",
+        "Steak feeding system",
+        "Proportional food spawning"
+      ]
+    },
+    {
+      "id": "quill-research",
+      "name": "Quill Research",
+      "status": "active",
+      "completion": 50,
+      "url": null,
+      "pendingTasks": 0,
+      "lead": "Quill",
+      "targetCompletion": "2026-02-28",
+      "targetPercent": 100,
+      "priority": 6,
+      "deployBy": "2026-02-28",
+      "description": "Deep-dive research profiles on crypto/AI/tech industry figures",
+      "outputLocation": "/root/.openclaw/workspace/quill/profiles/",
+      "profilesUrl": "https://github.com/airickeff-af/mission-control-v2/tree/main/quill/profiles",
+      "articlesUrl": "TBD - Local workspace first",
+      "publishingWorkflow": {
+        "step1": "Save to /root/.openclaw/workspace/quill/profiles/",
+        "step2": "Polish and finalize locally",
+        "step3": "Suggest to EricF for publishing",
+        "publishOptions": [
+          "X Articles (ericclfung)",
+          "Medium (ericclfung.medium.com)",
+          "Both"
+        ]
+      },
+      "dailyTarget": "2 profiles (3500-4000 words each)",
+      "stats": {
+        "profilesCompleted": 2,
+        "profilesPending": 0,
+        "wordsPerProfile": "3500-4000",
+        "topics": [
+          "Crypto",
+          "AI",
+          "Tech"
+        ]
+      }
+    },
+    {
+      "id": "memory-system",
+      "name": "Memory System",
+      "status": "active",
+      "completion": 75,
+      "url": "https://dashboard-ten-sand-20.vercel.app/memory/index.html",
+      "pendingTasks": 0,
+      "lead": "Nexus",
+      "targetCompletion": "2026-02-28",
+      "targetPercent": 100,
+      "priority": 7,
+      "deployBy": "2026-02-28",
+      "description": "Long-term memory storage and session tracking for all agents",
+      "outputLocation": "/root/.openclaw/workspace/memory/",
+      "dashboardUrl": "https://dashboard-ten-sand-20.vercel.app/memory/index.html",
+      "stats": {
+        "dailyLogs": 3,
+        "gitSyncReports": 1,
+        "heartbeatChecks": 38,
+        "archivedSessions": 7,
+        "lastSync": "2026-02-27T19:22:00+08:00",
+        "reposTracked": 4,
+        "memoryFiles": [
+          {
+            "name": "2026-02-27.md",
+            "type": "daily-log",
+            "lastModified": "2026-02-27T19:22:00+08:00",
+            "size": "2.5 KB"
+          },
+          {
+            "name": "heartbeat-state.json",
+            "type": "state-tracking",
+            "lastModified": "2026-02-27T19:00:00+08:00",
+            "size": "2.1 KB"
+          },
+          {
+            "name": "git-sync-state.json",
+            "type": "sync-tracking",
+            "lastModified": "2026-02-26T06:42:00+08:00",
+            "size": "0.9 KB"
+          },
+          {
+            "name": "git-auto-sync-report-2026-02-26.md",
+            "type": "sync-report",
+            "lastModified": "2026-02-26T06:43:00+08:00",
+            "size": "4.9 KB"
+          }
+        ],
+        "repoStatus": {
+          "mission-control-v2": {
+            "lastCommit": "2026-02-28T01:15:00+08:00",
+            "status": "synced"
+          },
+          "mc-project": {
+            "lastCommit": "2026-02-25T07:22:49+08:00",
+            "status": "synced"
+          },
+          "dealflow": {
+            "lastCommit": "2026-02-25T23:35:33+08:00",
+            "status": "synced"
+          },
+          "pixel-sanctuary": {
+            "lastCommit": "2026-02-25T23:12:26+08:00",
+            "status": "synced"
+          }
+        }
+      }
+    },
+    {
+      "id": "sentry-maintenance",
+      "name": "Sentry Maintenance",
+      "status": "active",
+      "completion": 0,
+      "url": null,
+      "pendingTasks": 0,
+      "lead": "Sentry",
+      "targetCompletion": "2026-02-28",
+      "targetPercent": 100,
+      "priority": 8,
+      "deployBy": "2026-02-28",
+      "description": "72-hour automated memory maintenance — deduplication, rule consolidation, archival",
+      "outputLocation": "/root/.openclaw/workspace/memory/maintenance-reports/",
+      "schedule": "Every 72 hours",
+      "lastRun": null,
+      "nextRun": "2026-03-01T07:44:00+08:00",
+      "stats": {
+        "totalRuns": 0,
+        "duplicatesRemoved": 0,
+        "rulesConsolidated": 0,
+        "itemsArchived": 0,
+        "maintenanceHistory": [],
+        "currentRun": {
+          "status": "scheduled",
+          "startedAt": null,
+          "completedAt": null,
+          "tasks": {
+            "deduplication": "pending",
+            "ruleConsolidation": "pending",
+            "archival": "pending",
+            "digestSent": "pending"
+          }
+        }
+      }
+    },
+    {
+      "id": "limitless-bot",
+      "name": "Limitless Trading Bot",
+      "status": "active",
+      "completion": 75,
+      "url": "https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html",
+      "pendingTasks": 4,
+      "lead": "Limitless",
+      "targetCompletion": "2026-02-27",
+      "targetPercent": 100,
+      "priority": 9,
+      "deployBy": "2026-02-27",
+      "lastUpdated": "2026-02-28T01:40:00+08:00",
+      "nextUpdate": "2026-02-28T02:40:00+08:00",
+      "description": "Automated BTC/ETH/SOL trading bot using Achilles Trading Rules on Limitless Exchange. Paper trading now, live trading target $100→$5000.",
+      "tradingSystem": "Achilles BTC Trading Rules (Kalshi 15-min binary options)",
+      "botResponsibilities": [
+        "Self-build trading infrastructure",
+        "Research BTC/ETH/SOL markets continuously",
+        "Execute trades following Achilles rules",
+        "Report progress every 30 minutes"
+      ],
+      "outputLocation": "/root/.openclaw/workspace/limitless-bot/",
+      "platform": "Limitless Exchange (Base L2)",
+      "strategy": "High-frequency hourly BTC/ETH/SOL up/down predictions",
+      "initialCapital": 100,
+      "targetCapital": 5000,
+      "riskPerTrade": "2-5%",
+      "schedule": "Hourly updates",
+      "mode": "🧪 PAPER TRADING - ACHILLES RULES",
+      "modeIndicator": "🧪 PAPER TRADING - NOT REAL MONEY",
+      "tradingStrategy": "Achilles Trading Rules (Limitless Exchange)",
+      "strategyUrl": "https://limitless.exchange/markets/page/crypto",
+      "achillesRulesUrl": "../limitless-bot/achilles-rules.html",
+      "walletViewerUrl": "https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html",
+      "achillesRules": {
+        "version": "1.1.0",
+        "platform": "Limitless Exchange (Base L2)",
+        "markets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "timeframes": [
+          "30min",
+          "60min"
+        ],
+        "riskManagement": {
+          "twoLossCooldown": {
+            "enabled": true,
+            "description": "After 2 consecutive losses, bot sits out for 3 full cycles (~90 minutes). Resets streak to zero when cooldown expires."
+          },
+          "perAssetTracking": {
+            "enabled": true,
+            "description": "BTC, ETH, SOL tracked independently — separate win/loss streaks, separate cooldowns, separate pending bets."
+          },
+          "capitalProtection": {
+            "maxRiskPerTrade": "20%",
+            "maxTotalExposure": "60%",
+            "description": "Never bet more than ~20% of bankroll per trade."
+          }
+        },
+        "preTradeGates": {
+          "skipYesBelow": "15¢",
+          "skipYesAbove": "85¢",
+          "minRiskReward": "1.2:1",
+          "minTimeRemaining": "5 minutes"
+        },
+        "signalLayers": [
+          "Higher Timeframe Bias (1H + 4H) - weight 1.5",
+          "60-Minute Momentum - weight 1.2",
+          "Multi-Timeframe Momentum Alignment (3m,5m,15m) - weight 1.3",
+          "5-Minute Momentum - weight 1.0",
+          "Liquidity Sweep (Smart Money) - weight 1.1",
+          "Order Book Imbalance - weight 0.9",
+          "Mean Reversion vs Breakout - weight 1.0",
+          "Volume Divergence - weight 0.8",
+          "RSI (14-period) - weight 0.7",
+          "Sentiment + Funding Rate - weight 0.8"
+        ],
+        "goodTradeCriteria": [
+          "✅ 60m momentum aligns with short-term direction",
+          "✅ RSI not overbought/oversold against the direction",
+          "✅ Price above/below VWAP in our favor",
+          "✅ OBI confirming (bid-heavy for YES, ask-heavy for NO)",
+          "✅ Market pricing gives at least 1.2:1 R/R",
+          "✅ At least 5 minutes left in the window",
+          "✅ Not in a no-trade zone or ATR lock"
+        ],
+        "disciplineOverride": {
+          "redFlags": [
+            "Contracting volatility in choppy market",
+            "Betting against HTF trend with weak signal",
+            "High sentiment crowding risk",
+            "Volume divergence against direction",
+            "Mean reversion but chasing extreme",
+            "Liquidity sweep against intended direction",
+            "60-minute momentum against direction"
+          ],
+          "vetoThreshold": "3+ flags = NO TRADE"
+        },
+        "betSizing": {
+          "formula": "Quarter-Kelly",
+          "confidenceLevels": {
+            "low": {
+              "threshold": "75%",
+              "maxBet": "$5"
+            },
+            "high": {
+              "threshold": "87.5%",
+              "maxBet": "$20"
+            }
+          },
+          "hardCap": "$20 per trade"
+        }
+      },
+      "walletStatus": "connected",
+      "walletAddress": "0xDe3e549Fa1bF184f505a995A2C11D003f022Ae8A",
+      "walletType": "Base L2 Wallet",
+      "dashboardUrl": "https://mission-control-v2-sepia.vercel.app/limitless/wallet-viewer.html",
+      "apiStatus": "connected",
+      "marketsAvailable": 463,
+      "cryptoMarkets": 25,
+      "p0Completed": 1,
+      "p0Total": 16,
+      "p0Progress": "6%",
+      "lastUpdatedTime": "01:40 AM",
+      "liveTradingReady": false,
+      "liveTradingETA": "2026-02-27T20:18:00+08:00",
+      "stats": {
+        "currentCapital": 1414.12,
+        "totalTrades": 132,
+        "winningTrades": 89,
+        "losingTrades": 43,
+        "winRate": 67.42,
+        "totalPnL": 1314.12,
+        "totalPnLPercent": 1314.12,
+        "botStatus": "ONLINE - AWAITING OPPORTUNITIES",
+        "processManager": "PM2",
+        "capital": "$1414.12 PAPER (mirrors live)",
+        "achillesRules": "ACTIVE",
+        "lastRestart": "2026-02-27T08:18:00+08:00",
+        "notes": "132 total trades, 67.42% win rate. No new trades in 20.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending.",
+        "timeframes": {
+          "1h": {
+            "capital": 1414.12,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
+          },
+          "3h": {
+            "capital": 1414.12,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
+          },
+          "6h": {
+            "capital": 1414.12,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
+          },
+          "12h": {
+            "capital": 1414.12,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
+          },
+          "24h": {
+            "capital": 1414.12,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
+          },
+          "7d": {
+            "capital": 1414.12,
+            "pnl": 1314.12,
+            "pnlPercent": 1314.12,
+            "trades": 132,
+            "wins": 89,
+            "losses": 43
+          },
+          "14d": {
+            "capital": 1414.12,
+            "pnl": 1314.12,
+            "pnlPercent": 1314.12,
+            "trades": 132,
+            "wins": 89,
+            "losses": 43
+          },
+          "30d": {
+            "capital": 1414.12,
+            "pnl": 1314.12,
+            "pnlPercent": 1314.12,
+            "trades": 132,
+            "wins": 89,
+            "losses": 43
+          }
+        },
+        "recentTrades": [
+          {
+            "id": "ll_1772168079718",
+            "timestamp": "2026-02-27T04:54:39.718Z",
+            "market": "BTC-Hourly",
+            "side": "YES",
+            "size": 154.12,
+            "confidence": 0.88,
+            "entryPrice": 0.31,
+            "exitPrice": 0.61,
+            "pnl": 72.72,
+            "status": "closed",
+            "closedAt": "2026-02-27T05:00:41.715Z"
+          },
+          {
+            "id": "ll_1772167539715",
+            "timestamp": "2026-02-27T04:45:39.715Z",
+            "market": "SOL-Hourly",
+            "side": "YES",
+            "size": 129.84,
+            "confidence": 0.7,
+            "entryPrice": 0.43,
+            "exitPrice": 0.44,
+            "pnl": 76.76,
+            "status": "closed",
+            "closedAt": "2026-02-27T05:00:02.824Z"
+          },
+          {
+            "id": "ll_1772167659714",
+            "timestamp": "2026-02-27T04:47:39.714Z",
+            "market": "ETH-Hourly",
+            "side": "YES",
+            "size": 121.49,
+            "confidence": 0.73,
+            "entryPrice": 0.53,
+            "exitPrice": 0.29,
+            "pnl": 85.47,
+            "status": "closed",
+            "closedAt": "2026-02-27T04:59:39.057Z"
+          },
+          {
+            "id": "ll_1772167719715",
+            "timestamp": "2026-02-27T04:48:39.715Z",
+            "market": "SOL-Hourly",
+            "side": "NO",
+            "size": 39.58,
+            "confidence": 0.23,
+            "entryPrice": 0.47,
+            "exitPrice": 0.27,
+            "pnl": -13.28,
+            "status": "closed",
+            "closedAt": "2026-02-27T04:54:38.982Z"
+          },
+          {
+            "id": "ll_1772167239714",
+            "timestamp": "2026-02-27T04:40:39.714Z",
+            "market": "ETH-Hourly",
+            "side": "YES",
+            "size": 177.83,
+            "confidence": 0.69,
+            "entryPrice": 0.35,
+            "exitPrice": 0.55,
+            "pnl": 139.27,
+            "status": "closed",
+            "closedAt": "2026-02-27T04:51:15.021Z"
+          },
+          {
+            "id": "ll_1772167299714",
+            "timestamp": "2026-02-27T04:41:39.714Z",
+            "market": "SOL-Hourly",
+            "side": "NO",
+            "size": 85.66,
+            "confidence": 0.34,
+            "entryPrice": 0.5,
+            "exitPrice": 0.4,
+            "pnl": 65.32,
+            "status": "closed",
+            "closedAt": "2026-02-27T04:50:23.994Z"
+          },
+          {
+            "id": "ll_1772166999711",
+            "timestamp": "2026-02-27T04:36:39.711Z",
+            "market": "ETH-Hourly",
+            "side": "NO",
+            "size": 70.44,
+            "confidence": 0.34,
+            "entryPrice": 0.51,
+            "exitPrice": 0.34,
+            "pnl": 36.89,
+            "status": "closed",
+            "closedAt": "2026-02-27T04:49:55.851Z"
+          },
+          {
+            "id": "ll_1772167359714",
+            "timestamp": "2026-02-27T04:42:39.714Z",
+            "market": "SOL-Hourly",
+            "side": "NO",
+            "size": 71.46,
+            "confidence": 0.31,
+            "entryPrice": 0.51,
+            "exitPrice": 0.5,
+            "pnl": -22.39,
+            "status": "closed",
+            "closedAt": "2026-02-27T04:48:44.902Z"
+          },
+          {
+            "id": "ll_1772166759707",
+            "timestamp": "2026-02-27T04:32:39.707Z",
+            "market": "ETH-Hourly",
+            "side": "YES",
+            "size": 110.03,
+            "confidence": 0.67,
+            "entryPrice": 0.47,
+            "exitPrice": 0.55,
+            "pnl": -35.86,
+            "status": "closed",
+            "closedAt": "2026-02-27T04:46:43.794Z"
+          },
+          {
+            "id": "ll_1772166579705",
+            "timestamp": "2026-02-27T04:29:39.705Z",
+            "market": "SOL-Hourly",
+            "side": "NO",
+            "size": 23.78,
+            "confidence": 0.24,
+            "entryPrice": 0.68,
+            "exitPrice": 0.28,
+            "pnl": -8.78,
+            "status": "closed",
+            "closedAt": "2026-02-27T04:43:27.669Z"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": "2026-02-28T01:40:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 20.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-28T01:22:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 20.3+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-28T00:40:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 11.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-28T00:22:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 19.3+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-27T23:40:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 18.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-27T23:22:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 9.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-27T22:40:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 9.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-27T22:22:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1685.91 (+1685.91%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 17+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-27T21:40:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1685.91 (+1685.91%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 16+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
+          },
+          {
+            "timestamp": "2026-02-27T20:40:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1685.91 (+1685.91%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 15+ hours. Last trade closed 05:00 UTC."
+          }
+        ],
+        "openPositions": [
+          {
+            "id": "ll_1772167959717",
+            "market": "BTC-Hourly",
+            "side": "NO",
+            "size": 95.5,
+            "entryPrice": 0.7,
+            "timestamp": "2026-02-27T04:52:39.717Z"
+          },
+          {
+            "id": "ll_1772168019717",
+            "market": "ETH-Hourly",
+            "side": "YES",
+            "size": 176.67,
+            "entryPrice": 0.56,
+            "timestamp": "2026-02-27T04:53:39.717Z"
+          },
+          {
+            "id": "ll_1772168199719",
+            "market": "SOL-Hourly",
+            "side": "NO",
+            "size": 54.58,
+            "entryPrice": 0.58,
+            "timestamp": "2026-02-27T04:56:39.719Z"
+          },
+          {
+            "id": "ll_1772168319720",
+            "market": "ETH-Hourly",
+            "side": "NO",
+            "size": 45.03,
+            "entryPrice": 0.63,
+            "timestamp": "2026-02-27T04:58:39.720Z"
+          }
+        ],
+        "scanLog": [
+          {
+            "timestamp": "2026-02-26T08:15:00+08:00",
+            "btc_price": 65948,
+            "signal_composite": 0.108,
+            "direction": "BULLISH",
+            "decision": "NO_TRADE",
+            "reason": "Cannot access Kalshi market data - need direct browser/API access for EV edge and order book",
+            "red_flags": 0
+          }
+        ],
+        "lastScan": "2026-02-26T08:15:00+08:00",
+        "markets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ]
+      }
+    }
+  ]
+}
