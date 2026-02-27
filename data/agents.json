@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T14:22:00+08:00",
+  "lastUpdated": "2026-02-27T16:22:00+08:00",
   "agents": [
     {
       "name": "Nexus",
@@ -8,8 +8,8 @@
       "project": "Mission Control",
       "task": "Hourly dashboard update + Vercel redeploy",
       "priority": "P0",
-      "tokens": 54952,
-      "sessions": 80,
+      "tokens": 85160,
+      "sessions": 81,
       "type": "main",
       "sessionKey": "agent:main:main"
     },
