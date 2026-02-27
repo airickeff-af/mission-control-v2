@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-27T08:22:00+08:00",
+  "lastUpdated": "2026-02-27T08:40:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -223,7 +223,7 @@
       "targetPercent": 100,
       "priority": 9,
       "deployBy": "2026-02-27",
-      "lastUpdated": "2026-02-27T08:22:00+08:00",
+      "lastUpdated": "2026-02-27T08:40:00+08:00",
       "description": "Automated BTC/ETH/SOL trading bot using Achilles Trading Rules on Limitless Exchange. Paper trading now, live trading target $100→$5000.",
       "tradingSystem": "Achilles BTC Trading Rules (Kalshi 15-min binary options)",
       "botResponsibilities": [
@@ -336,8 +336,8 @@
       "p0Completed": 1,
       "p0Total": 16,
       "p0Progress": "6%",
-      "lastUpdatedTime": "8:22 AM",
-      "nextUpdate": "2026-02-27T09:22:00.000Z",
+      "lastUpdatedTime": "8:40 AM",
+      "nextUpdate": "2026-02-27T09:40:00.000Z",
       "liveTradingReady": false,
       "liveTradingETA": "2026-02-27T08:00:00+08:00",
       "stats": {
@@ -347,13 +347,13 @@
         "losingTrades": 0,
         "winRate": 0,
         "totalPnL": 0,
+        "totalPnLPercent": 0,
         "botStatus": "ONLINE - FRESH START",
         "processManager": "PM2",
         "capital": "$100 PAPER (mirrors live)",
         "achillesRules": "ACTIVE",
         "lastRestart": "2026-02-27T08:18:00+08:00",
         "notes": "Both bots reset to $100 with Achilles Rules. 12-hour validation before live.",
-        "totalPnLPercent": 15.74,
         "timeframes": {
           "1h": {
             "capital": 100,
@@ -380,140 +380,48 @@
             "losses": 0
           },
           "12h": {
-            "capital": 115.73,
-            "pnl": 15.73,
-            "pnlPercent": 15.73,
-            "trades": 7,
-            "wins": 5,
-            "losses": 2
+            "capital": 100,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
           },
           "24h": {
-            "capital": 115.73,
-            "pnl": 15.73,
-            "pnlPercent": 15.73,
-            "trades": 7,
-            "wins": 5,
-            "losses": 2
+            "capital": 100,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
           },
           "7d": {
-            "capital": 115.73,
-            "pnl": 15.73,
-            "pnlPercent": 15.73,
-            "trades": 7,
-            "wins": 5,
-            "losses": 2
+            "capital": 100,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
           },
           "14d": {
-            "capital": 115.73,
-            "pnl": 15.73,
-            "pnlPercent": 15.73,
-            "trades": 7,
-            "wins": 5,
-            "losses": 2
+            "capital": 100,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
           },
           "30d": {
-            "capital": 115.73,
-            "pnl": 15.73,
-            "pnlPercent": 15.73,
-            "trades": 7,
-            "wins": 5,
-            "losses": 2
+            "capital": 100,
+            "pnl": 0,
+            "pnlPercent": 0,
+            "trades": 0,
+            "wins": 0,
+            "losses": 0
           }
         },
-        "recentTrades": [
-          {
-            "id": "ll_1772122040704",
-            "timestamp": "2026-02-26T16:07:20.704Z",
-            "market": "SOL-Hourly",
-            "side": "YES",
-            "size": 5.48,
-            "confidence": 0.75,
-            "entryPrice": 0.56,
-            "exitPrice": 0.57,
-            "pnl": 4.28,
-            "status": "closed",
-            "closedAt": "2026-02-26T16:17:29.820Z"
-          },
-          {
-            "id": "ll_1772121740571",
-            "timestamp": "2026-02-26T16:02:20.571Z",
-            "market": "SOL-Hourly",
-            "side": "YES",
-            "size": 5.61,
-            "confidence": 0.76,
-            "entryPrice": 0.56,
-            "exitPrice": 0.44,
-            "pnl": -2.59,
-            "status": "closed",
-            "closedAt": "2026-02-26T16:16:48.568Z"
-          },
-          {
-            "id": "ll_1772121620497",
-            "timestamp": "2026-02-26T16:00:20.497Z",
-            "market": "ETH-Hourly",
-            "side": "YES",
-            "size": 6.6,
-            "confidence": 0.79,
-            "entryPrice": 0.26,
-            "exitPrice": 0.73,
-            "pnl": 4.02,
-            "status": "closed",
-            "closedAt": "2026-02-26T16:08:31.471Z"
-          },
-          {
-            "id": "ll_1772121560471",
-            "timestamp": "2026-02-26T15:59:20.472Z",
-            "market": "BTC-Hourly",
-            "side": "YES",
-            "size": 7.77,
-            "confidence": 0.72,
-            "entryPrice": 0.48,
-            "exitPrice": 0.73,
-            "pnl": -3.08,
-            "status": "closed",
-            "closedAt": "2026-02-26T16:06:47.086Z"
-          },
-          {
-            "id": "ll_1772120939812",
-            "timestamp": "2026-02-26T15:48:59.812Z",
-            "market": "SOL-Hourly",
-            "side": "YES",
-            "size": 5.83,
-            "confidence": 0.87,
-            "entryPrice": 0.27,
-            "exitPrice": 0.72,
-            "pnl": 2.77,
-            "status": "closed",
-            "closedAt": "2026-02-26T15:55:56.632Z"
-          },
-          {
-            "id": "ll_1772120909782",
-            "timestamp": "2026-02-26T15:48:29.782Z",
-            "market": "SOL-Hourly",
-            "side": "YES",
-            "size": 6.86,
-            "confidence": 0.84,
-            "entryPrice": 0.29,
-            "exitPrice": 0.27,
-            "pnl": 3.28,
-            "status": "closed",
-            "closedAt": "2026-02-26T15:55:07.581Z"
-          },
-          {
-            "id": "ll_1772120097771",
-            "timestamp": "2026-02-26T15:34:57.771Z",
-            "market": "ETH-Hourly",
-            "side": "YES",
-            "size": 15,
-            "confidence": 0.86,
-            "entryPrice": 0.53,
-            "exitPrice": 0.54,
-            "pnl": 7.05,
-            "status": "closed",
-            "closedAt": "2026-02-26T15:42:49.849Z"
-          }
-        ],
-        "tradeHistory": [
+        "recentTrades": [],
+        "tradeHistory": [],
           {
             "id": "ll_1772120097771",
             "timestamp": "2026-02-26T15:34:57.771Z",
@@ -607,6 +515,11 @@
           }
         ],
         "logs": [
+          {
+            "timestamp": "2026-02-27T08:40:00+08:00",
+            "level": "info",
+            "message": "Hourly update: Capital $100.00 | P&L $0.00 (0.00%) | Trades: 0 | Status: Awaiting first trade opportunity. Bot scanning BTC/ETH/SOL markets. Achilles Rules active - awaiting high-confidence setup (>75% threshold)."
+          },
           {
             "timestamp": "2026-02-27T08:22:00+08:00",
             "level": "info",
