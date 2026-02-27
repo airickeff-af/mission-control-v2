@@ -1197,35 +1197,42 @@
     // Load live dashboard data
     async function loadLiveData() {
       try {
-        // Try to load from live paper trading state files
-        const [llRes, stanleyRes] = await Promise.all([
-          fetch('../../limitless-bot/data/limitless-paper-state.json?t=' + Date.now()),
-          fetch('../../limitless-bot/data/polymarket-paper-state.json?t=' + Date.now())
-        ]);
-        
-        const llData = await llRes.json();
-        const stanleyData = await stanleyRes.json();
+        // Load from committed dashboard data (deployed to Vercel)
+        const response = await fetch('../data/dashboard-trading-data.json?t=' + Date.now());
+        const data = await response.json();
         
         // Update Limitless
-        const llBalance = llData.balance || llData.currentBalance || 28.41;
+        const llData = data.limitless || {};
+        const llBalance = llData.balance || llData.currentBalance || 100;
+        const llPnL = llData.pnl || llData.totalPnL || 0;
         document.getElementById('limitless-balance').textContent = '$' + parseFloat(llBalance).toFixed(2);
+        document.getElementById('limitless-pnl').textContent = (llPnL >= 0 ? '+' : '') + '$' + parseFloat(llPnL).toFixed(2);
         
-        // Update Polymarket
-        const stanleyBalance = stanleyData.currentBalance || stanleyData.balance || 49.70;
+        // Update Stanley
+        const stanleyData = data.stanley || {};
+        const stanleyBalance = stanleyData.balance || stanleyData.currentBalance || 100;
+        const stanleyPnL = stanleyData.pnl || stanleyData.totalPnL || 0;
         document.getElementById('polymarket-balance').textContent = '$' + parseFloat(stanleyBalance).toFixed(2);
+        document.getElementById('polymarket-pnl').textContent = (stanleyPnL >= 0 ? '+' : '') + '$' + parseFloat(stanleyPnL).toFixed(2);
+        
+        // Update combined stats
+        const combinedPnL = (llData.pnl || 0) + (stanleyData.pnl || 0);
+        const combinedTrades = (llData.trades?.length || 0) + (stanleyData.trades?.length || 0);
+        document.getElementById('combined-pnl').textContent = (combinedPnL >= 0 ? '+' : '') + '$' + combinedPnL.toFixed(2);
+        document.getElementById('total-trades').textContent = combinedTrades;
         
         // Update timestamp
-        updateTimestamp();
+        document.getElementById('last-updated').textContent = 'Updated: ' + new Date(data.timestamp).toLocaleString('en-US', {
+          month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
         
         console.log('[Dashboard] Live data loaded at', new Date().toLocaleTimeString());
-        console.log('[Dashboard] LL Balance:', llBalance.toFixed(2));
-        console.log('[Dashboard] Stanley Balance:', stanleyBalance.toFixed(2));
+        console.log('[Dashboard] Combined PnL:', combinedPnL.toFixed(2));
+        console.log('[Dashboard] Total Trades:', combinedTrades);
         
-        return { ll: llData, stanley: stanleyData };
+        return data;
       } catch (error) {
         console.error('[Dashboard] Error loading live data:', error);
-        // Still update timestamp even if data fails
-        updateTimestamp();
         return null;
       }
     }
