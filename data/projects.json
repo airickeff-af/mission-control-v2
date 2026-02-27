@@ -85,7 +85,7 @@
       "name": "Quill Research",
       "status": "active",
       "completion": 50,
-      "url": null,
+      "url": "https://ericclfung.medium.com",
       "pendingTasks": 0,
       "lead": "Quill",
       "targetCompletion": "2026-02-28",
@@ -95,6 +95,7 @@
       "description": "Deep-dive research profiles on crypto/AI/tech industry figures",
       "outputLocation": "/root/.openclaw/workspace/quill/profiles/",
       "profilesUrl": "https://github.com/airickeff-af/mission-control-v2/tree/main/quill/profiles",
+      "articlesUrl": "https://ericclfung.medium.com",
       "dailyTarget": "2 profiles (3500-4000 words each)",
       "stats": {
         "profilesCompleted": 2,
