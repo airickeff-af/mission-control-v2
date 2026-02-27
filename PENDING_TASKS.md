@@ -1,7 +1,7 @@
 # PENDING TASKS - MISSION CONTROL v2.0
 **Status:** ACTIVE  
-**Last Updated:** 2026-02-25 2:00 AM HKT  
-**Total Tasks:** 71  
+**Last Updated:** 2026-02-28 2:00 AM HKT  
+**Total Tasks:** 81  
 **Nuclear Reset:** Feb 24, 2026 - Fresh start, all old tasks archived
 
 ---
@@ -10,15 +10,43 @@
 
 | Priority | Count | Status |
 |----------|-------|--------|
-| 🔴 P0 - Critical | 13 | 3 in progress |
-| 🟡 P1 - High | 32 | Multiple in progress |
-| 🟢 P2 - Medium | 21 | Planned |
+| 🔴 P0 - Critical | 11 | 3 in progress |
+| 🟡 P1 - High | 18 | Multiple in progress |
+| 🟢 P2 - Medium | 10 | Planned |
 | ⚪ P3 - Low | 5 | Future |
-| **TOTAL** | **71** | **Active** |
+| **TOTAL** | **81** | **Active** |
 
 ---
 
 ## 🔴 P0 - CRITICAL (Complete ASAP)
+
+### **MC-P0-014: Token Usage Alert System** ⭐ NEW
+- **Assigned:** Sentry
+- **Due:** Feb 28, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Implement real-time token consumption monitoring with configurable thresholds and alert notifications
+
+### **DF-P0-004: API Rate Limiting and Security** ⭐ NEW
+- **Assigned:** DealFlow-Alpha
+- **Due:** Feb 28, 2:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** DealFlow
+- **Description:** Implement comprehensive API rate limiting, abuse detection, and security hardening for all endpoints
+
+### **PS-P0-003: Meebit Character Integration** ⭐ NEW
+- **Assigned:** ZooKeeper
+- **Due:** Mar 1, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Pixel Sanctuary
+- **Description:** Complete MeebCo API integration to fetch and render 3D voxel Meebit characters as interactive agents
+
+### **MCP-P0-002: Mobile PWA Optimization** ⭐ NEW
+- **Assigned:** Meemo
+- **Due:** Mar 1, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** MC Project
+- **Description:** Optimize PWA experience with offline support, push notifications, and mobile-first UI improvements
 
 ### **MC-P0-010: Fix Vercel Deployment Pipeline**
 - **Assigned:** Sentry
@@ -114,6 +142,27 @@
 ---
 
 ## 🟡 P1 - HIGH VALUE
+
+### **MC-P1-013: Agent Performance Analytics Dashboard** ⭐ NEW
+- **Assigned:** Gary
+- **Due:** Mar 2, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Build comprehensive analytics showing agent efficiency, task completion rates, and productivity trends
+
+### **DF-P1-005: PIE Predictive Intelligence Engine** ⭐ NEW
+- **Assigned:** DealFlow-Alpha
+- **Due:** Mar 3, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** DealFlow
+- **Description:** Implement AI-powered lead scoring with market timing predictions and sentiment analysis
+
+### **PS-P1-010: Environment Tilemap System** ⭐ NEW
+- **Assigned:** PS-Forge
+- **Due:** Mar 2, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Pixel Sanctuary
+- **Description:** Create modular tilemap system with multiple biomes, interactive objects, and dynamic environments
 
 ### **Mission Control Tasks**
 
@@ -296,6 +345,27 @@
 ---
 
 ## 🟢 P2 - MEDIUM PRIORITY
+
+### **MC-P2-005: Dark Mode Polish and Theme System** ⭐ NEW
+- **Assigned:** Pixel
+- **Due:** Mar 5, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Refine dark mode with improved contrast, accent colors, and user-customizable theme preferences
+
+### **PAWS-P2-002: Baby Activity Tracker Enhancement** ⭐ NEW
+- **Assigned:** Paws
+- **Due:** Mar 4, 9:00 AM
+- **Status:** ⏳ PENDING
+- **Project:** Paws
+- **Description:** Add detailed activity logging, milestone tracking, and growth chart visualization
+
+### **MCP-P2-001: Achievement and Progression System** ⭐ NEW
+- **Assigned:** Meemo
+- **Due:** Mar 6, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** MC Project
+- **Description:** Implement gamification with achievements, badges, and progression tracking for user engagement
 
 ### **MC-P2-001: Content Repurposing System**
 - **Assigned:** Quill

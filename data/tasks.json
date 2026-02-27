@@ -1,1 +1,581 @@
-{\n  \"lastUpdated\": \"2026-02-28T01:22:00+08:00\",\n  \"lastGitSync\": \"2026-02-28T01:15:00+08:00\",\n  \"summary\": {\n    \"p0Count\": 7,\n    \"p1Count\": 15,\n    \"p2Count\": 7,\n    \"p3Count\": 0,\n    \"totalPending\": 29,\n    \"inProgress\": 5,\n    \"completed24h\": 0,\n    \"completed7d\": 38,\n    \"targetCompletion\": \"2026-02-28\",\n    \"targetPercent\": 85\n  },\n  \"pendingTasks\": [\n    {\"id\": \"MC-P0-013\", \"title\": \"Real-time Agent Status Dashboard\", \"agent\": \"Forge\", \"priority\": \"P0\", \"due\": \"2026-02-27T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"DF-P0-003\", \"title\": \"Lead Enrichment Pipeline Completion\", \"agent\": \"DealFlow-Alpha\", \"priority\": \"P0\", \"due\": \"2026-02-27T17:00:00+08:00\", \"status\": \"pending\", \"project\": \"dealflow\"},\n    {\"id\": \"PS-P0-002\", \"title\": \"Agent Behavior State Machine\", \"agent\": \"PS-Logic\", \"priority\": \"P0\", \"due\": \"2026-02-27T20:00:00+08:00\", \"status\": \"pending\", \"project\": \"pixel-sanctuary\"},\n    {\"id\": \"MCP-P0-001\", \"title\": \"Save/Load Game System\", \"agent\": \"Meemo\", \"priority\": \"P0\", \"due\": \"2026-02-28T12:00:00+08:00\", \"status\": \"pending\", \"project\": \"mc-project\"},\n    {\"id\": \"MC-P1-012\", \"title\": \"Task Dependency Visualization\", \"agent\": \"Gary\", \"priority\": \"P1\", \"due\": \"2026-02-28T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"DF-P1-004\", \"title\": \"Outreach Analytics Dashboard\", \"agent\": \"DealFlow-Alpha\", \"priority\": \"P1\", \"due\": \"2026-03-01T12:00:00+08:00\", \"status\": \"pending\", \"project\": \"dealflow\"},\n    {\"id\": \"PS-P1-007\", \"title\": \"Interactive Feeding System\", \"agent\": \"PS-Forge\", \"priority\": \"P1\", \"due\": \"2026-03-01T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"pixel-sanctuary\"},\n    {\"id\": \"PS-P1-008\", \"title\": \"Integrate MeebCo API for Meebits Characters\", \"agent\": \"ZooKeeper\", \"priority\": \"P1\", \"due\": \"2026-02-28T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"pixel-sanctuary\", \"description\": \"Use MeebCo API Skill to add Meebits voxel characters to Pixel Sanctuary. Fetch 3D voxel characters, sprite sheets, and metadata from Meebits collection.\", \"source\": \"https://github.com/meebit17600/meebco-api-skill\"},\n    {\"id\": \"MC-P2-004\", \"title\": \"Keyboard Shortcuts System\", \"agent\": \"Forge\", \"priority\": \"P2\", \"due\": \"2026-03-04T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"PAWS-P2-001\", \"title\": \"Weekly Family Report Generator\", \"agent\": \"Paws\", \"priority\": \"P2\", \"due\": \"2026-03-02T09:00:00+08:00\", \"status\": \"pending\", \"project\": \"paws\"},\n    {\"id\": \"PS-P2-002\", \"title\": \"Day/Night Cycle Visuals\", \"agent\": \"PS-Pixel\", \"priority\": \"P2\", \"due\": \"2026-03-03T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"pixel-sanctuary\"},\n    {\"id\": \"MC-003\", \"title\": \"Pixel Office Real Agent Activity\", \"agent\": \"Nexus\", \"priority\": \"P0\", \"due\": \"2026-02-26T18:00:00+08:00\", \"status\": \"in-progress\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-006\", \"title\": \"Real API Integration - All Pages\", \"agent\": \"Nexus\", \"priority\": \"P1\", \"due\": \"2026-02-26T15:00:00+08:00\", \"status\": \"in-progress\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-008\", \"title\": \"API Documentation Fix\", \"agent\": \"Nexus\", \"priority\": \"P1\", \"due\": \"2026-02-26T16:00:00+08:00\", \"status\": \"in-progress\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-P0-010\", \"title\": \"Fix Vercel Deployment Pipeline\", \"agent\": \"Sentry\", \"priority\": \"P0\", \"due\": \"2026-02-26T08:00:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-P0-012\", \"title\": \"Token Usage Alert System\", \"agent\": \"Sentry\", \"priority\": \"P0\", \"due\": \"2026-02-26T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-P1-003\", \"title\": \"Token Tracker Live API\", \"agent\": \"Code\", \"priority\": \"P1\", \"due\": \"2026-02-26T17:00:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-P1-010\", \"title\": \"Agent Performance Analytics\", \"agent\": \"Gary\", \"priority\": \"P1\", \"due\": \"2026-02-27T18:00:00+08:00\", \"status\": \"in-progress\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-P1-011\", \"title\": \"Weekly Newsletter Automation\", \"agent\": \"Quill\", \"priority\": \"P1\", \"due\": \"2026-02-28T10:00:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"DF-P0-001\", \"title\": \"DealFlow API Rate Limiting\", \"agent\": \"DealFlow-Alpha\", \"priority\": \"P0\", \"due\": \"2026-02-26T12:00:00+08:00\", \"status\": \"pending\", \"project\": \"dealflow\"},\n    {\"id\": \"DF-P1-002\", \"title\": \"Lead Scoring Algorithm\", \"agent\": \"DealFlow-Alpha\", \"priority\": \"P1\", \"due\": \"2026-02-28T12:00:00+08:00\", \"status\": \"pending\", \"project\": \"dealflow\"},\n    {\"id\": \"DF-P1-003\", \"title\": \"PIE Integration\", \"agent\": \"DealFlow-Alpha\", \"priority\": \"P1\", \"due\": \"2026-03-01T12:00:00+08:00\", \"status\": \"pending\", \"project\": \"dealflow\"},\n    {\"id\": \"PS-P1-004\", \"title\": \"Environment Tilemaps\", \"agent\": \"PS-Forge\", \"priority\": \"P1\", \"due\": \"2026-02-27T12:00:00+08:00\", \"status\": \"in-progress\", \"project\": \"pixel-sanctuary\"},\n    {\"id\": \"PS-P1-005\", \"title\": \"Agent Behaviors\", \"agent\": \"PS-Logic\", \"priority\": \"P1\", \"due\": \"2026-02-28T12:00:00+08:00\", \"status\": \"pending\", \"project\": \"pixel-sanctuary\"},\n    {\"id\": \"PS-P1-006\", \"title\": \"Player Controls\", \"agent\": \"PS-Forge\", \"priority\": \"P1\", \"due\": \"2026-02-28T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"pixel-sanctuary\"},\n    {\"id\": \"PS-P1-009\", \"title\": \"Replace Existing Pixel Sprites with Meebit Characters\", \"agent\": \"ZooKeeper\", \"priority\": \"P1\", \"due\": \"2026-03-01T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"pixel-sanctuary\", \"description\": \"Replace current pixel art sprites with Meebit voxel characters. Migrate all existing character logic, animations, and behaviors to use Meebit assets from MeebCo API integration.\", \"dependsOn\": \"PS-P1-008\"},\n    {\"id\": \"MC-P2-001\", \"title\": \"Content Repurposing System\", \"agent\": \"Quill\", \"priority\": \"P2\", \"due\": \"2026-03-01T23:59:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-P2-002\", \"title\": \"Mobile App Mockups\", \"agent\": \"Pixel\", \"priority\": \"P2\", \"due\": \"2026-03-01T23:59:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-P2-003\", \"title\": \"Dark Mode Polish\", \"agent\": \"Pixel\", \"priority\": \"P2\", \"due\": \"2026-03-02T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"mission-control\"},\n    {\"id\": \"PS-P2-001\", \"title\": \"Sprite Animation Polish\", \"agent\": \"Pixel\", \"priority\": \"P2\", \"due\": \"2026-03-03T18:00:00+08:00\", \"status\": \"pending\", \"project\": \"pixel-sanctuary\"}\n  ],\n  \"completedTasks\": [\n    {\"id\": \"QUILL-001\", \"title\": \"Research Profile #1 - Kris Marszalek (Crypto.com)\", \"agent\": \"Quill\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T23:00:00+08:00\", \"project\": \"content\"},\n    {\"id\": \"QUILL-002\", \"title\": \"Research Profile #2 - Sam Altman (OpenAI)\", \"agent\": \"Quill\", \"priority\": \"P1\", \"completedAt\": \"2026-02-26T02:00:00+08:00\", \"project\": \"content\"},\n    {\"id\": \"TASK-ARCHIVE\", \"title\": \"Archive old Mission Control\", \"agent\": \"Nexus\", \"priority\": \"P0\", \"completedAt\": \"2026-02-24T20:00:00+08:00\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-001\", \"title\": \"Deploy Mission Control v2.0\", \"agent\": \"Nexus\", \"priority\": \"P0\", \"completedAt\": \"2026-02-25T12:00:00+08:00\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-002\", \"title\": \"Fix API 404 Errors\", \"agent\": \"Nexus\", \"priority\": \"P0\", \"completedAt\": \"2026-02-25T10:00:00+08:00\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-004\", \"title\": \"Standardize All Tab Headers\", \"agent\": \"Nexus\", \"priority\": \"P0\", \"completedAt\": \"2026-02-25T14:00:00+08:00\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-005\", \"title\": \"Fix HQ Refresh + Auto-Refresh All Pages\", \"agent\": \"Nexus\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T11:00:00+08:00\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-007\", \"title\": \"Agent Hierarchy Table\", \"agent\": \"Nexus\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T13:00:00+08:00\", \"project\": \"mission-control\"},\n    {\"id\": \"MC-009\", \"title\": \"Consolidate Improvement Crons\", \"agent\": \"Nexus\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T09:00:00+08:00\", \"project\": \"mission-control\"},\n    {\"id\": \"DF-001\", \"title\": \"Create DealFlow Kanban\", \"agent\": \"Olivia\", \"priority\": \"P0\", \"completedAt\": \"2026-02-25T23:09:00+08:00\", \"project\": \"dealflow\", \"gitCommit\": \"c6cedbd9\"},\n    {\"id\": \"DF-002\", \"title\": \"Contact Enrichment - 86 Contacts\", \"agent\": \"Olivia\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T23:16:00+08:00\", \"project\": \"dealflow\", \"gitCommit\": \"87babad7\"},\n    {\"id\": \"DF-003\", \"title\": \"ColdCall Outreach Preparation\", \"agent\": \"ColdCall-Research\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T14:48:00+08:00\", \"project\": \"dealflow\"},\n    {\"id\": \"PS-001\", \"title\": \"Canvas Engine + Grid\", \"agent\": \"PixelSanctuary-Replacement\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T23:12:00+08:00\", \"project\": \"pixel-sanctuary\", \"gitCommit\": \"8eb6f79\"},\n    {\"id\": \"PS-002\", \"title\": \"Sprite System + 8-Directional\", \"agent\": \"PixelSanctuary-Replacement\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T23:12:00+08:00\", \"project\": \"pixel-sanctuary\", \"gitCommit\": \"8eb6f79\"},\n    {\"id\": \"PS-003\", \"title\": \"Movement AI\", \"agent\": \"PixelSanctuary-Replacement\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T23:12:00+08:00\", \"project\": \"pixel-sanctuary\", \"gitCommit\": \"8eb6f79\"},\n    {\"id\": \"PS-004\", \"title\": \"Steak Feeding System\", \"agent\": \"PixelSanctuary-Replacement\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T18:35:00+08:00\", \"project\": \"pixel-sanctuary\"},\n    {\"id\": \"PS-P0-001\", \"title\": \"Fix Canvas Performance Issues\", \"agent\": \"Pixel\", \"priority\": \"P0\", \"completedAt\": \"2026-02-25T23:12:00+08:00\", \"project\": \"pixel-sanctuary\", \"gitCommit\": \"8eb6f79\"},\n    {\"id\": \"MCP-001\", \"title\": \"Visual Feedback System\", \"agent\": \"Meemo-Replacement\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T07:22:00+08:00\", \"project\": \"mc-project\", \"gitCommit\": \"f8348f0\"},\n    {\"id\": \"MCP-002\", \"title\": \"Mobile PWA Support\", \"agent\": \"Meemo-Replacement\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T07:22:00+08:00\", \"project\": \"mc-project\", \"gitCommit\": \"f8348f0\"},\n    {\"id\": \"MCP-003\", \"title\": \"Testing Framework\", \"agent\": \"Meemo-Replacement\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T07:22:00+08:00\", \"project\": \"mc-project\", \"gitCommit\": \"f8348f0\"},\n    {\"id\": \"MCP-004\", \"title\": \"Documentation\", \"agent\": \"Meemo-Replacement\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T07:20:00+08:00\", \"project\": \"mc-project\", \"gitCommit\": \"a9cd45d\"},\n    {\"id\": \"DF-LS-001\", \"title\": \"Add localStorage persistence for tasks\", \"agent\": \"DealFlow-Alpha\", \"priority\": \"P1\", \"completedAt\": \"2026-02-25T23:35:00+08:00\", \"project\": \"dealflow\", \"gitCommit\": \"269789ba\"}\n  ]\n}
+{
+  "lastUpdated": "2026-02-28T02:00:00+08:00",
+  "lastGitSync": "2026-02-28T01:15:00+08:00",
+  "summary": {
+    "p0Count": 11,
+    "p1Count": 18,
+    "p2Count": 10,
+    "p3Count": 0,
+    "totalPending": 39,
+    "inProgress": 5,
+    "completed24h": 0,
+    "completed7d": 38,
+    "targetCompletion": "2026-02-28",
+    "targetPercent": 85
+  },
+  "pendingTasks": [
+    {
+      "id": "MC-P0-014",
+      "title": "Token Usage Alert System",
+      "agent": "Sentry",
+      "priority": "P0",
+      "due": "2026-02-28T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Implement real-time token consumption monitoring with configurable thresholds and alert notifications."
+    },
+    {
+      "id": "DF-P0-004",
+      "title": "API Rate Limiting and Security",
+      "agent": "DealFlow-Alpha",
+      "priority": "P0",
+      "due": "2026-02-28T14:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow",
+      "description": "Implement comprehensive API rate limiting, abuse detection, and security hardening for all endpoints."
+    },
+    {
+      "id": "PS-P0-003",
+      "title": "Meebit Character Integration",
+      "agent": "ZooKeeper",
+      "priority": "P0",
+      "due": "2026-03-01T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary",
+      "description": "Complete MeebCo API integration to fetch and render 3D voxel Meebit characters as interactive agents."
+    },
+    {
+      "id": "MCP-P0-002",
+      "title": "Mobile PWA Optimization",
+      "agent": "Meemo",
+      "priority": "P0",
+      "due": "2026-03-01T18:00:00+08:00",
+      "status": "pending",
+      "project": "mc-project",
+      "description": "Optimize PWA experience with offline support, push notifications, and mobile-first UI improvements."
+    },
+    {
+      "id": "MC-P1-013",
+      "title": "Agent Performance Analytics Dashboard",
+      "agent": "Gary",
+      "priority": "P1",
+      "due": "2026-03-02T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Build comprehensive analytics showing agent efficiency, task completion rates, and productivity trends."
+    },
+    {
+      "id": "DF-P1-005",
+      "title": "PIE Predictive Intelligence Engine",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "due": "2026-03-03T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow",
+      "description": "Implement AI-powered lead scoring with market timing predictions and sentiment analysis."
+    },
+    {
+      "id": "PS-P1-010",
+      "title": "Environment Tilemap System",
+      "agent": "PS-Forge",
+      "priority": "P1",
+      "due": "2026-03-02T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary",
+      "description": "Create modular tilemap system with multiple biomes, interactive objects, and dynamic environments."
+    },
+    {
+      "id": "MC-P2-005",
+      "title": "Dark Mode Polish and Theme System",
+      "agent": "Pixel",
+      "priority": "P2",
+      "due": "2026-03-05T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Refine dark mode with improved contrast, accent colors, and user-customizable theme preferences."
+    },
+    {
+      "id": "PAWS-P2-002",
+      "title": "Baby Activity Tracker Enhancement",
+      "agent": "Paws",
+      "priority": "P2",
+      "due": "2026-03-04T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws",
+      "description": "Add detailed activity logging, milestone tracking, and growth chart visualization."
+    },
+    {
+      "id": "MCP-P2-001",
+      "title": "Achievement and Progression System",
+      "agent": "Meemo",
+      "priority": "P2",
+      "due": "2026-03-06T18:00:00+08:00",
+      "status": "pending",
+      "project": "mc-project",
+      "description": "Implement gamification with achievements, badges, and progression tracking for user engagement."
+    },
+    {
+      "id": "MC-P0-013",
+      "title": "Real-time Agent Status Dashboard",
+      "agent": "Forge",
+      "priority": "P0",
+      "due": "2026-02-27T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "DF-P0-003",
+      "title": "Lead Enrichment Pipeline Completion",
+      "agent": "DealFlow-Alpha",
+      "priority": "P0",
+      "due": "2026-02-27T17:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "PS-P0-002",
+      "title": "Agent Behavior State Machine",
+      "agent": "PS-Logic",
+      "priority": "P0",
+      "due": "2026-02-27T20:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "MCP-P0-001",
+      "title": "Save/Load Game System",
+      "agent": "Meemo",
+      "priority": "P0",
+      "due": "2026-02-28T12:00:00+08:00",
+      "status": "pending",
+      "project": "mc-project"
+    },
+    {
+      "id": "MC-P1-012",
+      "title": "Task Dependency Visualization",
+      "agent": "Gary",
+      "priority": "P1",
+      "due": "2026-02-28T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "DF-P1-004",
+      "title": "Outreach Analytics Dashboard",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "due": "2026-03-01T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "PS-P1-007",
+      "title": "Interactive Feeding System",
+      "agent": "PS-Forge",
+      "priority": "P1",
+      "due": "2026-03-01T18:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-008",
+      "title": "Integrate MeebCo API for Meebits Characters",
+      "agent": "ZooKeeper",
+      "priority": "P1",
+      "due": "2026-02-28T18:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary",
+      "description": "Use MeebCo API Skill to add Meebits voxel characters to Pixel Sanctuary. Fetch 3D voxel characters, sprite sheets, and metadata from Meebits collection.",
+      "source": "https://github.com/meebit17600/meebco-api-skill"
+    },
+    {
+      "id": "MC-P2-004",
+      "title": "Keyboard Shortcuts System",
+      "agent": "Forge",
+      "priority": "P2",
+      "due": "2026-03-04T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "PAWS-P2-001",
+      "title": "Weekly Family Report Generator",
+      "agent": "Paws",
+      "priority": "P2",
+      "due": "2026-03-02T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws"
+    },
+    {
+      "id": "PS-P2-002",
+      "title": "Day/Night Cycle Visuals",
+      "agent": "PS-Pixel",
+      "priority": "P2",
+      "due": "2026-03-03T18:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "MC-003",
+      "title": "Pixel Office Real Agent Activity",
+      "agent": "Nexus",
+      "priority": "P0",
+      "due": "2026-02-26T18:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-006",
+      "title": "Real API Integration - All Pages",
+      "agent": "Nexus",
+      "priority": "P1",
+      "due": "2026-02-26T15:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-008",
+      "title": "API Documentation Fix",
+      "agent": "Nexus",
+      "priority": "P1",
+      "due": "2026-02-26T16:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P0-010",
+      "title": "Fix Vercel Deployment Pipeline",
+      "agent": "Sentry",
+      "priority": "P0",
+      "due": "2026-02-26T08:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P0-012",
+      "title": "Token Usage Alert System",
+      "agent": "Sentry",
+      "priority": "P0",
+      "due": "2026-02-26T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-003",
+      "title": "Token Tracker Live API",
+      "agent": "Code",
+      "priority": "P1",
+      "due": "2026-02-26T17:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-010",
+      "title": "Agent Performance Analytics",
+      "agent": "Gary",
+      "priority": "P1",
+      "due": "2026-02-27T18:00:00+08:00",
+      "status": "in-progress",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P1-011",
+      "title": "Weekly Newsletter Automation",
+      "agent": "Quill",
+      "priority": "P1",
+      "due": "2026-02-28T10:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "DF-P0-001",
+      "title": "DealFlow API Rate Limiting",
+      "agent": "DealFlow-Alpha",
+      "priority": "P0",
+      "due": "2026-02-26T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "DF-P1-002",
+      "title": "Lead Scoring Algorithm",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "due": "2026-02-28T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "DF-P1-003",
+      "title": "PIE Integration",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "due": "2026-03-01T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow"
+    },
+    {
+      "id": "PS-P1-004",
+      "title": "Environment Tilemaps",
+      "agent": "PS-Forge",
+      "priority": "P1",
+      "due": "2026-02-27T12:00:00+08:00",
+      "status": "in-progress",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-005",
+      "title": "Agent Behaviors",
+      "agent": "PS-Logic",
+      "priority": "P1",
+      "due": "2026-02-28T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-006",
+      "title": "Player Controls",
+      "agent": "PS-Forge",
+      "priority": "P1",
+      "due": "2026-02-28T18:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P1-009",
+      "title": "Replace Existing Pixel Sprites with Meebit Characters",
+      "agent": "ZooKeeper",
+      "priority": "P1",
+      "due": "2026-03-01T18:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary",
+      "description": "Replace current pixel art sprites with Meebit voxel characters. Migrate all existing character logic, animations, and behaviors to use Meebit assets from MeebCo API integration.",
+      "dependsOn": "PS-P1-008"
+    },
+    {
+      "id": "MC-P2-001",
+      "title": "Content Repurposing System",
+      "agent": "Quill",
+      "priority": "P2",
+      "due": "2026-03-01T23:59:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P2-002",
+      "title": "Mobile App Mockups",
+      "agent": "Pixel",
+      "priority": "P2",
+      "due": "2026-03-01T23:59:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-P2-003",
+      "title": "Dark Mode Polish",
+      "agent": "Pixel",
+      "priority": "P2",
+      "due": "2026-03-02T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control"
+    },
+    {
+      "id": "PS-P2-001",
+      "title": "Sprite Animation Polish",
+      "agent": "Pixel",
+      "priority": "P2",
+      "due": "2026-03-03T18:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary"
+    }
+  ],
+  "completedTasks": [
+    {
+      "id": "QUILL-001",
+      "title": "Research Profile #1 - Kris Marszalek (Crypto.com)",
+      "agent": "Quill",
+      "priority": "P1",
+      "completedAt": "2026-02-25T23:00:00+08:00",
+      "project": "content"
+    },
+    {
+      "id": "QUILL-002",
+      "title": "Research Profile #2 - Sam Altman (OpenAI)",
+      "agent": "Quill",
+      "priority": "P1",
+      "completedAt": "2026-02-26T02:00:00+08:00",
+      "project": "content"
+    },
+    {
+      "id": "TASK-ARCHIVE",
+      "title": "Archive old Mission Control",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-24T20:00:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-001",
+      "title": "Deploy Mission Control v2.0",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-25T12:00:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-002",
+      "title": "Fix API 404 Errors",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-25T10:00:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-004",
+      "title": "Standardize All Tab Headers",
+      "agent": "Nexus",
+      "priority": "P0",
+      "completedAt": "2026-02-25T14:00:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-005",
+      "title": "Fix HQ Refresh + Auto-Refresh All Pages",
+      "agent": "Nexus",
+      "priority": "P1",
+      "completedAt": "2026-02-25T11:00:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-007",
+      "title": "Agent Hierarchy Table",
+      "agent": "Nexus",
+      "priority": "P1",
+      "completedAt": "2026-02-25T13:00:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "MC-009",
+      "title": "Consolidate Improvement Crons",
+      "agent": "Nexus",
+      "priority": "P1",
+      "completedAt": "2026-02-25T09:00:00+08:00",
+      "project": "mission-control"
+    },
+    {
+      "id": "DF-001",
+      "title": "Create DealFlow Kanban",
+      "agent": "Olivia",
+      "priority": "P0",
+      "completedAt": "2026-02-25T23:09:00+08:00",
+      "project": "dealflow",
+      "gitCommit": "c6cedbd9"
+    },
+    {
+      "id": "DF-002",
+      "title": "Contact Enrichment - 86 Contacts",
+      "agent": "Olivia",
+      "priority": "P1",
+      "completedAt": "2026-02-25T23:16:00+08:00",
+      "project": "dealflow",
+      "gitCommit": "87babad7"
+    },
+    {
+      "id": "DF-003",
+      "title": "ColdCall Outreach Preparation",
+      "agent": "ColdCall-Research",
+      "priority": "P1",
+      "completedAt": "2026-02-25T14:48:00+08:00",
+      "project": "dealflow"
+    },
+    {
+      "id": "PS-001",
+      "title": "Canvas Engine + Grid",
+      "agent": "PixelSanctuary-Replacement",
+      "priority": "P1",
+      "completedAt": "2026-02-25T23:12:00+08:00",
+      "project": "pixel-sanctuary",
+      "gitCommit": "8eb6f79"
+    },
+    {
+      "id": "PS-002",
+      "title": "Sprite System + 8-Directional",
+      "agent": "PixelSanctuary-Replacement",
+      "priority": "P1",
+      "completedAt": "2026-02-25T23:12:00+08:00",
+      "project": "pixel-sanctuary",
+      "gitCommit": "8eb6f79"
+    },
+    {
+      "id": "PS-003",
+      "title": "Movement AI",
+      "agent": "PixelSanctuary-Replacement",
+      "priority": "P1",
+      "completedAt": "2026-02-25T23:12:00+08:00",
+      "project": "pixel-sanctuary",
+      "gitCommit": "8eb6f79"
+    },
+    {
+      "id": "PS-004",
+      "title": "Steak Feeding System",
+      "agent": "PixelSanctuary-Replacement",
+      "priority": "P1",
+      "completedAt": "2026-02-25T18:35:00+08:00",
+      "project": "pixel-sanctuary"
+    },
+    {
+      "id": "PS-P0-001",
+      "title": "Fix Canvas Performance Issues",
+      "agent": "Pixel",
+      "priority": "P0",
+      "completedAt": "2026-02-25T23:12:00+08:00",
+      "project": "pixel-sanctuary",
+      "gitCommit": "8eb6f79"
+    },
+    {
+      "id": "MCP-001",
+      "title": "Visual Feedback System",
+      "agent": "Meemo-Replacement",
+      "priority": "P1",
+      "completedAt": "2026-02-25T07:22:00+08:00",
+      "project": "mc-project",
+      "gitCommit": "f8348f0"
+    },
+    {
+      "id": "MCP-002",
+      "title": "Mobile PWA Support",
+      "agent": "Meemo-Replacement",
+      "priority": "P1",
+      "completedAt": "2026-02-25T07:22:00+08:00",
+      "project": "mc-project",
+      "gitCommit": "f8348f0"
+    },
+    {
+      "id": "MCP-003",
+      "title": "Testing Framework",
+      "agent": "Meemo-Replacement",
+      "priority": "P1",
+      "completedAt": "2026-02-25T07:22:00+08:00",
+      "project": "mc-project",
+      "gitCommit": "f8348f0"
+    },
+    {
+      "id": "MCP-004",
+      "title": "Documentation",
+      "agent": "Meemo-Replacement",
+      "priority": "P1",
+      "completedAt": "2026-02-25T07:20:00+08:00",
+      "project": "mc-project",
+      "gitCommit": "a9cd45d"
+    },
+    {
+      "id": "DF-LS-001",
+      "title": "Add localStorage persistence for tasks",
+      "agent": "DealFlow-Alpha",
+      "priority": "P1",
+      "completedAt": "2026-02-25T23:35:00+08:00",
+      "project": "dealflow",
+      "gitCommit": "269789ba"
+    }
+  ]
+}
