@@ -432,7 +432,7 @@
           }
         },
         "recentTrades": [],
-        "tradeHistory": [],
+        "tradeHistory": [
           {
             "id": "ll_1772120097771",
             "timestamp": "2026-02-26T15:34:57.771Z",
