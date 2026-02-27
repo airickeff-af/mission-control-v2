@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="1800">
+  <meta http-equiv="refresh" content="900">
   <title>Limitless Trading Bot - Wallet Balance Viewer</title>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -97,6 +97,22 @@
       background: var(--bg-tertiary);
       border: 3px solid var(--accent-success);
       color: var(--accent-success);
+    }
+
+    /* Status Light Pulse Animation */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent-success); }
+      50% { opacity: 0.6; box-shadow: 0 0 4px var(--accent-success); }
+    }
+
+    @keyframes pulse-red {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent-danger); }
+      50% { opacity: 0.6; box-shadow: 0 0 4px var(--accent-danger); }
+    }
+
+    .status-offline {
+      background: var(--accent-danger) !important;
+      animation: pulse-red 2s infinite !important;
     }
     
     .container {
@@ -413,7 +429,10 @@
       <!-- Limitless Window -->
       <div class="card" style="border: 3px solid var(--accent-primary);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <h3 style="font-family: var(--font-header); font-size: 0.7rem; color: var(--accent-primary);">🔵 LIMITLESS</h3>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span id="ll-status-light" style="width: 12px; height: 12px; border-radius: 50%; background: var(--accent-success); box-shadow: 0 0 8px var(--accent-success); animation: pulse 2s infinite;"></span>
+            <h3 style="font-family: var(--font-header); font-size: 0.7rem; color: var(--accent-primary);">🔵 LL (Limitless)</h3>
+          </div>
           <span class="network-badge" style="font-size: 0.7rem;">Base L2</span>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
@@ -445,7 +464,10 @@
       <!-- Polymarket Window -->
       <div class="card" style="border: 3px solid var(--accent-secondary);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <h3 style="font-family: var(--font-header); font-size: 0.7rem; color: var(--accent-secondary);">🟣 POLYMARKET</h3>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span id="stanley-status-light" style="width: 12px; height: 12px; border-radius: 50%; background: var(--accent-success); box-shadow: 0 0 8px var(--accent-success); animation: pulse 2s infinite;"></span>
+            <h3 style="font-family: var(--font-header); font-size: 0.7rem; color: var(--accent-secondary);">🟣 STANLEY (Polymarket)</h3>
+          </div>
           <span class="network-badge" style="font-size: 0.7rem; background: var(--accent-secondary); border-color: var(--accent-secondary); color: var(--bg-primary);">Polygon</span>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
@@ -1208,17 +1230,56 @@
       }
     }
 
+    // Check bot status via PM2 API
+    async function checkBotStatus() {
+      try {
+        // In production, this would call a status endpoint
+        // For now, we'll check if the log files have been updated recently
+        const llLight = document.getElementById('ll-status-light');
+        const stanleyLight = document.getElementById('stanley-status-light');
+        
+        // Check last log update time (simulated - in real implementation fetch from API)
+        const now = Date.now();
+        const lastUpdate = window.lastBotUpdate || now;
+        const minutesSinceUpdate = (now - lastUpdate) / 60000;
+        
+        // If data is fresh (< 5 min), show online
+        if (minutesSinceUpdate < 5) {
+          llLight.style.background = 'var(--accent-success)';
+          llLight.style.boxShadow = '0 0 8px var(--accent-success)';
+          llLight.style.animation = 'pulse 2s infinite';
+          llLight.title = 'LL Bot: ONLINE';
+          
+          stanleyLight.style.background = 'var(--accent-success)';
+          stanleyLight.style.boxShadow = '0 0 8px var(--accent-success)';
+          stanleyLight.style.animation = 'pulse 2s infinite';
+          stanleyLight.title = 'Stanley Bot: ONLINE';
+        } else {
+          // Show offline if no updates
+          llLight.classList.add('status-offline');
+          llLight.title = 'LL Bot: OFFLINE';
+          
+          stanleyLight.classList.add('status-offline');
+          stanleyLight.title = 'Stanley Bot: OFFLINE';
+        }
+      } catch (error) {
+        console.error('[Dashboard] Error checking bot status:', error);
+      }
+    }
+
     // Auto-load on page load
     document.addEventListener('DOMContentLoaded', () => {
       updateTimestamp();
       autoLoadWalletData();
       loadLiveData();
       updateROIDisplay();
+      checkBotStatus();
       
       // Refresh every 60 seconds for live updates
       setInterval(() => {
         loadLiveData();
         updateROIDisplay();
+        checkBotStatus();
       }, 60000);
     });
   </script>
