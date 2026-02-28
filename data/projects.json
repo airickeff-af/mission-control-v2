@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T17:53:00.000Z",
+  "lastUpdated": "2026-02-28T18:33:00.000Z",
   "projects": [
     {
       "id": "dealflow",
@@ -348,7 +348,7 @@
       "p0Completed": 15,
       "p0Total": 15,
       "p0Progress": "100%",
-      "lastUpdatedTime": "03:44",
+      "lastUpdatedTime": "18:33",
       "liveTradingReady": true,
       "liveTradingETA": "LIVE DEPLOYED",
       "bots": {
@@ -362,7 +362,7 @@
           "winningTrades": 89,
           "losingTrades": 43,
           "winRate": 67.42,
-          "notes": "No new trades in 34.8+ hours. Last trade closed 05:00 UTC Feb 27. 4 open positions pending."
+          "notes": "No new trades in 37+ hours. Last trade closed 05:00 UTC Feb 27. 4 open positions pending."
         },
         "llLive": {
           "status": "DEPLOYED_API_ISSUES",
