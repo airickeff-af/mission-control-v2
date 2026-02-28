@@ -401,7 +401,7 @@
         "notes": "132 total trades, 67.42% win rate. No new trades in 40+ hours. Last trade closed 2026-02-27 05:00 UTC. 4 open positions pending.",
         "timeframes": {
           "1h": {
-            "capital": 100,
+            "capital": 1785.85,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -409,7 +409,7 @@
             "losses": 0
           },
           "3h": {
-            "capital": 100,
+            "capital": 1785.85,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -417,7 +417,7 @@
             "losses": 0
           },
           "6h": {
-            "capital": 100,
+            "capital": 1785.85,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -425,7 +425,7 @@
             "losses": 0
           },
           "12h": {
-            "capital": 100,
+            "capital": 1785.85,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -433,7 +433,7 @@
             "losses": 0
           },
           "24h": {
-            "capital": 100,
+            "capital": 1785.85,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -441,7 +441,7 @@
             "losses": 0
           },
           "7d": {
-            "capital": 496.12,
+            "capital": 1785.85,
             "pnl": 396.12,
             "pnlPercent": 396.12,
             "trades": 10,
@@ -449,7 +449,7 @@
             "losses": 4
           },
           "14d": {
-            "capital": 496.12,
+            "capital": 1785.85,
             "pnl": 396.12,
             "pnlPercent": 396.12,
             "trades": 10,
@@ -457,7 +457,7 @@
             "losses": 4
           },
           "30d": {
-            "capital": 496.12,
+            "capital": 1785.85,
             "pnl": 396.12,
             "pnlPercent": 396.12,
             "trades": 10,
