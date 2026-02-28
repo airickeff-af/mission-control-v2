@@ -2,15 +2,16 @@
   "lastUpdated": "2026-02-28T23:52:00+08:00",
   "lastGitSync": "2026-02-28T01:15:00+08:00",
   "summary": {
-    "p0Count": 11,
-    "p1Count": 18,
-    "p2Count": 10,
+    "p0Count": 15,
+    "p1Count": 21,
+    "p2Count": 13,
     "p3Count": 0,
-    "totalPending": 39,
+    "totalPending": 49,
     "inProgress": 5,
     "completed24h": 0,
     "completed7d": 38,
-    "targetCompletion": "2026-02-28",
+    "generatedToday": 10,
+    "targetCompletion": "2026-03-08",
     "targetPercent": 85
   },
   "pendingTasks": [
@@ -380,14 +381,105 @@
       "project": "mission-control"
     },
     {
-      "id": "PS-P2-001",
-      "title": "Sprite Animation Polish",
-      "agent": "Pixel",
-      "priority": "P2",
+      "id": "MC-P0-015",
+      "title": "Real-time WebSocket Agent Status",
+      "agent": "Forge",
+      "priority": "P0",
+      "due": "2026-03-02T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Implement WebSocket connection for live agent status updates, eliminating need for page refresh to see current agent activity."
+    },
+    {
+      "id": "DF-P0-005",
+      "title": "Outreach Automation Pipeline",
+      "agent": "ColdCall",
+      "priority": "P0",
+      "due": "2026-03-03T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow",
+      "description": "Build automated outreach system with personalized templates, scheduling, and follow-up sequences for qualified leads."
+    },
+    {
+      "id": "PS-P0-004",
+      "title": "Multi-Agent Office Simulation",
+      "agent": "ZooKeeper",
+      "priority": "P0",
       "due": "2026-03-03T18:00:00+08:00",
       "status": "pending",
-      "project": "pixel-sanctuary"
-    }
+      "project": "pixel-sanctuary",
+      "description": "Create office environment with 10+ agents working simultaneously, each with unique behaviors, tasks, and interactions."
+    },
+    {
+      "id": "PAWS-P0-001",
+      "title": "Emergency Contact System",
+      "agent": "Paws",
+      "priority": "P0",
+      "due": "2026-03-02T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws",
+      "description": "Implement emergency contact quick-dial and location sharing for family safety with pediatrician and urgent care info."
+    },
+    {
+      "id": "MC-P1-014",
+      "title": "Cross-Project Task Dependencies",
+      "agent": "Gary",
+      "priority": "P1",
+      "due": "2026-03-04T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Visualize dependencies between tasks across different projects (e.g., Pixel Sanctuary Meebits depending on API integration)."
+    },
+    {
+      "id": "MCP-P1-003",
+      "title": "NPC Relationship System",
+      "agent": "Meemo",
+      "priority": "P1",
+      "due": "2026-03-04T18:00:00+08:00",
+      "status": "pending",
+      "project": "mc-project",
+      "description": "Implement relationship mechanics where player interactions with NPCs affect storylines, unlocks, and game outcomes."
+    },
+    {
+      "id": "PS-P1-011",
+      "title": "Interactive Object System",
+      "agent": "PS-Forge",
+      "priority": "P1",
+      "due": "2026-03-05T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary",
+      "description": "Add clickable interactive objects (computers, coffee machines, whiteboards) that agents can use and players can observe."
+    },
+    {
+      "id": "MC-P2-006",
+      "title": "Agent Voice Command Integration",
+      "agent": "Sentry",
+      "priority": "P2",
+      "due": "2026-03-06T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Add voice command support for common actions: 'Show me DealFlow stats', 'What is Pixel Sanctuary status?', etc."
+    },
+    {
+      "id": "DF-P2-001",
+      "title": "Competitor Tracking Dashboard",
+      "agent": "DealFlow-Alpha",
+      "priority": "P2",
+      "due": "2026-03-07T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow",
+      "description": "Track competitor activities, funding rounds, and market moves with automated alerts for significant events."
+    },
+    {
+      "id": "PAWS-P2-003",
+      "title": "Sleep Pattern Analytics",
+      "agent": "Paws",
+      "priority": "P2",
+      "due": "2026-03-07T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws",
+      "description": "Track and visualize baby sleep patterns with recommendations for schedule optimization based on age-appropriate sleep needs."
+    },
   ],
   "completedTasks": [
     {

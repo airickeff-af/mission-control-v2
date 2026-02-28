@@ -1,7 +1,7 @@
 # PENDING TASKS - MISSION CONTROL v2.0
 **Status:** ACTIVE  
-**Last Updated:** 2026-02-28 2:00 AM HKT  
-**Total Tasks:** 81  
+**Last Updated:** 2026-03-01 2:00 AM HKT  
+**Total Tasks:** 91  
 **Nuclear Reset:** Feb 24, 2026 - Fresh start, all old tasks archived
 
 ---
@@ -10,15 +10,22 @@
 
 | Priority | Count | Status |
 |----------|-------|--------|
-| 🔴 P0 - Critical | 11 | 3 in progress |
-| 🟡 P1 - High | 18 | Multiple in progress |
-| 🟢 P2 - Medium | 10 | Planned |
+| 🔴 P0 - Critical | 15 | 3 in progress |
+| 🟡 P1 - High | 21 | Multiple in progress |
+| 🟢 P2 - Medium | 13 | Planned |
 | ⚪ P3 - Low | 5 | Future |
-| **TOTAL** | **81** | **Active** |
+| **TOTAL** | **91** | **Active** |
 
 ---
 
 ## 🔴 P0 - CRITICAL (Complete ASAP)
+
+### **MC-P0-015: Real-time WebSocket Agent Status** 🆕
+- **Assigned:** Forge
+- **Due:** Mar 2, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Implement WebSocket connection for live agent status updates, eliminating need for page refresh to see current agent activity
 
 ### **MC-P0-014: Token Usage Alert System** ⭐ NEW
 - **Assigned:** Sentry
@@ -142,6 +149,13 @@
 ---
 
 ## 🟡 P1 - HIGH VALUE
+
+### **MC-P1-014: Cross-Project Task Dependencies** 🆕
+- **Assigned:** Gary
+- **Due:** Mar 4, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Visualize dependencies between tasks across different projects (e.g., Pixel Sanctuary Meebits depending on API integration)
 
 ### **MC-P1-013: Agent Performance Analytics Dashboard** ⭐ NEW
 - **Assigned:** Gary
@@ -345,6 +359,13 @@
 ---
 
 ## 🟢 P2 - MEDIUM PRIORITY
+
+### **MC-P2-006: Agent Voice Command Integration** 🆕
+- **Assigned:** Sentry
+- **Due:** Mar 6, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Add voice command support for common actions: 'Show me DealFlow stats', 'What is Pixel Sanctuary status?', etc.
 
 ### **MC-P2-005: Dark Mode Polish and Theme System** ⭐ NEW
 - **Assigned:** Pixel
