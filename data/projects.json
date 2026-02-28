@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-28T23:52:00+08:00",
+  "lastUpdated": "2026-02-28T16:08:00.000Z",
   "projects": [
     {
       "id": "dealflow",
@@ -234,8 +234,8 @@
       "targetPercent": 100,
       "priority": 9,
       "deployBy": "2026-02-27",
-      "lastUpdated": "2026-02-28T19:58:00.000Z",
-      "nextUpdate": "2026-02-28T20:58:00.000Z",
+      "lastUpdated": "2026-02-28T16:08:00.000Z",
+      "nextUpdate": "2026-02-28T17:08:00.000Z",
       "description": "Automated BTC/ETH/SOL trading bot using Achilles Trading Rules on Limitless Exchange. Paper trading now, live trading target $100→$5000.",
       "tradingSystem": "Achilles BTC Trading Rules (Kalshi 15-min binary options)",
       "botResponsibilities": [
@@ -252,7 +252,7 @@
       "riskPerTrade": "2-5%",
       "schedule": "Hourly updates",
       "mode": "🧪 PAPER TRADING + LIVE DEPLOYED",
-      "modeIndicator": "🧪 PAPER: $1785.85 | 🔴 LIVE: $199.94 deployed",
+      "modeIndicator": "🧪 PAPER: $1414.12 | 🔴 LIVE: $199.94 deployed",
       "tradingStrategy": "Achilles Trading Rules (Limitless Exchange)",
       "strategyUrl": "https://limitless.exchange/markets/page/crypto",
       "achillesRulesUrl": "../limitless-bot/achilles-rules.html",
@@ -354,15 +354,15 @@
       "bots": {
         "paper": {
           "status": "ONLINE - AWAITING OPPORTUNITIES",
-          "capital": 1785.85,
+          "capital": 1414.117397426124,
           "initialCapital": 100,
-          "totalPnL": 1685.85,
-          "totalPnLPercent": 1685.85,
+          "totalPnL": 1685.91,
+          "totalPnLPercent": 1685.91,
           "totalTrades": 132,
           "winningTrades": 89,
           "losingTrades": 43,
           "winRate": 67.42,
-          "notes": "No new trades in 40+ hours. Last trade closed 05:00 UTC Feb 27. 4 open positions pending."
+          "notes": "132 total trades, 67.42% win rate. No new trades in 35.1+ hours. Last trade closed 2026-02-27T05:00:41.715Z. 4 open positions pending."
         },
         "llLive": {
           "status": "DEPLOYED_API_ISSUES",
@@ -386,22 +386,22 @@
         }
       },
       "stats": {
-        "currentCapital": 1785.85,
+        "currentCapital": 1414.117397426124,
         "totalTrades": 132,
         "winningTrades": 89,
         "losingTrades": 43,
         "winRate": 67.42,
-        "totalPnL": 1685.85,
-        "totalPnLPercent": 1685.85,
+        "totalPnL": 1685.91,
+        "totalPnLPercent": 1685.91,
         "botStatus": "ONLINE - AWAITING OPPORTUNITIES",
         "processManager": "PM2",
         "capital": "$1785.85 PAPER (mirrors live)",
         "achillesRules": "ACTIVE",
         "lastRestart": "2026-02-27T08:18:00+08:00",
-        "notes": "132 total trades, 67.42% win rate. No new trades in 40+ hours. Last trade closed 2026-02-27 05:00 UTC. 4 open positions pending.",
+        "notes": "132 total trades, 67.42% win rate. No new trades in 35.1+ hours. Last trade closed 2026-02-27T05:00:41.715Z. 4 open positions pending.",
         "timeframes": {
           "1h": {
-            "capital": 1785.85,
+            "capital": 1414.117397426124,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -409,7 +409,7 @@
             "losses": 0
           },
           "3h": {
-            "capital": 1785.85,
+            "capital": 1414.117397426124,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -417,7 +417,7 @@
             "losses": 0
           },
           "6h": {
-            "capital": 1785.85,
+            "capital": 1414.117397426124,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -425,7 +425,7 @@
             "losses": 0
           },
           "12h": {
-            "capital": 1785.85,
+            "capital": 1414.117397426124,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -433,7 +433,7 @@
             "losses": 0
           },
           "24h": {
-            "capital": 1785.85,
+            "capital": 1414.117397426124,
             "pnl": 0,
             "pnlPercent": 0,
             "trades": 0,
@@ -441,28 +441,28 @@
             "losses": 0
           },
           "7d": {
-            "capital": 1785.85,
-            "pnl": 396.12,
-            "pnlPercent": 396.12,
-            "trades": 10,
-            "wins": 6,
-            "losses": 4
+            "capital": 1414.117397426124,
+            "pnl": 1685.85,
+            "pnlPercent": 0,
+            "trades": 132,
+            "wins": 89,
+            "losses": 43
           },
           "14d": {
-            "capital": 1785.85,
-            "pnl": 396.12,
-            "pnlPercent": 396.12,
-            "trades": 10,
-            "wins": 6,
-            "losses": 4
+            "capital": 1414.117397426124,
+            "pnl": 1685.85,
+            "pnlPercent": 0,
+            "trades": 132,
+            "wins": 89,
+            "losses": 43
           },
           "30d": {
-            "capital": 1785.85,
-            "pnl": 396.12,
-            "pnlPercent": 396.12,
-            "trades": 10,
-            "wins": 6,
-            "losses": 4
+            "capital": 1414.117397426124,
+            "pnl": 1685.85,
+            "pnlPercent": 0,
+            "trades": 132,
+            "wins": 89,
+            "losses": 43
           }
         },
         "recentTrades": [
@@ -599,6 +599,11 @@
         ],
         "logs": [
           {
+            "timestamp": "2026-02-28T16:08:00.000Z",
+            "level": "info",
+            "message": "Hourly update: Capital $1414.12 | P&L +$1685.91 (+1685.91%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 35.1+ hours. Last trade closed 2026-02-27T05:00:41.715Z. 4 open positions pending."
+          },
+          {
             "timestamp": "2026-02-28T19:58:00.000Z",
             "level": "info",
             "message": "Hourly update: Capital $1785.85 | P&L +$1685.85 (+1685.85%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 38.9+ hours. Last trade closed 05:00 UTC Feb 27. 4 open positions pending."
@@ -667,11 +672,6 @@
             "timestamp": "2026-02-28T03:40:00.000Z",
             "level": "info",
             "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 14.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
-          },
-          {
-            "timestamp": "2026-02-28T01:40:00.000Z",
-            "level": "info",
-            "message": "Hourly update: Capital $1414.12 | P&L +$1314.12 (+1314.12%) | Trades: 132 (89W/43L) | Win Rate: 67.42% | Status: AWAITING OPPORTUNITIES. No new trades in 20.7+ hours. Last trade closed 05:00 UTC. 4 open positions pending."
           }
         ],
         "openPositions": [
@@ -713,8 +713,8 @@
           "ETH",
           "SOL"
         ],
-        "lastUpdated": "2026-02-28T19:58:00.000Z",
-        "lastUpdatedTime": "19:58"
+        "lastUpdated": "2026-02-28T16:08:00.000Z",
+        "lastUpdatedTime": "00:08"
       }
     }
   ]
