@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-03-01T22:55:00+08:00",
+  "lastUpdated": "2026-03-02T02:00:00+08:00",
   "lastGitSync": "2026-02-28T01:15:00+08:00",
   "summary": {
-    "p0Count": 15,
-    "p1Count": 21,
-    "p2Count": 13,
+    "p0Count": 19,
+    "p1Count": 24,
+    "p2Count": 16,
     "p3Count": 0,
-    "totalPending": 49,
+    "totalPending": 59,
     "inProgress": 5,
     "completed24h": 0,
     "completed7d": 38,
-    "generatedToday": 10,
+    "generatedToday": 20,
     "targetCompletion": "2026-03-08",
     "targetPercent": 85
   },
@@ -480,6 +480,106 @@
       "project": "paws",
       "description": "Track and visualize baby sleep patterns with recommendations for schedule optimization based on age-appropriate sleep needs."
     },
+    {
+      "id": "MC-P0-016",
+      "title": "Unified Agent Activity Feed",
+      "agent": "Forge",
+      "priority": "P0",
+      "due": "2026-03-03T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Create a centralized activity feed showing real-time updates from all agents across Mission Control, DealFlow, and Pixel Sanctuary with filtering and search capabilities."
+    },
+    {
+      "id": "DF-P0-006",
+      "title": "LinkedIn Outreach Integration",
+      "agent": "ColdCall",
+      "priority": "P0",
+      "due": "2026-03-04T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow",
+      "description": "Build LinkedIn DM automation with personalized connection requests and follow-up sequences for qualified leads. Include message templates and response tracking."
+    },
+    {
+      "id": "PS-P0-005",
+      "title": "Multi-Agent Collision Detection",
+      "agent": "PS-Logic",
+      "priority": "P0",
+      "due": "2026-03-03T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary",
+      "description": "Implement collision detection system for 20+ agents moving simultaneously in the office environment with pathfinding avoidance and natural movement patterns."
+    },
+    {
+      "id": "PAWS-P0-002",
+      "title": "Smart Home Integration Hub",
+      "agent": "Paws",
+      "priority": "P0",
+      "due": "2026-03-04T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws",
+      "description": "Integrate with smart home devices (lights, thermostat, locks) to create automated routines for family comfort and baby care schedules."
+    },
+    {
+      "id": "MC-P1-015",
+      "title": "Task Burndown Charts",
+      "agent": "Gary",
+      "priority": "P1",
+      "due": "2026-03-05T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Implement sprint-style burndown charts showing task completion velocity, estimated vs actual completion times, and project health metrics per agent."
+    },
+    {
+      "id": "MCP-P1-004",
+      "title": "Seasonal Event System",
+      "agent": "Meemo",
+      "priority": "P1",
+      "due": "2026-03-06T18:00:00+08:00",
+      "status": "pending",
+      "project": "mc-project",
+      "description": "Add time-based seasonal events (holidays, weather changes, special NPC visits) that trigger unique storylines and limited-time activities."
+    },
+    {
+      "id": "PS-P1-012",
+      "title": "Agent Personality Profiles",
+      "agent": "ZooKeeper",
+      "priority": "P1",
+      "due": "2026-03-05T12:00:00+08:00",
+      "status": "pending",
+      "project": "pixel-sanctuary",
+      "description": "Create unique personality traits for each agent (workaholic, social, creative, analytical) that affect their behaviors, preferred activities, and interactions with others."
+    },
+    {
+      "id": "MC-P2-007",
+      "title": "Agent Leaderboard Gamification",
+      "agent": "Gary",
+      "priority": "P2",
+      "due": "2026-03-08T18:00:00+08:00",
+      "status": "pending",
+      "project": "mission-control",
+      "description": "Create weekly/monthly leaderboards showing top performing agents by tasks completed, efficiency, and quality metrics with badges and achievements."
+    },
+    {
+      "id": "DF-P2-002",
+      "title": "Meeting Scheduler Integration",
+      "agent": "ColdCall",
+      "priority": "P2",
+      "due": "2026-03-09T12:00:00+08:00",
+      "status": "pending",
+      "project": "dealflow",
+      "description": "Integrate with Calendly/Zoom to automatically schedule meetings when leads respond positively, with timezone handling and reminder notifications."
+    },
+    {
+      "id": "PAWS-P2-004",
+      "title": "Family Photo Memory Journal",
+      "agent": "Paws",
+      "priority": "P2",
+      "due": "2026-03-08T09:00:00+08:00",
+      "status": "pending",
+      "project": "paws",
+      "description": "Create a digital memory journal with photo uploads, milestone tagging, and automatic timeline generation for family memories and baby growth moments."
+    }
   ],
   "completedTasks": [
     {

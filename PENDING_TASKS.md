@@ -1,7 +1,7 @@
 # PENDING TASKS - MISSION CONTROL v2.0
 **Status:** ACTIVE  
-**Last Updated:** 2026-03-01 2:00 AM HKT  
-**Total Tasks:** 91  
+**Last Updated:** 2026-03-02 2:00 AM HKT  
+**Total Tasks:** 101  
 **Nuclear Reset:** Feb 24, 2026 - Fresh start, all old tasks archived
 
 ---
@@ -10,15 +10,43 @@
 
 | Priority | Count | Status |
 |----------|-------|--------|
-| 🔴 P0 - Critical | 15 | 3 in progress |
-| 🟡 P1 - High | 21 | Multiple in progress |
-| 🟢 P2 - Medium | 13 | Planned |
+| 🔴 P0 - Critical | 19 | 3 in progress |
+| 🟡 P1 - High | 24 | Multiple in progress |
+| 🟢 P2 - Medium | 16 | Planned |
 | ⚪ P3 - Low | 5 | Future |
-| **TOTAL** | **91** | **Active** |
+| **TOTAL** | **101** | **Active** |
 
 ---
 
 ## 🔴 P0 - CRITICAL (Complete ASAP)
+
+### **MC-P0-016: Unified Agent Activity Feed** 🆕 NEW
+- **Assigned:** Forge
+- **Due:** Mar 3, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Create a centralized activity feed showing real-time updates from all agents across Mission Control, DealFlow, and Pixel Sanctuary with filtering and search capabilities
+
+### **DF-P0-006: LinkedIn Outreach Integration** 🆕 NEW
+- **Assigned:** ColdCall
+- **Due:** Mar 4, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** DealFlow
+- **Description:** Build LinkedIn DM automation with personalized connection requests and follow-up sequences for qualified leads. Include message templates and response tracking
+
+### **PS-P0-005: Multi-Agent Collision Detection** 🆕 NEW
+- **Assigned:** PS-Logic
+- **Due:** Mar 3, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Pixel Sanctuary
+- **Description:** Implement collision detection system for 20+ agents moving simultaneously in the office environment with pathfinding avoidance and natural movement patterns
+
+### **PAWS-P0-002: Smart Home Integration Hub** 🆕 NEW
+- **Assigned:** Paws
+- **Due:** Mar 4, 9:00 AM
+- **Status:** ⏳ PENDING
+- **Project:** Paws
+- **Description:** Integrate with smart home devices (lights, thermostat, locks) to create automated routines for family comfort and baby care schedules
 
 ### **MC-P0-015: Real-time WebSocket Agent Status** 🆕
 - **Assigned:** Forge
@@ -248,6 +276,27 @@
 - **Status:** ⏳ PENDING
 - **Description:** Sync family events and create proactive reminders for appointments
 
+### **MC-P1-015: Task Burndown Charts** 🆕 NEW
+- **Assigned:** Gary
+- **Due:** Mar 5, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Implement sprint-style burndown charts showing task completion velocity, estimated vs actual completion times, and project health metrics per agent
+
+### **MCP-P1-004: Seasonal Event System** 🆕 NEW
+- **Assigned:** Meemo
+- **Due:** Mar 6, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** MC Project
+- **Description:** Add time-based seasonal events (holidays, weather changes, special NPC visits) that trigger unique storylines and limited-time activities
+
+### **PS-P1-012: Agent Personality Profiles** 🆕 NEW
+- **Assigned:** ZooKeeper
+- **Due:** Mar 5, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Pixel Sanctuary
+- **Description:** Create unique personality traits for each agent (workaholic, social, creative, analytical) that affect their behaviors, preferred activities, and interactions with others
+
 ### **MC Project Tasks**
 
 #### **MC-NUC-001: Visual Feedback System**
@@ -387,6 +436,27 @@
 - **Status:** ⏳ PENDING
 - **Project:** MC Project
 - **Description:** Implement gamification with achievements, badges, and progression tracking for user engagement
+
+### **MC-P2-007: Agent Leaderboard Gamification** 🆕 NEW
+- **Assigned:** Gary
+- **Due:** Mar 8, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** Mission Control
+- **Description:** Create weekly/monthly leaderboards showing top performing agents by tasks completed, efficiency, and quality metrics with badges and achievements
+
+### **DF-P2-002: Meeting Scheduler Integration** 🆕 NEW
+- **Assigned:** ColdCall
+- **Due:** Mar 9, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Project:** DealFlow
+- **Description:** Integrate with Calendly/Zoom to automatically schedule meetings when leads respond positively, with timezone handling and reminder notifications
+
+### **PAWS-P2-004: Family Photo Memory Journal** 🆕 NEW
+- **Assigned:** Paws
+- **Due:** Mar 8, 9:00 AM
+- **Status:** ⏳ PENDING
+- **Project:** Paws
+- **Description:** Create a digital memory journal with photo uploads, milestone tagging, and automatic timeline generation for family memories and baby growth moments
 
 ### **MC-P2-001: Content Repurposing System**
 - **Assigned:** Quill
