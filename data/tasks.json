@@ -1,16 +1,16 @@
 {
-  "lastUpdated": "2026-03-03T00:12:00+08:00",
+  "lastUpdated": "2026-03-03T02:01:00+08:00",
   "lastGitSync": "2026-02-28T01:15:00+08:00",
   "summary": {
-    "p0Count": 19,
-    "p1Count": 24,
-    "p2Count": 16,
+    "p0Count": 23,
+    "p1Count": 27,
+    "p2Count": 19,
     "p3Count": 0,
-    "totalPending": 59,
+    "totalPending": 69,
     "inProgress": 5,
     "completed24h": 0,
     "completed7d": 38,
-    "generatedToday": 20,
+    "generatedToday": 30,
     "targetCompletion": "2026-03-08",
     "targetPercent": 85
   },
