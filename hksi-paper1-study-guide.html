@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 HKSI Paper 1 Study Guide 2025/2026 | EricF</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #1a0f2e;
+            --bg-card: #3d2b5e;
+            --bg-card-hover: #4d3b6e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
+            --accent-red: #ff4757;
+            --border-color: #5d4b7e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --pixel-border: 4px;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root[data-theme="auto"] {
+                --bg-primary: #f0e6ff;
+                --bg-secondary: #e0d0f0;
+                --bg-card: #ffffff;
+                --bg-card-hover: #f5f0ff;
+                --text-primary: #2d1b4e;
+                --text-secondary: #5d4b7e;
+                --text-muted: #8a7a99;
+                --border-color: #d0c0e0;
+                --shadow-color: rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            text-shadow: 2px 2px 0 var(--shadow-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .nav-bar {
+            background: var(--bg-card);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            border-bottom: var(--pixel-border) solid var(--border-color);
+        }
+
+        .nav-bar a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .nav-bar a:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-secondary);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: var(--pixel-border) solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 4px 4px 0 var(--shadow-color);
+        }
+
+        .card h2 {
+            font-family: var(--font-header);
+            font-size: 0.9rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .card h3 {
+            color: var(--accent-cyan);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        .card h4 {
+            color: var(--accent-pink);
+            font-size: 1.1rem;
+            margin: 1.2rem 0 0.6rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .info-item {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        .info-item .label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .info-item .value {
+            color: var(--accent-green);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: var(--bg-secondary);
+            color: var(--accent-cyan);
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .highlight-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-yellow);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: rgba(255, 71, 87, 0.1);
+            border-left: 4px solid var(--accent-red);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .tip-box {
+            background: rgba(0, 240, 255, 0.1);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        ul, ol {
+            margin: 0.8rem 0 0.8rem 1.5rem;
+        }
+
+        li {
+            margin: 0.4rem 0;
+        }
+
+        .topic-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .topic-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .topic-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 0 var(--shadow-color);
+        }
+
+        .topic-card .num {
+            color: var(--accent-yellow);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .topic-card .title {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-top: 0.3rem;
+        }
+
+        .topic-card .desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        .formula {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--accent-green);
+            border: 2px dashed var(--border-color);
+            margin: 1rem 0;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .checklist li {
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+            border-top: var(--pixel-border) solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: var(--accent-cyan);
+            color: var(--bg-secondary);
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        .badge-pink { background: var(--accent-pink); }
+        .badge-yellow { background: var(--accent-yellow); color: var(--bg-secondary); }
+        .badge-green { background: var(--accent-green); color: var(--bg-secondary); }
+        .badge-orange { background: var(--accent-orange); color: var(--bg-secondary); }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 0.9rem; }
+            .container { padding: 1rem; }
+            .nav-bar { gap: 0.5rem; }
+            .nav-bar a { padding: 0.4rem 0.6rem; font-size: 0.9rem; }
+            table { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📚 HKSI PAPER 1 STUDY GUIDE</h1>
+        <div class="subtitle">Fundamentals of Securities and Futures Regulation | Version 3.4.2 (2025/2026)</div>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="#overview">Overview</a>
+        <a href="#topic1">Topic 1</a>
+        <a href="#topic2">Topic 2</a>
+        <a href="#topic3">Topic 3</a>
+        <a href="#topic4">Topic 4</a>
+        <a href="#topic5">Topic 5</a>
+        <a href="#topic6">Topic 6</a>
+        <a href="#topic7">Topic 7</a>
+        <a href="#topic8">Topic 8</a>
+        <a href="#topic9">Topic 9</a>
+        <a href="#reference">Quick Ref</a>
+    </nav>
+
+    <div class="container">
+        <!-- EXAM OVERVIEW -->
+        <section id="overview" class="card">
+            <h2>📋 EXAM OVERVIEW</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">Questions</div>
+                    <div class="value">60 MCQs</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Duration</div>
+                    <div class="value">90 Minutes</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Pass Mark</div>
+                    <div class="value">70%</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">Format</div>
+                    <div class="value">CBE/PBE</div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ TRICKY FORMAT:</strong> Questions use "I & II only", "II, III & IV", "All of the above" format. 
+                NOT simple A/B/C/D! Combination questions reduce effectiveness of elimination strategy.
+            </div>
+
+            <h3>Pass Strategy</h3>
+            <ul>
+                <li>Complete <strong>at least 5 practice sets</strong> with 70%+ before exam</li>
+                <li>Study time: <strong>~9 hours per topic</strong> (81 hours total)</li>
+                <li>Think like a <strong>regulator</strong> (SFC perspective)</li>
+            </ul>
+        </section>
+
+        <!-- TOPIC NAVIGATION -->
+        <section class="card">
+            <h2>🎯 9 TOPICS AT A GLANCE</h2>
+            <div class="topic-nav">
+                <div class="topic-card" onclick="location.href='#topic1'">
+                    <div class="num">01</div>
+                    <div class="title">Regulatory Overview</div>
+                    <div class="desc">SFC, HKMA, HKEX, regulatory framework</div>
+                </div>
+                <div class="topic-card" onclick="location.href='#topic2'">
+                    <div class="num">02</div>
+                    <div class="title">HK Law & Companies Ordinance</div>
+                    <div class="desc">Legal system, resolutions, shares</div>
+                </div>
+                <div class="topic-card" onclick="location.href='#topic3'">
+                    <div class="num">03</div>
+                    <div class="title">Securities and Futures Ordinance</div>
+                    <div class="desc">18 Parts, licensing, capital, compensation</div>
+                </div>
+                <div class="topic-card" onclick="location.href='#topic4'">
+                    <div class="num">04</div>
+                    <div class="title">Licensing & Subsidiary Legislation</div>
+                    <div class="desc">Fit & proper, regulated activities</div>
+                </div>
+                <div class="topic-card" onclick="location.href='#topic5'">
+                    <div class="num">05</div>
+                    <div class="title">Business Conduct & Client Relations</div>
+                    <div class="desc">Code of Conduct, 12 GPs, suitability</div>
+                </div>
+                <div class="topic-card" onclick="location.href='#topic6'">
+                    <div class="num">06</div>
+                    <div class="title">Business Operations & Practices</div>
+                    <div class="desc">AML, PDPO, internal controls</div>
+                </div>
+                <div class="topic-card" onclick="location.href='#topic7'">
+                    <div class="num">07</div>
+                    <div class="title">Participating in HK Exchanges</div>
+                    <div class="desc">HKEX, SEHK, Stock Connect, trading</div>
+                </div>
+                <div class="topic-card" onclick="location.href='#topic8'">
+                    <div class="num">08</div>
+                    <div class="title">Accessing Public Capital</div>
+                    <div class="desc">Listing rules, takeovers, buy-backs</div>
+                </div>
+                <div class="topic-card" onclick="location.href='#topic9'">
+                    <div class="num">09</div>
+                    <div class="title">Market Misconduct</div>
+                    <div class="desc">Insider dealing, disclosure, enforcement</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOPIC 1 -->
+        <section id="topic1" class="card">
+            <h2><span class="badge">TOPIC 1</span> Regulatory Overview of HK Financial Industry</h2>
+            
+            <h3>🎯 Six Core Principles (Ian Hay Davison Report)</h3>
+            <ol>
+                <li><strong>Systemic Stability</strong> - Prevent market collapse</li>
+                <li><strong>Orderly Market</strong> - Fair, free from manipulation</li>
+                <li><strong>Investor Protection</strong> - Protect the public</li>
+                <li><strong>Practitioner-Based Regulation</strong> - Run by industry professionals</li>
+                <li><strong>Independent Commission</strong> - Separate from government</li>
+                <li><strong>Market Participant Representation</strong> - On exchanges/clearing houses</li>
+            </ol>
+
+            <h3>Regulatory Philosophy</h3>
+            <table>
+                <tr><th>Type</th><th>Description</th><th>Example</th></tr>
+                <tr><td><span class="badge badge-cyan">Disclosure-Based</span></td><td>Maximize information, investor decides</td><td>Companies Ordinance</td></tr>
+                <tr><td><span class="badge badge-pink">Merit-Based</span></td><td>Screen out bad players/products</td><td>Listing Rules</td></tr>
+                <tr><td><span class="badge badge-yellow">Risk-Based</span></td><td>Focus on highest-risk areas</td><td>SFC approach</td></tr>
+            </table>
+
+            <h3>Key Regulatory Bodies</h3>
+            <table>
+                <tr><th>Body</th><th>Head</th><th>Role</th></tr>
+                <tr><td><strong>Chief Executive HKSAR</strong></td><td>-</td><td>Appoints SFC Chairman, CEO, Directors</td></tr>
+                <tr><td><strong>Financial Secretary</strong></td><td>-</td><td>Chairman of Exchange Fund Advisory Committee</td></tr>
+                <tr><td><strong>SFC</strong></td><td>Chairman/CEO</td><td>Lead securities/futures regulator</td></tr>
+                <tr><td><strong>HKMA</strong></td><td>Chief Executive</td><td>Banking supervision; manages Exchange Fund</td></tr>
+                <tr><td><strong>MPFA</strong></td><td>-</td><td>Mandatory Provident Fund regulation</td></tr>
+                <tr><td><strong>Insurance Authority</strong></td><td>-</td><td>Insurance industry regulation</td></tr>
+            </table>
+
+            <h3>SFC Regulatory Objectives (s.4 SFO)</h3>
+            <div class="highlight-box">
+                <ol>
+                    <li>Fairness, efficiency, competitiveness, transparency, orderliness</li>
+                    <li>Public understanding of the industry</li>
+                    <li><strong>Investor protection</strong></li>
+                    <li>Minimize crime and misconduct</li>
+                    <li>Reduce systemic risks</li>
+                    <li>Assist Financial Secretary in financial stability</li>
+                </ol>
+            </div>
+
+            <h3>Professional Investor Definition</h3>
+            <ul>
+                <li><strong>Corporation:</strong> ≥HK$40 million in total assets</li>
+                <li><strong>Individual (HNW):</strong> ≥HK$8 million portfolio</li>
+            </ul>
+        </section>
+
+        <!-- TOPIC 2 -->
+        <section id="topic2" class="card">
+            <h2><span class="badge badge-pink">TOPIC 2</span> HK Law & Companies Ordinance</h2>
+            
+            <h3>Legal System</h3>
+            <ul>
+                <li><strong>Primary Legislation:</strong> Ordinances enacted by Chief Executive with LegCo</li>
+                <li><strong>Subsidiary Legislation:</strong> Rules drafted by non-Government bodies (e.g., SFC rules)</li>
+                <li><strong>Judiciary:</strong> Completely independent of government</li>
+            </ul>
+
+            <h3>Key Companies Ordinance Concepts</h3>
+            <table>
+                <tr><th>Concept</th><th>Definition</th><th>Requirement</th></tr>
+                <tr><td><strong>Special Resolution</strong></td><td>75% majority vote</td><td>14 days notice; filed within 15 days</td></tr>
+                <tr><td><strong>Ordinary Resolution</strong></td><td>Simple majority (>50%)</td><td>-</td></tr>
+                <tr><td><strong>Redeemable Shares</strong></td><td>Can be bought back by company</td><td>Must be fully paid; from distributable profits/new issue</td></tr>
+            </table>
+
+            <h3>Types of Shares</h3>
+            <ul>
+                <li><strong>Preference Shares:</strong> Fixed dividend, priority in winding up</li>
+                <li><strong>Ordinary Shares:</strong> Voting rights, variable dividend</li>
+                <li><strong>Redeemable Shares:</strong> Can be redeemed by company or shareholder</li>
+            </ul>
+        </section>
+
+        <!-- TOPIC 3 -->
+        <section id="topic3" class="card">
+            <h2><span class="badge badge-yellow">TOPIC 3</span> Securities and Futures Ordinance (SFO)</h2>
+            
+            <h3>SFO Objectives</h3>
+            <ul>
+                <li>Fair, orderly, transparent market</li>
+                <li>Flexible for new products</li>
+                <li>Administered by independent regulator (SFC)</li>
+                <li>On par with international standards</li>
+            </ul>
+
+            <h3>SFO Structure - 18 Parts</h3>
+            <table>
+                <tr><th>Part</th><th>Subject</th></tr>
+                <tr><td>Part I</td><td>Preliminary</td></tr>
+                <tr><td>Part II</td><td>SFC - Constitution, objectives, functions, powers</td></tr>
+                <tr><td>Part III</td><td>Exchange companies, clearing houses</td></tr>
+                <tr><td>Part IIIA</td><td>OTC derivative transactions</td></tr>
+                <tr><td>Part IV</td><td>Offers of investments</td></tr>
+                <tr><td>Part IVA</td><td>Open-ended fund companies (OFCs)</td></tr>
+                <tr><td><strong>Part V</strong></td><td><strong>Licensing and registration</strong></td></tr>
+                <tr><td>Part VI</td><td>Capital requirements, client assets</td></tr>
+                <tr><td>Part VII</td><td>Business conduct</td></tr>
+                <tr><td>Part VIII</td><td>Supervision and investigations</td></tr>
+                <tr><td>Part IX</td><td>Discipline</td></tr>
+                <tr><td>Part X</td><td>Powers of intervention</td></tr>
+                <tr><td>Part XI</td><td>Securities and Futures Appeals Tribunal</td></tr>
+                <tr><td><strong>Part XII</strong></td><td><strong>Investor compensation</strong></td></tr>
+                <tr><td>Part XIII</td><td>Market Misconduct Tribunal</td></tr>
+                <tr><td>Part XIV</td><td>Offences relating to dealings</td></tr>
+                <tr><td>Part XIVA</td><td>Disclosure of inside information</td></tr>
+                <tr><td>Part XV</td><td>Disclosure of interests</td></tr>
+            </table>
+
+            <h3>Associated Entity (AE)</h3>
+            <div class="highlight-box">
+                <strong>Definition:</strong>
+                <ul>
+                    <li>Company in <strong>controlling relationship</strong> (>20% voting power) with intermediary</li>
+                    <li><strong>AND</strong> receives/holds client assets of the intermediary in HK</li>
+                </ul>
+                <strong>Requirements:</strong>
+                <ul>
+                    <li>Notify SFC within <strong>7 business days</strong> of becoming AE</li>
+                    <li>Cannot conduct other business without SFC written approval</li>
+                </ul>
+            </div>
+
+            <h3>Regulated Activities (Type 1-12)</h3>
+            <table>
+                <tr><th>Type</th><th>Activity</th><th>Capital Req</th></tr>
+                <tr><td>Type 1</td><td>Dealing in securities</td><td><span class="badge badge-green">Yes</span></td></tr>
+                <tr><td>Type 2</td><td>Dealing in futures contracts</td><td><span class="badge badge-green">Yes</span></td></tr>
+                <tr><td>Type 3</td><td>Leveraged foreign exchange</td><td><span class="badge badge-green">Yes</span></td></tr>
+                <tr><td>Type 4</td><td>Advising on securities</td><td><span class="badge">No*</span></td></tr>
+                <tr><td>Type 5</td><td>Advising on futures</td><td><span class="badge">No*</span></td></tr>
+                <tr><td>Type 6</td><td>Advising on corporate finance</td><td><span class="badge">No*</span></td></tr>
+                <tr><td>Type 8</td><td>Securities margin financing</td><td><span class="badge badge-green">Yes</span></td></tr>
+                <tr><td>Type 9</td><td>Asset management</td><td><span class="badge">No*</span></td></tr>
+            </table>
+            <p><em>*No capital required if not holding client assets</em></p>
+
+            <h3>Capital Requirements Formula</h3>
+            <div class="formula">
+                LIQUID CAPITAL = LIQUID ASSETS − RANKING LIABILITIES
+            </div>
+            <ul>
+                <li>Liquid capital must be <strong>> Required Liquid Capital (RLC)</strong> at all times</li>
+                <li>Liquid assets = cash and near-cash (after haircuts)</li>
+                <li>Ranking liabilities = total liabilities − approved subordinated loans</li>
+            </ul>
+
+            <h3>Notification Triggers</h3>
+            <table>
+                <tr><th>Trigger</th><th>Action</th></tr>
+                <tr><td>LC < 120% of RLC</td><td>Notify SFC</td></tr>
+                <tr><td>LC < 50% of last reported</td><td>Notify SFC</td></tr>
+                <tr><td>Unable to comply</td><td>Notify + cease business (unless permitted)</td></tr>
+            </table>
+
+            <h3>Client Assets Protection</h3>
+            <div class="tip-box">
+                <strong>Client Securities:</strong> Segregate from firm's assets, registered in segregated account, daily reconciliation<br><br>
+                <strong>Client Money:</strong> Pay into segregated account within <strong>1 business day</strong>, cannot use for firm's business
+            </div>
+
+            <h3>Investor Compensation Fund</h3>
+            <ul>
+                <li>Covers losses from default of licensed/registered persons</li>
+                <li><strong>Compensation limit:</strong> HK$500,000 per claimant per default</li>
+                <li><strong>Exclusions:</strong> Institutional/professional investors, market losses</li>
+            </ul>
+        </section>
+
+        <!-- TOPIC 4 -->
+        <section id="topic4" class="card">
+            <h2><span class="badge badge-green">TOPIC 4</span> Licensing & Subsidiary Legislation</h2>
+            
+            <h3>Fit and Proper Criteria</h3>
+            <h4>For Individuals:</h4>
+            <ul>
+                <li>Financial status/solvency</li>
+                <li>Education/qualifications</li>
+                <li>Competence</li>
+                <li>Reputation/character/reliability</li>
+                <li>Regulatory compliance history</li>
+            </ul>
+
+            <h3>Approved Introducing Agent (AIA)</h3>
+            <div class="highlight-box">
+                <strong>Definition:</strong> Introduces clients to other dealers but:
+                <ul>
+                    <li>Does NOT handle client assets</li>
+                    <li>Incurs NO legal liability</li>
+                    <li>Only passes offers to exchange participants</li>
+                </ul>
+                <strong>Benefits:</strong> Lower liquid capital, no paid-up capital requirement
+            </div>
+
+            <h3>Securities Margin Financing (SMF)</h3>
+            <p><strong>Definition:</strong> Lending money to acquire/continue holding listed securities</p>
+            <p><strong>Exceptions (NOT SMF):</strong></p>
+            <ul>
+                <li>Underwriting/sub-underwriting</li>
+                <li>Lending by Type 1 licensee for SMF</li>
+                <li>Lending by CIS to finance its own investments</li>
+                <li>Lending by AFI (bank) to clients</li>
+            </ul>
+        </section>
+
+        <!-- TOPIC 5 -->
+        <section id="topic5" class="card">
+            <h2><span class="badge badge-orange">TOPIC 5</span> Business Conduct & Client Relations</h2>
+            
+            <h3>Code of Conduct - 12 General Principles</h3>
+            <table>
+                <tr><th>GP</th><th>Principle</th><th>Key Points</th></tr>
+                <tr><td>GP1</td><td>Honesty & Fairness</td><td>Accurate info, fair charges, no misleading ads, comply with ICAC</td></tr>
+                <tr><td>GP2</td><td>Diligence</td><td>Prompt execution, best execution, fair allocation, <strong>record calls (6 months)</strong></td></tr>
+                <tr><td>GP3</td><td>Capabilities</td><td>Only act within competence</td></tr>
+                <tr><td>GP4</td><td>Information about Clients</td><td>KYC - financial situation, objectives</td></tr>
+                <tr><td>GP5</td><td>Information about Products</td><td>Understand before recommending</td></tr>
+                <tr><td>GP6-12</td><td colspan="2">Client Agreement, Know Your Client, Conflict of Interest, Compliance, Senior Management Responsibility, Outsourcing, Record Keeping</td></tr>
+            </table>
+
+            <h3>Suitability Requirement</h3>
+            <div class="warning-box">
+                Must ensure recommendation is suitable based on:
+                <ul>
+                    <li>Client's financial situation</li>
+                    <li>Investment experience</li>
+                    <li>Investment objectives</li>
+                    <li>Risk profile</li>
+                    <li>Time horizon</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- TOPIC 6 -->
+        <section id="topic6" class="card">
+            <h2><span class="badge">TOPIC 6</span> Business Operations & Practices</h2>
+            
+            <h3>Internal Control Guidelines - 8 Key Areas</h3>
+            <ol>
+                <li>Management and supervision</li>
+                <li>Segregation of duties</li>
+                <li>Personnel and training</li>
+                <li>Information management</li>
+                <li>Compliance</li>
+                <li>Audit</li>
+                <li>Operational controls</li>
+                <li>Risk management</li>
+            </ol>
+
+            <h3>Anti-Money Laundering (AML)</h3>
+            <div class="highlight-box">
+                <strong>5 Key Ordinances:</strong>
+                <ol>
+                    <li><strong>AMLO</strong> - Anti-Money Laundering and Counter-Terrorist Financing Ordinance</li>
+                    <li><strong>DTRPO</strong> - Drug Trafficking (Recovery of Proceeds) Ordinance</li>
+                    <li><strong>OSCO</strong> - Organised and Serious Crimes Ordinance</li>
+                    <li><strong>UNATMO</strong> - UN (Anti-terrorism Measures) Ordinance</li>
+                    <li><strong>WMD(CPS)O</strong> - Weapons of Mass Destruction Ordinance</li>
+                </ol>
+                <strong>SFC Guideline:</strong> GAML (Guideline on AML/Counter-Terrorist Financing)
+            </div>
+
+            <h3>Customer Due Diligence (CDD)</h3>
+            <ul>
+                <li>Identify and verify identity</li>
+                <li>Identify beneficial owners</li>
+                <li>Obtain info on purpose/nature of relationship</li>
+                <li>Ongoing monitoring</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Suspicious Transaction Reports (STR):</strong> Report to Joint Financial Intelligence Unit (JFIU).<br>
+                <strong>TIPPING OFF IS AN OFFENCE!</strong>
+            </div>
+
+            <h3>Personal Data (Privacy) Ordinance (PDPO)</h3>
+            <p><strong>6 Data Protection Principles:</strong></p>
+            <ol>
+                <li>Purpose (collect for lawful purpose)</li>
+                <li>Accuracy and retention</li>
+                <li>Use (only for original purpose)</li>
+                <li>Security</li>
+                <li>Information (inform data subjects)</li>
+                <li>Access (allow access to own data)</li>
+            </ol>
+        </section>
+
+        <!-- TOPIC 7 -->
+        <section id="topic7" class="card">
+            <h2><span class="badge badge-pink">TOPIC 7</span> Participating in HK Exchanges</h2>
+            
+            <h3>HKEX Structure</h3>
+            <table>
+                <tr><th>Entity</th><th>Role</th></tr>
+                <tr><td><strong>HKEX</strong></td><td>Listed holding company</td></tr>
+                <tr><td><strong>SEHK</strong></td><td>Stock Exchange of Hong Kong</td></tr>
+                <tr><td><strong>HKFE</strong></td><td>Hong Kong Futures Exchange</td></tr>
+                <tr><td><strong>HKSCC</strong></td><td>HK Securities Clearing Corporation</td></tr>
+            </table>
+
+            <h3>Trading Sessions</h3>
+            <table>
+                <tr><th>Session</th><th>Time</th></tr>
+                <tr><td>Pre-opening</td><td>9:00 - 9:30</td></tr>
+                <tr><td>Continuous Trading (Morning)</td><td>9:30 - 12:00</td></tr>
+                <tr><td>Continuous Trading (Afternoon)</td><td>13:00 - 16:00</td></tr>
+                <tr><td>Closing Auction</td><td>16:00 - 16:10</td></tr>
+            </table>
+
+            <h3>Traded Options</h3>
+            <ul>
+                <li><strong>Call Option:</strong> Right to BUY underlying</li>
+                <li><strong>Put Option:</strong> Right to SELL underlying</li>
+                <li><strong>American Style:</strong> Can exercise anytime</li>
+                <li><strong>European Style:</strong> Can exercise only at expiry</li>
+            </ul>
+        </section>
+
+        <!-- TOPIC 8 -->
+        <section id="topic8" class="card">
+            <h2><span class="badge badge-yellow">TOPIC 8</span> Accessing Public Capital</h2>
+            
+            <h3>Listing Requirements (Main Board)</h3>
+            <table>
+                <tr><th>Requirement</th><th>Standard</th></tr>
+                <tr><td>Profit Test</td><td>3 years ≥ HK$80m (last year ≥ HK$35m)</td></tr>
+                <tr><td>Market Cap</td><td>≥ HK$500m at time of listing</td></tr>
+                <tr><td>Public Float</td><td>25% (or 15-25% if market cap > HK$10bn)</td></tr>
+                <tr><td>Minimum Shareholders</td><td>300</td></tr>
+            </table>
+
+            <h3>Takeovers and Mergers</h3>
+            <div class="highlight-box">
+                <strong>Trigger for Mandatory Offer:</strong>
+                <ul>
+                    <li>Acquire <strong>30% or more</strong> of voting rights</li>
+                    <li>Hold 30-50% and acquire <strong>>2% in 12-month period</strong></li>
+                </ul>
+                <strong>Offer Price:</strong> Highest price paid by offeror in previous 6 months
+            </div>
+
+            <h3>Share Buy-backs</h3>
+            <ul>
+                <li><strong>On-market:</strong> Through SEHK</li>
+                <li><strong>Off-market:</strong> Outside SEHK (needs shareholder approval)</li>
+            </ul>
+        </section>
+
+        <!-- TOPIC 9 -->
+        <section id="topic9" class="card">
+            <h2><span class="badge badge-green">TOPIC 9</span> Market Misconduct & Improper Trading</h2>
+            
+            <h3>Market Misconduct Types</h3>
+            <table>
+                <tr><th>Type</th><th>Description</th></tr>
+                <tr><td><strong>Insider Dealing</strong></td><td>Trading while possessing inside information</td></tr>
+                <tr><td><strong>False Trading</strong></td><td>Creating false/misleading market appearance</td></tr>
+                <tr><td><strong>Price Rigging</strong></td><td>Manipulating prices</td></tr>
+                <tr><td><strong>Disclosure of False Information</strong></td><td>Knowingly disseminating false info</td></tr>
+            </table>
+
+            <h3>Inside Information (Part XIVA)</h3>
+            <div class="highlight-box">
+                <strong>Definition:</strong>
+                <ul>
+                    <li>Specific information about corporation/listed securities</li>
+                    <li>Not generally known to public</li>
+                    <li>Would materially affect price if known</li>
+                </ul>
+                <strong>Disclosure Obligation:</strong> Listed corporations must disclose as soon as reasonably practicable
+            </div>
+
+            <h3>Unsolicited Calls</h3>
+            <div class="warning-box">
+                <strong>Prohibited unless:</strong>
+                <ul>
+                    <li>Client gave written consent</li>
+                    <li>Prior business relationship</li>
+                    <li>Institutional/professional investor</li>
+                </ul>
+                <strong>Maximum penalty:</strong> HK$500,000 + 3 years imprisonment
+            </div>
+
+            <h3>Disclosure of Interests (Part XV)</h3>
+            <table>
+                <tr><th>Party</th><th>Threshold</th><th>Time to Disclose</th></tr>
+                <tr><td>Major Shareholder</td><td><strong>5%</strong></td><td>Within 3 business days</td></tr>
+                <tr><td>Subsequent Changes</td><td><strong>1% or more</strong></td><td>Within 3 business days</td></tr>
+                <tr><td>Director/CEO</td><td>Any interest</td><td>Must disclose</td></tr>
+            </table>
+        </section>
+
+        <!-- QUICK REFERENCE -->
+        <section id="reference" class="card">
+            <h2>📊 QUICK REFERENCE TABLES</h2>
+            
+            <h3>Key Time Periods</h3>
+            <table>
+                <tr><th>Event</th><th>Period</th></tr>
+                <tr><td>Contract note to client</td><td><strong>2 business days</strong></td></tr>
+                <tr><td>Statement of account (monthly)</td><td><strong>7 business days</strong> (10 for asset managers)</td></tr>
+                <tr><td>Client money to segregated account</td><td><strong>1 business day</strong></td></tr>
+                <tr><td>Telephone recording retention</td><td><strong>6 months</strong></td></tr>
+                <tr><td>Accounting records retention</td><td><strong>7 years</strong></td></tr>
+                <tr><td>Major shareholder disclosure</td><td><strong>3 business days</strong></td></tr>
+                <tr><td>AE notification to SFC</td><td><strong>7 business days</strong></td></tr>
+            </table>
+
+            <h3>SFC Structure</h3>
+            <table>
+                <tr><th>Division</th><th>Function</th></tr>
+                <tr><td>Corporate Finance</td><td>Listing matters, takeovers, disclosures</td></tr>
+                <tr><td>Enforcement</td><td>Investigations, disciplinary actions</td></tr>
+                <tr><td>Intermediaries</td><td>Licensing, supervision of LCs</td></tr>
+                <tr><td>Investment Products</td><td>Authorization of funds/products</td></tr>
+                <tr><td>Market Supervision</td><td>Market monitoring, surveillance</td></tr>
+            </table>
+
+            <h3>✅ EXAM CHECKLIST</h3>
+            <ul class="checklist">
+                <li>Read official Study Guide (Version 3.4.2)</li>
+                <li>Complete all 9 topics (81 hours study time)</li>
+                <li>Practice 5+ mock exams (70%+ each)</li>
+                <li>Review quick reference tables</li>
+                <li>Memorize time periods</li>
+                <li>Understand SFO structure (18 Parts)</li>
+                <li>Know regulated activities (Type 1-12)</li>
+                <li>Master capital requirements formula</li>
+            </ul>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p><strong>HKSI Paper 1 Study Guide 2025/2026</strong></p>
+            <p>Version 3.4.2 | Effective October 2024 | Compiled March 14, 2026</p>
+            <p style="margin-top: 1rem; color: var(--text-muted);">Compiled by Nexus (Air1ck3ff) for EricF 🚀</p>
+            <p style="margin-top: 0.5rem;"><a href="/" style="color: var(--accent-cyan);">← Back to Mission Control</a></p>
+        </footer>
+    </div>
+</body>
+</html>
