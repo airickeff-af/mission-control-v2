@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏢 Game Dev Office v2.2 | Meebits Walking!</title>
+    <title>🏢 Game Dev Office v2.3 | Kairosoft Pixel Art</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
         
         body {
             font-family: 'VT323', monospace;
-            background: #1a1a2e;
+            background: #2d1b4e;
             min-height: 100vh;
             overflow: hidden;
         }
         
         .game-header {
-            background: linear-gradient(180deg, #16213e 0%, #0f3460 100%);
-            border-bottom: 4px solid #e94560;
+            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            border-bottom: 4px solid #00D9FF;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
@@ -27,278 +27,58 @@
         .game-title {
             font-family: 'Press Start 2P', cursive;
             font-size: 12px;
-            color: #fff;
-            text-shadow: 2px 2px 0 #e94560;
+            color: #00D9FF;
         }
         
         .game-stats {
             display: flex;
-            gap: 20px;
+            gap: 15px;
         }
         
         .stat {
             background: rgba(0,0,0,0.3);
-            padding: 5px 15px;
+            padding: 5px 12px;
             border-radius: 4px;
-            border: 2px solid #533483;
+            border: 2px solid #5d4b7e;
         }
         
-        .stat-label { color: #a8d8ea; font-size: 10px; font-family: 'Press Start 2P', cursive; }
-        .stat-value { color: #ffd700; font-weight: bold; font-size: 16px; }
+        .stat-label { color: #b8a9d9; font-size: 10px; }
+        .stat-value { color: #FFD700; font-weight: bold; }
         
         .game-container {
             display: flex;
             height: calc(100vh - 60px);
         }
         
+        /* Canvas-based office for smooth pixel art */
         .office-view {
             flex: 1;
-            background: #1a1a2e;
+            background: #1a0f2e;
             position: relative;
             overflow: hidden;
-        }
-        
-        .iso-world {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotateX(60deg) rotateZ(-45deg);
-            transform-style: preserve-3d;
-            width: 800px;
-            height: 800px;
-        }
-        
-        .floor {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    #d4a574 0px,
-                    #d4a574 40px,
-                    #c49464 40px,
-                    #c49464 80px
-                ),
-                repeating-linear-gradient(
-                    90deg,
-                    transparent 0px,
-                    transparent 40px,
-                    rgba(0,0,0,0.1) 40px,
-                    rgba(0,0,0,0.1) 80px
-                );
-            border: 8px solid #8b6914;
-            box-shadow: 0 0 0 4px #5c4033;
-        }
-        
-        .wall-back {
-            position: absolute;
-            top: -80px;
-            left: 0;
-            right: 0;
-            height: 80px;
-            background: linear-gradient(180deg, #f5e6c8 0%, #e6d7b8 100%);
-            border: 4px solid #8b7355;
-        }
-        
-        .wall-left {
-            position: absolute;
-            top: 0;
-            left: -80px;
-            width: 80px;
-            bottom: 0;
-            background: linear-gradient(90deg, #e6d7b8 0%, #d7c8a8 100%);
-            border: 4px solid #8b7355;
-        }
-        
-        .window {
-            position: absolute;
-            width: 100px;
-            height: 60px;
-            background: linear-gradient(180deg, #87ceeb 0%, #b0e0e6 100%);
-            border: 4px solid #5c4033;
-        }
-        
-        .window::before, .window::after {
-            content: '';
-            position: absolute;
-            background: #5c4033;
-        }
-        
-        .window::before { top: 50%; left: 0; right: 0; height: 4px; }
-        .window::after { left: 50%; top: 0; bottom: 0; width: 4px; }
-        
-        .whiteboard {
-            position: absolute;
-            width: 120px;
-            height: 80px;
-            background: #f5f5f5;
-            border: 4px solid #5c4033;
-            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
-            color: #333;
         }
         
-        /* Walkable Tile Grid */
-        .tile {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(0,0,0,0.1);
-        }
-        
-        .tile:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        
-        /* Desk */
-        .desk {
-            position: absolute;
-            width: 80px;
-            height: 60px;
-            z-index: 5;
-        }
-        
-        .desk-visual {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #deb887 0%, #cd853f 100%);
-            border: 3px solid #8b4513;
-            border-radius: 4px;
-        }
-        
-        .desk-visual::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 30px;
-            background: #f0f0f0;
-            border: 2px solid #666;
-            box-shadow: 0 0 8px rgba(135,206,235,0.5);
-        }
-        
-        /* Meebit Worker with Sprite Sheet */
-        .meebit-worker {
-            position: absolute;
-            width: 64px;
-            height: 64px;
-            z-index: 10;
-            transition: transform 0.1s linear;
-        }
-        
-        .meebit-sprite {
-            width: 100%;
-            height: 100%;
-            background-size: 256px 256px;
+        #gameCanvas {
             image-rendering: pixelated;
-        }
-        
-        /* Animation states using sprite sheet rows */
-        .meebit-sprite.idle {
-            animation: anim-idle 0.8s steps(4) infinite;
-        }
-        
-        .meebit-sprite.walk-down {
-            animation: anim-walk-down 0.6s steps(4) infinite;
-        }
-        
-        .meebit-sprite.walk-up {
-            animation: anim-walk-up 0.6s steps(4) infinite;
-        }
-        
-        .meebit-sprite.walk-left {
-            animation: anim-walk-left 0.6s steps(4) infinite;
-        }
-        
-        .meebit-sprite.walk-right {
-            animation: anim-walk-right 0.6s steps(4) infinite;
-        }
-        
-        @keyframes anim-idle {
-            0% { background-position: 0 0; }
-            100% { background-position: -256px 0; }
-        }
-        
-        @keyframes anim-walk-down {
-            0% { background-position: 0 -64px; }
-            100% { background-position: -256px -64px; }
-        }
-        
-        @keyframes anim-walk-up {
-            0% { background-position: 0 -128px; }
-            100% { background-position: -256px -128px; }
-        }
-        
-        @keyframes anim-walk-left {
-            0% { background-position: 0 -192px; }
-            100% { background-position: -256px -192px; }
-        }
-        
-        @keyframes anim-walk-right {
-            0% { background-position: 0 0; transform: scaleX(-1); }
-            100% { background-position: -256px 0; transform: scaleX(-1); }
-        }
-        
-        /* Speech Bubble */
-        .speech-bubble {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #fff;
-            border: 2px solid #1a1a2e;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 8px;
-            color: #1a1a2e;
-            white-space: nowrap;
-            opacity: 0;
-            z-index: 20;
-            pointer-events: none;
-        }
-        
-        .meebit-worker.speaking .speech-bubble {
-            opacity: 1;
-            animation: pop-in 0.3s ease-out;
-        }
-        
-        @keyframes pop-in {
-            0% { transform: translateX(-50%) scale(0); }
-            50% { transform: translateX(-50%) scale(1.2); }
-            100% { transform: translateX(-50%) scale(1); }
-        }
-        
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-top: 6px solid #1a1a2e;
+            image-rendering: crisp-edges;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
         
         /* Chat Panel */
         .chat-panel {
-            width: 300px;
-            background: linear-gradient(180deg, #16213e 0%, #0f3460 100%);
-            border-left: 4px solid #e94560;
+            width: 320px;
+            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            border-left: 4px solid #00D9FF;
             display: flex;
             flex-direction: column;
         }
         
         .chat-header {
             padding: 15px;
-            border-bottom: 2px solid #533483;
+            border-bottom: 2px solid #5d4b7e;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -307,7 +87,7 @@
         .chat-avatar {
             width: 50px;
             height: 50px;
-            border: 3px solid #fff;
+            border: 3px solid #00D9FF;
             border-radius: 8px;
             overflow: hidden;
         }
@@ -320,12 +100,12 @@
         
         .chat-title {
             font-family: 'Press Start 2P', cursive;
-            color: #fff;
+            color: #00D9FF;
             font-size: 10px;
         }
         
         .chat-subtitle {
-            color: #a8d8ea;
+            color: #b8a9d9;
             font-size: 12px;
         }
         
@@ -342,59 +122,70 @@
             max-width: 90%;
             padding: 10px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 14px;
         }
         
         .message.agent {
             align-self: flex-start;
-            background: rgba(233, 69, 96, 0.2);
-            border: 2px solid #e94560;
+            background: rgba(0, 217, 255, 0.1);
+            border: 2px solid #00D9FF;
             color: #fff;
         }
         
         .message.user {
             align-self: flex-end;
-            background: rgba(83, 52, 131, 0.5);
-            border: 2px solid #533483;
+            background: rgba(255, 107, 157, 0.2);
+            border: 2px solid #FF69B4;
             color: #fff;
         }
         
         .chat-input-area {
             padding: 15px;
-            border-top: 2px solid #533483;
+            border-top: 2px solid #5d4b7e;
         }
         
         .chat-input {
             width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 2px solid #533483;
+            background: #2d1b4e;
+            border: 2px solid #5d4b7e;
             padding: 10px;
             color: #fff;
             font-family: 'VT323', monospace;
             font-size: 16px;
             margin-bottom: 10px;
+            border-radius: 4px;
         }
         
         .chat-btn {
             width: 100%;
-            background: #e94560;
-            color: #fff;
+            background: #00D9FF;
+            color: #1a0f2e;
             border: none;
             padding: 10px;
             font-family: 'Press Start 2P', cursive;
             font-size: 10px;
             cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Instructions overlay */
+        .instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: #b8a9d9;
+            font-size: 12px;
+            border: 2px solid #5d4b7e;
         }
     </style>
 </head>
 <body>
     <header class="game-header">
-        <div class="game-title">🏢 GAME DEV OFFICE v2.2</div>
+        <div class="game-title">🏢 GAME DEV OFFICE</div>
         <div class="game-stats">
-            <div class="stat">
-                <div class="stat-label">BUDGET</div>
-                <div class="stat-value">$20.39</div>
-            </div>
             <div class="stat">
                 <div class="stat-label">FANS</div>
                 <div class="stat-value">12</div>
@@ -407,63 +198,10 @@
     </header>
 
     <div class="game-container">
-        <div class="office-view" id="officeView">
-            <div class="iso-world" id="isoWorld">
-                <div class="floor">
-                    <div class="wall-back"></div>
-                    <div class="wall-left"></div>
-                    
-                    <div class="window" style="top: -60px; left: 100px;"></div>
-                    <div class="window" style="top: -60px; left: 300px;"></div>
-                    
-                    <div class="whiteboard" style="top: 50px; left: 50px;">Tasks!</div>
-                    
-                    <!-- Desks -->
-                    <div class="desk" style="top: 150px; left: 100px;" data-desk="1">
-                        <div class="desk-visual"></div>
-                    </div>
-                    
-                    <div class="desk" style="top: 150px; left: 300px;" data-desk="2">
-                        <div class="desk-visual"></div>
-                    </div>
-                    
-                    <div class="desk" style="top: 350px; left: 100px;" data-desk="3">
-                        <div class="desk-visual"></div>
-                    </div>
-                    
-                    <div class="desk" style="top: 350px; left: 300px;" data-desk="4">
-                        <div class="desk-visual"></div>
-                    </div>
-
-                    <!-- Meebit Workers -->
-                    <div class="meebit-worker" id="worker-nexus" data-desk="1"
-                         style="top: 130px; left: 110px;">
-                        <div class="meebit-sprite idle" 
-                             style="background-image: url('https://files.meebits.app/sprites/1001.png');"></div>
-                        <div class="speech-bubble">Work!</div>
-                    </div>
-
-                    <div class="meebit-worker" id="worker-glasses" data-desk="2"
-                         style="top: 130px; left: 310px;">
-                        <div class="meebit-sprite idle"
-                             style="background-image: url('https://files.meebits.app/sprites/2001.png');"></div>
-                        <div class="speech-bubble">Research!</div>
-                    </div>
-
-                    <div class="meebit-worker" id="worker-pixel" data-desk="3"
-                         style="top: 330px; left: 110px;">
-                        <div class="meebit-sprite idle"
-                             style="background-image: url('https://files.meebits.app/sprites/4001.png');"></div>
-                        <div class="speech-bubble">Design!</div>
-                    </div>
-
-                    <div class="meebit-worker" id="worker-sentry" data-desk="4"
-                         style="top: 330px; left: 310px;">
-                        <div class="meebit-sprite idle"
-                             style="background-image: url('https://files.meebits.app/sprites/57.png');"></div>
-                        <div class="speech-bubble">Secure!</div>
-                    </div>
-                </div>
+        <div class="office-view">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            <div class="instructions">
+                🖱️ Click Meebits to chat | Watch them walk around!
             </div>
         </div>
 
@@ -474,16 +212,16 @@
                 </div>
                 <div>
                     <div class="chat-title" id="chatName">NEXUS</div>
-                    <div class="chat-subtitle">Robot Director | Walking around!</div>
+                    <div class="chat-subtitle">Click me to chat!</div>
                 </div>
             </div>
             
             <div class="chat-messages" id="chatMessages">
-                <div class="message agent">🔥 Meebits are WALKING! Using sprite sheets from meebco-api for 4-directional movement!</div>
+                <div class="message agent">🎮 Welcome! The office is now rendered with smooth pixel art canvas - no more eye strain!</div>
             </div>
             
             <div class="chat-input-area">
-                <input type="text" class="chat-input" id="chatInput" placeholder="Click a Meebit or type..."
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..."
                        onkeypress="if(event.key==='Enter') sendMsg()">
                 <button class="chat-btn" onclick="sendMsg()">SEND</button>
             </div>
@@ -491,153 +229,328 @@
     </div>
 
     <script>
-        // Worker definitions
-        const workers = {
-            nexus: { 
-                id: 'worker-nexus', 
-                name: 'NEXUS', 
-                meebitId: 1001,
-                homeDesk: { x: 110, y: 130 },
-                currentPos: { x: 110, y: 130 },
-                target: null,
-                isMoving: false
-            },
-            glasses: { 
-                id: 'worker-glasses', 
-                name: 'GLASSES', 
-                meebitId: 2001,
-                homeDesk: { x: 310, y: 130 },
-                currentPos: { x: 310, y: 130 },
-                target: null,
-                isMoving: false
-            },
-            pixel: { 
-                id: 'worker-pixel', 
-                name: 'PIXEL', 
-                meebitId: 4001,
-                homeDesk: { x: 110, y: 330 },
-                currentPos: { x: 110, y: 330 },
-                target: null,
-                isMoving: false
-            },
-            sentry: { 
-                id: 'worker-sentry', 
-                name: 'SENTRY', 
-                meebitId: 57,
-                homeDesk: { x: 310, y: 330 },
-                currentPos: { x: 310, y: 330 },
-                target: null,
-                isMoving: false
-            }
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        
+        // Softer Kairosoft-style colors
+        const COLORS = {
+            floorLight: '#E8D4B8',
+            floorDark: '#D4C4A8',
+            wall: '#F5E6D3',
+            wallShadow: '#C4B4A0',
+            desk: '#C4956A',
+            deskDark: '#A4754A',
+            monitor: '#87CEEB',
+            monitorFrame: '#666666',
+            chair: '#6B8ECE',
+            window: '#B0E0E6',
+            windowFrame: '#8B7355'
         };
         
-        let selectedWorker = workers.nexus;
-        
-        // Walking destinations (office hotspots)
-        const destinations = [
-            { x: 110, y: 130, name: 'Desk 1' },
-            { x: 310, y: 130, name: 'Desk 2' },
-            { x: 110, y: 330, name: 'Desk 3' },
-            { x: 310, y: 330, name: 'Desk 4' },
-            { x: 200, y: 230, name: 'Center' },
-            { x: 450, y: 200, name: 'Vending' },
-            { x: 50, y: 200, name: 'Whiteboard' }
-        ];
-        
-        function getDirection(from, to) {
-            const dx = to.x - from.x;
-            const dy = to.y - from.y;
-            
-            if (Math.abs(dx) > Math.abs(dy)) {
-                return dx > 0 ? 'right' : 'left';
-            } else {
-                return dy > 0 ? 'down' : 'up';
-            }
+        // Isometric helpers
+        function isoToScreen(ix, iy) {
+            const screenX = 400 + (ix - iy) * 32;
+            const screenY = 300 + (ix + iy) * 16;
+            return { x: screenX, y: screenY };
         }
         
-        function moveWorker(workerId, targetX, targetY) {
-            const worker = workers[workerId];
-            if (worker.isMoving) return;
+        // Draw floor tile
+        function drawFloorTile(ix, iy) {
+            const pos = isoToScreen(ix, iy);
+            const isLight = (ix + iy) % 2 === 0;
             
-            worker.isMoving = true;
-            worker.target = { x: targetX, y: targetY };
+            ctx.fillStyle = isLight ? COLORS.floorLight : COLORS.floorDark;
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            ctx.lineTo(pos.x + 32, pos.y + 16);
+            ctx.lineTo(pos.x, pos.y + 32);
+            ctx.lineTo(pos.x - 32, pos.y + 16);
+            ctx.closePath();
+            ctx.fill();
             
-            const el = document.getElementById(worker.id);
-            const sprite = el.querySelector('.meebit-sprite');
+            // Subtle border
+            ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+        
+        // Draw wall
+        function drawWall(x, y, width, height) {
+            // Wall face
+            ctx.fillStyle = COLORS.wall;
+            ctx.fillRect(x, y, width, height);
             
-            // Calculate direction
-            const direction = getDirection(worker.currentPos, worker.target);
+            // Shadow at bottom
+            ctx.fillStyle = COLORS.wallShadow;
+            ctx.fillRect(x, y + height - 10, width, 10);
             
-            // Set walking animation
-            sprite.className = `meebit-sprite walk-${direction}`;
+            // Top highlight
+            ctx.fillStyle = '#FFF8F0';
+            ctx.fillRect(x, y, width, 4);
+        }
+        
+        // Draw window
+        function drawWindow(x, y) {
+            const w = 80;
+            const h = 50;
             
-            // Animate position
-            const duration = 2000;
-            const startX = worker.currentPos.x;
-            const startY = worker.currentPos.y;
-            const startTime = Date.now();
+            // Frame
+            ctx.fillStyle = COLORS.windowFrame;
+            ctx.fillRect(x, y, w, h);
             
-            function animate() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
+            // Glass
+            ctx.fillStyle = COLORS.window;
+            ctx.fillRect(x + 4, y + 4, w - 8, h - 8);
+            
+            // Cross
+            ctx.fillStyle = COLORS.windowFrame;
+            ctx.fillRect(x + w/2 - 2, y, 4, h);
+            ctx.fillRect(x, y + h/2 - 2, w, 4);
+        }
+        
+        // Draw desk
+        function drawDesk(ix, iy) {
+            const pos = isoToScreen(ix, iy);
+            
+            // Desk base
+            ctx.fillStyle = COLORS.deskDark;
+            ctx.beginPath();
+            ctx.moveTo(pos.x - 25, pos.y + 10);
+            ctx.lineTo(pos.x + 25, pos.y + 10);
+            ctx.lineTo(pos.x + 25, pos.y + 25);
+            ctx.lineTo(pos.x - 25, pos.y + 25);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Desk top
+            ctx.fillStyle = COLORS.desk;
+            ctx.beginPath();
+            ctx.moveTo(pos.x - 30, pos.y);
+            ctx.lineTo(pos.x + 30, pos.y);
+            ctx.lineTo(pos.x + 25, pos.y + 10);
+            ctx.lineTo(pos.x - 25, pos.y + 10);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Monitor
+            const mx = pos.x;
+            const my = pos.y - 15;
+            
+            // Monitor stand
+            ctx.fillStyle = '#888';
+            ctx.fillRect(mx - 3, my + 10, 6, 8);
+            
+            // Monitor frame
+            ctx.fillStyle = COLORS.monitorFrame;
+            ctx.fillRect(mx - 15, my - 10, 30, 22);
+            
+            // Screen
+            ctx.fillStyle = COLORS.monitor;
+            ctx.fillRect(mx - 12, my - 7, 24, 16);
+            
+            // Screen glow
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillRect(mx - 12, my - 7, 24, 8);
+        }
+        
+        // Draw chair
+        function drawChair(ix, iy) {
+            const pos = isoToScreen(ix, iy);
+            const cx = pos.x + 35;
+            const cy = pos.y + 5;
+            
+            // Chair back
+            ctx.fillStyle = COLORS.chair;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + 12, cy + 6);
+            ctx.lineTo(cx + 12, cy + 20);
+            ctx.lineTo(cx, cy + 15);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Chair seat
+            ctx.fillStyle = '#5B7EBE';
+            ctx.beginPath();
+            ctx.moveTo(cx, cy + 15);
+            ctx.lineTo(cx + 12, cy + 20);
+            ctx.lineTo(cx + 5, cy + 25);
+            ctx.lineTo(cx - 7, cy + 20);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        // Draw whiteboard
+        function drawWhiteboard(x, y) {
+            // Board
+            ctx.fillStyle = '#F5F5F5';
+            ctx.fillRect(x, y, 100, 60);
+            
+            // Frame
+            ctx.strokeStyle = '#8B7355';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(x, y, 100, 60);
+            
+            // Text
+            ctx.fillStyle = '#333';
+            ctx.font = '10px "Press Start 2P"';
+            ctx.fillText('TASKS!', x + 15, y + 35);
+        }
+        
+        // Meebit workers
+        const workers = [
+            { id: 'nexus', name: 'NEXUS', x: 2, y: 2, targetX: 2, targetY: 2, meebitId: 1001, frame: 0 },
+            { id: 'glasses', name: 'GLASSES', x: 6, y: 2, targetX: 6, targetY: 2, meebitId: 2001, frame: 0 },
+            { id: 'pixel', name: 'PIXEL', x: 2, y: 6, targetX: 2, targetY: 6, meebitId: 4001, frame: 0 },
+            { id: 'sentry', name: 'SENTRY', x: 6, y: 6, targetX: 6, targetY: 6, meebitId: 57, frame: 0 }
+        ];
+        
+        let selectedWorker = workers[0];
+        const sprites = {};
+        
+        // Load sprite sheets
+        workers.forEach(w => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = `https://files.meebits.app/sprites/${w.meebitId}.png`;
+            sprites[w.id] = img;
+        });
+        
+        function drawMeebit(worker) {
+            const pos = isoToScreen(worker.x, worker.y);
+            const sprite = sprites[worker.id];
+            
+            if (sprite && sprite.complete) {
+                // Draw sprite frame (64x64 from 256x256 sheet)
+                const frameX = (Math.floor(worker.frame) % 4) * 64;
+                const frameY = 0; // Idle row
                 
-                const currentX = startX + (targetX - startX) * progress;
-                const currentY = startY + (targetY - startY) * progress;
-                
-                el.style.left = currentX + 'px';
-                el.style.top = currentY + 'px';
-                
-                worker.currentPos = { x: currentX, y: currentY };
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    // Arrived
-                    worker.isMoving = false;
-                    worker.target = null;
-                    sprite.className = 'meebit-sprite idle';
-                    el.classList.add('speaking');
-                    
-                    setTimeout(() => el.classList.remove('speaking'), 1500);
+                ctx.drawImage(
+                    sprite,
+                    frameX, frameY, 64, 64,
+                    pos.x - 20, pos.y - 50, 40, 40
+                );
+            } else {
+                // Fallback circle
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y - 20, 15, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y, 15, 8, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        function drawScene() {
+            // Clear
+            ctx.fillStyle = '#1a0f2e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw floor (8x8 grid)
+            for (let iy = 0; iy < 8; iy++) {
+                for (let ix = 0; ix < 8; ix++) {
+                    drawFloorTile(ix, iy);
                 }
             }
             
-            animate();
+            // Draw wall (back)
+            drawWall(150, 50, 500, 80);
+            
+            // Draw windows
+            drawWindow(200, 65);
+            drawWindow(350, 65);
+            
+            // Draw whiteboard
+            drawWhiteboard(520, 60);
+            
+            // Draw desks
+            drawDesk(2, 2);
+            drawDesk(6, 2);
+            drawDesk(2, 6);
+            drawDesk(6, 6);
+            
+            // Draw chairs
+            drawChair(2, 2);
+            drawChair(6, 2);
+            drawChair(2, 6);
+            drawChair(6, 6);
+            
+            // Draw workers
+            workers.forEach(w => {
+                drawMeebit(w);
+                w.frame += 0.1;
+            });
         }
         
-        function randomWalk() {
-            const workerIds = Object.keys(workers);
-            const randomWorkerId = workerIds[Math.floor(Math.random() * workerIds.length)];
-            const worker = workers[randomWorkerId];
-            
-            if (worker.isMoving) return;
-            
-            // Pick random destination
-            const dest = destinations[Math.floor(Math.random() * destinations.length)];
-            
-            // 50% chance to go back home
-            if (Math.random() > 0.5) {
-                moveWorker(randomWorkerId, worker.homeDesk.x, worker.homeDesk.y);
-            } else {
-                moveWorker(randomWorkerId, dest.x, dest.y);
+        function animate() {
+            drawScene();
+            requestAnimationFrame(animate);
+        }
+        
+        // Movement system
+        function moveWorker(worker) {
+            if (Math.abs(worker.x - worker.targetX) > 0.1 || Math.abs(worker.y - worker.targetY) > 0.1) {
+                worker.x += (worker.targetX - worker.x) * 0.05;
+                worker.y += (worker.targetY - worker.y) * 0.05;
             }
         }
         
-        // Start random walking
+        // Random walking
+        function randomWalk() {
+            workers.forEach(w => {
+                if (Math.random() > 0.7) {
+                    const destinations = [
+                        { x: 2, y: 2 }, { x: 6, y: 2 },
+                        { x: 2, y: 6 }, { x: 6, y: 6 },
+                        { x: 4, y: 4 }
+                    ];
+                    const dest = destinations[Math.floor(Math.random() * destinations.length)];
+                    w.targetX = dest.x;
+                    w.targetY = dest.y;
+                }
+            });
+        }
+        
         setInterval(randomWalk, 3000);
         
-        // Click to select/chat
-        Object.keys(workers).forEach(id => {
-            const el = document.getElementById(workers[id].id);
-            el.addEventListener('click', () => {
-                selectedWorker = workers[id];
-                document.getElementById('chatImg').src = `https://api.meebits.app/v2/images/larvalabs_full/${selectedWorker.meebitId}`;
-                document.getElementById('chatName').textContent = selectedWorker.name;
-                addMsg('agent', `${selectedWorker.name} here! I'm at ${selectedWorker.currentPos.x}, ${selectedWorker.currentPos.y}! 💪`);
-                
-                el.classList.add('speaking');
-                setTimeout(() => el.classList.remove('speaking'), 1500);
+        // Update movement every frame
+        function update() {
+            workers.forEach(moveWorker);
+        }
+        
+        setInterval(update, 50);
+        
+        // Click detection
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Find closest worker
+            let closest = null;
+            let closestDist = Infinity;
+            
+            workers.forEach(w => {
+                const pos = isoToScreen(w.x, w.y);
+                const dist = Math.hypot(x - pos.x, y - (pos.y - 20));
+                if (dist < closestDist && dist < 40) {
+                    closestDist = dist;
+                    closest = w;
+                }
             });
+            
+            if (closest) {
+                selectedWorker = closest;
+                document.getElementById('chatImg').src = 
+                    `https://api.meebits.app/v2/images/larvalabs_full/${closest.meebitId}`;
+                document.getElementById('chatName').textContent = closest.name;
+                addMsg('agent', `${closest.name}: Hey! I'm working at my desk! 🔥`);
+            }
         });
         
         function addMsg(type, text) {
@@ -657,17 +570,25 @@
             input.value = '';
             
             setTimeout(() => {
-                addMsg('agent', `${selectedWorker.name}: Roger! Moving to new location! 🔥`);
-                // Move to random spot
+                addMsg('agent', `${selectedWorker.name}: Roger that! Moving to a new spot! 💪`);
+                const destinations = [
+                    { x: 2, y: 2 }, { x: 6, y: 2 },
+                    { x: 2, y: 6 }, { x: 6, y: 6 },
+                    { x: 4, y: 4 }
+                ];
                 const dest = destinations[Math.floor(Math.random() * destinations.length)];
-                moveWorker(Object.keys(workers).find(k => workers[k] === selectedWorker), dest.x, dest.y);
+                selectedWorker.targetX = dest.x;
+                selectedWorker.targetY = dest.y;
             }, 500);
         }
         
-        // Initial greeting
+        // Start
+        animate();
+        
+        // Welcome message
         setTimeout(() => {
-            addMsg('agent', '🎮 Watch the Meebits walk around the office! They use real sprite sheets from the MeebCo API!');
-        }, 1000);
+            addMsg('agent', '✨ Canvas-rendered office with soft Kairosoft colors! Much easier on the eyes!');
+        }, 500);
     </script>
 </body>
 </html>
