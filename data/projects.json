@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-18T09:30:00+08:00",
+  "lastUpdated": "2026-03-20T16:26:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -225,27 +225,27 @@
       }
     },
     {
-      "id": "memory-system",
-      "name": "Memory System",
-      "status": "active",
-      "completion": 75,
-      "url": "https://dashboard-ten-sand-20.vercel.app/memory/index.html",
+      "id": "memory-hub",
+      "name": "🧠 Memory Hub",
+      "status": "deployed",
+      "completion": 90,
+      "url": "memory/index.html",
       "pendingTasks": 0,
       "lead": "Nexus",
-      "targetCompletion": "2026-02-28",
+      "targetCompletion": "2026-03-20",
       "targetPercent": 100,
-      "priority": 11,
-      "deployBy": "2026-02-28",
-      "description": "Long-term memory storage and session tracking for all agents",
-      "outputLocation": "/root/.openclaw/workspace/memory/",
-      "dashboardUrl": "https://dashboard-ten-sand-20.vercel.app/memory/index.html",
+      "priority": 0,
+      "deployBy": "2026-03-20",
+      "description": "Downloadable memory archive with procedural, semantic, and episodic memory files",
+      "memoryFiles": {
+        "procedural": ["NEVER_FORGET.md", "agents.md"],
+        "semantic": ["MEMORY.md", "projects.md", "decisions.md", "lessons.md", "preferences.md"],
+        "episodic": ["2026-03-20.md", "2026-03-18.md", "2026-03-16.md", "2026-03-14.md", "maintenance-report-2026-03-01.md"],
+        "totalFiles": 19
+      },
       "stats": {
-        "dailyLogs": 3,
-        "gitSyncReports": 1,
-        "heartbeatChecks": 38,
-        "archivedSessions": 7,
-        "lastSync": "2026-02-27T19:22:00+08:00",
-        "reposTracked": 4
+        "totalFiles": 19,
+        "lastUpdated": "2026-03-20T16:26:00+08:00"
       }
     },
     {

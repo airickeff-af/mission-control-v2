@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory System | Mission Control</title>
+    <title>🧠 Memory Hub | Mission Control</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #2d1b4e;
             --bg-secondary: #1a0f2e;
-            --bg-tertiary: #3d2b5e;
-            --accent-primary: #00f0ff;
-            --accent-secondary: #ff6b9d;
-            --accent-success: #6bcf7f;
+            --bg-card: #3d2b5e;
+            --bg-card-hover: #4d3b6e;
             --text-primary: #ffffff;
             --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
             --border-color: #5d4b7e;
             --shadow-color: rgba(0, 0, 0, 0.4);
+            --pixel-border: 4px;
             --font-pixel: 'VT323', monospace;
             --font-header: 'Press Start 2P', cursive;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
+        * { 
+            margin: 0; 
+            padding: 0; 
             box-sizing: border-box;
         }
         
@@ -33,281 +38,463 @@
             color: var(--text-primary);
             min-height: 100vh;
             font-size: 18px;
+            line-height: 1.4;
         }
-        
+
         .header {
             background: var(--bg-secondary);
-            border-bottom: 4px solid var(--border-color);
-            box-shadow: 0 4px 0 var(--shadow-color);
+            border-bottom: var(--pixel-border) solid var(--border-color);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
         }
-        
-        .header h1 {
-            font-family: var(--font-header);
-            font-size: 0.9rem;
-            color: var(--accent-primary);
-            text-shadow: 2px 2px 0 var(--shadow-color);
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        .nav-link:hover {
-            background: var(--accent-primary);
-            color: var(--bg-primary);
-        }
-        
-        .container {
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .section-header {
+
+        .logo-container {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 3px solid var(--border-color);
+            gap: 1rem;
         }
-        
+
+        .pixel-logo {
+            font-size: 2.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .logo-text {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            line-height: 1.4;
+            color: var(--accent-cyan);
+            text-shadow: 2px 2px 0 var(--shadow-color);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-header {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 4px 4px 0 var(--shadow-color);
+        }
+
         .section-icon {
             font-size: 1.5rem;
         }
-        
+
         .section-title {
             font-family: var(--font-header);
-            font-size: 0.7rem;
-            color: var(--accent-primary);
+            font-size: 0.6rem;
+            flex: 1;
         }
-        
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
         .memory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem;
-        }
-        
-        .memory-card {
-            background: var(--bg-secondary);
-            border: 3px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 4px 4px 0 var(--shadow-color);
-        }
-        
-        .memory-card h3 {
-            font-family: var(--font-header);
-            font-size: 0.6rem;
-            color: var(--accent-secondary);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-        
-        .memory-list {
-            list-style: none;
-        }
-        
-        .memory-list li {
-            padding: 0.75rem;
-            margin: 0.5rem 0;
-            background: var(--bg-tertiary);
-            border-left: 4px solid var(--accent-primary);
-            border-radius: 0 4px 4px 0;
-            font-size: 1rem;
-        }
-        
-        .memory-list li:hover {
-            background: var(--border-color);
-            cursor: pointer;
-        }
-        
-        .file-meta {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
             margin-bottom: 2rem;
         }
-        
-        .stat-box {
-            background: var(--bg-secondary);
+
+        .memory-card {
+            background: var(--bg-card);
             border: 3px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
             box-shadow: 4px 4px 0 var(--shadow-color);
+            transition: all 0.2s;
+            position: relative;
         }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--accent-primary);
-            font-family: var(--font-pixel);
+
+        .memory-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+            background: var(--bg-card-hover);
         }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-        
-        .path-display {
-            background: var(--bg-tertiary);
+
+        .card-header {
             padding: 1rem;
-            border-radius: 4px;
-            font-family: monospace;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            flex: 1;
+        }
+
+        .card-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .file-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .file-icon {
+            font-size: 1rem;
+        }
+
+        .file-name {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .file-size {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .pixel-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: var(--accent-green);
+            color: var(--bg-secondary);
+            padding: 0.3rem 0.6rem;
+            text-decoration: none;
+            border: 2px solid var(--text-primary);
+            box-shadow: 2px 2px 0 var(--shadow-color);
+            font-size: 0.8rem;
+            transition: all 0.1s;
+            font-family: var(--font-pixel);
+            cursor: pointer;
+        }
+
+        .pixel-link:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 var(--shadow-color);
+        }
+
+        .pixel-link.view {
+            background: var(--accent-cyan);
+        }
+
+        .pixel-link.download {
+            background: var(--accent-green);
+        }
+
+        .pixel-link.back {
+            background: var(--accent-yellow);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            border: 2px solid;
+            margin-left: 0.5rem;
+        }
+
+        .badge.daily { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .badge.procedural { border-color: var(--accent-pink); color: var(--accent-pink); }
+        .badge.semantic { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .badge.episodic { border-color: var(--accent-green); color: var(--accent-green); }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--border-color);
+        }
+
+        .footer-text {
             font-size: 0.9rem;
-            color: var(--accent-success);
-            margin: 1rem 0;
-            border: 2px solid var(--border-color);
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>🧠 MEMORY SYSTEM</h1>
-        <div class="nav-links">
-            <a href="../index.html" class="nav-link">🏢 Dashboard</a>
-            <a href="../data-viewer.html" class="nav-link">📁 Data</a>
-            <a href="../agent-analytics.html" class="nav-link">📊 Analytics</a>
-            <div class="theme-toggle" style="display: flex; gap: 0.5rem; background: var(--bg-tertiary); padding: 0.5rem; border: 2px solid var(--border-color); margin-left: 1rem;">
-                <button class="theme-btn" data-theme="light" title="Light Mode" style="background: var(--bg-secondary); border: 2px solid var(--border-color); padding: 0.25rem 0.5rem; cursor: pointer;">☀️</button>
-                <button class="theme-btn active" data-theme="auto" title="Auto" style="background: var(--accent-primary); border: 2px solid var(--border-color); padding: 0.25rem 0.5rem; cursor: pointer;">🌓</button>
-                <button class="theme-btn" data-theme="dark" title="Dark Mode" style="background: var(--bg-secondary); border: 2px solid var(--border-color); padding: 0.25rem 0.5rem; cursor: pointer;">🌙</button>
+        <div class="logo-container">
+            <div class="pixel-logo">🧠</div>
+            <div class="logo-text">
+                MEMORY<br>HUB<br><span style="color: var(--accent-pink);">v1.0</span>
             </div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="../index.html" class="pixel-link back">← Back to Mission Control</a>
         </div>
     </header>
 
-    <div class="container">
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-box">
-                <div class="stat-value">9</div>
-                <div class="stat-label">Tasks Today</div>
+    <main class="container">
+        <!-- Procedural Memory -->
+        <div class="section-header">
+            <span class="section-icon">📋</span>
+            <h2 class="section-title">PROCEDURAL MEMORY</h2>
+            <span class="section-subtitle">How to Work</span>
+            <span class="badge procedural">RULES</span>
+        </div>
+        
+        <div class="memory-grid" id="proceduralGrid">
+            <div class="memory-card">
+                <div class="card-header">
+                    <span class="card-icon">⚡</span>
+                    <span class="card-title">NEVER FORGET</span>
+                </div>
+                <div class="card-content">
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Critical Rules & Requirements</span>
+                            </div>
+                            <div>
+                                <a href="NEVER_FORGET.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="NEVER_FORGET.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="stat-box">
-                <div class="stat-value">52</div>
-                <div class="stat-label">Total Tasks</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">9</div>
-                <div class="stat-label">Active Agents</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">2.89M</div>
-                <div class="stat-label">Tokens Used</div>
+            
+            <div class="memory-card">
+                <div class="card-header">
+                    <span class="card-icon">👤</span>
+                    <span class="card-title">AGENTS</span>
+                </div>
+                <div class="card-content">
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Agent Definitions</span>
+                            </div>
+                            <div>
+                                <a href="agents.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="agents.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Storage Location -->
+        <!-- Semantic Memory -->
         <div class="section-header">
-            <span class="section-icon">📂</span>
-            <h2 class="section-title">STORAGE LOCATION</h2>
+            <span class="section-icon">📚</span>
+            <h2 class="section-title">SEMANTIC MEMORY</h2>
+            <span class="section-subtitle">Knowledge & Facts</span>
+            <span class="badge semantic">KNOWLEDGE</span>
         </div>
         
-        <div class="path-display">
-            /root/.openclaw/workspace/memory/
+        <div class="memory-grid" id="semanticGrid">
+            <div class="memory-card">
+                <div class="card-header">
+                    <span class="card-icon">🧠</span>
+                    <span class="card-title">CORE MEMORY</span>
+                </div>
+                <div class="card-content">
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Long-term Memory (MEMORY.md)</span>
+                            </div>
+                            <div>
+                                <a href="MEMORY.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="MEMORY.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="memory-card">
+                <div class="card-header">
+                    <span class="card-icon">💡</span>
+                    <span class="card-title">TOPICS</span>
+                </div>
+                <div class="card-content">
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Projects</span>
+                            </div>
+                            <div>
+                                <a href="projects.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="projects.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Decisions</span>
+                            </div>
+                            <div>
+                                <a href="decisions.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="decisions.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Lessons</span>
+                            </div>
+                            <div>
+                                <a href="lessons.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="lessons.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Preferences</span>
+                            </div>
+                            <div>
+                                <a href="preferences.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="preferences.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <!-- Memory Files -->
+        <!-- Episodic Memory -->
         <div class="section-header">
-            <span class="section-icon">📝</span>
-            <h2 class="section-title">MEMORY FILES</h2>
+            <span class="section-icon">📅</span>
+            <h2 class="section-title">EPISODIC MEMORY</h2>
+            <span class="section-subtitle">Daily Logs & Experiences</span>
+            <span class="badge episodic">LOGS</span>
         </div>
         
-        <div class="memory-grid">
+        <div class="memory-grid" id="episodicGrid">
             <div class="memory-card">
-                <h3>📅 Daily Logs</h3>
-                <ul class="memory-list">
-                    <li>
-                        2026-02-26.md
-                        <div class="file-meta">2.1 KB • Daily activity log</div>
-                    </li>
-                    <li>
-                        2026-02-25.md
-                        <div class="file-meta">1.8 KB • Daily activity log</div>
-                    </li>
-                </ul>
+                <div class="card-header">
+                    <span class="card-icon">📆</span>
+                    <span class="card-title">DAILY LOGS</span>
+                </div>
+                <div class="card-content">
+                    <ul class="file-list" id="dailyLogsList">
+                        <!-- Dynamically populated -->
+                    </ul>
+                </div>
             </div>
             
             <div class="memory-card">
-                <h3>⚙️ State Tracking</h3>
-                <ul class="memory-list">
-                    <li>
-                        heartbeat-state.json
-                        <div class="file-meta">2.1 KB • Last check times</div>
-                    </li>
-                    <li>
-                        git-sync-state.json
-                        <div class="file-meta">0.9 KB • Sync tracking</div>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="memory-card">
-                <h3>📊 Reports</h3>
-                <ul class="memory-list">
-                    <li>
-                        git-auto-sync-report-2026-02-26.md
-                        <div class="file-meta">Sync report</div>
-                    </li>
-                    <li>
-                        stale-session-report.md
-                        <div class="file-meta">Session cleanup</div>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="memory-card">
-                <h3>🧠 Long-term Memory</h3>
-                <ul class="memory-list">
-                    <li>
-                        MEMORY.md
-                        <div class="file-meta">Key facts & decisions</div>
-                    </li>
-                    <li>
-                        AGENTS.md
-                        <div class="file-meta">Agent configurations</div>
-                    </li>
-                    <li>
-                        TOOLS.md
-                        <div class="file-meta">Tool documentation</div>
-                    </li>
-                </ul>
+                <div class="card-header">
+                    <span class="card-icon">🔧</span>
+                    <span class="card-title">SYSTEM REPORTS</span>
+                </div>
+                <div class="card-content">
+                    <ul class="file-list">
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Maintenance Report</span>
+                            </div>
+                            <div>
+                                <a href="maintenance-report-2026-03-01.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="maintenance-report-2026-03-01.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                        <li class="file-item">
+                            <div class="file-info">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">Git Auto-Sync Report</span>
+                            </div>
+                            <div>
+                                <a href="git-auto-sync-report-2026-02-26.md" target="_blank" class="pixel-link view">👁 View</a>
+                                <a href="git-auto-sync-report-2026-02-26.md" download class="pixel-link download">⬇ Download</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">🧠 Memory Hub | Part of Mission Control v2.0</p>
+        <p class="footer-text" style="margin-top: 0.5rem;">📁 All files are markdown format - Download for offline access</p>
+    </footer>
+
     <script>
-        // Theme toggle functionality
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.theme-btn').forEach(b => b.style.background = 'var(--bg-secondary)');
-                btn.style.background = 'var(--accent-primary)';
-                document.documentElement.setAttribute('data-theme', btn.dataset.theme);
-            });
-        });
+        // Populate daily logs dynamically
+        const dailyLogs = [
+            { date: '2026-03-20', file: '2026-03-20.md' },
+            { date: '2026-03-18', file: '2026-03-18.md' },
+            { date: '2026-03-16', file: '2026-03-16.md' },
+            { date: '2026-03-15', file: '2026-03-15.md' },
+            { date: '2026-03-14', file: '2026-03-14.md' },
+            { date: '2026-03-12', file: '2026-03-12.md' },
+            { date: '2026-02-28', file: '2026-02-28.md' },
+            { date: '2026-02-27', file: '2026-02-27.md' },
+            { date: '2026-02-25', file: '2026-02-25.md' }
+        ];
+
+        const dailyLogsList = document.getElementById('dailyLogsList');
+        dailyLogsList.innerHTML = dailyLogs.map(log => `
+            <li class="file-item">
+                <div class="file-info">
+                    <span class="file-icon">📄</span>
+                    <span class="file-name">${log.date}</span>
+                </div>
+                <div>
+                    <a href="${log.file}" target="_blank" class="pixel-link view">👁 View</a>
+                    <a href="${log.file}" download class="pixel-link download">⬇ Download</a>
+                </div>
+            </li>
+        `).join('');
     </script>
 </body>
 </html>
