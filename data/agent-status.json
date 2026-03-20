@@ -1,0 +1,145 @@
+{
+  "lastUpdated": "2026-03-20T16:47:00+08:00",
+  "agents": {
+    "nexus": {
+      "name": "Nexus",
+      "emoji": "👑",
+      "role": "Orchestrator",
+      "status": "active",
+      "currentTask": "Coordinating all agents | Trading bot monitoring | Memory management",
+      "progress": 95,
+      "lastActive": "2026-03-20T16:47:00+08:00",
+      "actions": ["Deploy", "Monitor", "Sync"],
+      "priority": 1
+    },
+    "glasses": {
+      "name": "Glasses",
+      "emoji": "🔍",
+      "role": "Researcher",
+      "status": "working",
+      "currentTask": "Daily crypto/stock briefings | Market analysis",
+      "progress": 60,
+      "lastActive": "2026-03-20T16:45:00+08:00",
+      "actions": ["Research", "Report", "Brief"],
+      "priority": 2
+    },
+    "quill": {
+      "name": "Quill",
+      "emoji": "✍️",
+      "role": "Writer",
+      "status": "working",
+      "currentTask": "Content creation | Profile research | Article drafting",
+      "progress": 45,
+      "lastActive": "2026-03-20T16:40:00+08:00",
+      "actions": ["Write", "Edit", "Publish"],
+      "priority": 3
+    },
+    "pixel": {
+      "name": "Pixel",
+      "emoji": "🎨",
+      "role": "Designer",
+      "status": "active",
+      "currentTask": "Visual assets | UI/UX design | Pixel art creation",
+      "progress": 70,
+      "lastActive": "2026-03-20T16:47:00+08:00",
+      "actions": ["Design", "Create", "Export"],
+      "priority": 4
+    },
+    "gary": {
+      "name": "Gary",
+      "emoji": "📈",
+      "role": "Marketing",
+      "status": "working",
+      "currentTask": "Strategy campaigns | Performance analysis",
+      "progress": 55,
+      "lastActive": "2026-03-20T16:42:00+08:00",
+      "actions": ["Analyze", "Campaign", "Optimize"],
+      "priority": 5
+    },
+    "larry": {
+      "name": "Larry",
+      "emoji": "🐦",
+      "role": "Social",
+      "status": "offline",
+      "currentTask": "Social media posting | Engagement tracking",
+      "progress": 30,
+      "lastActive": "2026-03-20T12:00:00+08:00",
+      "actions": ["Post", "Engage", "Schedule"],
+      "priority": 6
+    },
+    "sentry": {
+      "name": "Sentry",
+      "emoji": "🛡️",
+      "role": "DevOps",
+      "status": "active",
+      "currentTask": "System monitoring | Token alerts | Infrastructure",
+      "progress": 85,
+      "lastActive": "2026-03-20T16:47:00+08:00",
+      "actions": ["Monitor", "Alert", "Deploy"],
+      "priority": 7
+    },
+    "audit": {
+      "name": "Audit",
+      "emoji": "✓",
+      "role": "QA",
+      "status": "active",
+      "currentTask": "Quality reviews | Code audits | Performance checks",
+      "progress": 75,
+      "lastActive": "2026-03-20T16:46:00+08:00",
+      "actions": ["Review", "Audit", "Report"],
+      "priority": 8
+    },
+    "cipher": {
+      "name": "Cipher",
+      "emoji": "🔐",
+      "role": "Security",
+      "status": "active",
+      "currentTask": "Security monitoring | Threat detection | Access control",
+      "progress": 90,
+      "lastActive": "2026-03-20T16:47:00+08:00",
+      "actions": ["Secure", "Monitor", "Block"],
+      "priority": 9
+    },
+    "limitless": {
+      "name": "Limitless",
+      "emoji": "🤖",
+      "role": "Trading Bot",
+      "status": "active",
+      "currentTask": "Active trading | BTC/ETH/SOL/DOGE | 0.95min scans",
+      "progress": 100,
+      "lastActive": "2026-03-20T16:47:00+08:00",
+      "actions": ["Trade", "Analyze", "Profit"],
+      "priority": 10
+    },
+    "olivia": {
+      "name": "Olivia",
+      "emoji": "💼",
+      "role": "DealFlow+Outreach",
+      "status": "working",
+      "currentTask": "Lead scoring | Outreach campaigns | Partnership deals",
+      "progress": 50,
+      "lastActive": "2026-03-20T16:44:00+08:00",
+      "actions": ["Score", "Reach", "Close"],
+      "priority": 11
+    },
+    "zookeeper": {
+      "name": "ZooKeeper",
+      "emoji": "🦁",
+      "role": "Pixel Sanctuary",
+      "status": "active",
+      "currentTask": "Meebit integration | Environment design | Feeding system",
+      "progress": 80,
+      "lastActive": "2026-03-20T16:46:00+08:00",
+      "actions": ["Design", "Feed", "Play"],
+      "priority": 12
+    }
+  },
+  "summary": {
+    "totalAgents": 12,
+    "active": 8,
+    "working": 3,
+    "offline": 1,
+    "tasksCompletedToday": 24,
+    "averageProgress": 68
+  }
+}
