@@ -1,9 +1,9 @@
 # PENDING TASKS - MISSION CONTROL v2.0
 **Status:** ACTIVE  
-**Last Updated:** 2026-03-20 6:23 PM HKT (Auto-updated every 30 min)  
-**Total Tasks:** 105  
+**Last Updated:** 2026-03-20 7:10 PM HKT (Auto-updated every 30 min)  
+**Total Tasks:** 122 (+17 Kairosoft Rebuild Tasks)  
 **Commander:** EricF  
-**Next Check:** 6:53 PM  
+**Next Check:** 7:40 PM  
 
 ---
 
@@ -11,11 +11,11 @@
 
 | Priority | Count | Status | Trend |
 |----------|-------|--------|-------|
-| 🔴 **P0 - Critical** | 19 | 4 in progress | → |
-| 🟡 **P1 - High** | 26 | Multiple active | → |
-| 🟢 **P2 - Medium** | 18 | Planned | → |
-| ⚪ **P3 - Low** | 5 | Future | → |
-| **TOTAL** | **105** | **Active** | **Monitoring** |
+| 🔴 **P0 - Critical** | 29 | 4 in progress | ↑ +10 |
+| 🟡 **P1 - High** | 30 | Multiple active | ↑ +4 |
+| 🟢 **P2 - Medium** | 19 | Planned | ↑ +1 |
+| ⚪ **P3 - Low** | 7 | Future | ↑ +2 |
+| **TOTAL** | **122** | **Active** | **+17 NEW** |
 
 ---
 
@@ -32,7 +32,138 @@
 
 ---
 
-## 🔴 P0 - CRITICAL TASKS
+## 🔴 KAIROSOFT REBUILD - NEW TASKS (17 tasks)
+
+### **KAIRO-01: Isometric Grid System**
+- **Assigned:** Nexus
+- **Due:** Mar 21, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Create proper isometric projection system (20x20 tile grid, rotateX 60°, rotateZ -45°, click-to-tile conversion, z-index layering)
+
+### **KAIRO-02: Floor Tiles & Textures**
+- **Assigned:** Pixel
+- **Due:** Mar 21, 10:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Create 4 wooden floor tile variations with light/dark alternating pattern, tile edges, shadows, carpet zones
+
+### **KAIRO-03: Wall System & Windows**
+- **Assigned:** Pixel
+- **Due:** Mar 22, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Build back wall with wooden texture, left wall, 3 windows with sky gradient, frames, wall shadows
+
+### **KAIRO-04: Office Furniture - Desks**
+- **Assigned:** Pixel
+- **Due:** Mar 22, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Create 6 individual desks with depth (front, top, side), computer monitor with glow, keyboard, papers
+
+### **KAIRO-05: Office Furniture - Chairs**
+- **Assigned:** Pixel
+- **Due:** Mar 22, 10:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Office chair sprites (back view), swivel animation, positioning relative to desk, empty chair state
+
+### **KAIRO-06: Office Props (Plants, Whiteboard, Cabinets)**
+- **Assigned:** Pixel
+- **Due:** Mar 23, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P1
+- **Description:** Whiteboard with "Tasks!" text, 2 potted plants, 2 filing cabinets, wall clock, trash can, coffee maker
+
+### **KAIRO-07: Vending Machine & Decor**
+- **Assigned:** Pixel
+- **Due:** Mar 23, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P1
+- **Description:** Vending machine with drinks, poster on wall, trophy shelf, motivational sign
+
+### **KAIRO-08: Meebit Worker Sprites - Static**
+- **Assigned:** Pixel
+- **Due:** Mar 24, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** 6 Meebit sprites (one per agent), back-facing (sitting), side-facing (walking), front-facing (talking)
+
+### **KAIRO-09: Meebit Worker Animations - Walking**
+- **Assigned:** Nexus
+- **Due:** Mar 25, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** 4-frame walking animation, pathfinding between points, smooth movement, 8 directions
+
+### **KAIRO-10: Meebit Worker Animations - Working**
+- **Assigned:** Nexus
+- **Due:** Mar 25, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Typing animation, head bob, stretch/yawn, intense mode, sleep animation
+
+### **KAIRO-11: Speech Bubble System**
+- **Assigned:** Nexus
+- **Due:** Mar 26, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Bubble above worker with "Work!", "Research!", etc., bounce animation, fade out, multiple styles
+
+### **KAIRO-12: Stats HUD (Fans, Budget, Hype)**
+- **Assigned:** Nexus
+- **Due:** Mar 26, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Budget display, fans count, hype meter, current date, animated stat changes, pixel font
+
+### **KAIRO-13: Visual Effects (Hearts, Stars, Fire)**
+- **Assigned:** Pixel
+- **Due:** Mar 27, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P1
+- **Description:** Hearts (happy), stars (complete), Zzz (tired), fire/sparks (working hard), level up effect
+
+### **KAIRO-14: Worker Pathfinding & Movement**
+- **Assigned:** Nexus
+- **Due:** Mar 28, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P1
+- **Description:** Workers walk between desks, bathroom breaks, vending visits, meetings, collision detection
+
+### **KAIRO-15: Room Types & Zones**
+- **Assigned:** Pixel
+- **Due:** Mar 29, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P2
+- **Description:** Development zone, meeting area, break room, boss office, floor colors per zone
+
+### **KAIRO-16: Sound Effects**
+- **Assigned:** Nexus
+- **Due:** Mar 30, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P3
+- **Description:** Typing sounds, notification ding, office ambience, footsteps, UI clicks
+
+### **KAIRO-17: Save/Load Office State**
+- **Assigned:** Nexus
+- **Due:** Mar 31, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P3
+- **Description:** Save to localStorage, worker positions, desk assignments, stats history, export/import JSON
+
+---
+
+## 📊 UPDATED TASK DASHBOARD
+
+| Priority | Count | Status |
+|----------|-------|--------|
+| 🔴 **P0 - Critical** | 29 | 4 in progress |
+| 🟡 **P1 - High** | 30 | Multiple active |
+| 🟢 **P2 - Medium** | 19 | Planned |
+| ⚪ **P3 - Low** | 7 | Future |
+| **TOTAL** | **122** | **Active** |
 
 ---
 
