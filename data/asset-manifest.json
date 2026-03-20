@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-03-20T18:06:03+08:00",
+  "source": "Pixel",
+  "assets": [
+    {"name": "agent-avatar-1.png", "status": "ready"},
+    {"name": "ui-button-sprite.png", "status": "ready"}
+  ],
+  "totalAssets": 2
+}
