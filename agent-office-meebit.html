@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Agent Office | Meebit Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: #1a1a2e;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Game Header */
+        .game-header {
+            background: linear-gradient(180deg, #16213e 0%, #0f3460 100%);
+            border-bottom: 4px solid #e94560;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            color: #fff;
+            text-shadow: 2px 2px 0 #e94560;
+        }
+        
+        .game-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+        
+        .stat {
+            background: rgba(0,0,0,0.3);
+            padding: 5px 15px;
+            border-radius: 4px;
+            border: 2px solid #533483;
+        }
+        
+        .stat-label { color: #a8d8ea; font-size: 10px; }
+        .stat-value { color: #ffd700; font-weight: bold; }
+        
+        /* Main Game Area */
+        .game-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+        
+        /* Isometric Office */
+        .office-view {
+            flex: 1;
+            background: linear-gradient(135deg, #2d3561 0%, #1a1a2e 100%);
+            position: relative;
+            overflow: auto;
+            perspective: 1000px;
+        }
+        
+        .office-scene {
+            width: 1000px;
+            height: 700px;
+            position: relative;
+            margin: 50px auto;
+            transform: rotateX(60deg) rotateZ(-45deg);
+            transform-style: preserve-3d;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    #d4a574 0px,
+                    #d4a574 40px,
+                    #c49464 40px,
+                    #c49464 80px
+                );
+            border: 8px solid #8b6914;
+            box-shadow: 
+                0 0 0 4px #5c4033,
+                20px 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        /* Walls */
+        .wall-back {
+            position: absolute;
+            top: -100px;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(180deg, #f5e6c8 0%, #e6d7b8 100%);
+            border: 4px solid #8b7355;
+        }
+        
+        .wall-left {
+            position: absolute;
+            top: 0;
+            left: -100px;
+            width: 100px;
+            bottom: 0;
+            background: linear-gradient(90deg, #e6d7b8 0%, #d7c8a8 100%);
+            border: 4px solid #8b7355;
+        }
+        
+        /* Windows */
+        .window {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            background: linear-gradient(180deg, #87ceeb 0%, #b0e0e6 100%);
+            border: 4px solid #5c4033;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .window::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #5c4033;
+        }
+        
+        .window::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #5c4033;
+        }
+        
+        .window-1 { top: -90px; left: 100px; }
+        .window-2 { top: -90px; left: 300px; }
+        .window-3 { top: -90px; left: 500px; }
+        
+        /* Office Furniture */
+        .cabinet {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            background: linear-gradient(180deg, #8b4513 0%, #654321 100%);
+            border: 3px solid #3e2723;
+            border-radius: 4px;
+        }
+        
+        .cabinet::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            right: 10px;
+            height: 3px;
+            background: #3e2723;
+            box-shadow: 0 25px 0 #3e2723, 0 50px 0 #3e2723;
+        }
+        
+        /* Whiteboard */
+        .whiteboard {
+            position: absolute;
+            width: 150px;
+            height: 100px;
+            background: #f5f5f5;
+            border: 4px solid #5c4033;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .whiteboard::after {
+            content: 'Tasks!';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: #333;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        /* Plant */
+        .plant {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+        }
+        
+        .plant-pot {
+            position: absolute;
+            bottom: 0;
+            width: 30px;
+            height: 20px;
+            background: #d2691e;
+            border: 2px solid #8b4513;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .plant-leaves {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 30px;
+            background: #228b22;
+            border-radius: 50%;
+            box-shadow: 
+                -10px 5px 0 #32cd32,
+                10px 5px 0 #32cd32,
+                -5px -10px 0 #228b22,
+                5px -10px 0 #228b22;
+        }
+        
+        /* Agent Desk */
+        .agent-desk {
+            position: absolute;
+            width: 160px;
+            height: 120px;
+        }
+        
+        .desk-table {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 160px;
+            height: 70px;
+            background: linear-gradient(180deg, #deb887 0%, #cd853f 100%);
+            border: 3px solid #8b4513;
+            border-radius: 4px;
+        }
+        
+        .desk-table::before {
+            content: '';
+            position: absolute;
+            top: -35px;
+            left: 30px;
+            width: 100px;
+            height: 70px;
+            background: linear-gradient(180deg, #f0f0f0 0%, #d0d0d0 100%);
+            border: 3px solid #666;
+            border-radius: 4px;
+        }
+        
+        /* Monitor glow */
+        .desk-table::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 35px;
+            width: 90px;
+            height: 50px;
+            background: linear-gradient(180deg, rgba(135,206,235,0.3) 0%, transparent 100%);
+            border-radius: 2px;
+        }
+        
+        .desk-chair {
+            position: absolute;
+            bottom: 0;
+            right: -20px;
+            width: 40px;
+            height: 50px;
+            background: #4169e1;
+            border: 2px solid #1e3a8a;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        /* Meebit Agent Container */
+        .meebit-agent {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            width: 60px;
+            height: 80px;
+            transform: translateX(-50%);
+            z-index: 10;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .meebit-agent:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+        
+        .meebit-agent.working {
+            animation: meebit-bounce 0.4s infinite;
+        }
+        
+        @keyframes meebit-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
+        
+        /* Meebit Image */
+        .meebit-image {
+            width: 60px;
+            height: 60px;
+            image-rendering: pixelated;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            background: #fff;
+        }
+        
+        /* Energy Bar */
+        .energy-bar {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 8px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #1a1a2e;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e94560, #ffd700);
+            transition: width 0.3s;
+        }
+        
+        /* Speech Bubble */
+        .work-bubble {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border: 2px solid #1a1a2e;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-family: 'Press Start 2P', cursive;
+            color: #1a1a2e;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 20;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+        
+        .work-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #1a1a2e;
+        }
+        
+        .meebit-agent:hover .work-bubble,
+        .meebit-agent.speaking .work-bubble {
+            opacity: 1;
+        }
+        
+        /* Agent Name Tag */
+        .agent-name-tag {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-family: 'Press Start 2P', cursive;
+            white-space: nowrap;
+            border: 2px solid var(--agent-color, #e94560);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .agent-desk:hover .agent-name-tag {
+            opacity: 1;
+        }
+        
+        /* Command Panel */
+        .command-panel {
+            width: 350px;
+            background: linear-gradient(180deg, #16213e 0%, #0f3460 100%);
+            border-left: 4px solid #e94560;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-header {
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 2px solid #533483;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-avatar {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+        }
+        
+        .panel-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .panel-title {
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            font-size: 10px;
+        }
+        
+        .panel-subtitle {
+            color: #a8d8ea;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .message-area {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .msg {
+            max-width: 90%;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            animation: msg-pop 0.2s ease-out;
+        }
+        
+        @keyframes msg-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .msg.agent {
+            align-self: flex-start;
+            background: rgba(233, 69, 96, 0.2);
+            border: 2px solid #e94560;
+            color: #fff;
+        }
+        
+        .msg.user {
+            align-self: flex-end;
+            background: rgba(83, 52, 131, 0.5);
+            border: 2px solid #533483;
+            color: #fff;
+        }
+        
+        .input-area {
+            padding: 15px;
+            border-top: 2px solid #533483;
+            background: rgba(0,0,0,0.2);
+        }
+        
+        .cmd-input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid #533483;
+            padding: 10px;
+            color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        
+        .cmd-btn {
+            width: 100%;
+            background: linear-gradient(180deg, #e94560, #c73e54);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 4px 0 #8b2636;
+        }
+        
+        .cmd-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #8b2636;
+        }
+        
+        /* Meebit Type Badge */
+        .meebit-type {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #e94560;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 8px;
+            font-family: 'Press Start 2P', cursive;
+            border: 1px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    <header class="game-header">
+        <div class="game-title">🏢 AGENT OFFICE | MEEBIT EDITION</div>
+        <div class="game-stats">
+            <div class="stat">
+                <div class="stat-label">AGENTS</div>
+                <div class="stat-value">12</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">TASKS</div>
+                <div class="stat-value">105</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">POWER</div>
+                <div class="stat-value">MAX!</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="game-container">
+        <!-- Isometric Office -->
+        <div class="office-view">
+            <div class="office-scene" id="officeScene">
+                <!-- Walls -->
+                <div class="wall-back"></div>
+                <div class="wall-left"></div>
+                
+                <!-- Windows -->
+                <div class="window window-1"></div>
+                <div class="window window-2"></div>
+                <div class="window window-3"></div>
+                
+                <!-- Whiteboard -->
+                <div class="whiteboard" style="top: 50px; left: 50px;"></div>
+                
+                <!-- Cabinets -->
+                <div class="cabinet" style="top: 150px; left: -90px;"></div>
+                <div class="cabinet" style="top: 300px; left: -90px;"></div>
+                
+                <!-- Plant -->
+                <div class="plant" style="top: 50px; right: 50px;">
+                    <div class="plant-pot"></div>
+                    <div class="plant-leaves"></div>
+                </div>
+
+                <!-- Agent Desks with Meebits -->
+                <!-- Row 1 -->
+                <div class="agent-desk" style="top: 150px; left: 100px;">
+                    <div class="agent-name-tag" style="--agent-color: #FFD700;">NEXUS</div>
+                    <div class="desk-table"></div>
+                    <div class="desk-chair"></div>
+                    <div class="meebit-agent" id="agent-nexus" onclick="selectAgent('nexus')">
+                        <span class="meebit-type">ROBOT</span>
+                        <img class="meebit-image" 
+                             src="https://api.meebits.app/v2/images/larvalabs_full/1001" 
+                             alt="Nexus"
+                             onerror="this.src='https://via.placeholder.com/60/FFD700/000?text=N'">
+                        <div class="work-bubble">Work!</div>
+                    </div>
+                    
+                    <div class="energy-bar">
+                        <div class="energy-fill" style="width: 95%;"></div>
+                    </div>
+                </div>
+
+                <div class="agent-desk" style="top: 150px; left: 300px;">
+                    <div class="agent-name-tag" style="--agent-color: #00D9FF;">GLASSES</div>
+                    
+                    <div class="desk-table"></div>
+                    <div class="desk-chair"></div>
+                    <div class="meebit-agent" id="agent-glasses" onclick="selectAgent('glasses')">
+                        <span class="meebit-type">HUMAN</span>
+                        <img class="meebit-image" 
+                             src="https://api.meebits.app/v2/images/larvalabs_full/2001" 
+                             alt="Glasses"
+                             onerror="this.src='https://via.placeholder.com/60/00D9FF/000?text=G'">
+                        
+                        <div class="work-bubble">Research!</div>
+                    </div>
+                    
+                    <div class="energy-bar">
+                        <div class="energy-fill" style="width: 60%;"></div>
+                    </div>
+                </div>
+
+                <div class="agent-desk" style="top: 150px; left: 500px;">
+                    <div class="agent-name-tag" style="--agent-color: #FF69B4;">QUILL</div>
+                    
+                    <div class="desk-table"></div>
+                    <div class="desk-chair"></div>
+                    <div class="meebit-agent" id="agent-quill" onclick="selectAgent('quill')">
+                        <span class="meebit-type">HUMAN</span>
+                        <img class="meebit-image" 
+                             src="https://api.meebits.app/v2/images/larvalabs_full/3001" 
+                             alt="Quill"
+                             onerror="this.src='https://via.placeholder.com/60/FF69B4/000?text=Q'">
+                        
+                        <div class="work-bubble">Write!</div>
+                    </div>
+                    
+                    <div class="energy-bar">
+                        <div class="energy-fill" style="width: 45%;"></div>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="agent-desk" style="top: 350px; left: 100px;">
+                    <div class="agent-name-tag" style="--agent-color: #9370DB;">PIXEL</div>
+                    
+                    <div class="desk-table"></div>
+                    <div class="desk-chair"></div>
+                    <div class="meebit-agent" id="agent-pixel" onclick="selectAgent('pixel')">
+                        <span class="meebit-type">HUMAN</span>
+                        <img class="meebit-image" 
+                             src="https://api.meebits.app/v2/images/larvalabs_full/4001" 
+                             alt="Pixel"
+                             onerror="this.src='https://via.placeholder.com/60/9370DB/000?text=P'">
+                        
+                        <div class="work-bubble">Design!</div>
+                    </div>
+                    
+                    <div class="energy-bar">
+                        <div class="energy-fill" style="width: 70%;"></div>
+                    </div>
+                </div>
+
+                <div class="agent-desk" style="top: 350px; left: 300px;">
+                    <div class="agent-name-tag" style="--agent-color: #32CD32;">GARY</div>
+                    
+                    <div class="desk-table"></div>
+                    <div class="desk-chair"></div>
+                    <div class="meebit-agent" id="agent-gary" onclick="selectAgent('gary')">
+                        <span class="meebit-type">HUMAN</span>
+                        <img class="meebit-image" 
+                             src="https://api.meebits.app/v2/images/larvalabs_full/5001" 
+                             alt="Gary"
+                             onerror="this.src='https://via.placeholder.com/60/32CD32/000?text=G'">
+                        
+                        <div class="work-bubble">Market!</div>
+                    </div>
+                    
+                    <div class="energy-bar">
+                        <div class="energy-fill" style="width: 55%;"></div>
+                    </div>
+                </div>
+
+                <div class="agent-desk" style="top: 350px; left: 500px;">
+                    <div class="agent-name-tag" style="--agent-color: #DC143C;">SENTRY</div>
+                    
+                    <div class="desk-table"></div>
+                    <div class="desk-chair"></div>
+                    <div class="meebit-agent" id="agent-sentry" onclick="selectAgent('sentry')">
+                        <span class="meebit-type">SKELETON</span>
+                        <img class="meebit-image" 
+                             src="https://api.meebits.app/v2/images/larvalabs_full/57" 
+                             alt="Sentry"
+                             onerror="this.src='https://via.placeholder.com/60/DC143C/000?text=S'">
+                        
+                        <div class="work-bubble">Secure!</div>
+                    </div>
+                    
+                    <div class="energy-bar">
+                        <div class="energy-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Command Panel -->
+        <div class="command-panel">
+            <div class="panel-header">
+                <div class="panel-avatar" id="chatAvatar">
+                    <img src="https://api.meebits.app/v2/images/larvalabs_full/1001" 
+                         alt="Nexus"
+                         onerror="this.src='https://via.placeholder.com/60/FFD700/000?text=N'">
+                </div>
+                <div>
+                    <div class="panel-title">NEXUS</div>
+                    <div class="panel-subtitle">Robot Director | Meebit #1001</div>
+                </div>
+            </div>
+            
+            <div class="message-area" id="messageArea">
+                <div class="msg agent">🏢 Welcome to the Meebit Agent Office! Click an agent to command them! 
+</div>
+            </div>
+            
+            <div class="input-area">
+                <input type="text" class="cmd-input" id="cmdInput" placeholder="Enter command..."
+                       onkeypress="if(event.key==='Enter') sendCmd()">
+                <button class="cmd-btn" onclick="sendCmd()">EXECUTE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const agents = {
+            nexus: { 
+                name: 'NEXUS', 
+                role: 'Director', 
+                meebitId: 1001, 
+                type: 'ROBOT',
+                color: '#FFD700' 
+            },
+            glasses: { 
+                name: 'GLASSES', 
+                role: 'Researcher', 
+                meebitId: 2001, 
+                type: 'HUMAN',
+                color: '#00D9FF' 
+            },
+            quill: { 
+                name: 'QUILL', 
+                role: 'Writer', 
+                meebitId: 3001, 
+                type: 'HUMAN',
+                color: '#FF69B4' 
+            },
+            pixel: { 
+                name: 'PIXEL', 
+                role: 'Designer', 
+                meebitId: 4001, 
+                type: 'HUMAN',
+                color: '#9370DB' 
+            },
+            gary: { 
+                name: 'GARY', 
+                role: 'Marketing', 
+                meebitId: 5001, 
+                type: 'HUMAN',
+                color: '#32CD32' 
+            },
+            sentry: { 
+                name: 'SENTRY', 
+                role: 'Security', 
+                meebitId: 57, 
+                type: 'SKELETON',
+                color: '#DC143C' 
+            }
+        };
+        
+        let selectedAgent = agents.nexus;
+        
+        function selectAgent(agentId) {
+            selectedAgent = agents[agentId];
+            
+            // Update panel
+            document.getElementById('chatAvatar').innerHTML = 
+                `<img src="https://api.meebits.app/v2/images/larvalabs_full/${selectedAgent.meebitId}" 
+                      alt="${selectedAgent.name}"
+                      onerror="this.src='https://via.placeholder.com/60/${selectedAgent.color.replace('#', '')}/000?text=${selectedAgent.name[0]}'">`;
+            
+            document.querySelector('.panel-title').textContent = selectedAgent.name;
+            document.querySelector('.panel-subtitle').textContent = 
+                `${selectedAgent.type} ${selectedAgent.role} | Meebit #${selectedAgent.meebitId}`;
+            
+            addMsg('agent', `🔥 ${selectedAgent.name} here! I'm a ${selectedAgent.type} ${selectedAgent.role} ready to work! What do you need Commander?`);
+            
+            // Animate
+            const worker = document.getElementById(`agent-${agentId}`);
+            worker.classList.add('working');
+            worker.classList.add('speaking');
+            
+            setTimeout(() => {
+                worker.classList.remove('working');
+                worker.classList.remove('speaking');
+            }, 2000);
+        }
+        
+        function addMsg(type, text) {
+            const area = document.getElementById('messageArea');
+            const msg = document.createElement('div');
+            msg.className = `msg ${type}`;
+            msg.textContent = text;
+            area.appendChild(msg);
+            area.scrollTop = area.scrollHeight;
+        }
+        
+        function sendCmd() {
+            const input = document.getElementById('cmdInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            addMsg('user', text);
+            input.value = '';
+            
+            setTimeout(() => {
+                const responses = [
+                    `Roger! ${selectedAgent.name} executing command! 🔥`,
+                    `Copy! ${selectedAgent.type} mode activated! ⚡`,
+                    `Task accepted! Meebit #${selectedAgent.meebitId} on it! 💪`,
+                    `Executing now! Power levels rising! 📈`
+                ];
+                addMsg('agent', responses[Math.floor(Math.random() * responses.length)]);
+            }, 500);
+        }
+        
+        // Random animations
+        setInterval(() => {
+            const agentIds = Object.keys(agents);
+            const randomId = agentIds[Math.floor(Math.random() * agentIds.length)];
+            const worker = document.getElementById(`agent-${randomId}`);
+            
+            worker.classList.add('working');
+            worker.classList.add('speaking');
+            
+            setTimeout(() => {
+                worker.classList.remove('working');
+                worker.classList.remove('speaking');
+            }, 1500);
+        }, 3000);
+    </script>
+</body>
+</html>
