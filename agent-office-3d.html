@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Agent Office 3D | Kairosoft Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pixel-size: 4px;
+            --iso-angle: 60deg;
+            --bg-color: #2d1b4e;
+            --floor-1: #C4A77D;
+            --floor-2: #B89A6F;
+            --wall-color: #F5E6C8;
+            --desk-color: #8B6914;
+            --accent-cyan: #00D9FF;
+            --accent-pink: #FF69B4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 50%, #3d2b5e 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            border-bottom: 4px solid #00D9FF;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            z-index: 1000;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 40px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .logo-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: #00D9FF;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .pixel-btn {
+            background: #00D9FF;
+            color: #1a0f2e;
+            border: 3px solid #fff;
+            padding: 10px 20px;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+            transition: all 0.1s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+        }
+        
+        .pixel-btn.pink {
+            background: #FF69B4;
+        }
+        
+        /* Main Container */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+        
+        /* 3D Office View */
+        .office-view {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            perspective: 2000px;
+        }
+        
+        .office-scene {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(var(--iso-angle)) rotateZ(-45deg);
+            transition: transform 0.5s;
+        }
+        
+        /* Isometric Grid */
+        .iso-grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(4, 120px);
+            grid-template-rows: repeat(3, 120px);
+            gap: 20px;
+            transform-style: preserve-3d;
+        }
+        
+        /* Floor Tiles */
+        .floor-tile {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--floor-1) 0%, var(--floor-2) 100%);
+            border: 2px solid #8B7355;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 
+                inset 0 0 20px rgba(0,0,0,0.1),
+                0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .floor-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0,0,0,0.03) 10px,
+                rgba(0,0,0,0.03) 20px
+            );
+        }
+        
+        /* Agent Stations */
+        .agent-station {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .agent-station:hover {
+            transform: translateZ(20px);
+        }
+        
+        .agent-station.selected {
+            animation: glow 1s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px var(--accent-cyan)); }
+            to { filter: drop-shadow(0 0 20px var(--accent-cyan)); }
+        }
+        
+        /* Desk */
+        .desk {
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            background: linear-gradient(180deg, #8B6914 0%, #6B4E10 100%);
+            border: 2px solid #4a3728;
+            bottom: 20px;
+            left: 20px;
+            transform: translateZ(10px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+        
+        .desk::before {
+            content: '🖥️';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+        }
+        
+        /* Agent Character */
+        .agent-char {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            bottom: 40px;
+            left: 30px;
+            transform: translateZ(20px);
+            transition: all 0.3s;
+        }
+        
+        .agent-body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, var(--agent-color, #00D9FF) 0%, darken(var(--agent-color, #00D9FF), 20%) 100%);
+            border: 2px solid #333;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            animation: work 2s infinite;
+        }
+        
+        @keyframes work {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        .agent-head {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #F5C6A5;
+            border: 2px solid #333;
+            border-radius: 50%;
+        }
+        
+        .agent-face {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+        }
+        
+        /* Activity Bubble */
+        .activity-bubble {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(30px);
+            background: #fff;
+            border: 2px solid #333;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+        
+        .agent-station:hover .activity-bubble,
+        .agent-station.working .activity-bubble {
+            opacity: 1;
+        }
+        
+        .activity-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #333;
+        }
+        
+        /* Status Indicator */
+        .status-dot {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        
+        .status-dot.online { background: #32CD32; }
+        .status-dot.busy { background: #FFD700; }
+        .status-dot.offline { background: #FF4444; }
+        
+        /* Progress Bar */
+        .mini-progress {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(25px);
+            width: 50px;
+            height: 6px;
+            background: #ddd;
+            border: 1px solid #333;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .mini-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #32CD32, #228B22);
+            transition: width 0.5s;
+        }
+        
+        /* Chat Panel */
+        .chat-panel {
+            width: 400px;
+            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            border-left: 4px solid #00D9FF;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .chat-header {
+            padding: 20px;
+            border-bottom: 2px solid #5d4b7e;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-cyan), #0099CC);
+            border: 3px solid #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .chat-info h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            color: #00D9FF;
+            margin-bottom: 5px;
+        }
+        
+        .chat-info p {
+            font-size: 14px;
+            color: #b8a9d9;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 15px;
+            border: 2px solid;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .message.agent {
+            align-self: flex-start;
+            background: #3d2b5e;
+            border-color: #5d4b7e;
+            color: #fff;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: #00D9FF;
+            border-color: #fff;
+            color: #1a0f2e;
+        }
+        
+        .message-time {
+            font-size: 10px;
+            color: #7a6a99;
+            margin-top: 5px;
+        }
+        
+        .chat-input-area {
+            padding: 20px;
+            border-top: 2px solid #5d4b7e;
+        }
+        
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: #3d2b5e;
+            border: 2px solid #5d4b7e;
+            padding: 12px 15px;
+            color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .chat-input:focus {
+            border-color: #00D9FF;
+        }
+        
+        .send-btn {
+            background: #00D9FF;
+            color: #1a0f2e;
+            border: 3px solid #fff;
+            padding: 10px 20px;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+        }
+        
+        .send-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        }
+        
+        /* Agent Selector */
+        .agent-selector {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            overflow-x: auto;
+            border-bottom: 2px solid #5d4b7e;
+            background: rgba(0,0,0,0.2);
+        }
+        
+        .agent-thumb {
+            width: 50px;
+            height: 50px;
+            background: #3d2b5e;
+            border: 3px solid #5d4b7e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .agent-thumb:hover,
+        .agent-thumb.active {
+            border-color: #00D9FF;
+            background: #4d3b6e;
+            transform: scale(1.1);
+        }
+        
+        /* Floating Particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            animation: float-up 2s ease-out forwards;
+            font-size: 20px;
+            z-index: 100;
+        }
+        
+        @keyframes float-up {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Typing Indicator */
+        .typing {
+            display: flex;
+            gap: 5px;
+            padding: 10px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #00D9FF;
+            border-radius: 50%;
+            animation: typing 1s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a0f2e;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #5d4b7e;
+            border: 2px solid #1a0f2e;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00D9FF;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🏢</div>
+            <div class="logo-text">AGENT OFFICE 3D<br><span style="font-size: 10px; color: #FF69B4;">Kairosoft Style</span></div>
+        </div>
+        <div class="header-nav">
+            <a href="index.html" class="pixel-btn">← Mission Control</a>
+            <button class="pixel-btn pink" onclick="toggleView()">🔄 Rotate View</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- 3D Office View -->
+        <div class="office-view">
+            <div class="office-scene" id="officeScene">
+                <div class="iso-grid" id="isoGrid">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Panel -->
+        <div class="chat-panel">
+            <div class="agent-selector" id="agentSelector">
+                <!-- Generated by JS -->
+            </div>
+            
+            <div class="chat-header">
+                <div class="chat-avatar" id="chatAvatar">👑</div>
+                <div class="chat-info">
+                    <h3 id="chatAgentName">NEXUS</h3>
+                    <p id="chatAgentRole">Orchestrator</p>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message agent">
+                    👋 Hello Commander! I'm Nexus, your orchestrator.
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" id="chatInput" 
+                           placeholder="Type your message..." 
+                           onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button class="send-btn" onclick="sendMessage()">SEND</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agent Data
+        const agents = [
+            { id: 'nexus', name: 'NEXUS', emoji: '👑', role: 'Orchestrator', color: '#FFD700', 
+              task: 'Coordinating all agents', progress: 95, x: 0, y: 0, status: 'online' },
+            { id: 'glasses', name: 'GLASSES', emoji: '🔍', role: 'Researcher', color: '#00D9FF',
+              task: 'Market research', progress: 60, x: 1, y: 0, status: 'busy' },
+            { id: 'quill', name: 'QUILL', emoji: '✍️', role: 'Writer', color: '#FF69B4',
+              task: 'Content creation', progress: 45, x: 2, y: 0, status: 'busy' },
+            { id: 'pixel', name: 'PIXEL', emoji: '🎨', role: 'Designer', color: '#9370DB',
+              task: 'UI design', progress: 70, x: 3, y: 0, status: 'online' },
+            { id: 'gary', name: 'GARY', emoji: '📈', role: 'Marketing', color: '#32CD32',
+              task: 'Campaign analysis', progress: 55, x: 0, y: 1, status: 'busy' },
+            { id: 'larry', name: 'LARRY', emoji: '🐦', role: 'Social', color: '#FF8C00',
+              task: 'Social posting', progress: 30, x: 1, y: 1, status: 'offline' },
+            { id: 'sentry', name: 'SENTRY', emoji: '🛡️', role: 'DevOps', color: '#DC143C',
+              task: 'System monitoring', progress: 85, x: 2, y: 1, status: 'online' },
+            { id: 'audit', name: 'AUDIT', emoji: '✓', role: 'QA', color: '#20B2AA',
+              task: 'Code review', progress: 75, x: 3, y: 1, status: 'online' },
+            { id: 'cipher', name: 'CIPHER', emoji: '🔐', role: 'Security', color: '#2F4F4F',
+              task: 'Security scan', progress: 90, x: 0, y: 2, status: 'online' },
+            { id: 'limitless', name: 'LIMITLESS', emoji: '🤖', role: 'Trading Bot', color: '#00FF7F',
+              task: 'Active trading', progress: 100, x: 1, y: 2, status: 'online' },
+            { id: 'olivia', name: 'OLIVIA', emoji: '💼', role: 'DealFlow', color: '#FF1493',
+              task: 'Lead scoring', progress: 50, x: 2, y: 2, status: 'busy' },
+            { id: 'zookeeper', name: 'ZOOKEEPER', emoji: '🦁', role: 'Pixel Sanctuary', color: '#8B4513',
+              task: 'Game dev', progress: 80, x: 3, y: 2, status: 'online' }
+        ];
+
+        let selectedAgent = agents[0];
+        let rotation = -45;
+
+        // Initialize Office
+        function initOffice() {
+            const grid = document.getElementById('isoGrid');
+            
+            // Create floor tiles and agent stations
+            agents.forEach(agent => {
+                const station = document.createElement('div');
+                station.className = 'floor-tile';
+                station.innerHTML = `
+                    <div class="agent-station" id="station-${agent.id}" onclick="selectAgent('${agent.id}')">
+                        <div class="status-dot ${agent.status}"></div>
+                        <div class="activity-bubble">${agent.task}</div>
+                        <div class="desk"></div>
+                        <div class="agent-char">
+                            <div class="agent-body" style="--agent-color: ${agent.color}">
+                                <div class="agent-head">
+                                    <div class="agent-face">${agent.emoji}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mini-progress">
+                            <div class="mini-progress-fill" style="width: ${agent.progress}%"></div>
+                        </div>
+                    </div>
+                `;
+                station.style.gridColumn = agent.x + 1;
+                station.style.gridRow = agent.y + 1;
+                grid.appendChild(station);
+            });
+
+            // Initialize agent selector
+            initAgentSelector();
+            
+            // Start activity simulation
+            simulateActivity();
+        }
+
+        // Initialize Agent Selector
+        function initAgentSelector() {
+            const selector = document.getElementById('agentSelector');
+            selector.innerHTML = agents.map(agent => `
+                <div class="agent-thumb ${agent.id === selectedAgent.id ? 'active' : ''}" 
+                     id="thumb-${agent.id}"
+                     onclick="selectAgent('${agent.id}')"
+                     title="${agent.name}">
+                    ${agent.emoji}
+                </div>
+            `).join('');
+        }
+
+        // Select Agent
+        function selectAgent(agentId) {
+            selectedAgent = agents.find(a => a.id === agentId);
+            
+            // Update visual selection
+            document.querySelectorAll('.agent-station').forEach(s => s.classList.remove('selected'));
+            document.querySelectorAll('.agent-thumb').forEach(t => t.classList.remove('active'));
+            
+            document.getElementById(`station-${agentId}`)?.classList.add('selected');
+            document.getElementById(`thumb-${agentId}`)?.classList.add('active');
+            
+            // Update chat panel
+            document.getElementById('chatAvatar').textContent = selectedAgent.emoji;
+            document.getElementById('chatAgentName').textContent = selectedAgent.name;
+            document.getElementById('chatAgentRole').textContent = selectedAgent.role;
+            
+            // Add welcome message
+            addMessage('agent', `Hello Commander! I'm ${selectedAgent.name}, your ${selectedAgent.role.toLowerCase()}. Currently working on: ${selectedAgent.task} (${selectedAgent.progress}%)`);
+            
+            createParticle(selectedAgent.emoji);
+        }
+
+        // Send Message
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+            
+            // Add user message
+            addMessage('user', text);
+            input.value = '';
+            
+            // Show typing indicator
+            showTyping();
+            
+            // Generate response based on agent
+            setTimeout(() => {
+                hideTyping();
+                const response = generateResponse(text);
+                addMessage('agent', response);
+            }, 1500);
+        }
+
+        // Add Message to Chat
+        function addMessage(type, text) {
+            const messages = document.getElementById('chatMessages');
+            const time = new Date().toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.innerHTML = `
+                ${text}
+                <div class="message-time">${time}</div>
+            `;
+            
+            messages.appendChild(msg);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Show Typing Indicator
+        function showTyping() {
+            const messages = document.getElementById('chatMessages');
+            const typing = document.createElement('div');
+            typing.className = 'message agent typing-indicator';
+            typing.id = 'typingIndicator';
+            typing.innerHTML = `
+                <div class="typing">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            messages.appendChild(typing);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Hide Typing
+        function hideTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        // Generate Agent Response
+        function generateResponse(userText) {
+            const lower = userText.toLowerCase();
+            
+            if (lower.includes('status') || lower.includes('doing')) {
+                return `Currently ${selectedAgent.task} at ${selectedAgent.progress}% completion. Everything is on track! 🎯`;
+            }
+            if (lower.includes('help') || lower.includes('task')) {
+                return `I can help with ${selectedAgent.role.toLowerCase()} tasks. What would you like me to work on? 💪`;
+            }
+            if (lower.includes('hello') || lower.includes('hi')) {
+                return `Hello Commander! Ready to assist with ${selectedAgent.role.toLowerCase()} tasks! 👋`;
+            }
+            if (lower.includes('limitless') || lower.includes('trading')) {
+                return `Limitless Hunter is actively trading BTC/ETH/SOL/DOGE. Current status: 100% operational! 📈`;
+            }
+            if (lower.includes('memory') || lower.includes('remember')) {
+                return `All memories are being tracked and stored. Check the Memory Hub for downloadable files! 🧠`;
+            }
+            
+            return `Understood, Commander! I'll work on that. Current priority: ${selectedAgent.task} ⚡`;
+        }
+
+        // Toggle View Rotation
+        function toggleView() {
+            rotation += 45;
+            document.getElementById('officeScene').style.transform = 
+                `rotateX(60deg) rotateZ(${rotation}deg)`;
+        }
+
+        // Create Particle Effect
+        function createParticle(emoji) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.textContent = emoji;
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight - 100 + 'px';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 2000);
+        }
+
+        // Simulate Activity
+        function simulateActivity() {
+            setInterval(() => {
+                // Randomly update agent tasks
+                agents.forEach(agent => {
+                    if (Math.random() > 0.7) {
+                        const station = document.getElementById(`station-${agent.id}`);
+                        if (station) {
+                            station.classList.add('working');
+                            
+                            // Update progress
+                            const progress = station.querySelector('.mini-progress-fill');
+                            if (progress) {
+                                const newWidth = Math.min(100, parseInt(progress.style.width) + Math.random() * 5);
+                                progress.style.width = newWidth + '%';
+                            }
+                            
+                            setTimeout(() => station.classList.remove('working'), 2000);
+                        }
+                    }
+                });
+            }, 3000);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initOffice);
+    </script>
+</body>
+</html>
