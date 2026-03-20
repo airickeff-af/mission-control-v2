@@ -1,20 +1,21 @@
 # PENDING TASKS - MISSION CONTROL v2.0
 **Status:** ACTIVE  
-**Last Updated:** 2026-03-20 6:20 PM HKT  
+**Last Updated:** 2026-03-20 6:23 PM HKT (Auto-updated every 30 min)  
 **Total Tasks:** 105  
-**Commander:** EricF
+**Commander:** EricF  
+**Next Check:** 6:53 PM  
 
 ---
 
 ## 📊 LIVE TASK DASHBOARD
 
-| Priority | Count | Status |
-|----------|-------|--------|
-| 🔴 **P0 - Critical** | 19 | 4 in progress |
-| 🟡 **P1 - High** | 26 | Multiple active |
-| 🟢 **P2 - Medium** | 18 | Planned |
-| ⚪ **P3 - Low** | 5 | Future |
-| **TOTAL** | **105** | **Active** |
+| Priority | Count | Status | Trend |
+|----------|-------|--------|-------|
+| 🔴 **P0 - Critical** | 19 | 4 in progress | → |
+| 🟡 **P1 - High** | 26 | Multiple active | → |
+| 🟢 **P2 - Medium** | 18 | Planned | → |
+| ⚪ **P3 - Low** | 5 | Future | → |
+| **TOTAL** | **105** | **Active** | **Monitoring** |
 
 ---
 

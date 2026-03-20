@@ -66,12 +66,14 @@ main() {
     total=$((p0_count + p1_count + p2_count))
     completed=$(get_completed_count)
     
+    completed=$(get_completed_count)
+    
     log "📊 Current Status:"
-    log "   P0 Critical: $p0_count"
-    log "   P1 High: $p1_count"
-    log "   P2 Medium: $p2_count"
-    log "   Total: $total"
-    log "   Completed Today: $completed"
+    log "   P0 Critical: ${p0_count:-0}"
+    log "   P1 High: ${p1_count:-0}"
+    log "   P2 Medium: ${p2_count:-0}"
+    log "   Total: ${total:-0}"
+    log "   Completed Today: ${completed:-0}"
     
     # Check if progress was made since last check
     progress_made=$(check_last_progress)
