@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Agent Office | Kairosoft Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pixel-size: 4px;
+            --bg-floor: #8B7355;
+            --bg-wall: #F5E6C8;
+            --bg-desk: #6B4423;
+            --accent-cyan: #00D9FF;
+            --accent-pink: #FF69B4;
+            --accent-yellow: #FFD700;
+            --accent-green: #32CD32;
+            --accent-orange: #FF8C00;
+            --accent-purple: #9370DB;
+            --agent-size: 64px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: #2d1b4e;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Pixel Art Office Grid */
+        .office-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .office-header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            border-bottom: 4px solid #00D9FF;
+            margin-bottom: 20px;
+        }
+        
+        .office-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: #00D9FF;
+            text-shadow: 4px 4px 0 #000;
+            margin-bottom: 10px;
+        }
+        
+        .office-subtitle {
+            color: #b8a9d9;
+            font-size: 18px;
+        }
+        
+        /* Isometric Office Room */
+        .office-room {
+            background: 
+                /* Floor pattern */
+                repeating-linear-gradient(
+                    0deg,
+                    #C4A77D 0px,
+                    #C4A77D 40px,
+                    #B89A6F 40px,
+                    #B89A6F 80px
+                );
+            border: 8px solid #4a3728;
+            border-radius: 8px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 
+                inset 0 0 100px rgba(0,0,0,0.3),
+                0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        .room-label {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            background: #FF69B4;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-family: 'Press Start 2P', cursive;
+            border: 3px solid #fff;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+        }
+        
+        /* Agent Workstations Grid */
+        .workstations-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 1200px) {
+            .workstations-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .workstations-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        /* Agent Desk Station */
+        .agent-station {
+            background: #fff;
+            border: 4px solid #4a3728;
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 
+                6px 6px 0 rgba(0,0,0,0.2),
+                inset 0 -10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .agent-station:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                10px 10px 0 rgba(0,0,0,0.2),
+                inset 0 -10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .agent-station.active {
+            border-color: #32CD32;
+            animation: pulse-green 2s infinite;
+        }
+        
+        .agent-station.working {
+            border-color: #FFD700;
+            animation: pulse-yellow 2s infinite;
+        }
+        
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(50,205,50,0.4); }
+            50% { box-shadow: 0 0 20px 10px rgba(50,205,50,0.2); }
+        }
+        
+        @keyframes pulse-yellow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.4); }
+            50% { box-shadow: 0 0 20px 10px rgba(255,215,0,0.2); }
+        }
+        
+        /* Agent Avatar - Pixel Art Style */
+        .agent-avatar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            background: #f0f0f0;
+            border: 4px solid #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .agent-avatar::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 8px;
+            background: #333;
+            border-radius: 2px;
+        }
+        
+        /* Status Indicator */
+        .status-light {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .status-light.online { background: #32CD32; }
+        .status-light.busy { background: #FFD700; }
+        .status-light.offline { background: #FF4444; }
+        
+        /* Agent Info */
+        .agent-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            text-align: center;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .agent-role {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        /* Task Bubble */
+        .task-bubble {
+            background: #f8f8f8;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            min-height: 60px;
+        }
+        
+        .task-label {
+            font-size: 10px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .task-content {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.3;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            height: 12px;
+            background: #e0e0e0;
+            border: 2px solid #333;
+            border-radius: 6px;
+            margin-top: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #32CD32, #228B22);
+            border-radius: 4px;
+            transition: width 0.5s;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.2) 10px,
+                rgba(255,255,255,0.2) 20px
+            );
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            font-weight: bold;
+            color: #333;
+            text-shadow: 1px 1px 0 #fff;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .pixel-btn {
+            flex: 1;
+            padding: 8px;
+            border: 3px solid #333;
+            background: #00D9FF;
+            color: #000;
+            font-family: 'VT323', monospace;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 #000;
+            transition: all 0.1s;
+        }
+        
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 #000;
+        }
+        
+        .pixel-btn:active {
+            transform: translate(0, 0);
+            box-shadow: 1px 1px 0 #000;
+        }
+        
+        .pixel-btn.secondary {
+            background: #FFD700;
+        }
+        
+        /* Control Panel */
+        .control-panel {
+            background: #1a0f2e;
+            border: 4px solid #00D9FF;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .control-title {
+            font-family: 'Press Start 2P', cursive;
+            color: #00D9FF;
+            font-size: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .control-stat {
+            background: #2d1b4e;
+            border: 2px solid #5d4b7e;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            color: #00D9FF;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #b8a9d9;
+            margin-top: 5px;
+        }
+        
+        /* Floating Particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            animation: float-up 3s ease-out forwards;
+        }
+        
+        @keyframes float-up {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Agent-Specific Colors */
+        .agent-nexus .agent-avatar { background: linear-gradient(135deg, #FFD700, #FFA500); }
+        .agent-glasses .agent-avatar { background: linear-gradient(135deg, #00D9FF, #0099CC); }
+        .agent-quill .agent-avatar { background: linear-gradient(135deg, #FF69B4, #FF1493); }
+        .agent-pixel .agent-avatar { background: linear-gradient(135deg, #9370DB, #8A2BE2); }
+        .agent-gary .agent-avatar { background: linear-gradient(135deg, #32CD32, #228B22); }
+        .agent-larry .agent-avatar { background: linear-gradient(135deg, #FF8C00, #FF6347); }
+        .agent-sentry .agent-avatar { background: linear-gradient(135deg, #DC143C, #8B0000); }
+        .agent-audit .agent-avatar { background: linear-gradient(135deg, #20B2AA, #008B8B); }
+        .agent-cipher .agent-avatar { background: linear-gradient(135deg, #2F4F4F, #000000); }
+        .agent-olivia .agent-avatar { background: linear-gradient(135deg, #FF1493, #C71585); }
+        .agent-limitless .agent-avatar { background: linear-gradient(135deg, #00FF7F, #00CC66); }
+        .agent-zookeeper .agent-avatar { background: linear-gradient(135deg, #8B4513, #A0522D); }
+    </style>
+</head>
+<body>
+    <div class="office-container">
+        <header class="office-header">
+            <h1 class="office-title">🏢 AGENT OFFICE</h1>
+            <p class="office-subtitle">Kairosoft Style Command Center | Live Task Monitor</p>
+        </header>
+        
+        <div class="office-room">
+            <span class="room-label">MAIN FLOOR</span>
+            
+            <div class="workstations-grid" id="agentGrid">
+                <!-- Agents will be rendered here -->
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <h2 class="control-title">📊 OFFICE DASHBOARD</h2>
+            <div class="control-grid">
+                <div class="control-stat">
+                    <div class="stat-value" id="activeAgents">12</div>
+                    <div class="stat-label">Active Agents</div>
+                </div>
+                <div class="control-stat">
+                    <div class="stat-value" id="tasksRunning">8</div>
+                    <div class="stat-label">Tasks Running</div>
+                </div>
+                <div class="control-stat">
+                    <div class="stat-value" id="completedToday">24</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+                <div class="control-stat">
+                    <div class="stat-value" id="systemStatus">🟢</div>
+                    <div class="stat-label">System Status</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agent Definitions
+        const agents = [
+            {
+                id: 'nexus',
+                name: 'NEXUS',
+                emoji: '👑',
+                role: 'Orchestrator',
+                status: 'online',
+                task: 'Coordinating all agents | Trading bot monitoring | Memory management',
+                progress: 95,
+                actions: ['Deploy', 'Monitor', 'Sync']
+            },
+            {
+                id: 'glasses',
+                name: 'GLASSES',
+                emoji: '🔍',
+                role: 'Researcher',
+                status: 'busy',
+                task: 'Daily crypto/stock briefings | Market analysis | News monitoring',
+                progress: 60,
+                actions: ['Research', 'Report', 'Brief']
+            },
+            {
+                id: 'quill',
+                name: 'QUILL',
+                emoji: '✍️',
+                role: 'Writer',
+                status: 'busy',
+                task: 'Content creation | Profile research | Article drafting',
+                progress: 45,
+                actions: ['Write', 'Edit', 'Publish']
+            },
+            {
+                id: 'pixel',
+                name: 'PIXEL',
+                emoji: '🎨',
+                role: 'Designer',
+                status: 'online',
+                task: 'Visual assets | UI/UX design | Pixel art creation',
+                progress: 70,
+                actions: ['Design', 'Create', 'Export']
+            },
+            {
+                id: 'gary',
+                name: 'GARY',
+                emoji: '📈',
+                role: 'Marketing',
+                status: 'busy',
+                task: 'Strategy campaigns | Performance analysis | Growth optimization',
+                progress: 55,
+                actions: ['Analyze', 'Campaign', 'Optimize']
+            },
+            {
+                id: 'larry',
+                name: 'LARRY',
+                emoji: '🐦',
+                role: 'Social',
+                status: 'offline',
+                task: 'Social media posting | Engagement tracking | Content scheduling',
+                progress: 30,
+                actions: ['Post', 'Engage', 'Schedule']
+            },
+            {
+                id: 'sentry',
+                name: 'SENTRY',
+                emoji: '🛡️',
+                role: 'DevOps',
+                status: 'online',
+                task: 'System monitoring | Token alerts | Infrastructure maintenance',
+                progress: 85,
+                actions: ['Monitor', 'Alert', 'Deploy']
+            },
+            {
+                id: 'audit',
+                name: 'AUDIT',
+                emoji: '✓',
+                role: 'QA',
+                status: 'online',
+                task: 'Quality reviews | Code audits | Performance checks',
+                progress: 75,
+                actions: ['Review', 'Audit', 'Report']
+            },
+            {
+                id: 'cipher',
+                name: 'CIPHER',
+                emoji: '🔐',
+                role: 'Security',
+                status: 'online',
+                task: 'Security monitoring | Threat detection | Access control',
+                progress: 90,
+                actions: ['Secure', 'Monitor', 'Block']
+            },
+            {
+                id: 'limitless',
+                name: 'LIMITLESS',
+                emoji: '🤖',
+                role: 'Trading Bot',
+                status: 'online',
+                task: 'Active trading | BTC/ETH/SOL/DOGE | 0.95min scans',
+                progress: 100,
+                actions: ['Trade', 'Analyze', 'Profit']
+            },
+            {
+                id: 'olivia',
+                name: 'OLIVIA',
+                emoji: '💼',
+                role: 'DealFlow+Outreach',
+                status: 'busy',
+                task: 'Lead scoring | Outreach campaigns | Partnership deals',
+                progress: 50,
+                actions: ['Score', 'Reach', 'Close']
+            },
+            {
+                id: 'zookeeper',
+                name: 'ZOOKEEPER',
+                emoji: '🦁',
+                role: 'Pixel Sanctuary',
+                status: 'online',
+                task: 'Meebit integration | Environment design | Feeding system',
+                progress: 80,
+                actions: ['Design', 'Feed', 'Play']
+            }
+        ];
+        
+        // Render Agents
+        function renderAgents() {
+            const grid = document.getElementById('agentGrid');
+            grid.innerHTML = agents.map(agent => `
+                <div class="agent-station agent-${agent.id} ${agent.status}" id="station-${agent.id}">
+                    <div class="status-light ${agent.status}"></div>
+                    <div class="agent-avatar">${agent.emoji}</div>
+                    <div class="agent-name">${agent.name}</div>
+                    <div class="agent-role">${agent.role}</div>
+                    
+                    <div class="task-bubble">
+                        <div class="task-label">Current Task</div>
+                        <div class="task-content" id="task-${agent.id}">${agent.task}</div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${agent.progress}%"></div>
+                        <div class="progress-text">${agent.progress}%</div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        ${agent.actions.map(action => `
+                            <button class="pixel-btn ${action === 'Monitor' || action === 'Report' ? 'secondary' : ''}" 
+                                    onclick="triggerAction('${agent.id}', '${action}')">
+                                ${action}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Trigger Action
+        function triggerAction(agentId, action) {
+            const agent = agents.find(a => a.id === agentId);
+            createParticle(agent.emoji);
+            
+            // Simulate action
+            const taskEl = document.getElementById(`task-${agentId}`);
+            const originalTask = taskEl.textContent;
+            taskEl.textContent = `${action}ing... ⚡`;
+            taskEl.style.color = '#00D9FF';
+            
+            setTimeout(() => {
+                taskEl.textContent = originalTask;
+                taskEl.style.color = '';
+            }, 2000);
+        }
+        
+        // Create Floating Particle
+        function createParticle(emoji) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.textContent = emoji;
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight - 100 + 'px';
+            particle.style.fontSize = '24px';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 3000);
+        }
+        
+        // Simulate Live Updates
+        function simulateActivity() {
+            // Randomly update task text
+            agents.forEach(agent => {
+                if (Math.random() > 0.7) {
+                    const station = document.getElementById(`station-${agent.id}`);
+                    if (station) {
+                        station.classList.add('working');
+                        setTimeout(() => station.classList.remove('working'), 1000);
+                    }
+                }
+            });
+            
+            // Update stats
+            document.getElementById('tasksRunning').textContent = 
+                Math.floor(Math.random() * 5) + 5;
+        }
+        
+        // Initialize
+        renderAgents();
+        setInterval(simulateActivity, 5000);
+        
+        // Create particles periodically
+        setInterval(() => {
+            const randomAgent = agents[Math.floor(Math.random() * agents.length)];
+            if (randomAgent.status === 'online') {
+                createParticle(randomAgent.emoji);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
