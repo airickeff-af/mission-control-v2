@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Agent Office LIVE | Kairosoft Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pixel-size: 4px;
+            --bg-color: #2d1b4e;
+            --floor-1: #C4A77D;
+            --floor-2: #B89A6F;
+            --wall-color: #F5E6C8;
+            --accent-cyan: #00D9FF;
+            --accent-pink: #FF69B4;
+            --fire-orange: #FF6B35;
+            --fire-yellow: #FFD700;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 50%, #3d2b5e 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            border-bottom: 4px solid #00D9FF;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 40px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .logo-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            color: #00D9FF;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat-box {
+            background: rgba(0,0,0,0.3);
+            border: 2px solid #5d4b7e;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #7a6a99;
+        }
+        
+        /* Main Game Area */
+        .game-container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+        
+        /* Office Floor */
+        .office-floor {
+            flex: 1;
+            position: relative;
+            overflow: auto;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    #C4A77D 0px,
+                    #C4A77D 40px,
+                    #B89A6F 40px,
+                    #B89A6F 80px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 40px,
+                    rgba(0,0,0,0.05) 40px,
+                    rgba(0,0,0,0.05) 80px
+                );
+            padding: 40px;
+        }
+        
+        /* Office Furniture Grid */
+        .office-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 200px);
+            grid-template-rows: repeat(3, 180px);
+            gap: 30px;
+            margin: 0 auto;
+            max-width: 900px;
+        }
+        
+        /* Workstation */
+        .workstation {
+            position: relative;
+            background: #8B7355;
+            border: 4px solid #4a3728;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 
+                0 10px 20px rgba(0,0,0,0.3),
+                inset 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        /* Desk */
+        .desk {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 60px;
+            background: linear-gradient(180deg, #6B4423 0%, #4a3728 100%);
+            border: 3px solid #2d1b4e;
+            border-radius: 8px;
+        }
+        
+        .desk::before {
+            content: '🖥️';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+        }
+        
+        /* Agent Character */
+        .agent-character {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 70px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+        
+        .agent-character:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+        
+        .agent-character.working {
+            animation: bounce-work 0.5s infinite;
+        }
+        
+        @keyframes bounce-work {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        /* Agent Body */
+        .agent-body {
+            width: 40px;
+            height: 50px;
+            background: var(--agent-color, #00D9FF);
+            border: 3px solid #1a0f2e;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .agent-head {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 35px;
+            background: #F5C6A5;
+            border: 3px solid #1a0f2e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        /* Fire Effect (when working hard) */
+        .fire-effect {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 80px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .agent-character.on-fire .fire-effect {
+            opacity: 1;
+        }
+        
+        .fire-particle {
+            position: absolute;
+            bottom: 0;
+            width: 15px;
+            height: 30px;
+            background: linear-gradient(180deg, #FFD700, #FF6B35, #FF0000);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flicker 0.5s infinite alternate;
+        }
+        
+        .fire-particle:nth-child(1) { left: 10px; animation-delay: 0s; }
+        .fire-particle:nth-child(2) { left: 25px; animation-delay: 0.2s; height: 40px; }
+        .fire-particle:nth-child(3) { left: 40px; animation-delay: 0.4s; }
+        
+        @keyframes flicker {
+            0% { transform: scaleY(1) scaleX(1); opacity: 0.8; }
+            100% { transform: scaleY(1.2) scaleX(0.9); opacity: 1; }
+        }
+        
+        /* Speech Bubble */
+        .speech-bubble {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border: 3px solid #1a0f2e;
+            border-radius: 15px;
+            padding: 8px 12px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 20;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #1a0f2e;
+        }
+        
+        .agent-character:hover .speech-bubble,
+        .agent-character.speaking .speech-bubble {
+            opacity: 1;
+        }
+        
+        /* Score Popup */
+        .score-popup {
+            position: absolute;
+            top: -80px;
+            right: -20px;
+            background: #FFD700;
+            border: 2px solid #1a0f2e;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #1a0f2e;
+            opacity: 0;
+            animation: score-float 2s ease-out forwards;
+            pointer-events: none;
+        }
+        
+        @keyframes score-float {
+            0% { opacity: 0; transform: translateY(0); }
+            20% { opacity: 1; transform: translateY(-10px); }
+            100% { opacity: 0; transform: translateY(-50px); }
+        }
+        
+        /* Progress Bar */
+        .work-progress {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 8px;
+            background: #ddd;
+            border: 2px solid #1a0f2e;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .work-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #32CD32, #228B22);
+            transition: width 0.5s;
+        }
+        
+        /* Chat Panel */
+        .chat-panel {
+            width: 350px;
+            background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
+            border-left: 4px solid #00D9FF;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            padding: 15px;
+            border-bottom: 2px solid #5d4b7e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            background: #3d2b5e;
+            border: 3px solid #00D9FF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .chat-info h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            color: #00D9FF;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .message.agent {
+            align-self: flex-start;
+            background: #3d2b5e;
+            border: 2px solid #5d4b7e;
+            color: #fff;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background: #00D9FF;
+            border: 2px solid #fff;
+            color: #1a0f2e;
+        }
+        
+        .chat-input-area {
+            padding: 15px;
+            border-top: 2px solid #5d4b7e;
+        }
+        
+        .chat-input {
+            width: 100%;
+            background: #3d2b5e;
+            border: 2px solid #5d4b7e;
+            padding: 10px;
+            color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .send-btn {
+            width: 100%;
+            background: #00D9FF;
+            color: #1a0f2e;
+            border: 3px solid #fff;
+            padding: 10px;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🏢</div>
+            <div class="logo-text">AGENT OFFICE LIVE<br><span style="font-size: 10px; color: #FF69B4;">Kairosoft Style</span></div>
+        </div>
+        <div class="header-stats">
+            <div class="stat-box">
+                <div class="stat-value" id="totalTasks">0</div>
+                <div class="stat-label">Tasks Done</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="activeAgents">0</div>
+                <div class="stat-label">Working</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="efficiency">100%</div>
+                <div class="stat-label">Efficiency</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="game-container">
+        <!-- Office Floor -->
+        <div class="office-floor">
+            <div class="office-grid" id="officeGrid">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+
+        <!-- Chat Panel -->
+        <div class="chat-panel">
+            <div class="chat-header">
+                <div class="chat-avatar" id="chatAvatar">👑</div>
+                <div class="chat-info">
+                    <h3 id="chatName">NEXUS</h3>
+                    <div style="font-size: 12px; color: #7a6a99;">Click an agent to chat</div>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message agent">Welcome to Agent Office! Click on any agent to start chatting. 👋</div>
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" 
+                       placeholder="Type message..."
+                       onkeypress="if(event.key==='Enter') sendMessage()">
+                <button class="send-btn" onclick="sendMessage()">SEND MESSAGE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Agent Data with Kairosoft-style attributes
+        const agents = [
+            { id: 'nexus', name: 'NEXUS', emoji: '👑', role: 'Orchestrator', color: '#FFD700', 
+              task: 'Coordinating all agents', progress: 95, phrases: ['All systems go!', 'Command received!', 'Orchestrating...'] },
+            { id: 'glasses', name: 'GLASSES', emoji: '🔍', role: 'Researcher', color: '#00D9FF',
+              task: 'Market research', progress: 60, phrases: ['Analyzing data...', 'Markets look good!', 'Research complete!'] },
+            { id: 'quill', name: 'QUILL', emoji: '✍️', role: 'Writer', color: '#FF69B4',
+              task: 'Content creation', progress: 45, phrases: ['Writing...', 'Draft ready!', 'Editing now...'] },
+            { id: 'pixel', name: 'PIXEL', emoji: '🎨', role: 'Designer', color: '#9370DB',
+              task: 'UI design', progress: 70, phrases: ['Designing...', 'Pixel perfect!', 'Assets ready!'] },
+            { id: 'gary', name: 'GARY', emoji: '📈', role: 'Marketing', color: '#32CD32',
+              task: 'Campaign analysis', progress: 55, phrases: ['Analyzing...', 'Growth up!', 'Metrics good!'] },
+            { id: 'larry', name: 'LARRY', emoji: '🐦', role: 'Social', color: '#FF8C00',
+              task: 'Social posting', progress: 30, phrases: ['Posting...', 'Engagement up!', 'Scheduled!'] },
+            { id: 'sentry', name: 'SENTRY', emoji: '🛡️', role: 'DevOps', color: '#DC143C',
+              task: 'System monitoring', progress: 85, phrases: ['Monitoring...', 'All secure!', 'Systems green!'] },
+            { id: 'audit', name: 'AUDIT', emoji: '✓', role: 'QA', color: '#20B2AA',
+              task: 'Code review', progress: 75, phrases: ['Reviewing...', 'Tests pass!', 'Quality good!'] },
+            { id: 'cipher', name: 'CIPHER', emoji: '🔐', role: 'Security', color: '#2F4F4F',
+              task: 'Security scan', progress: 90, phrases: ['Scanning...', 'No threats!', 'Encrypted!'] },
+            { id: 'limitless', name: 'LIMITLESS', emoji: '🤖', role: 'Trading Bot', color: '#00FF7F',
+              task: 'Active trading', progress: 100, phrases: ['Trading...', 'Profits up!', 'Scanning markets!'] },
+            { id: 'olivia', name: 'OLIVIA', emoji: '💼', role: 'DealFlow', color: '#FF1493',
+              task: 'Lead scoring', progress: 50, phrases: ['Scoring...', 'Deals found!', 'Outreach ready!'] },
+            { id: 'zookeeper', name: 'ZOOKEEPER', emoji: '🦁', role: 'Pixel Sanctuary', color: '#8B4513',
+              task: 'Game dev', progress: 80, phrases: ['Building...', 'Features added!', 'Bugs fixed!'] }
+        ];
+
+        let selectedAgent = agents[0];
+        let totalTasksCompleted = 0;
+        let activeWorking = 0;
+
+        // Initialize Office
+        function initOffice() {
+            const grid = document.getElementById('officeGrid');
+            
+            agents.forEach((agent, index) => {
+                const workstation = document.createElement('div');
+                workstation.className = 'workstation';
+                workstation.innerHTML = `
+                    <div class="agent-character" id="agent-${agent.id}" onclick="selectAgent('${agent.id}')">
+                        <div class="fire-effect">
+                            <div class="fire-particle"></div>
+                            <div class="fire-particle"></div>
+                            <div class="fire-particle"></div>
+                        </div>
+                        <div class="agent-body" style="--agent-color: ${agent.color}">
+                            <div class="agent-head">${agent.emoji}</div>
+                        </div>
+                        <div class="speech-bubble" id="bubble-${agent.id}">${agent.task}</div>
+                    </div>
+                    <div class="desk"></div>
+                    <div class="work-progress">
+                        <div class="work-progress-fill" id="progress-${agent.id}" style="width: ${agent.progress}%"></div>
+                    </div>
+                `;
+                grid.appendChild(workstation);
+            });
+
+            // Start simulation
+            simulateWork();
+            updateStats();
+        }
+
+        // Select Agent
+        function selectAgent(agentId) {
+            selectedAgent = agents.find(a => a.id === agentId);
+            
+            document.getElementById('chatAvatar').textContent = selectedAgent.emoji;
+            document.getElementById('chatName').textContent = selectedAgent.name;
+            
+            addMessage('agent', `Hi! I'm ${selectedAgent.name}. Currently working on: ${selectedAgent.task} (${selectedAgent.progress}%) 🔥`);
+            
+            // Trigger fire effect briefly
+            const char = document.getElementById(`agent-${agentId}`);
+            char.classList.add('on-fire');
+            setTimeout(() => char.classList.remove('on-fire'), 2000);
+        }
+
+        // Simulate Work Activity
+        function simulateWork() {
+            setInterval(() => {
+                const randomAgent = agents[Math.floor(Math.random() * agents.length)];
+                const char = document.getElementById(`agent-${randomAgent.id}`);
+                const bubble = document.getElementById(`bubble-${randomAgent.id}`);
+                const progress = document.getElementById(`progress-${randomAgent.id}`);
+                
+                // Show random phrase
+                const phrase = randomAgent.phrases[Math.floor(Math.random() * randomAgent.phrases.length)];
+                bubble.textContent = phrase;
+                char.classList.add('speaking');
+                
+                // Working animation
+                char.classList.add('working');
+                
+                // Fire effect for high progress
+                if (randomAgent.progress > 80) {
+                    char.classList.add('on-fire');
+                }
+                
+                // Update progress
+                randomAgent.progress = Math.min(100, randomAgent.progress + Math.random() * 5);
+                progress.style.width = randomAgent.progress + '%';
+                
+                // Score popup
+                if (Math.random() > 0.7) {
+                    showScorePopup(char, '+3');
+                    totalTasksCompleted += 3;
+                    updateStats();
+                }
+                
+                setTimeout(() => {
+                    char.classList.remove('speaking', 'working', 'on-fire');
+                    bubble.textContent = randomAgent.task;
+                }, 2000);
+                
+            }, 3000);
+        }
+
+        // Show Score Popup
+        function showScorePopup(element, score) {
+            const popup = document.createElement('div');
+            popup.className = 'score-popup';
+            popup.textContent = score;
+            element.appendChild(popup);
+            setTimeout(() => popup.remove(), 2000);
+        }
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('totalTasks').textContent = totalTasksCompleted;
+            document.getElementById('activeAgents').textContent = agents.filter(a => a.progress > 50).length;
+        }
+
+        // Chat Functions
+        function addMessage(type, text) {
+            const messages = document.getElementById('chatMessages');
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.textContent = text;
+            messages.appendChild(msg);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            addMessage('user', text);
+            input.value = '';
+            
+            setTimeout(() => {
+                const responses = [
+                    `Roger that! Working on ${selectedAgent.task} 🎯`,
+                    `Copy! ${selectedAgent.role} mode activated ⚡`,
+                    `On it! Progress at ${selectedAgent.progress}% 💪`,
+                    `Task noted! Firing up the engines 🔥`
+                ];
+                addMessage('agent', responses[Math.floor(Math.random() * responses.length)]);
+            }, 1000);
+        }
+
+        // Initialize
+        window.addEventListener('load', initOffice);
+    </script>
+</body>
+</html>
