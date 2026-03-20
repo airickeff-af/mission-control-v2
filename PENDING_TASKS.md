@@ -139,19 +139,59 @@
 - **Priority:** P1
 - **Description:** Development zone, meeting area, break room, boss office, floor colors per zone
 
-### **KAIRO-16: Sound Effects**
+### **KAIRO-16: Agent Interaction System** 🆕 NEW
 - **Assigned:** Nexus
 - **Due:** Mar 30, 12:00 PM
 - **Status:** ⏳ PENDING
-- **Priority:** P3
-- **Description:** Typing sounds, notification ding, office ambience, footsteps, UI clicks
+- **Priority:** P0
+- **Description:** Workers interact with each other when nearby. Chat bubbles between agents, high-fives when meeting, collaborative work at meeting table, energy transfer between agents
 
-### **KAIRO-17: Save/Load Office State**
+### **KAIRO-17: Data Server Memory Visualization** 🆕 NEW
 - **Assigned:** Nexus
 - **Due:** Mar 31, 12:00 PM
 - **Status:** ⏳ PENDING
-- **Priority:** P3
-- **Description:** Save to localStorage, worker positions, desk assignments, stats history, export/import JSON
+- **Priority:** P0
+- **Description:** Backend data server room with blinking lights, memory banks showing real-time updates, data flowing between agents and server. Visual representation of the memory system constantly updating
+
+---
+
+## ❌ REMOVED TASKS (Not Needed for Live Presentation)
+
+### ~~KAIRO-16: Sound Effects~~ ❌ REMOVED
+- **Reason:** Not needed for live visual presentation
+
+### ~~KAIRO-17: Save/Load Office State~~ ❌ REMOVED  
+- **Reason:** Live presentation only, no persistence needed
+
+---
+
+## 🔴 P0 - OTHER CRITICAL TASKS
+- **Assigned:** Pixel
+- **Due:** Mar 28, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P1
+- **Description:** Gym area with treadmills, weights, exercise mats, water cooler, mirror wall. Workers can exercise to boost energy.
+
+### **KAIRO-19: Pool Table & Recreation** 🆕 NEW
+- **Assigned:** Pixel
+- **Due:** Mar 28, 10:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P1
+- **Description:** Pool table with cues and balls, couch area, TV screen, dart board for worker relaxation and team bonding.
+
+### **KAIRO-20: Big Meeting Table** 🆕 NEW
+- **Assigned:** Pixel
+- **Due:** Mar 29, 12:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Large oval meeting table in center of office with 8 chairs, whiteboard on wheels, projector, coffee cups. Workers gather here for meetings.
+
+### **KAIRO-21: Recharge Area with Drinks & Fridge** 🆕 NEW
+- **Assigned:** Pixel
+- **Due:** Mar 29, 6:00 PM
+- **Status:** ⏳ PENDING
+- **Priority:** P0
+- **Description:** Premium recharge corner with large fridge (glass door), snack vending machine, coffee machine, microwave, fruit basket, energy drink display. Workers go here when tired.
 
 ---
 
@@ -282,11 +322,11 @@
 
 | Priority | Count | Status |
 |----------|-------|--------|
-| 🔴 **P0 - Critical** | 29 | **14 KAIRO + 15 Other** |
-| 🟡 **P1 - High** | 28 | Multiple active |
+| 🔴 **P0 - Critical** | 31 | **14 KAIRO + 17 Other** |
+| 🟡 **P1 - High** | 34 | **+4 NEW (Gym, Pool, Meeting, Recharge)** |
 | 🟢 **P2 - Medium** | 19 | Planned |
 | ⚪ **P3 - Low** | 7 | Future |
-| **TOTAL** | **122** | **KAIROSOFT REBUILD PRIORITY** |
+| **TOTAL** | **126** | **KAIROSOFT REBUILD + NEW FEATURES** |
 
 ---
 

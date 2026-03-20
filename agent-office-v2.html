@@ -398,6 +398,279 @@
             ctx.fillText('TASKS!', x + 15, y + 35);
         }
         
+        // Draw big meeting table
+        function drawMeetingTable(ix, iy) {
+            const pos = isoToScreen(ix, iy);
+            
+            // Table base
+            ctx.fillStyle = '#8B4513';
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y + 10, 80, 40, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Table top
+            ctx.fillStyle = '#A0522D';
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y, 80, 40, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Table border
+            ctx.strokeStyle = '#5D4037';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Meeting chairs around table
+            const chairPositions = [
+                { dx: -70, dy: 0 }, { dx: 70, dy: 0 },
+                { dx: 0, dy: -35 }, { dx: 0, dy: 35 },
+                { dx: -50, dy: -25 }, { dx: 50, dy: -25 },
+                { dx: -50, dy: 25 }, { dx: 50, dy: 25 }
+            ];
+            
+            chairPositions.forEach(c => {
+                ctx.fillStyle = '#4169E1';
+                ctx.beginPath();
+                ctx.ellipse(pos.x + c.dx, pos.y + c.dy, 12, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // Coffee cups on table
+            ctx.fillStyle = '#FFF';
+            ctx.beginPath();
+            ctx.arc(pos.x - 30, pos.y - 10, 4, 0, Math.PI * 2);
+            ctx.arc(pos.x + 20, pos.y + 15, 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Draw pool table
+        function drawPoolTable(ix, iy) {
+            const pos = isoToScreen(ix, iy);
+            
+            // Table legs
+            ctx.fillStyle = '#4A3728';
+            ctx.fillRect(pos.x - 50, pos.y + 10, 10, 20);
+            ctx.fillRect(pos.x + 40, pos.y + 10, 10, 20);
+            ctx.fillRect(pos.x - 50, pos.y - 20, 10, 20);
+            ctx.fillRect(pos.x + 40, pos.y - 20, 10, 20);
+            
+            // Table body
+            ctx.fillStyle = '#228B22';
+            ctx.fillRect(pos.x - 55, pos.y - 25, 110, 50);
+            
+            // Table border (wood)
+            ctx.strokeStyle = '#8B4513';
+            ctx.lineWidth = 8;
+            ctx.strokeRect(pos.x - 55, pos.y - 25, 110, 50);
+            
+            // Pockets
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(pos.x - 50, pos.y - 20, 6, 0, Math.PI * 2);
+            ctx.arc(pos.x + 50, pos.y - 20, 6, 0, Math.PI * 2);
+            ctx.arc(pos.x - 50, pos.y + 20, 6, 0, Math.PI * 2);
+            ctx.arc(pos.x + 50, pos.y + 20, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Pool balls
+            ctx.fillStyle = '#FF0000';
+            ctx.beginPath();
+            ctx.arc(pos.x, pos.y, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#0000FF';
+            ctx.beginPath();
+            ctx.arc(pos.x - 15, pos.y + 5, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Cue stick
+            ctx.strokeStyle = '#D2691E';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(pos.x + 60, pos.y + 30);
+            ctx.lineTo(pos.x + 90, pos.y + 50);
+            ctx.stroke();
+        }
+        
+        // Draw gym equipment
+        function drawGymArea(ix, iy) {
+            const pos = isoToScreen(ix, iy);
+            
+            // Treadmill
+            ctx.fillStyle = '#333';
+            ctx.fillRect(pos.x - 40, pos.y - 20, 30, 50);
+            ctx.fillStyle = '#666';
+            ctx.fillRect(pos.x - 35, pos.y - 15, 20, 40);
+            // Treadmill screen
+            ctx.fillStyle = '#00CED1';
+            ctx.fillRect(pos.x - 40, pos.y - 25, 30, 8);
+            
+            // Weights rack
+            ctx.fillStyle = '#444';
+            ctx.fillRect(pos.x + 10, pos.y - 30, 40, 60);
+            // Dumbbells
+            ctx.fillStyle = '#C0C0C0';
+            for (let i = 0; i < 3; i++) {
+                ctx.fillRect(pos.x + 15, pos.y - 20 + i * 20, 30, 8);
+                ctx.beginPath();
+                ctx.arc(pos.x + 18, pos.y - 16 + i * 20, 6, 0, Math.PI * 2);
+                ctx.arc(pos.x + 42, pos.y - 16 + i * 20, 6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Exercise mat
+            ctx.fillStyle = '#9370DB';
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y + 40, 25, 15, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Water cooler
+            ctx.fillStyle = '#FFF';
+            ctx.fillRect(pos.x + 50, pos.y - 10, 20, 35);
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(pos.x + 52, pos.y - 5, 16, 20);
+        }
+        
+        // Draw data server room (Memory System)
+        function drawDataServerRoom(ix, iy) {
+            const pos = isoToScreen(ix, iy);
+            
+            // Server rack base
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(pos.x - 50, pos.y - 40, 100, 80);
+            
+            // Server racks
+            const blink = Math.sin(Date.now() / 200) > 0;
+            
+            // Rack 1
+            ctx.fillStyle = '#333';
+            ctx.fillRect(pos.x - 45, pos.y - 35, 40, 70);
+            // Blinking lights
+            for (let i = 0; i < 6; i++) {
+                ctx.fillStyle = (i % 2 === 0 && blink) ? '#00ff00' : '#00aa00';
+                ctx.fillRect(pos.x - 40, pos.y - 30 + i * 10, 8, 5);
+                ctx.fillStyle = (i % 3 === 0 && !blink) ? '#ff0000' : '#aa0000';
+                ctx.fillRect(pos.x - 25, pos.y - 30 + i * 10, 8, 5);
+            }
+            
+            // Rack 2
+            ctx.fillStyle = '#333';
+            ctx.fillRect(pos.x + 5, pos.y - 35, 40, 70);
+            // Blinking lights
+            for (let i = 0; i < 6; i++) {
+                ctx.fillStyle = (i % 2 !== 0 && blink) ? '#00ffff' : '#00aaaa';
+                ctx.fillRect(pos.x + 10, pos.y - 30 + i * 10, 8, 5);
+                ctx.fillStyle = (i % 4 === 0) ? '#ffff00' : '#aaaa00';
+                ctx.fillRect(pos.x + 25, pos.y - 30 + i * 10, 8, 5);
+            }
+            
+            // Memory label
+            ctx.fillStyle = '#00ff00';
+            ctx.font = '8px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillText('MEMORY', pos.x, pos.y - 45);
+            
+            // Data flow lines (animated)
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y + 45);
+            ctx.lineTo(pos.x + 100, pos.y + 80);
+            ctx.stroke();
+            
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y + 45);
+            ctx.lineTo(pos.x - 100, pos.y + 80);
+            ctx.stroke();
+        }
+        
+        // Draw interaction bubble between agents
+        function drawInteractionBubble(x, y, text) {
+            ctx.fillStyle = 'rgba(255, 255, 0, 0.9)';
+            ctx.beginPath();
+            ctx.roundRect(x - 40, y - 25, 80, 20, 5);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            ctx.fillStyle = '#000';
+            ctx.font = '8px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillText(text, x, y - 12);
+        }
+            ctx.fillRect(pos.x - 30, pos.y - 40, 60, 80);
+            // Glass door
+            ctx.fillStyle = 'rgba(135, 206, 235, 0.6)';
+            ctx.fillRect(pos.x - 25, pos.y - 35, 50, 70);
+            // Frame
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(pos.x - 30, pos.y - 40, 60, 80);
+            // Drinks inside
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(pos.x - 20, pos.y - 25, 8, 15);
+            ctx.fillStyle = '#00FF00';
+            ctx.fillRect(pos.x - 10, pos.y - 25, 8, 15);
+            ctx.fillStyle = '#0000FF';
+            ctx.fillRect(pos.x, pos.y - 25, 8, 15);
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(pos.x + 10, pos.y - 25, 8, 15);
+            
+            // Coffee machine
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(pos.x + 40, pos.y - 20, 25, 35);
+            ctx.fillStyle = '#333';
+            ctx.fillRect(pos.x + 42, pos.y - 15, 21, 20);
+            // Coffee cup
+            ctx.fillStyle = '#FFF';
+            ctx.beginPath();
+            ctx.arc(pos.x + 52, pos.y + 10, 5, 0, Math.PI * 2);
+            ctx.fill();
+            // Steam
+            ctx.strokeStyle = '#AAA';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(pos.x + 50, pos.y + 5);
+            ctx.lineTo(pos.x + 48, pos.y - 5);
+            ctx.moveTo(pos.x + 54, pos.y + 5);
+            ctx.lineTo(pos.x + 56, pos.y - 5);
+            ctx.stroke();
+            
+            // Snack vending machine
+            ctx.fillStyle = '#FF6B35';
+            ctx.fillRect(pos.x - 70, pos.y - 30, 35, 60);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillRect(pos.x - 65, pos.y - 25, 25, 45);
+            // Snack items
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(pos.x - 62, pos.y - 20, 8, 10);
+            ctx.fillStyle = '#FF69B4';
+            ctx.fillRect(pos.x - 50, pos.y - 20, 8, 10);
+            ctx.fillStyle = '#32CD32';
+            ctx.fillRect(pos.x - 62, pos.y - 5, 8, 10);
+            ctx.fillStyle = '#9370DB';
+            ctx.fillRect(pos.x - 50, pos.y - 5, 8, 10);
+            
+            // Fruit basket
+            ctx.fillStyle = '#8B4513';
+            ctx.beginPath();
+            ctx.ellipse(pos.x + 80, pos.y + 10, 15, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+            // Apples
+            ctx.fillStyle = '#FF0000';
+            ctx.beginPath();
+            ctx.arc(pos.x + 75, pos.y + 5, 5, 0, Math.PI * 2);
+            ctx.arc(pos.x + 85, pos.y + 5, 5, 0, Math.PI * 2);
+            ctx.fill();
+            // Banana
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.ellipse(pos.x + 80, pos.y, 8, 4, 0.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
         // Meebit workers
         const workers = [
             { id: 'nexus', name: 'NEXUS', x: 2, y: 2, targetX: 2, targetY: 2, meebitId: 1001, frame: 0 },
@@ -511,6 +784,21 @@
             drawDesk(2, 6);
             drawDesk(6, 6);
             
+            // Draw meeting table in center
+            drawMeetingTable(4, 4);
+            
+            // Draw pool table
+            drawPoolTable(7, 1);
+            
+            // Draw gym area
+            drawGymArea(0, 3);
+            
+            // Draw recharge area with fridge
+            drawRechargeArea(1, 7);
+            
+            // Draw data server room (Memory)
+            drawDataServerRoom(7, 7);
+            
             // Draw chairs
             drawChair(2, 2);
             drawChair(6, 2);
@@ -522,6 +810,9 @@
                 drawMeebit(w);
                 w.frame += 0.1;
             });
+            
+            // Check for agent interactions
+            checkAgentInteractions();
         }
         
         function animate() {
@@ -556,6 +847,42 @@
         }
         
         setInterval(randomWalk, 2000); // Every 2 seconds
+        
+        // Agent interaction system
+        function checkAgentInteractions() {
+            for (let i = 0; i < workers.length; i++) {
+                for (let j = i + 1; j < workers.length; j++) {
+                    const w1 = workers[i];
+                    const w2 = workers[j];
+                    
+                    // Check if close enough to interact
+                    const dist = Math.hypot(w1.x - w2.x, w1.y - w2.y);
+                    
+                    if (dist < 1.5 && Math.random() > 0.95) {
+                        // Agents are close - show interaction
+                        const midX = (w1.x + w2.x) / 2;
+                        const midY = (w1.y + w2.y) / 2;
+                        const pos = isoToScreen(midX, midY);
+                        
+                        const interactions = [
+                            'High five!',
+                            'Nice work!',
+                            'Teamwork!',
+                            'Collaborating',
+                            'Sharing ideas',
+                            'Helping out'
+                        ];
+                        const text = interactions[Math.floor(Math.random() * interactions.length)];
+                        
+                        drawInteractionBubble(pos.x, pos.y - 30, text);
+                        
+                        // Boost energy for both
+                        w1.energy = Math.min(100, (w1.energy || 50) + 5);
+                        w2.energy = Math.min(100, (w2.energy || 50) + 5);
+                    }
+                }
+            }
+        }
         
         // Update movement every frame
         function update() {
