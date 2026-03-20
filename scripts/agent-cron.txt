@@ -1,5 +1,8 @@
-# Virtual Agent Cron Schedule
+# Virtual Agent Cron Schedule - UPDATED with 30min task monitor
 # Add these to crontab with: crontab /root/.openclaw/workspace/mission-control-v2/scripts/agent-cron.txt
+
+# Task Progress Monitor - Every 30 minutes
+*/30 * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./task-monitor.sh >> ../logs/task-monitor.log 2>&1
 
 # Sentry - Every 1 minute (system monitoring)
 * * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./sentry-task.sh >> ../logs/sentry.log 2>&1
