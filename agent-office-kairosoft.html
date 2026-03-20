@@ -7,11 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pixel-size: 4px;
-            --bg-color: #2d1b4e;
             --floor-1: #C4A77D;
             --floor-2: #B89A6F;
-            --wall-color: #F5E6C8;
             --accent-cyan: #00D9FF;
             --accent-pink: #FF69B4;
             --fire-orange: #FF6B35;
@@ -50,42 +47,46 @@
         
         .logo-icon {
             font-size: 40px;
-            animation: bounce 1s infinite;
+            animation: bounce 0.6s infinite;
         }
         
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.1); }
         }
         
         .logo-text {
             font-family: 'Press Start 2P', cursive;
             font-size: 14px;
             color: #00D9FF;
+            text-shadow: 2px 2px 0 #000;
         }
         
         .header-stats {
             display: flex;
-            gap: 20px;
+            gap: 15px;
         }
         
         .stat-box {
-            background: rgba(0,0,0,0.3);
-            border: 2px solid #5d4b7e;
+            background: rgba(0,0,0,0.4);
+            border: 3px solid #5d4b7e;
             padding: 10px 20px;
             text-align: center;
             border-radius: 8px;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
         }
         
         .stat-value {
-            font-size: 24px;
+            font-size: 28px;
             color: #FFD700;
             font-weight: bold;
+            text-shadow: 2px 2px 0 #000;
         }
         
         .stat-label {
             font-size: 12px;
-            color: #7a6a99;
+            color: #b8a9d9;
+            margin-top: 4px;
         }
         
         /* Main Game Area */
@@ -94,137 +95,219 @@
             height: calc(100vh - 80px);
         }
         
-        /* Office Floor */
+        /* Office Floor - Isometric Style */
         .office-floor {
             flex: 1;
             position: relative;
+            background: 
+                linear-gradient(135deg, #8B7355 0%, #6B5344 100%);
             overflow: auto;
+            padding: 40px;
+        }
+        
+        /* Isometric Grid Pattern */
+        .office-floor::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: 
                 repeating-linear-gradient(
-                    0deg,
-                    #C4A77D 0px,
-                    #C4A77D 40px,
-                    #B89A6F 40px,
-                    #B89A6F 80px
+                    45deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(0,0,0,0.1) 40px,
+                    rgba(0,0,0,0.1) 80px
                 ),
                 repeating-linear-gradient(
-                    90deg,
-                    transparent 0px,
+                    -45deg,
+                    transparent,
                     transparent 40px,
                     rgba(0,0,0,0.05) 40px,
                     rgba(0,0,0,0.05) 80px
                 );
-            padding: 40px;
+            pointer-events: none;
         }
         
-        /* Office Furniture Grid */
         .office-grid {
             display: grid;
-            grid-template-columns: repeat(4, 200px);
-            grid-template-rows: repeat(3, 180px);
-            gap: 30px;
+            grid-template-columns: repeat(4, 220px);
+            grid-template-rows: repeat(3, 200px);
+            gap: 40px;
             margin: 0 auto;
-            max-width: 900px;
+            max-width: 1000px;
+            position: relative;
+            z-index: 1;
         }
         
-        /* Workstation */
+        /* Workstation - Enhanced */
         .workstation {
             position: relative;
-            background: #8B7355;
+            background: linear-gradient(180deg, #A08060 0%, #806040 100%);
             border: 4px solid #4a3728;
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 16px;
+            padding: 15px;
             box-shadow: 
-                0 10px 20px rgba(0,0,0,0.3),
-                inset 0 0 20px rgba(0,0,0,0.1);
+                0 15px 30px rgba(0,0,0,0.4),
+                inset 0 0 30px rgba(0,0,0,0.2),
+                0 0 0 2px rgba(255,255,255,0.1);
+            transition: all 0.3s;
         }
         
-        /* Desk */
+        .workstation:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.5),
+                inset 0 0 30px rgba(0,0,0,0.2);
+        }
+        
+        .workstation.hot {
+            border-color: #FF6B35;
+            box-shadow: 
+                0 0 30px rgba(255,107,53,0.5),
+                0 15px 30px rgba(0,0,0,0.4);
+        }
+        
+        /* Desk - Enhanced with depth */
         .desk {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            width: 120px;
-            height: 60px;
-            background: linear-gradient(180deg, #6B4423 0%, #4a3728 100%);
+            width: 140px;
+            height: 70px;
+            background: linear-gradient(180deg, #5C4033 0%, #3E2723 100%);
             border: 3px solid #2d1b4e;
-            border-radius: 8px;
+            border-radius: 10px;
+            box-shadow: 
+                0 10px 20px rgba(0,0,0,0.4),
+                inset 0 2px 5px rgba(255,255,255,0.1);
         }
         
         .desk::before {
             content: '🖥️';
             position: absolute;
-            top: -30px;
+            top: -35px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 32px;
+            font-size: 40px;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3));
         }
         
-        /* Agent Character */
+        .desk::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10px;
+            right: 10px;
+            height: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+        
+        /* Agent Character - Enhanced */
         .agent-character {
             position: absolute;
-            bottom: 80px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
-            height: 70px;
+            width: 60px;
+            height: 80px;
             cursor: pointer;
-            transition: transform 0.2s;
             z-index: 10;
+            transition: transform 0.2s;
         }
         
         .agent-character:hover {
-            transform: translateX(-50%) scale(1.1);
+            transform: translateX(-50%) scale(1.15);
         }
         
         .agent-character.working {
-            animation: bounce-work 0.5s infinite;
+            animation: work-bounce 0.4s infinite;
         }
         
-        @keyframes bounce-work {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
+        .agent-character.on-fire {
+            animation: fire-shake 0.2s infinite;
+        }
+        
+        @keyframes work-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(-2deg); }
+            50% { transform: translateX(-50%) translateY(-15px) rotate(2deg); }
+        }
+        
+        @keyframes fire-shake {
+            0%, 100% { transform: translateX(-50%) rotate(-3deg); }
+            25% { transform: translateX(-50%) rotate(3deg); }
+            50% { transform: translateX(-50%) rotate(-3deg); }
+            75% { transform: translateX(-50%) rotate(3deg); }
         }
         
         /* Agent Body */
         .agent-body {
-            width: 40px;
-            height: 50px;
-            background: var(--agent-color, #00D9FF);
+            width: 50px;
+            height: 60px;
+            background: linear-gradient(180deg, var(--agent-color, #00D9FF) 0%, darken(var(--agent-color, #00D9FF), 20%) 100%);
             border: 3px solid #1a0f2e;
-            border-radius: 10px 10px 0 0;
+            border-radius: 12px 12px 0 0;
             position: relative;
             margin: 0 auto;
+            box-shadow: 
+                inset 0 5px 10px rgba(255,255,255,0.3),
+                0 5px 10px rgba(0,0,0,0.3);
         }
         
         .agent-head {
             position: absolute;
-            top: -20px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
-            width: 35px;
-            height: 35px;
-            background: #F5C6A5;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(180deg, #FFE4C4 0%, #DEB887 100%);
             border: 3px solid #1a0f2e;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 24px;
+            box-shadow: 
+                inset 0 -5px 10px rgba(0,0,0,0.1),
+                0 3px 5px rgba(0,0,0,0.2);
         }
         
-        /* Fire Effect (when working hard) */
-        .fire-effect {
+        .agent-eyes {
             position: absolute;
-            bottom: 0;
+            top: 35%;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 80px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .agent-eyes::before,
+        .agent-eyes::after {
+            content: '';
+            width: 4px;
+            height: 6px;
+            background: #1a0f2e;
+            border-radius: 50%;
+        }
+        
+        /* Fire Effect - Enhanced */
+        .fire-effect {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 100px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s;
+            z-index: -1;
         }
         
         .agent-character.on-fire .fire-effect {
@@ -234,189 +317,440 @@
         .fire-particle {
             position: absolute;
             bottom: 0;
-            width: 15px;
-            height: 30px;
-            background: linear-gradient(180deg, #FFD700, #FF6B35, #FF0000);
+            width: 20px;
+            height: 40px;
+            background: linear-gradient(180deg, #FFD700, #FF6B35, #FF0000, transparent);
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            animation: flicker 0.5s infinite alternate;
+            animation: flicker 0.3s infinite alternate;
+            filter: blur(2px);
         }
         
-        .fire-particle:nth-child(1) { left: 10px; animation-delay: 0s; }
-        .fire-particle:nth-child(2) { left: 25px; animation-delay: 0.2s; height: 40px; }
-        .fire-particle:nth-child(3) { left: 40px; animation-delay: 0.4s; }
+        .fire-particle:nth-child(1) { 
+            left: 10px; 
+            animation-delay: 0s; 
+            height: 50px;
+        }
+        .fire-particle:nth-child(2) { 
+            left: 30px; 
+            animation-delay: 0.1s; 
+            height: 70px;
+            width: 25px;
+        }
+        .fire-particle:nth-child(3) { 
+            left: 50px; 
+            animation-delay: 0.2s; 
+            height: 55px;
+        }
+        .fire-particle:nth-child(4) { 
+            left: 20px; 
+            animation-delay: 0.15s; 
+            height: 45px;
+            background: linear-gradient(180deg, #FFFF00, #FF8C00, transparent);
+        }
+        .fire-particle:nth-child(5) { 
+            left: 40px; 
+            animation-delay: 0.05s; 
+            height: 60px;
+            background: linear-gradient(180deg, #FFFF00, #FF6347, transparent);
+        }
         
         @keyframes flicker {
-            0% { transform: scaleY(1) scaleX(1); opacity: 0.8; }
-            100% { transform: scaleY(1.2) scaleX(0.9); opacity: 1; }
+            0% { 
+                transform: scaleY(1) scaleX(1) rotate(-2deg); 
+                opacity: 0.8; 
+            }
+            100% { 
+                transform: scaleY(1.3) scaleX(0.9) rotate(2deg); 
+                opacity: 1; 
+            }
         }
         
-        /* Speech Bubble */
+        /* Speech Bubble - Enhanced */
         .speech-bubble {
             position: absolute;
-            top: -60px;
+            top: -70px;
             left: 50%;
             transform: translateX(-50%);
             background: #fff;
             border: 3px solid #1a0f2e;
             border-radius: 15px;
-            padding: 8px 12px;
-            font-size: 12px;
+            padding: 10px 15px;
+            font-size: 13px;
             white-space: nowrap;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
             pointer-events: none;
             z-index: 20;
-            box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            box-shadow: 
+                4px 4px 0 rgba(0,0,0,0.2),
+                inset 0 -5px 10px rgba(0,0,0,0.05);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 8px;
+            color: #1a0f2e;
+            max-width: 150px;
+            text-align: center;
+            line-height: 1.4;
         }
         
         .speech-bubble::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid #1a0f2e;
+        }
+        
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
             border-left: 10px solid transparent;
             border-right: 10px solid transparent;
-            border-top: 10px solid #1a0f2e;
+            border-top: 10px solid #fff;
+            z-index: 1;
         }
         
         .agent-character:hover .speech-bubble,
         .agent-character.speaking .speech-bubble {
             opacity: 1;
+            animation: pop-in 0.3s ease-out;
         }
         
-        /* Score Popup */
+        @keyframes pop-in {
+            0% { transform: translateX(-50%) scale(0); }
+            50% { transform: translateX(-50%) scale(1.1); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+        
+        /* Score Popup - Enhanced */
         .score-popup {
             position: absolute;
-            top: -80px;
-            right: -20px;
-            background: #FFD700;
-            border: 2px solid #1a0f2e;
-            padding: 5px 10px;
-            border-radius: 5px;
+            top: -90px;
+            right: -30px;
+            background: linear-gradient(180deg, #FFD700, #FFA500);
+            border: 3px solid #1a0f2e;
+            padding: 8px 12px;
+            border-radius: 8px;
             font-weight: bold;
             color: #1a0f2e;
+            font-size: 16px;
             opacity: 0;
-            animation: score-float 2s ease-out forwards;
+            animation: score-float 1.5s ease-out forwards;
             pointer-events: none;
+            z-index: 30;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
         }
         
         @keyframes score-float {
-            0% { opacity: 0; transform: translateY(0); }
-            20% { opacity: 1; transform: translateY(-10px); }
-            100% { opacity: 0; transform: translateY(-50px); }
+            0% { 
+                opacity: 0; 
+                transform: translateY(0) scale(0.5); 
+            }
+            20% { 
+                opacity: 1; 
+                transform: translateY(-20px) scale(1.2); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(-80px) scale(1); 
+            }
         }
         
-        /* Progress Bar */
+        /* Progress Bar - Enhanced */
         .work-progress {
             position: absolute;
-            bottom: 5px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 8px;
-            background: #ddd;
+            width: 120px;
+            height: 12px;
+            background: rgba(0,0,0,0.3);
             border: 2px solid #1a0f2e;
-            border-radius: 4px;
+            border-radius: 6px;
             overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
         }
         
         .work-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #32CD32, #228B22);
+            background: linear-gradient(90deg, #32CD32, #7CFC00, #32CD32);
+            background-size: 20px 100%;
             transition: width 0.5s;
+            box-shadow: 0 0 10px rgba(50,205,50,0.5);
+            animation: shimmer 2s infinite;
         }
         
-        /* Chat Panel */
+        @keyframes shimmer {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 0; }
+        }
+        
+        .work-progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 9px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        /* Status Indicator */
+        .status-dot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.online { 
+            background: #32CD32; 
+            box-shadow: 0 0 10px #32CD32;
+        }
+        .status-dot.busy { 
+            background: #FFD700; 
+            box-shadow: 0 0 10px #FFD700;
+        }
+        .status-dot.offline { 
+            background: #FF4444; 
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* Agent Name Tag */
+        .agent-name-tag {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: 'Press Start 2P', cursive;
+            white-space: nowrap;
+            border: 2px solid var(--agent-color, #00D9FF);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .workstation:hover .agent-name-tag {
+            opacity: 1;
+        }
+        
+        /* Chat Panel - Enhanced */
         .chat-panel {
-            width: 350px;
+            width: 380px;
             background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%);
             border-left: 4px solid #00D9FF;
             display: flex;
             flex-direction: column;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
         }
         
         .chat-header {
-            padding: 15px;
-            border-bottom: 2px solid #5d4b7e;
+            padding: 20px;
+            border-bottom: 3px solid #5d4b7e;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            background: rgba(0,0,0,0.2);
         }
         
         .chat-avatar {
-            width: 50px;
-            height: 50px;
-            background: #3d2b5e;
-            border: 3px solid #00D9FF;
-            border-radius: 8px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-cyan), #0099CC);
+            border: 4px solid #fff;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 32px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         
         .chat-info h3 {
             font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
             color: #00D9FF;
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 0 #000;
+        }
+        
+        .chat-info p {
+            font-size: 14px;
+            color: #b8a9d9;
         }
         
         .chat-messages {
             flex: 1;
-            padding: 15px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
         
         .message {
             max-width: 85%;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px 15px;
+            border-radius: 10px;
             font-size: 14px;
+            line-height: 1.4;
+            animation: message-pop 0.3s ease-out;
+        }
+        
+        @keyframes message-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
         
         .message.agent {
             align-self: flex-start;
-            background: #3d2b5e;
+            background: linear-gradient(135deg, #3d2b5e, #2d1b4e);
             border: 2px solid #5d4b7e;
             color: #fff;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
         }
         
         .message.user {
             align-self: flex-end;
-            background: #00D9FF;
+            background: linear-gradient(135deg, #00D9FF, #0099CC);
             border: 2px solid #fff;
             color: #1a0f2e;
+            font-weight: bold;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
         }
         
         .chat-input-area {
-            padding: 15px;
-            border-top: 2px solid #5d4b7e;
+            padding: 20px;
+            border-top: 3px solid #5d4b7e;
+            background: rgba(0,0,0,0.2);
         }
         
         .chat-input {
             width: 100%;
             background: #3d2b5e;
-            border: 2px solid #5d4b7e;
-            padding: 10px;
+            border: 3px solid #5d4b7e;
+            padding: 12px 15px;
             color: #fff;
             font-family: 'VT323', monospace;
             font-size: 16px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+        }
+        
+        .chat-input:focus {
+            border-color: #00D9FF;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0,217,255,0.3);
         }
         
         .send-btn {
             width: 100%;
-            background: #00D9FF;
+            background: linear-gradient(180deg, #00D9FF, #0099CC);
             color: #1a0f2e;
             border: 3px solid #fff;
-            padding: 10px;
-            font-family: 'VT323', monospace;
-            font-size: 16px;
+            padding: 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
             cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.3);
+            transition: all 0.1s;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 rgba(0,0,0,0.3);
+        }
+        
+        .send-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+        }
+        
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 6px;
+            padding: 15px;
+            align-self: flex-start;
+        }
+        
+        .typing-dot {
+            width: 10px;
+            height: 10px;
+            background: #00D9FF;
+            border-radius: 50%;
+            animation: typing 1s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 24px;
+            animation: float-particle 2s ease-out forwards;
+            z-index: 100;
+        }
+        
+        @keyframes float-particle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-150px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a0f2e;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #5d4b7e;
+            border: 3px solid #1a0f2e;
+            border-radius: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00D9FF;
         }
     </style>
 </head>
@@ -424,8 +758,9 @@
     <header class="header">
         <div class="logo">
             <div class="logo-icon">🏢</div>
-            <div class="logo-text">AGENT OFFICE LIVE<br><span style="font-size: 10px; color: #FF69B4;">Kairosoft Style</span></div>
+            <div class="logo-text">AGENT OFFICE<br><span style="font-size: 10px; color: #FF69B4;">LIVE - Kairosoft Style</span></div>
         </div>
+        
         <div class="header-stats">
             <div class="stat-box">
                 <div class="stat-value" id="totalTasks">0</div>
@@ -437,7 +772,7 @@
             </div>
             <div class="stat-box">
                 <div class="stat-value" id="efficiency">100%</div>
-                <div class="stat-label">Efficiency</div>
+                <div class="stat-label">Power</div>
             </div>
         </div>
     </header>
@@ -456,50 +791,62 @@
                 <div class="chat-avatar" id="chatAvatar">👑</div>
                 <div class="chat-info">
                     <h3 id="chatName">NEXUS</h3>
-                    <div style="font-size: 12px; color: #7a6a99;">Click an agent to chat</div>
+                    <p>Click an agent to chat!</p>
                 </div>
             </div>
             
             <div class="chat-messages" id="chatMessages">
-                <div class="message agent">Welcome to Agent Office! Click on any agent to start chatting. 👋</div>
+                <div class="message agent">🔥 Welcome Commander! The agents are working at MAX POWER! Click any agent to chat with them!</div>
             </div>
             
             <div class="chat-input-area">
                 <input type="text" class="chat-input" id="chatInput" 
-                       placeholder="Type message..."
+                       placeholder="Type your command..."
                        onkeypress="if(event.key==='Enter') sendMessage()">
-                <button class="send-btn" onclick="sendMessage()">SEND MESSAGE</button>
+                <button class="send-btn" onclick="sendMessage()">SEND COMMAND</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Agent Data with Kairosoft-style attributes
+        // Agent Data - Enhanced
         const agents = [
             { id: 'nexus', name: 'NEXUS', emoji: '👑', role: 'Orchestrator', color: '#FFD700', 
-              task: 'Coordinating all agents', progress: 95, phrases: ['All systems go!', 'Command received!', 'Orchestrating...'] },
+              task: 'Coordinating all agents', progress: 95, status: 'online',
+              phrases: ['All systems GO! 🔥', 'Command received!', 'Orchestrating at MAX!'] },
             { id: 'glasses', name: 'GLASSES', emoji: '🔍', role: 'Researcher', color: '#00D9FF',
-              task: 'Market research', progress: 60, phrases: ['Analyzing data...', 'Markets look good!', 'Research complete!'] },
+              task: 'Market research', progress: 60, status: 'busy',
+              phrases: ['Analyzing markets... 📊', 'Crypto looks HOT! 🔥', 'Research complete!'] },
             { id: 'quill', name: 'QUILL', emoji: '✍️', role: 'Writer', color: '#FF69B4',
-              task: 'Content creation', progress: 45, phrases: ['Writing...', 'Draft ready!', 'Editing now...'] },
+              task: 'Content creation', progress: 45, status: 'busy',
+              phrases: ['Writing content... ✍️', 'Draft is FIRE! 🔥', 'Words flowing!'] },
             { id: 'pixel', name: 'PIXEL', emoji: '🎨', role: 'Designer', color: '#9370DB',
-              task: 'UI design', progress: 70, phrases: ['Designing...', 'Pixel perfect!', 'Assets ready!'] },
+              task: 'UI design', progress: 70, status: 'online',
+              phrases: ['Designing... 🎨', 'Pixels perfect! ✨', 'Art incoming!'] },
             { id: 'gary', name: 'GARY', emoji: '📈', role: 'Marketing', color: '#32CD32',
-              task: 'Campaign analysis', progress: 55, phrases: ['Analyzing...', 'Growth up!', 'Metrics good!'] },
+              task: 'Campaign analysis', progress: 55, status: 'busy',
+              phrases: ['Analyzing... 📈', 'Growth is HOT! 🔥', 'Metrics soaring!'] },
             { id: 'larry', name: 'LARRY', emoji: '🐦', role: 'Social', color: '#FF8C00',
-              task: 'Social posting', progress: 30, phrases: ['Posting...', 'Engagement up!', 'Scheduled!'] },
+              task: 'Social posting', progress: 30, status: 'offline',
+              phrases: ['Posting... 🐦', 'Engagement UP! 📱', 'Social buzz!'] },
             { id: 'sentry', name: 'SENTRY', emoji: '🛡️', role: 'DevOps', color: '#DC143C',
-              task: 'System monitoring', progress: 85, phrases: ['Monitoring...', 'All secure!', 'Systems green!'] },
+              task: 'System monitoring', progress: 85, status: 'online',
+              phrases: ['Monitoring... 🛡️', 'All secure! ✅', 'Systems GREEN!'] },
             { id: 'audit', name: 'AUDIT', emoji: '✓', role: 'QA', color: '#20B2AA',
-              task: 'Code review', progress: 75, phrases: ['Reviewing...', 'Tests pass!', 'Quality good!'] },
+              task: 'Code review', progress: 75, status: 'online',
+              phrases: ['Reviewing... ✓', 'Quality A+! ⭐', 'Tests passing!'] },
             { id: 'cipher', name: 'CIPHER', emoji: '🔐', role: 'Security', color: '#2F4F4F',
-              task: 'Security scan', progress: 90, phrases: ['Scanning...', 'No threats!', 'Encrypted!'] },
+              task: 'Security scan', progress: 90, status: 'online',
+              phrases: ['Scanning... 🔐', 'No threats! 🛡️', 'Encrypted!'] },
             { id: 'limitless', name: 'LIMITLESS', emoji: '🤖', role: 'Trading Bot', color: '#00FF7F',
-              task: 'Active trading', progress: 100, phrases: ['Trading...', 'Profits up!', 'Scanning markets!'] },
+              task: 'Active trading', progress: 100, status: 'online',
+              phrases: ['Trading... 🤖', 'Profits UP! 💰', 'Markets scanned!'] },
             { id: 'olivia', name: 'OLIVIA', emoji: '💼', role: 'DealFlow', color: '#FF1493',
-              task: 'Lead scoring', progress: 50, phrases: ['Scoring...', 'Deals found!', 'Outreach ready!'] },
+              task: 'Lead scoring', progress: 50, status: 'busy',
+              phrases: ['Scoring leads... 💼', 'Deals found! 💎', 'Outreach ready!'] },
             { id: 'zookeeper', name: 'ZOOKEEPER', emoji: '🦁', role: 'Pixel Sanctuary', color: '#8B4513',
-              task: 'Game dev', progress: 80, phrases: ['Building...', 'Features added!', 'Bugs fixed!'] }
+              task: 'Game dev', progress: 80, status: 'online',
+              phrases: ['Building... 🦁', 'Features added! 🎮', 'Bugs squashed!'] }
         ];
 
         let selectedAgent = agents[0];
@@ -513,27 +860,37 @@
             agents.forEach((agent, index) => {
                 const workstation = document.createElement('div');
                 workstation.className = 'workstation';
+                if (agent.progress > 80) workstation.classList.add('hot');
+                
                 workstation.innerHTML = `
+                    <div class="status-dot ${agent.status}"></div>
+                    <div class="agent-name-tag">${agent.name}</div>
                     <div class="agent-character" id="agent-${agent.id}" onclick="selectAgent('${agent.id}')">
                         <div class="fire-effect">
                             <div class="fire-particle"></div>
                             <div class="fire-particle"></div>
                             <div class="fire-particle"></div>
+                            <div class="fire-particle"></div>
+                            <div class="fire-particle"></div>
                         </div>
                         <div class="agent-body" style="--agent-color: ${agent.color}">
-                            <div class="agent-head">${agent.emoji}</div>
+                            <div class="agent-head">
+                                ${agent.emoji}
+                                <div class="agent-eyes"></div>
+                            </div>
                         </div>
                         <div class="speech-bubble" id="bubble-${agent.id}">${agent.task}</div>
                     </div>
                     <div class="desk"></div>
                     <div class="work-progress">
                         <div class="work-progress-fill" id="progress-${agent.id}" style="width: ${agent.progress}%"></div>
+                        <div class="work-progress-text">${agent.progress}%</div>
                     </div>
                 `;
                 grid.appendChild(workstation);
             });
 
-            // Start simulation
+            // Start simulation loops
             simulateWork();
             updateStats();
         }
@@ -545,21 +902,25 @@
             document.getElementById('chatAvatar').textContent = selectedAgent.emoji;
             document.getElementById('chatName').textContent = selectedAgent.name;
             
-            addMessage('agent', `Hi! I'm ${selectedAgent.name}. Currently working on: ${selectedAgent.task} (${selectedAgent.progress}%) 🔥`);
+            addMessage('agent', `🔥 ${selectedAgent.name} here! I'm your ${selectedAgent.role} currently at ${selectedAgent.progress}% power! What do you need Commander?`);
             
-            // Trigger fire effect briefly
+            // Trigger fire effect
             const char = document.getElementById(`agent-${agentId}`);
             char.classList.add('on-fire');
-            setTimeout(() => char.classList.remove('on-fire'), 2000);
+            createParticle(selectedAgent.emoji);
+            
+            setTimeout(() => char.classList.remove('on-fire'), 3000);
         }
 
-        // Simulate Work Activity
+        // Simulate Work Activity - Enhanced
         function simulateWork() {
+            // Work cycle every 2 seconds
             setInterval(() => {
                 const randomAgent = agents[Math.floor(Math.random() * agents.length)];
                 const char = document.getElementById(`agent-${randomAgent.id}`);
                 const bubble = document.getElementById(`bubble-${randomAgent.id}`);
                 const progress = document.getElementById(`progress-${randomAgent.id}`);
+                const progressText = progress.nextElementSibling;
                 
                 // Show random phrase
                 const phrase = randomAgent.phrases[Math.floor(Math.random() * randomAgent.phrases.length)];
@@ -569,19 +930,23 @@
                 // Working animation
                 char.classList.add('working');
                 
-                // Fire effect for high progress
-                if (randomAgent.progress > 80) {
+                // Fire effect for high progress or random chance
+                if (randomAgent.progress > 80 || Math.random() > 0.7) {
                     char.classList.add('on-fire');
+                    document.querySelector(`#agent-${randomAgent.id}`).closest('.workstation').classList.add('hot');
                 }
                 
                 // Update progress
-                randomAgent.progress = Math.min(100, randomAgent.progress + Math.random() * 5);
+                const increase = Math.random() * 3;
+                randomAgent.progress = Math.min(100, randomAgent.progress + increase);
                 progress.style.width = randomAgent.progress + '%';
+                progressText.textContent = Math.floor(randomAgent.progress) + '%';
                 
-                // Score popup
-                if (Math.random() > 0.7) {
-                    showScorePopup(char, '+3');
-                    totalTasksCompleted += 3;
+                // Score popup randomly
+                if (Math.random() > 0.6) {
+                    const score = Math.floor(Math.random() * 5) + 1;
+                    showScorePopup(char, '+' + score);
+                    totalTasksCompleted += score;
                     updateStats();
                 }
                 
@@ -590,6 +955,14 @@
                     bubble.textContent = randomAgent.task;
                 }, 2000);
                 
+            }, 2000);
+            
+            // Random sparkles
+            setInterval(() => {
+                const randomAgent = agents[Math.floor(Math.random() * agents.length)];
+                if (randomAgent.status === 'online') {
+                    createParticle(randomAgent.emoji);
+                }
             }, 3000);
         }
 
@@ -599,13 +972,26 @@
             popup.className = 'score-popup';
             popup.textContent = score;
             element.appendChild(popup);
-            setTimeout(() => popup.remove(), 2000);
+            setTimeout(() => popup.remove(), 1500);
+        }
+
+        // Create Floating Particle
+        function createParticle(emoji) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.textContent = emoji;
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight - 100 + 'px';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 2000);
         }
 
         // Update Stats
         function updateStats() {
             document.getElementById('totalTasks').textContent = totalTasksCompleted;
             document.getElementById('activeAgents').textContent = agents.filter(a => a.progress > 50).length;
+            document.getElementById('efficiency').textContent = Math.floor(agents.reduce((acc, a) => acc + a.progress, 0) / agents.length) + '%';
         }
 
         // Chat Functions
@@ -626,14 +1012,27 @@
             addMessage('user', text);
             input.value = '';
             
+            // Show typing
+            const messages = document.getElementById('chatMessages');
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            messages.appendChild(typing);
+            messages.scrollTop = messages.scrollHeight;
+            
             setTimeout(() => {
+                typing.remove();
                 const responses = [
-                    `Roger that! Working on ${selectedAgent.task} 🎯`,
-                    `Copy! ${selectedAgent.role} mode activated ⚡`,
-                    `On it! Progress at ${selectedAgent.progress}% 💪`,
-                    `Task noted! Firing up the engines 🔥`
+                    `🔥 Roger that Commander! ${selectedAgent.name} is on it!`,
+                    `⚡ ${selectedAgent.role} mode activated! Let's do this!`,
+                    `💪 Copy! Working at ${selectedAgent.progress}% power!`,
+                    `🎯 Task noted! Firing up the engines!`
                 ];
                 addMessage('agent', responses[Math.floor(Math.random() * responses.length)]);
+                
+                // Boost progress
+                selectedAgent.progress = Math.min(100, selectedAgent.progress + 5);
+                document.getElementById(`progress-${selectedAgent.id}`).style.width = selectedAgent.progress + '%';
             }, 1000);
         }
 
