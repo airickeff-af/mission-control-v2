@@ -1,0 +1,26 @@
+# Virtual Agent Cron Schedule
+# Add these to crontab with: crontab /root/.openclaw/workspace/mission-control-v2/scripts/agent-cron.txt
+
+# Sentry - Every 1 minute (system monitoring)
+* * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./sentry-task.sh >> ../logs/sentry.log 2>&1
+
+# Glasses - Every 5 minutes (market research)
+*/5 * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./glasses-task.sh >> ../logs/glasses.log 2>&1
+
+# Quill - Every 10 minutes (content writing)
+*/10 * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./quill-task.sh >> ../logs/quill.log 2>&1
+
+# ZooKeeper - Every 10 minutes (game dev)
+*/10 * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./zookeeper-task.sh >> ../logs/zookeeper.log 2>&1
+
+# Pixel - Every 15 minutes (design)
+*/15 * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./pixel-task.sh >> ../logs/pixel.log 2>&1
+
+# Olivia - Every 15 minutes (deals)
+*/15 * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./olivia-task.sh >> ../logs/olivia.log 2>&1
+
+# Gary - Every 20 minutes (marketing)
+*/20 * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./gary-task.sh >> ../logs/gary.log 2>&1
+
+# Audit - Every 30 minutes (QA)
+*/30 * * * * cd /root/.openclaw/workspace/mission-control-v2/scripts && ./audit-task.sh >> ../logs/audit.log 2>&1
