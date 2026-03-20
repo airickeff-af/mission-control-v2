@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏢 Game Dev Office v2.0 | Kairosoft Style</title>
+    <title>🏢 Game Dev Office v2.1 | Meebit Sprites</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
@@ -15,7 +15,7 @@
             overflow: hidden;
         }
         
-        /* Game Header - Stats HUD */
+        /* Game Header */
         .game-header {
             background: linear-gradient(180deg, #16213e 0%, #0f3460 100%);
             border-bottom: 4px solid #e94560;
@@ -35,7 +35,6 @@
         .game-stats {
             display: flex;
             gap: 20px;
-            font-size: 14px;
         }
         
         .stat {
@@ -73,7 +72,7 @@
             height: 600px;
         }
         
-        /* Floor Grid */
+        /* Floor */
         .floor {
             position: absolute;
             width: 100%;
@@ -108,7 +107,6 @@
             height: 80px;
             background: linear-gradient(180deg, #f5e6c8 0%, #e6d7b8 100%);
             border: 4px solid #8b7355;
-            transform: translateZ(1px);
         }
         
         .wall-left {
@@ -216,33 +214,52 @@
             border-radius: 4px 4px 0 0;
         }
         
-        /* Meebit Worker */
+        /* Meebit Sprite Animation */
         .meebit-worker {
             position: absolute;
-            width: 50px;
+            width: 60px;
             height: 60px;
             cursor: pointer;
             z-index: 10;
+            overflow: hidden;
         }
         
-        .meebit-worker:hover {
-            transform: scale(1.1);
-        }
-        
-        .meebit-img {
+        .meebit-sprite {
             width: 100%;
             height: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            background-size: 640px 640px;
+            background-position: 0 0;
+            image-rendering: pixelated;
         }
         
-        .meebit-worker.working {
-            animation: bounce 0.5s infinite;
+        /* Idle animation - using first row of sprite sheet */
+        .meebit-sprite.idle {
+            animation: sprite-idle 1s steps(4) infinite;
         }
         
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+        @keyframes sprite-idle {
+            0% { background-position: 0 0; }
+            100% { background-position: -256px 0; }
+        }
+        
+        /* Working animation */
+        .meebit-sprite.working {
+            animation: sprite-work 0.5s steps(4) infinite;
+        }
+        
+        @keyframes sprite-work {
+            0% { background-position: 0 -128px; }
+            100% { background-position: -256px -128px; }
+        }
+        
+        /* Walking animation */
+        .meebit-sprite.walking {
+            animation: sprite-walk 0.6s steps(4) infinite;
+        }
+        
+        @keyframes sprite-walk {
+            0% { background-position: 0 -256px; }
+            100% { background-position: -256px -256px; }
         }
         
         /* Speech Bubble */
@@ -278,6 +295,17 @@
         .meebit-worker:hover .speech-bubble,
         .meebit-worker.speaking .speech-bubble {
             opacity: 1;
+        }
+        
+        /* Fallback for missing sprites */
+        .meebit-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            border-radius: 8px;
         }
         
         /* Particle Effects */
@@ -396,7 +424,7 @@
 </head>
 <body>
     <header class="game-header">
-        <div class="game-title">🏢 GAME DEV OFFICE</div>
+        <div class="game-title">🏢 GAME DEV OFFICE v2.1</div>
         <div class="game-stats">
             <div class="stat">
                 <div class="stat-label">BUDGET</div>
@@ -428,51 +456,67 @@
                     <!-- Whiteboard -->
                     <div class="whiteboard" style="top: 30px; left: 30px;">Tasks!</div>
                     
-                    <!-- Desks with Meebits -->
+                    <!-- Desks with Meebit Sprite Workers -->
+                    <!-- Nexus - Robot -->
                     <div class="desk" style="top: 120px; left: 80px;">
                         <div class="desk-top">
                             <div class="monitor"></div>
                         </div>
                         <div class="chair"></div>
                         
-                        <div class="meebit-worker" id="m1" onclick="selectAgent('nexus')" style="top: -20px; left: 25px;">
-                            <img class="meebit-img" src="https://api.meebits.app/v2/images/larvalabs_full/1001" alt="Nexus" onerror="this.style.display='none'; this.parentElement.style.background='#FFD700'; this.parentElement.innerHTML='👑'">
+                        <div class="meebit-worker" id="m1" onclick="selectAgent('nexus')" style="top: -20px; left: 20px;">
+                            <div class="meebit-sprite idle" id="sprite-nexus" 
+                                 style="background-image: url('https://files.meebits.app/sprites/1001.png');">
+                                <div class="meebit-fallback" style="background: #FFD700; display: none;">👑</div>
+                            </div>
                             <div class="speech-bubble">Work!</div>
                         </div>
                     </div>
 
+                    <!-- Glasses - Human -->
                     <div class="desk" style="top: 120px; left: 250px;">
                         <div class="desk-top">
                             <div class="monitor"></div>
                         </div>
                         <div class="chair"></div>
                         
-                        <div class="meebit-worker" id="m2" onclick="selectAgent('glasses')" style="top: -20px; left: 25px;">
-                            <img class="meebit-img" src="https://api.meebits.app/v2/images/larvalabs_full/2001" alt="Glasses" onerror="this.style.display='none'; this.parentElement.style.background='#00D9FF'; this.parentElement.innerHTML='🔍'">
+                        <div class="meebit-worker" id="m2" onclick="selectAgent('glasses')" style="top: -20px; left: 20px;">
+                            <div class="meebit-sprite idle" id="sprite-glasses"
+                                 style="background-image: url('https://files.meebits.app/sprites/2001.png');">
+                                <div class="meebit-fallback" style="background: #00D9FF; display: none;">🔍</div>
+                            </div>
                             <div class="speech-bubble">Research!</div>
                         </div>
                     </div>
 
+                    <!-- Pixel - Human -->
                     <div class="desk" style="top: 280px; left: 80px;">
                         <div class="desk-top">
                             <div class="monitor"></div>
                         </div>
                         <div class="chair"></div>
                         
-                        <div class="meebit-worker" id="m3" onclick="selectAgent('pixel')" style="top: -20px; left: 25px;">
-                            <img class="meebit-img" src="https://api.meebits.app/v2/images/larvalabs_full/4001" alt="Pixel" onerror="this.style.display='none'; this.parentElement.style.background='#9370DB'; this.parentElement.innerHTML='🎨'">
+                        <div class="meebit-worker" id="m3" onclick="selectAgent('pixel')" style="top: -20px; left: 20px;">
+                            <div class="meebit-sprite idle" id="sprite-pixel"
+                                 style="background-image: url('https://files.meebits.app/sprites/4001.png');">
+                                <div class="meebit-fallback" style="background: #9370DB; display: none;">🎨</div>
+                            </div>
                             <div class="speech-bubble">Design!</div>
                         </div>
                     </div>
 
+                    <!-- Sentry - Skeleton -->
                     <div class="desk" style="top: 280px; left: 250px;">
                         <div class="desk-top">
                             <div class="monitor"></div>
                         </div>
                         <div class="chair"></div>
                         
-                        <div class="meebit-worker" id="m4" onclick="selectAgent('sentry')" style="top: -20px; left: 25px;">
-                            <img class="meebit-img" src="https://api.meebits.app/v2/images/larvalabs_full/57" alt="Sentry" onerror="this.style.display='none'; this.parentElement.style.background='#DC143C'; this.parentElement.innerHTML='🛡️'">
+                        <div class="meebit-worker" id="m4" onclick="selectAgent('sentry')" style="top: -20px; left: 20px;">
+                            <div class="meebit-sprite idle" id="sprite-sentry"
+                                 style="background-image: url('https://files.meebits.app/sprites/57.png');">
+                                <div class="meebit-fallback" style="background: #DC143C; display: none;">🛡️</div>
+                            </div>
                             <div class="speech-bubble">Secure!</div>
                         </div>
                     </div>
@@ -487,12 +531,12 @@
                 </div>
                 <div>
                     <div class="chat-title" id="chatName">NEXUS</div>
-                    <div class="chat-subtitle">Robot Director</div>
+                    <div class="chat-subtitle">Robot Director | Meebit #1001</div>
                 </div>
             </div>
             
             <div class="chat-messages" id="chatMessages">
-                <div class="message agent">Welcome to Game Dev Office! Click a Meebit to chat! 🔥</div>
+                <div class="message agent">🔥 Meebit Sprite Office loaded! Each worker has animated sprite sheet from meebco-api! Click to chat!</div>
             </div>
             
             <div class="chat-input-area">
@@ -505,10 +549,10 @@
 
     <script>
         const agents = {
-            nexus: { name: 'NEXUS', meebitId: 1001, role: 'Robot Director' },
-            glasses: { name: 'GLASSES', meebitId: 2001, role: 'Researcher' },
-            pixel: { name: 'PIXEL', meebitId: 4001, role: 'Designer' },
-            sentry: { name: 'SENTRY', meebitId: 57, role: 'Security' }
+            nexus: { name: 'NEXUS', meebitId: 1001, role: 'Robot Director', spriteId: 'sprite-nexus' },
+            glasses: { name: 'GLASSES', meebitId: 2001, role: 'Researcher', spriteId: 'sprite-glasses' },
+            pixel: { name: 'PIXEL', meebitId: 4001, role: 'Designer', spriteId: 'sprite-pixel' },
+            sentry: { name: 'SENTRY', meebitId: 57, role: 'Security', spriteId: 'sprite-sentry' }
         };
         
         let selected = agents.nexus;
@@ -517,12 +561,19 @@
             selected = agents[id];
             document.getElementById('chatImg').src = `https://api.meebits.app/v2/images/larvalabs_full/${selected.meebitId}`;
             document.getElementById('chatName').textContent = selected.name;
-            addMsg('agent', `${selected.name} here! Ready to ${selected.role.toLowerCase()}! 💪`);
+            document.querySelector('.chat-subtitle').textContent = `${selected.role} | Meebit #${selected.meebitId}`;
             
-            // Animate
-            const el = event.currentTarget;
-            el.classList.add('working');
-            setTimeout(() => el.classList.remove('working'), 1000);
+            addMsg('agent', `${selected.name} here! I'm a ${selected.role} ready to work! 💪`);
+            
+            // Animate sprite
+            const sprite = document.getElementById(selected.spriteId);
+            sprite.classList.remove('idle');
+            sprite.classList.add('working');
+            
+            setTimeout(() => {
+                sprite.classList.remove('working');
+                sprite.classList.add('idle');
+            }, 2000);
         }
         
         function addMsg(type, text) {
@@ -542,22 +593,38 @@
             input.value = '';
             
             setTimeout(() => {
-                addMsg('agent', `${selected.name}: Roger that! On it! 🔥`);
+                addMsg('agent', `${selected.name}: Roger that! Executing now! 🔥`);
             }, 500);
         }
         
-        // Random animations
+        // Random sprite animations
         setInterval(() => {
-            const workers = document.querySelectorAll('.meebit-worker');
-            const random = workers[Math.floor(Math.random() * workers.length)];
-            random.classList.add('working');
-            random.classList.add('speaking');
+            const spriteIds = ['sprite-nexus', 'sprite-glasses', 'sprite-pixel', 'sprite-sentry'];
+            const randomId = spriteIds[Math.floor(Math.random() * spriteIds.length)];
+            const sprite = document.getElementById(randomId);
+            const worker = sprite.closest('.meebit-worker');
+            
+            // Switch to working animation
+            sprite.classList.remove('idle');
+            sprite.classList.add('working');
+            worker.classList.add('speaking');
             
             setTimeout(() => {
-                random.classList.remove('working');
-                random.classList.remove('speaking');
+                sprite.classList.remove('working');
+                sprite.classList.add('idle');
+                worker.classList.remove('speaking');
             }, 1500);
-        }, 3000);
+        }, 4000);
+        
+        // Handle sprite loading errors
+        document.querySelectorAll('.meebit-sprite').forEach(sprite => {
+            const img = new Image();
+            img.src = sprite.style.backgroundImage.slice(4, -1).replace(/"/g, '');
+            img.onerror = () => {
+                sprite.style.backgroundImage = 'none';
+                sprite.querySelector('.meebit-fallback').style.display = 'flex';
+            };
+        });
     </script>
 </body>
 </html>
