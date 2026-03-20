@@ -409,10 +409,15 @@
         let selectedWorker = workers[0];
         const sprites = {};
         
-        // Load sprite sheets
+        // Load sprite sheets with loading tracking
+        let spritesLoaded = 0;
         workers.forEach(w => {
             const img = new Image();
             img.crossOrigin = 'anonymous';
+            img.onload = () => {
+                spritesLoaded++;
+                console.log(`Loaded ${w.name}: ${w.meebitId}`);
+            };
             img.src = `https://files.meebits.app/sprites/${w.meebitId}.png`;
             sprites[w.id] = img;
         });
@@ -421,29 +426,61 @@
             const pos = isoToScreen(worker.x, worker.y);
             const sprite = sprites[worker.id];
             
-            if (sprite && sprite.complete) {
-                // Draw sprite frame (64x64 from 256x256 sheet)
+            // Draw shadow first
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.beginPath();
+            ctx.ellipse(pos.x, pos.y + 5, 22, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                // Draw sprite frame - BIGGER
                 const frameX = (Math.floor(worker.frame) % 4) * 64;
-                const frameY = 0; // Idle row
+                // Use walking row if moving
+                const isMoving = Math.abs(worker.x - worker.targetX) > 0.01 || Math.abs(worker.y - worker.targetY) > 0.01;
+                const frameY = isMoving ? 64 : 0;
                 
                 ctx.drawImage(
                     sprite,
                     frameX, frameY, 64, 64,
-                    pos.x - 20, pos.y - 50, 40, 40
+                    pos.x - 30, pos.y - 70, 60, 60
                 );
             } else {
-                // Fallback circle
-                ctx.fillStyle = '#FFD700';
+                // Fallback - colored circle with icon
+                const colors = {
+                    nexus: '#FFD700',
+                    glasses: '#00D9FF',
+                    pixel: '#9370DB',
+                    sentry: '#DC143C'
+                };
+                const emojis = {
+                    nexus: '👑',
+                    glasses: '🔍',
+                    pixel: '🎨',
+                    sentry: '🛡️'
+                };
+                
+                // Circle background
+                ctx.fillStyle = colors[worker.id];
                 ctx.beginPath();
-                ctx.arc(pos.x, pos.y - 20, 15, 0, Math.PI * 2);
+                ctx.arc(pos.x, pos.y - 25, 25, 0, Math.PI * 2);
                 ctx.fill();
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Emoji
+                ctx.font = '24px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(emojis[worker.id], pos.x, pos.y - 18);
             }
             
-            // Shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.2)';
-            ctx.beginPath();
-            ctx.ellipse(pos.x, pos.y, 15, 8, 0, 0, Math.PI * 2);
-            ctx.fill();
+            // Name label
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(pos.x - 35, pos.y + 15, 70, 18);
+            ctx.fillStyle = '#FFF';
+            ctx.font = 'bold 10px "Press Start 2P"';
+            ctx.textAlign = 'center';
+            ctx.fillText(worker.name, pos.x, pos.y + 28);
         }
         
         function drawScene() {
@@ -500,14 +537,16 @@
             }
         }
         
-        // Random walking
+        // Random walking - more frequent
         function randomWalk() {
             workers.forEach(w => {
-                if (Math.random() > 0.7) {
+                if (Math.random() > 0.5) { // 50% chance every 2 seconds
                     const destinations = [
                         { x: 2, y: 2 }, { x: 6, y: 2 },
                         { x: 2, y: 6 }, { x: 6, y: 6 },
-                        { x: 4, y: 4 }
+                        { x: 4, y: 4 }, { x: 1, y: 4 },
+                        { x: 7, y: 4 }, { x: 4, y: 1 },
+                        { x: 4, y: 7 }
                     ];
                     const dest = destinations[Math.floor(Math.random() * destinations.length)];
                     w.targetX = dest.x;
@@ -516,7 +555,7 @@
             });
         }
         
-        setInterval(randomWalk, 3000);
+        setInterval(randomWalk, 2000); // Every 2 seconds
         
         // Update movement every frame
         function update() {
