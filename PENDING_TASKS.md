@@ -1,8 +1,42 @@
 # PENDING TASKS - MISSION CONTROL v2.0
 **Status:** ACTIVE  
-**Last Updated:** 2026-03-02 2:00 AM HKT  
-**Total Tasks:** 101  
-**Nuclear Reset:** Feb 24, 2026 - Fresh start, all old tasks archived
+**Last Updated:** 2026-03-20 5:00 PM HKT  
+**Total Tasks:** 105  
+**Updates:** Agent Office 3D deployed, Virtual Agent System running, Memory Hub live
+
+---
+
+## 📊 TASK DASHBOARD
+
+| Priority | Count | Status |
+|----------|-------|--------|
+| 🔴 P0 - Critical | 19 | 4 in progress |
+| 🟡 P1 - High | 26 | Multiple active |
+| 🟢 P2 - Medium | 18 | Planned |
+| ⚪ P3 - Low | 5 | Future |
+| **TOTAL** | **105** | **Active** |
+
+---
+
+## ✅ COMPLETED TODAY (2026-03-20)
+
+1. **🧠 Memory Hub** - Downloadable markdown files with 19 memory files - DEPLOYED ✅
+2. **🏢 Agent Office 3D** - Kairosoft isometric office with chat - DEPLOYED ✅
+3. **🤖 Virtual Agent System** - 8 automated task runners with cron - RUNNING ✅
+4. **💬 Agent Chat Interface** - Talk to individual agents - LIVE ✅
+5. **📈 Limitless Hunter Updates** - 30% flip rule, 0.95min checks - ACTIVE ✅
+6. **🔗 Mission Control Links** - Navigation to all new features - UPDATED ✅
+
+---
+
+## 🔴 P0 - CRITICAL
+
+### **MC-P0-020: True Sub-Agent System** 🆕 URGENT
+- **Assigned:** Nexus + System Admin
+- **Due:** Mar 21, 12:00 PM
+- **Status:** ⏳ BLOCKED
+- **Description:** Configure OpenClaw to support true sub-agent spawning. Requires system-level agent ID configuration. Currently only "main" agent available.
+- **Blocker:** Cannot spawn agents via sessions_spawn - only "main" configured
 
 ---
 
