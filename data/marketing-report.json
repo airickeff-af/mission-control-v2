@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-03-20T18:11:33+08:00",
+  "timestamp": "2026-03-20T18:16:53+08:00",
   "source": "Gary",
   "metrics": {
-    "impressions": 4036,
-    "clicks": 180,
-    "conversions": 13
+    "impressions": 4096,
+    "clicks": 388,
+    "conversions": 37
   },
   "recommendation": "Increase budget on high-performing channels"
 }
