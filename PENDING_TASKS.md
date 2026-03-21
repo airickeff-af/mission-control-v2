@@ -29,7 +29,7 @@
 | 💬 Agent Chat Interface | ✅ LIVE | Interactive chat |
 | 📈 Limitless Hunter v3.2 | ✅ ACTIVE | Trading bot optimized |
 | 📝 Jesse Pollak Research | ✅ COMPLETE | Enhanced profile |
-| 🎮 Agent Office ISO/TOP Toggle | ✅ COMPLETE | [View](agent-office-live.html) |
+| 🎮 Agent Office v3.0 FULL | ✅ COMPLETE | [View](agent-office-full.html) |
 
 ---
 
