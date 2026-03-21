@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>🏢 Mission Control Agent Office v3.0 | FULL FEATURED</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-primary: #0a0a0f; --bg-secondary: #12121a; --accent-cyan: #00d4ff; --accent-green: #22c55e; --accent-yellow: #fbbf24; }
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        body { font-family: 'VT323', monospace; background: var(--bg-primary); color: #eaeaea; min-height: 100vh; overflow: hidden; }
+        .header { background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%); border-bottom: 4px solid var(--accent-cyan); padding: 0 1rem; height: 60px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+        .brand { display: flex; align-items: center; gap: 0.5rem; }
+        .logo { width: 40px; height: 40px; background: var(--accent-cyan); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 3px 3px 0 rgba(0,0,0,0.3); }
+        .brand-text h1 { font-family: 'Press Start 2P', cursive; font-size: 0.6rem; color: var(--accent-cyan); text-shadow: 2px 2px 0 #000; }
+        .brand-text span { font-size: 0.5rem; color: #888; }
+        .live-indicator { display: flex; align-items: center; gap: 0.5rem; font-size: 0.7rem; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-green); animation: pulse 1s infinite; box-shadow: 0 0 10px var(--accent-green); }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        #officeCanvas { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; width: 100%; height: calc(100% - 60px); background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%); cursor: grab; }
+        #officeCanvas:active { cursor: grabbing; }
+        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 8px; z-index: 100; flex-wrap: wrap; }
+        .btn { padding: 12px 18px; background: linear-gradient(180deg, #2d1b4e 0%, #1a0f2e 100%); border: 3px solid var(--accent-cyan); border-radius: 4px; font-family: 'Press Start 2P', cursive; font-size: 0.45rem; color: #fff; cursor: pointer; transition: all 0.1s; box-shadow: 3px 3px 0 rgba(0,0,0,0.3); }
+        .btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,0.3); background: var(--accent-cyan); color: #000; }
+        .stats-overlay { position: fixed; top: 70px; right: 20px; background: rgba(10, 10, 15, 0.95); border: 3px solid var(--accent-cyan); border-radius: 8px; padding: 15px; font-family: 'Press Start 2P', cursive; font-size: 0.5rem; z-index: 100; min-width: 160px; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .agent-panel { position: fixed; top: 60px; right: -350px; width: 320px; height: calc(100% - 60px); background: rgba(10, 10, 15, 0.98); border-left: 3px solid var(--accent-cyan); z-index: 99; transition: right 0.3s ease; overflow-y: auto; }
+        .agent-panel.active { right: 0; }
+        .team-title { font-family: 'Press Start 2P', cursive; font-size: 0.5rem; color: var(--accent-cyan); margin-bottom: 10px; }
+        .agent-card { display: flex; align-items: center; gap: 10px; padding: 12px; margin-bottom: 8px; background: #1a1a2e; border-radius: 6px; cursor: pointer; }
+        .agent-card:hover { background: rgba(0, 212, 255, 0.15); }
+        .feature-legend { position: fixed; bottom: 20px; right: 20px; background: rgba(10, 10, 15, 0.9); border: 2px solid var(--accent-cyan); border-radius: 8px; padding: 12px; font-size: 0.7rem; z-index: 100; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div class="brand-text">
+                <h1>AGENT OFFICE v3.0</h1>
+                <span>11 AGENTS + GYM + POOL + SERVER ROOM</span>
+            </div>
+        </div>
+        <div class="live-indicator"><span class="status-dot"></span><span>LIVE</span></div>
+    </header>
+    
+    <canvas id="officeCanvas"></canvas>
+    
+    <div class="controls">
+        <button class="btn" onclick="resetCamera()">🎯 RESET</button>
+        <button class="btn" onclick="togglePanel()">👥 TEAM</button>
+        <button class="btn" onclick="toggleViewMode()" id="viewToggleBtn">🔲 ISO</button>
+        <button class="btn" onclick="toggleMeebitMode()">🎨 MEEBIT</button>
+        <button class="btn" onclick="openVRMMode()">🎭 VRM</button>
+    </div>
+    
+    <div class="stats-overlay">
+        <div class="stat-row"><span>AGENTS:</span><span>11</span></div>
+        <div class="stat-row"><span>VIEW:</span><span id="viewMode">ISO</span></div>
+    </div>
+
+    <div class="agent-panel" id="agentPanel">
+        <div class="panel-content" id="panelContent"></div>
+    </div>
+
+    <div class="feature-legend">
+        <div style="color:#00d4ff;font-family:'Press Start 2P';font-size:0.5rem;margin-bottom:8px;">🏢 FEATURES</div>
+        <div>🏋️ Gym Area</div>
+        <div>🎱 Pool Table</div>
+        <div>🖥️ Server Room</div>
+        <div>☕ Recharge Area</div>
+        <div>🪟 Windows</div>
+        <div>💬 Agent Chat</div>
+    </div>
+
+    <script>
+        const AGENTS = [
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', emoji: '🎯', color: '#00d4ff', x: 0, y: 0 },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', emoji: '🔍', color: '#3b82f6', x: -4, y: -3 },
+            { id: 'quill', name: 'Quill', role: 'Writer', emoji: '✍️', color: '#ec4899', x: 4, y: -3 },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', emoji: '🎨', color: '#a855f7', x: -6, y: 0 },
+            { id: 'gary', name: 'Gary', role: 'Marketing', emoji: '📢', color: '#f59e0b', x: 6, y: 0 },
+            { id: 'larry', name: 'Larry', role: 'Social', emoji: '🐦', color: '#06b6d4', x: -4, y: 3 },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', emoji: '🔧', color: '#ef4444', x: 4, y: 3 },
+            { id: 'audit', name: 'Audit', role: 'QA', emoji: '✅', color: '#8b5cf6', x: -7, y: -5 },
+            { id: 'cipher', name: 'Cipher', role: 'Security', emoji: '🔒', color: '#6366f1', x: 7, y: -5 },
+            { id: 'limitless', name: 'Limitless', role: 'Trading Bot', emoji: '🤖', color: '#22c55e', x: 0, y: -6 },
+            { id: 'olivia', name: 'Olivia', role: 'DealFlow', emoji: '💼', color: '#10b981', x: 0, y: 5 }
+        ];
+
+        const ZONES = {
+            nexus: { minX: -2, maxX: 2, minY: -2, maxY: 2 },
+            glasses: { minX: -6, maxX: -2, minY: -5, maxY: -1 },
+            quill: { minX: 2, maxX: 6, minY: -5, maxY: -1 },
+            pixel: { minX: -8, maxX: -4, minY: -2, maxY: 2 },
+            gary: { minX: 4, maxX: 8, minY: -2, maxY: 2 },
+            larry: { minX: -6, maxX: -2, minY: 1, maxY: 5 },
+            sentry: { minX: 2, maxX: 6, minY: 1, maxY: 5 },
+            audit: { minX: -9, maxX: -5, minY: -7, maxY: -3 },
+            cipher: { minX: 5, maxX: 9, minY: -7, maxY: -3 },
+            limitless: { minX: -2, maxX: 2, minY: -8, maxY: -4 },
+            olivia: { minX: -2, maxX: 2, minY: 3, maxY: 7 }
+        };
+
+        class Agent {
+            constructor(d) {
+                Object.assign(this, d);
+                this.tx = d.x; this.ty = d.y; this.activity = 'idle';
+                this.idleTimer = 0; this.speech = null; this.speechTimer = 0;
+                this.partner = null; this.dir = 'down';
+            }
+            update(dt, all) {
+                if (this.activity === 'idle') {
+                    this.idleTimer += dt;
+                    if (this.idleTimer > 3000 + Math.random() * 7000) this.startWalk();
+                } else if (this.activity === 'walking') {
+                    const dx = this.tx - this.x, dy = this.ty - this.y, dist = Math.hypot(dx, dy);
+                    if (dist < 0.15) { this.x = this.tx; this.y = this.ty; this.activity = 'idle'; this.idleTimer = 0; }
+                    else { const s = 0.8 * dt * 0.002; this.x += (dx / dist) * s; this.y += (dy / dist) * s; }
+                }
+                if (this.speech) { this.speechTimer -= dt; if (this.speechTimer <= 0) this.speech = null; }
+                if (this.activity === 'idle' && Math.random() < 0.003) {
+                    const nearby = all.filter(a => a.id !== this.id && a.activity === 'idle' && Math.hypot(a.x - this.x, a.y - this.y) < 2);
+                    if (nearby.length) {
+                        const p = nearby[0];
+                        this.activity = 'talking'; this.partner = p; p.activity = 'talking'; p.partner = this;
+                        const chats = ['Hey!', 'How is it?', 'Almost done!', 'Nice!', 'Coffee?', 'Deploy?'];
+                        this.speech = chats[Math.floor(Math.random() * chats.length)]; this.speechTimer = 2000;
+                        p.speech = chats[Math.floor(Math.random() * chats.length)]; p.speechTimer = 2000;
+                        setTimeout(() => { this.activity = 'idle'; this.partner = null; p.activity = 'idle'; p.partner = null; }, 2500);
+                    }
+                }
+            }
+            startWalk() {
+                const z = ZONES[this.id];
+                this.tx = z.minX + Math.random() * (z.maxX - z.minX);
+                this.ty = z.minY + Math.random() * (z.maxY - z.minY);
+                this.activity = 'walking';
+                const dx = this.tx - this.x, dy = this.ty - this.y;
+                this.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+            }
+            render(ctx, math, cam, vm, mm) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom, py = (pos.y - cam.y) * cam.zoom;
+                const s = (vm === 'topdown' ? 28 : 38) * cam.zoom;
+                ctx.fillStyle = 'rgba(0,0,0,0.35)';
+                if (vm === 'topdown') { ctx.beginPath(); ctx.arc(px, py + s * 0.25, s * 0.35, 0, Math.PI * 2); ctx.fill(); }
+                else { ctx.beginPath(); ctx.ellipse(px, py + s * 0.4, s * 0.35, s * 0.1, 0, 0, Math.PI * 2); ctx.fill(); }
+                
+                // Body
+                ctx.fillStyle = this.color;
+                if (mm) {
+                    // Meebit style
+                    if (vm === 'topdown') {
+                        ctx.fillRect(px - s * 0.35, py - s * 0.35, s * 0.7, s * 0.7);
+                        ctx.fillStyle = '#000'; ctx.fillRect(px - 3, py - 3, 6, 6);
+                    } else {
+                        ctx.fillRect(px - s * 0.3, py - s, s * 0.6, s * 0.6);
+                        ctx.fillStyle = '#fdbf60'; ctx.fillRect(px - s * 0.25, py - s * 1.35, s * 0.5, s * 0.4);
+                        ctx.fillStyle = '#000'; ctx.fillRect(px - s * 0.15, py - s * 1.2, s * 0.08, s * 0.08); ctx.fillRect(px + s * 0.07, py - s * 1.2, s * 0.08, s * 0.08);
+                    }
+                } else {
+                    // Pixel style
+                    if (vm === 'topdown') {
+                        ctx.beginPath(); ctx.arc(px, py - s * 0.2, s * 0.4, 0, Math.PI * 2); ctx.fill();
+                    } else {
+                        ctx.fillRect(px - s / 3, py - s, s / 1.5, s * 0.7);
+                        ctx.fillStyle = '#fdbf60'; ctx.fillRect(px - s / 3, py - s * 1.3, s / 1.5, s * 0.4);
+                        ctx.fillStyle = '#000'; ctx.fillRect(px - s / 4, py - s * 1.15, s / 8, s / 10); ctx.fillRect(px + s / 8, py - s * 1.15, s / 8, s / 10);
+                    }
+                }
+                
+                // Emoji
+                ctx.font = `${s * 0.5}px serif`; ctx.textAlign = 'center';
+                ctx.fillText(this.emoji, px, vm === 'topdown' ? py - s * 0.1 : py - s * 1.5);
+                
+                // Speech
+                if (this.speech) {
+                    ctx.fillStyle = 'rgba(255,255,0,0.95)'; ctx.beginPath(); ctx.roundRect(px - 40, py - s * (vm === 'topdown' ? 0.8 : 1.8) - 15, 80, 22, 6); ctx.fill();
+                    ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.stroke();
+                    ctx.fillStyle = '#000'; ctx.font = 'bold 10px monospace'; ctx.fillText(this.speech, px, py - s * (vm === 'topdown' ? 0.8 : 1.8));
+                }
+            }
+        }
+
+        class Renderer {
+            constructor(c) {
+                this.c = c; this.ctx = c.getContext('2d');
+                this.agents = new Map();
+                this.cam = { x: 0, y: -50, zoom: 1.2 };
+                this.vm = 'iso';
+                this.mm = false;
+                this.blink = false;
+                this.iso = { toScreen: (x, y, z) => ({ x: (x - y) * 35 + this.c.width / 2, y: (x + y) * 18 - z * 15 + this.c.height / 2.5 }) };
+                this.td = { toScreen: (x, y, z) => ({ x: x * 50 + this.c.width / 2, y: y * 50 + this.c.height / 2 - z * 20 }) };
+                this.setup();
+            }
+            setup() {
+                const r = () => { this.c.width = window.innerWidth; this.c.height = window.innerHeight - 60; };
+                r(); window.addEventListener('resize', r);
+                let d = false, dx, dy;
+                this.c.addEventListener('mousedown', (e) => {
+                    const rx = e.clientX - this.c.getBoundingClientRect().left, ry = e.clientY - this.c.getBoundingClientRect().top;
+                    let cl = null;
+                    for (const a of this.agents.values()) { const p = this.gm().toScreen(a.x, a.y, 0), px = (p.x - this.cam.x) * this.cam.zoom, py = (p.y - this.cam.y) * this.cam.zoom, s = (this.vm === 'topdown' ? 28 : 38) * this.cam.zoom; if (Math.hypot(rx - px, ry - (py - s * 0.2)) < s * 0.5) { cl = a; break; } }
+                    if (cl) { this.agents.forEach(a => a.selected = false); cl.selected = true; focusOnAgent(cl.id); }
+                    else { d = true; dx = e.clientX; dy = e.clientY; }
+                });
+                this.c.addEventListener('mousemove', (e) => { if (d) { this.cam.x += (e.clientX - dx) / this.cam.zoom; this.cam.y += (e.clientY - dy) / this.cam.zoom; dx = e.clientX; dy = e.clientY; } });
+                this.c.addEventListener('mouseup', () => d = false);
+                this.c.addEventListener('wheel', (e) => { e.preventDefault(); this.cam.zoom = Math.max(0.5, Math.min(3, this.cam.zoom * (e.deltaY > 0 ? 0.9 : 1.1))); });
+            }
+            gm() { return this.vm === 'iso' ? this.iso : this.td; }
+            start() { const l = () => { const n = performance.now(); this.blink = Math.sin(n / 200) > 0; this.agents.forEach(a => a.update(n - (this.lt || n), Array.from(this.agents.values()))); this.lt = n; this.r(); requestAnimationFrame(l); }; l(); }
+            r() {
+                const ctx = this.ctx, c = this.c, m = this.gm();
+                ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, c.width, c.height);
+                
+                // Floor
+                for (let x = -12; x <= 12; x++) { for (let y = -12; y <= 12; y++) {
+                    const p = m.toScreen(x, y, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom;
+                    let iz = Object.values(ZONES).some(z => x >= z.minX && x <= z.maxX && y >= z.minY && y <= z.maxY);
+                    ctx.fillStyle = iz ? ((x + y) % 2 === 0 ? '#1e2a3e' : '#1a2436') : ((x + y) % 2 === 0 ? '#1a1a2e' : '#151525');
+                    if (this.vm === 'topdown') { const ts = 50 * this.cam.zoom; ctx.fillRect(cx - ts / 2, cy - ts / 2, ts, ts); ctx.strokeStyle = 'rgba(0,212,255,0.05)'; ctx.strokeRect(cx - ts / 2, cy - ts / 2, ts, ts); }
+                    else { const tw = 35 * this.cam.zoom, th = 18 * this.cam.zoom; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + tw, cy + th); ctx.lineTo(cx, cy + th * 2); ctx.lineTo(cx - tw, cy + th); ctx.closePath(); ctx.fill(); }
+                } }
+                
+                // Walls
+                for (let x = -10; x <= 10; x++) { const p = m.toScreen(x, -10, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom; ctx.fillStyle = (x % 2 === 0) ? '#e6d7b8' : '#d7c8a8'; ctx.fillRect(cx - 25 * this.cam.zoom, cy - 60 * this.cam.zoom, 50 * this.cam.zoom, 60 * this.cam.zoom); }
+                
+                // Windows
+                [-6, -2, 2, 6].forEach(wx => { const p = m.toScreen(wx, -10, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom; ctx.fillStyle = '#87CEEB'; ctx.fillRect(cx - 20 * this.cam.zoom, cy - 50 * this.cam.zoom, 40 * this.cam.zoom, 40 * this.cam.zoom); ctx.strokeStyle = '#5c4033'; ctx.lineWidth = 3 * this.cam.zoom; ctx.beginPath(); ctx.moveTo(cx, cy - 50 * this.cam.zoom); ctx.lineTo(cx, cy - 10 * this.cam.zoom); ctx.moveTo(cx - 20 * this.cam.zoom, cy - 30 * this.cam.zoom); ctx.lineTo(cx + 20 * this.cam.zoom, cy - 30 * this.cam.zoom); ctx.stroke(); });
+                
+                // Meeting table
+                const mt = m.toScreen(0, 0, 0);
+                ctx.fillStyle = '#8B4513'; ctx.beginPath(); ctx.ellipse((mt.x - this.cam.x) * this.cam.zoom, (mt.y - this.cam.y) * this.cam.zoom, 60 * this.cam.zoom, 30 * this.cam.zoom, 0, 0, Math.PI * 2); ctx.fill();
+                
+                // Pool table
+                const pt = m.toScreen(8, -3, 0);
+                ctx.fillStyle = '#228B22'; ctx.fillRect((pt.x - this.cam.x) * this.cam.zoom - 55 * this.cam.zoom, (pt.y - this.cam.y) * this.cam.zoom - 25 * this.cam.zoom, 110 * this.cam.zoom, 50 * this.cam.zoom);
+                ctx.strokeStyle = '#8B4513'; ctx.lineWidth = 8 * this.cam.zoom; ctx.strokeRect((pt.x - this.cam.x) * this.cam.zoom - 55 * this.cam.zoom, (pt.y - this.cam.y) * this.cam.zoom - 25 * this.cam.zoom, 110 * this.cam.zoom, 50 * this.cam.zoom);
+                
+                // Gym
+                const gy = m.toScreen(-8, 0, 0);
+                ctx.fillStyle = '#333'; ctx.fillRect((gy.x - this.cam.x) * this.cam.zoom - 40 * this.cam.zoom, (gy.y - this.cam.y) * this.cam.zoom - 20 * this.cam.zoom, 30 * this.cam.zoom, 50 * this.cam.zoom);
+                ctx.fillStyle = '#00CED1'; ctx.fillRect((gy.x - this.cam.x) * this.cam.zoom - 40 * this.cam.zoom, (gy.y - this.cam.y) * this.cam.zoom - 25 * this.cam.zoom, 30 * this.cam.zoom, 8 * this.cam.zoom);
+                
+                // Server room
+                const sr = m.toScreen(8, 5, 0);
+                ctx.fillStyle = '#1a1a2e'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 50 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 40 * this.cam.zoom, 100 * this.cam.zoom, 80 * this.cam.zoom);
+                for (let r = 0; r < 2; r++) { ctx.fillStyle = '#333'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 45 * this.cam.zoom + r * 50 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 35 * this.cam.zoom, 40 * this.cam.zoom, 70 * this.cam.zoom); for (let i = 0; i < 6; i++) { ctx.fillStyle = this.blink ? '#00ff00' : '#00aa00'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 40 * this.cam.zoom + r * 50 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 30 * this.cam.zoom + i * 10 * this.cam.zoom, 8 * this.cam.zoom, 5 * this.cam.zoom); } }
+                ctx.fillStyle = '#00ff00'; ctx.font = `${8 * this.cam.zoom}px monospace`; ctx.textAlign = 'center'; ctx.fillText('MEMORY', (sr.x - this.cam.x) * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 45 * this.cam.zoom);
+                
+                // Recharge area
+                const ra = m.toScreen(-8, 6, 0);
+                ctx.fillStyle = '#FFF'; ctx.fillRect((ra.x - this.cam.x) * this.cam.zoom - 30 * this.cam.zoom, (ra.y - this.cam.y) * this.cam.zoom - 40 * this.cam.zoom, 60 * this.cam.zoom, 80 * this.cam.zoom);
+                ctx.fillStyle = 'rgba(135,206,235,0.6)'; ctx.fillRect((ra.x - this.cam.x) * this.cam.zoom - 25 * this.cam.zoom, (ra.y - this.cam.y) * this.cam.zoom - 35 * this.cam.zoom, 50 * this.cam.zoom, 70 * this.cam.zoom);
+                
+                // Agents
+                Array.from(this.agents.values()).sort((a, b) => (a.y + a.x) - (b.y + b.x)).forEach(a => a.render(ctx, m, this.cam, this.vm, this.mm));
+            }
+        }
+
+        let R;
+        function init() { R = new Renderer(document.getElementById('officeCanvas')); AGENTS.forEach(d => R.agents.set(d.id, new Agent(d))); R.start(); renderPanel(); }
+        function resetCamera() { if (!R) return; R.cam.x = R.vm === 'topdown' ? 0 : 0; R.cam.y = R.vm === 'topdown' ? 0 : -50; R.cam.zoom = R.vm === 'topdown' ? 1.0 : 1.2; }
+        function togglePanel() { document.getElementById('agentPanel').classList.toggle('active'); }
+        function toggleViewMode() { R.vm = R.vm === 'iso' ? 'topdown' : 'iso'; R.cam.x = R.vm === 'topdown' ? 0 : 0; R.cam.y = R.vm === 'topdown' ? 0 : -50; R.cam.zoom = R.vm === 'topdown' ? 1.0 : 1.2; document.getElementById('viewMode').textContent = R.vm === 'iso' ? 'ISO' : 'TOP'; document.getElementById('viewToggleBtn').textContent = R.vm === 'iso' ? '🔲 ISO' : '⬜ TOP'; }
+        function toggleMeebitMode() { R.mm = !R.mm; }
+        function openVRMMode() { window.open('https://airickeff-af.github.io/mission-control-v2/agent-office-meebit.html', '_blank'); }
+        function focusOnAgent(id) { const a = R.agents.get(id); if (!a) return; if (R.vm === 'topdown') { R.cam.x = a.x * 50; R.cam.y = a.y * 50; } else { R.cam.x = a.x * 35; R.cam.y = a.y * 18 - 50; } R.cam.zoom = 1.8; }
+        function renderPanel() { const teams = { 'Leadership': AGENTS.filter(a => a.role === 'Orchestrator'), 'Intelligence': AGENTS.filter(a => ['Researcher', 'Trading Bot'].includes(a.role)), 'Creative': AGENTS.filter(a => ['Designer', 'Writer'].includes(a.role)), 'Growth': AGENTS.filter(a => ['Marketing', 'Social', 'DealFlow'].includes(a.role)), 'Operations': AGENTS.filter(a => ['DevOps', 'QA', 'Security'].includes(a.role)) }; document.getElementById('panelContent').innerHTML = Object.entries(teams).map(([n, as]) => as.length ? `<div style="margin-bottom:20px;"><div style="font-family:'Press Start 2P';font-size:0.5rem;color:#00d4ff;margin-bottom:10px;">${n}</div>${as.map(a => `<div class="agent-card" onclick="focusOnAgent('${a.id}')"><div style="width:40px;height:40px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:${a.color}30;border:2px solid ${a.color};">${a.emoji}</div><div style="flex:1;"><div style="font-weight:bold;">${a.name}</div><div style="font-size:0.75rem;color:#888;">${a.role}</div></div></div>`).join('')}</div>` : '').join(''); }
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
