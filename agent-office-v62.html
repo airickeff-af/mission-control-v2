@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Agent Office v6.2 | AESTHETIC + BYTE 🐶</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #00d4ff; --green: #22c55e; --pink: #ff6b9d; }
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        body { font-family: 'VT323', monospace; background: #1a1a2e; color: #fff; overflow: hidden; }
+        .header { background: linear-gradient(180deg, #2d1b4e, #1a0f2e); border-bottom: 4px solid var(--accent); padding: 0 1rem; height: 60px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { width: 40px; height: 40px; background: var(--accent); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .logo h1 { font-family: 'Press Start 2P'; font-size: 0.55rem; color: var(--accent); }
+        #gameCanvas { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; cursor: grab; }
+        #gameCanvas:active { cursor: grabbing; }
+        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 8px; z-index: 100; flex-wrap: wrap; }
+        .btn { padding: 12px 16px; background: linear-gradient(180deg, #2d1b4e, #1a0f2e); border: 3px solid var(--accent); border-radius: 4px; font-family: 'Press Start 2P'; font-size: 0.4rem; color: #fff; cursor: pointer; }
+        .btn:hover { background: var(--accent); color: #000; }
+        .btn.active { background: var(--green); border-color: var(--green); }
+        .loading { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #1a1a2e; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
+        .loading.hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+        .loading h2 { font-family: 'Press Start 2P'; color: var(--accent); margin-bottom: 20px; }
+        .progress { width: 400px; height: 20px; background: #2a1b3d; border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s; }
+        .time-overlay { position: fixed; top: 70px; left: 20px; background: rgba(0,0,0,0.85); border: 2px solid var(--accent); border-radius: 8px; padding: 10px; font-family: 'Press Start 2P'; font-size: 0.45rem; z-index: 101; }
+        .time-dawn { color: #FFA500; }
+        .time-day { color: #87CEEB; }
+        .time-dusk { color: #FF6B6B; }
+        .time-night { color: #9370DB; }
+        .particle-toggle { position: fixed; top: 70px; right: 20px; }
+        .chat-overlay { position: fixed; top: 130px; left: 20px; max-width: 320px; max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.9); border: 2px solid var(--pink); border-radius: 8px; padding: 10px; z-index: 100; }
+        .chat-message { margin-bottom: 6px; padding: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; font-size: 0.8rem; }
+        .chat-name { color: var(--accent); font-weight: bold; }
+        .agent-list { position: fixed; top: 60px; right: -320px; width: 300px; height: calc(100% - 60px); background: rgba(10,10,15,0.98); border-left: 3px solid var(--accent); transition: right 0.3s; z-index: 99; overflow-y: auto; padding: 15px; }
+        .agent-list.active { right: 0; }
+        .agent-card { display: flex; align-items: center; gap: 10px; padding: 10px; margin-bottom: 8px; background: #1a1a2e; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+        .agent-card:hover { background: rgba(0,212,255,0.2); border-left: 3px solid var(--accent); }
+        .status-badge { position: absolute; top: -5px; right: -5px; background: #ff6b9d; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <h2>🏢 AGENT OFFICE v6.2 + BYTE 🐶</h2>
+        <div class="progress"><div class="progress-bar" id="progress"></div></div>
+        <div id="loadingText" style="margin-top:15px;color:#888">Loading agents + Byte + particles...</div>
+    </div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🐶</div>
+            <h1>AGENT OFFICE v6.2</h1>
+        </div>
+        <div style="font-size:0.7rem;">✨ AESTHETIC MODE + 🐾 BYTE</div>
+    </header>
+    
+    <div class="time-overlay" id="timeOverlay">
+        <div id="timeIcon">🌅</div>
+        <div id="timeLabel">DAWN</div>
+        <div style="font-size:0.35rem;color:#888;margin-top:5px;" id="timeValue">00:00</div>
+    </div>
+
+    <div class="particle-toggle">
+        <button class="btn" id="particleBtn" onclick="toggleParticles()">✨ FX ON</button>
+    </div>
+
+    <div class="chat-overlay" id="chatOverlay">
+        <div style="color:#ff6b9d;font-weight:bold;margin-bottom:10px;">💬 LIVE CHAT</div>
+        <div id="chatHistory"></div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    
+    <div class="controls">
+        <button class="btn" onclick="resetCam()">🎯 RESET</button>
+        <button class="btn" onclick="toggleList()">👥 TEAM</button>
+        <button class="btn" onclick="toggleView()">🔲 ISO</button>
+        <button class="btn" onclick="findByte()">🐶 FIND BYTE</button>
+        <button class="btn" onclick="zoomIn()">➕</button>
+        <button class="btn" onclick="zoomOut()">➖</button>
+    </div>
+    
+    <div class="agent-list" id="agentList"></div>
+
+    <script>
+        // CONFIG
+        const AGENT_CONFIG = [
+            { id: 'nexus', name: 'Nexus', role: 'Director', imagePath: 'assets/meebits/meebit-001.png', type: 'Human', x: 0, y: 0, personality: 'bossy' },
+            { id: 'glasses', name: 'Glasses', role: 'Research', imagePath: 'assets/meebits/meebit-042.png', type: 'Human', x: -3, y: -2, personality: 'nerdy' },
+            { id: 'quill', name: 'Quill', role: 'Writer', imagePath: 'assets/meebits/meebit-100.png', type: 'Human', x: 3, y: -2, personality: 'creative' },
+            { id: 'pixel', name: 'Pixel', role: 'Artist', imagePath: 'assets/meebits/meebit-200.png', type: 'Human', x: -5, y: 0, personality: 'artsy' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', imagePath: 'assets/meebits/meebit-300.png', type: 'Human', x: 5, y: 0, personality: 'hype' },
+            { id: 'larry', name: 'Larry', role: 'Social', imagePath: 'assets/meebits/meebit-500.png', type: 'Pig', x: -3, y: 2, personality: 'social' },
+            { id: 'sentry', name: 'Sentry', role: 'Engineer', imagePath: 'assets/meebits/meebit-600.png', type: 'Robot', x: 3, y: 2, personality: 'robotic' },
+            { id: 'audit', name: 'Audit', role: 'QA', imagePath: 'assets/meebits/meebit-700.png', type: 'Skeleton', x: -6, y: -4, personality: 'strict' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', imagePath: 'assets/meebits/meebit-800.png', type: 'Visitor', x: 6, y: -4, personality: 'mysterious' },
+            { id: 'limitless', name: 'Limitless', role: 'Trader', imagePath: 'assets/meebits/meebit-1000.png', type: 'Robot', x: 0, y: -5, personality: 'calculating' },
+            { id: 'olivia', name: 'Olivia', role: 'Sales', imagePath: 'assets/meebits/meebit-1500.png', type: 'Human', x: 0, y: 4, personality: 'charming' }
+        ];
+
+        const CHATS = ["Hey!","Yo!","Sup!","Working hard!","Need coffee...","Deploying!","Bug fixed!","Ship it!","LGTM!","Meeting time!","Not another meeting!","Scope creep!","To the moon! 🚀","HODL!","Playing with tree! 🌳","T-Rex is cool! 🦖","Check out the fossils!","This office is wild!","TGIF!","Monday again?!","Pizza?","Sushi?","Tacos?","I'm starving!","Gaming tonight?","LOL!","LMAO!","😂","🤣","😎","🤔","😴","🔥","💯","👍","🌳","🦖","🏋️ Gym time!"];
+
+        const ZONES = {
+            nexus: { minX: -1, maxX: 1, minY: -1, maxY: 1 },
+            glasses: { minX: -5, maxX: -2, minY: -4, maxY: -1 },
+            quill: { minX: 2, maxX: 5, minY: -4, maxY: -1 },
+            pixel: { minX: -7, maxX: -4, minY: -2, maxY: 2 },
+            gary: { minX: 4, maxX: 7, minY: -2, maxY: 2 },
+            larry: { minX: -5, maxX: -2, minY: 1, maxY: 4 },
+            sentry: { minX: 2, maxX: 5, minY: 1, maxY: 4 },
+            audit: { minX: -8, maxX: -5, minY: -6, maxY: -3 },
+            cipher: { minX: 5, maxX: 8, minY: -6, maxY: -3 },
+            limitless: { minX: -2, maxX: 2, minY: -7, maxY: -4 },
+            olivia: { minX: -2, maxX: 2, minY: 3, maxY: 6 }
+        };
+
+        const FURNITURE = {
+            desk: 'assets/furniture/desk.png', floorWood: 'assets/furniture/floor_wood.png',
+            meetingTable: 'assets/furniture/meeting_table.png', whiteboard: 'assets/furniture/whiteboard.png',
+            plant: 'assets/furniture/plant.png', commanderDesk: 'assets/furniture/commander_desk.png',
+            cabinet: 'assets/furniture/cabinet.png', chairFront: 'assets/furniture/chair_front.png',
+            chairBack: 'assets/furniture/chair_back.png', treadmill: 'assets/furniture/treadmill.png',
+            dumbbells: 'assets/furniture/dumbbells.png', weightBench: 'assets/furniture/weight_bench.png',
+            yogaMat: 'assets/furniture/yoga_mat.png', waterCoolerGym: 'assets/furniture/water_cooler_gym.png',
+            vendingMachine: 'assets/furniture/vending_machine.png', coffeeMachine: 'assets/furniture/coffee_machine.png',
+            waterCooler: 'assets/furniture/water_cooler.png', clock: 'assets/furniture/clock.png',
+            bookshelf: 'assets/furniture/bookshelf.png', tvScreen: 'assets/furniture/tv_screen.png'
+        };
+
+        const BYTE_SPRITES = {
+            sleep: 'assets/pets/byte_sleep.png',
+            awake: 'assets/pets/byte_awake.png',
+            beg: 'assets/pets/byte_beg.png',
+            excited: 'assets/pets/byte_excited.png',
+            bed: 'assets/pets/byte_bed.png'
+        };
+
+        // STATE
+        let particlesEnabled = true;
+        let chatHistory = [];
+        let totalChats = 0;
+        let selectedAgent = null;
+
+        // UTILS
+        function loadImage(src) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve({ img, success: true });
+                img.onerror = () => resolve({ img: null, success: false });
+                img.src = src;
+            });
+        }
+
+        function addToChatHistory(name, text, isUser = false) {
+            totalChats++;
+            chatHistory.push({ name, text, time: Date.now(), isUser });
+            if (chatHistory.length > 50) chatHistory.shift();
+            
+            const historyEl = document.getElementById('chatHistory');
+            const msg = document.createElement('div');
+            msg.className = 'chat-message';
+            msg.innerHTML = `<span style="color:${isUser ? '#0f0' : '#00d4ff'}">${name}:</span> ${text}`;
+            historyEl.insertBefore(msg, historyEl.firstChild);
+            while (historyEl.children.length > 10) historyEl.removeChild(historyEl.lastChild);
+        }
+
+        // TIME OF DAY SYSTEM
+        function getTimeOfDay() {
+            const hour = new Date().getHours();
+            if (hour >= 6 && hour < 9) return { name: 'DAWN', icon: '🌅', class: 'time-dawn', overlay: 'rgba(255,200,100,0.15)' };
+            if (hour >= 9 && hour < 17) return { name: 'DAY', icon: '☀️', class: 'time-day', overlay: 'rgba(0,0,0,0)' };
+            if (hour >= 17 && hour < 20) return { name: 'DUSK', icon: '🌇', class: 'time-dusk', overlay: 'rgba(200,100,50,0.2)' };
+            return { name: 'NIGHT', icon: '🌙', class: 'time-night', overlay: 'rgba(50,50,100,0.35)' };
+        }
+
+        function updateTimeDisplay() {
+            const time = getTimeOfDay();
+            const now = new Date();
+            document.getElementById('timeIcon').textContent = time.icon;
+            document.getElementById('timeLabel').textContent = time.name;
+            document.getElementById('timeLabel').className = time.class;
+            document.getElementById('timeValue').textContent = now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'});
+            return time;
+        }
+
+        // PARTICLE SYSTEM
+        class ParticleSystem {
+            constructor() {
+                this.particles = [];
+                this.types = {
+                    coffee: { color: '#FFF', life: 60, size: 3, vy: -0.5 },
+                    dust: { color: 'rgba(255,255,200,0.6)', life: 120, size: 2, vx: 0.2 },
+                    sweat: { color: '#87CEEB', life: 40, size: 4, vy: 0.8 },
+                    aura: { color: '#FFD700', life: 80, size: 5, vx: 0.5, vy: -0.3 },
+                    zzz: { color: '#00d4ff', life: 100, size: 8, vy: -0.3 }
+                };
+            }
+
+            emit(type, x, y, count = 1) {
+                if (!particlesEnabled) return;
+                const config = this.types[type];
+                for (let i = 0; i < count; i++) {
+                    this.particles.push({
+                        x, y,
+                        vx: (Math.random() - 0.5) * (config.vx || 0.3),
+                        vy: config.vy || -0.2,
+                        life: config.life,
+                        maxLife: config.life,
+                        size: config.size,
+                        color: config.color,
+                        type
+                    });
+                }
+            }
+
+            update() {
+                this.particles = this.particles.filter(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life--;
+                    return p.life > 0;
+                });
+            }
+
+            render(ctx, cam) {
+                if (!particlesEnabled) return;
+                this.particles.forEach(p => {
+                    const px = (p.x - cam.x) * cam.zoom;
+                    const py = (p.y - cam.y) * cam.zoom;
+                    const alpha = p.life / p.maxLife;
+                    
+                    if (p.type === 'zzz') {
+                        ctx.fillStyle = p.color;
+                        ctx.font = `${p.size * cam.zoom}px monospace`;
+                        ctx.globalAlpha = alpha;
+                        ctx.fillText('Z', px, py);
+                    } else {
+                        ctx.fillStyle = p.color;
+                        ctx.globalAlpha = alpha * 0.8;
+                        ctx.beginPath();
+                        ctx.arc(px, py, p.size * cam.zoom, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.globalAlpha = 1;
+                });
+            }
+        }
+
+        // BYTE THE CYBER-CORGI
+        class Byte {
+            constructor(sprites) {
+                this.sprites = sprites;
+                this.x = -8; this.y = 4;
+                this.bedX = -8; this.bedY = 4;
+                this.state = 'sleep';
+                this.stateTimer = 0;
+                this.targetX = this.x; this.targetY = this.y;
+                this.wagging = 0;
+            }
+
+            update(dt, timeOfDay) {
+                this.stateTimer += dt;
+                this.wagging += dt * 0.01;
+
+                // State machine
+                if (this.state === 'sleep') {
+                    if (this.stateTimer > 8000) {
+                        this.state = Math.random() < 0.7 ? 'awake' : 'sleep';
+                        this.stateTimer = 0;
+                    }
+                } else if (this.state === 'awake') {
+                    if (this.stateTimer > 5000) {
+                        const r = Math.random();
+                        if (r < 0.4) this.state = 'sleep';
+                        else if (r < 0.7) { this.state = 'wander'; this.pickTarget(); }
+                        else this.state = 'beg';
+                        this.stateTimer = 0;
+                    }
+                } else if (this.state === 'wander') {
+                    const dx = this.targetX - this.x, dy = this.targetY - this.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < 0.1) {
+                        this.state = 'awake';
+                        this.stateTimer = 0;
+                    } else {
+                        this.x += (dx / dist) * 0.03;
+                        this.y += (dy / dist) * 0.03;
+                    }
+                } else if (this.state === 'beg') {
+                    if (this.stateTimer > 4000) {
+                        this.state = 'awake';
+                        this.stateTimer = 0;
+                    }
+                }
+            }
+
+            pickTarget() {
+                // Wander around break room area
+                this.targetX = -9 + Math.random() * 4;
+                this.targetY = 3 + Math.random() * 3;
+            }
+
+            getStatusBadge() {
+                const badges = {
+                    sleep: '😴', awake: '🐶', wander: '🚶', beg: '🥺', excited: '🎉'
+                };
+                return badges[this.state] || '🐶';
+            }
+
+            render(ctx, math, cam) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const size = 45 * cam.zoom;
+
+                // Render bed if at home position
+                if (Math.hypot(this.x - this.bedX, this.y - this.bedY) < 0.5 && this.sprites.bed?.success) {
+                    const bedSize = 55 * cam.zoom;
+                    ctx.drawImage(this.sprites.bed.img, px - bedSize/2, py - bedSize/2, bedSize, bedSize);
+                }
+
+                // Byte sprite
+                let spriteKey = this.state === 'wander' ? 'awake' : this.state;
+                if (this.sprites[spriteKey]?.success) {
+                    let bob = this.state === 'wander' ? Math.sin(this.wagging) * 3 * cam.zoom : 0;
+                    ctx.drawImage(this.sprites[spriteKey].img, px - size/2, py - size/2 + bob, size, size);
+                } else {
+                    ctx.fillStyle = '#D2691E';
+                    ctx.beginPath();
+                    ctx.arc(px, py - size*0.2, size*0.3, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.font = `${size*0.5}px serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText('🐶', px, py);
+                }
+
+                // Name tag
+                ctx.fillStyle = 'rgba(0,212,255,0.9)';
+                ctx.fillRect(px - 25, py + size*0.25, 50, 16);
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('BYTE', px, py + size*0.25 + 12);
+
+                // Status badge
+                ctx.font = `${14 * cam.zoom}px serif`;
+                ctx.fillText(this.getStatusBadge(), px + size*0.4, py - size*0.3);
+
+                // Emit Zzz if sleeping
+                if (this.state === 'sleep' && particlesEnabled) {
+                    if (Math.random() < 0.02) game.particles.emit('zzz', px, py - size*0.5);
+                }
+            }
+        }
+
+        // AGENT CLASS WITH STATUS BADGES
+        class Agent {
+            constructor(config, imageData) {
+                Object.assign(this, config);
+                this.tx = config.x; this.ty = config.y;
+                this.activity = 'idle'; this.idleTimer = 0;
+                this.speech = null; this.speechTimer = 0;
+                this.dir = 'down';
+                this.frame = 0; this.animTimer = 0;
+                this.imageData = imageData;
+                this.chatCooldown = 0;
+                this.nearTree = false;
+                this.inGym = false;
+                this.status = 'working';
+                this.statusTimer = 0;
+            }
+
+            getStatusBadge() {
+                if (this.inGym) return '💪';
+                if (this.nearTree) return '🌳';
+                if (this.status === 'sleeping') return '😴';
+                if (this.status === 'eating') return '🍕';
+                if (this.status === 'coffee') return '☕';
+                return '💻';
+            }
+
+            update(dt, all, particles) {
+                this.animTimer += dt;
+                this.chatCooldown -= dt;
+                this.statusTimer += dt;
+
+                if (this.animTimer > 200) {
+                    this.animTimer = 0;
+                    this.frame = (this.frame + 1) % 4;
+                }
+
+                // Change status periodically
+                if (this.statusTimer > 15000) {
+                    const statuses = ['working', 'coffee', 'sleeping'];
+                    this.status = statuses[Math.floor(Math.random() * statuses.length)];
+                    this.statusTimer = 0;
+                }
+
+                this.nearTree = [{x: -9, y: 6}, {x: 9, y: 6}, {x: -10, y: -3}, {x: 10, y: -3}].some(t => Math.hypot(t.x - this.x, t.y - this.y) < 2);
+                this.inGym = this.y > 5;
+
+                if (this.activity === 'idle') {
+                    this.idleTimer += dt;
+                    if (this.idleTimer > 2000 + Math.random() * 3000) this.startWalk();
+                    
+                    if (this.chatCooldown <= 0 && Math.random() < 0.015) {
+                        let chat = CHATS[Math.floor(Math.random() * CHATS.length)];
+                        if (this.nearTree) chat = "Playing with tree! 🌳";
+                        if (this.inGym) chat = "Getting swole! 💪";
+                        this.speech = chat;
+                        this.speechTimer = 4000;
+                        addToChatHistory(this.name, chat);
+                        this.chatCooldown = 5000 + Math.random() * 5000;
+                    }
+                } else if (this.activity === 'walking') {
+                    const dx = this.tx - this.x, dy = this.ty - this.y, dist = Math.hypot(dx, dy);
+                    if (dist < 0.1) {
+                        this.x = this.tx; this.y = this.ty;
+                        this.activity = 'idle'; this.idleTimer = 0;
+                    } else {
+                        const s = 2 * dt * 0.001;
+                        this.x += (dx / dist) * s;
+                        this.y += (dy / dist) * s;
+                    }
+                }
+
+                if (this.speech) { this.speechTimer -= dt; if (this.speechTimer <= 0) this.speech = null; }
+            }
+
+            startWalk() {
+                const z = ZONES[this.id];
+                this.tx = z.minX + Math.random() * (z.maxX - z.minX);
+                this.ty = z.minY + Math.random() * (z.maxY - z.minY);
+                this.activity = 'walking';
+                const dx = this.tx - this.x, dy = this.ty - this.y;
+                this.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+            }
+
+            render(ctx, math, cam, vm, particles) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const size = 85 * cam.zoom;
+
+                // Shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                ctx.beginPath();
+                ctx.ellipse(px, py + size * 0.35, size * 0.25, size * 0.08, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Agent image
+                if (this.imageData.success) {
+                    let bob = this.activity === 'walking' ? Math.sin(this.frame * Math.PI / 2) * 3 * cam.zoom : 0;
+                    ctx.drawImage(this.imageData.img, px - size / 2, py - size * 0.9 + bob, size, size);
+                } else {
+                    ctx.fillStyle = '#444';
+                    ctx.beginPath();
+                    ctx.arc(px, py - size * 0.3, size * 0.3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.font = `${size * 0.4}px serif`;
+                    ctx.textAlign = 'center';
+                    const emojis = { Human: '👤', Pig: '🐷', Robot: '🤖', Visitor: '👽', Skeleton: '💀' };
+                    ctx.fillText(emojis[this.type] || '👤', px, py - size * 0.25);
+                }
+
+                // Name tag
+                ctx.fillStyle = 'rgba(0,0,0,0.85)';
+                ctx.fillRect(px - 45, py + size * 0.05, 90, 18);
+                ctx.fillStyle = this.nearTree ? '#0f0' : this.inGym ? '#ff6b9d' : '#fff';
+                ctx.font = 'bold 11px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.name, px, py + size * 0.05 + 13);
+
+                // Status badge
+                ctx.font = `${16 * cam.zoom}px serif`;
+                ctx.fillText(this.getStatusBadge(), px + size*0.4, py - size*0.5);
+
+                // Location indicator
+                if (this.nearTree || this.inGym) {
+                    ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                    ctx.fillRect(px - 45, py + size * 0.05 + 19, 90, 14);
+                    ctx.fillStyle = this.nearTree ? '#0f0' : '#ff6b9d';
+                    ctx.font = '9px monospace';
+                    ctx.fillText(this.nearTree ? '🌳 NEAR TREE' : '💪 IN GYM', px, py + size * 0.05 + 29);
+                }
+
+                // Speech bubble
+                if (this.speech) {
+                    const bx = px, by = py - size * 1;
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.roundRect(bx - 50, by - 12, 100, 24, 8);
+                    ctx.fill();
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.fillStyle = '#000';
+                    ctx.font = 'bold 11px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.speech.length > 20 ? this.speech.substring(0,20)+'...' : this.speech, bx, by + 4);
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.moveTo(bx - 5, by + 12);
+                    ctx.lineTo(bx + 5, by + 12);
+                    ctx.lineTo(bx, by + 20);
+                    ctx.fill();
+                    ctx.stroke();
+                }
+
+                // Emit sweat if in gym
+                if (this.inGym && particlesEnabled && Math.random() < 0.01) {
+                    particles.emit('sweat', px, py - size * 0.5);
+                }
+            }
+        }
+
+        // GAME CLASS
+        class Game {
+            constructor() {
+                this.c = document.getElementById('gameCanvas');
+                this.ctx = this.c.getContext('2d');
+                this.agents = new Map();
+                this.furniture = {};
+                this.byteSprites = {};
+                this.byte = null;
+                this.cam = { x: 0, y: -30, zoom: 0.9 };
+                this.viewMode = 'iso';
+                this.lastTime = 0;
+                this.blink = false;
+                this.particles = new ParticleSystem();
+                this.timeOfDay = getTimeOfDay();
+                this.iso = { toScreen: (x,y,z) => ({ x: (x-y)*52 + this.c.width/2, y: (x+y)*26 - z*26 + this.c.height/2.3 }) };
+                this.td = { toScreen: (x,y,z) => ({ x: x*72 + this.c.width/2, y: y*72 + this.c.height/2 - z*32 }) };
+                this.setupInput();
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                
+                // Update time every minute
+                setInterval(() => {
+                    this.timeOfDay = updateTimeDisplay();
+                }, 60000);
+            }
+
+            resize() { this.c.width = window.innerWidth; this.c.height = window.innerHeight - 60; }
+
+            setupInput() {
+                let d = false, lx, ly;
+                this.c.addEventListener('mousedown', e => {
+                    const r = this.c.getBoundingClientRect();
+                    const mx = e.clientX - r.left, my = e.clientY - r.top;
+                    
+                    // Check Byte click
+                    if (this.byte) {
+                        const b = this.byte, pos = this.gm().toScreen(b.x, b.y, 0);
+                        const bx = (pos.x - this.cam.x) * this.cam.zoom, by = (pos.y - this.cam.y) * this.cam.zoom;
+                        if (Math.hypot(mx - bx, my - by) < 40 * this.cam.zoom) {
+                            addToChatHistory('Byte', 'Woof! 🐶');
+                            this.byte.state = 'excited';
+                            this.byte.stateTimer = 0;
+                            return;
+                        }
+                    }
+                    
+                    // Check agent click
+                    for (const [id, a] of this.agents) {
+                        const p = this.gm().toScreen(a.x, a.y, 0);
+                        const px = (p.x - this.cam.x) * this.cam.zoom, py = (p.y - this.cam.y) * this.cam.zoom;
+                        if (Math.hypot(mx - px, my - (py - 35*this.cam.zoom)) < 42*this.cam.zoom) {
+                            addToChatHistory(a.name, `Hi! I'm ${a.role}. ${a.personality === 'hype' ? "Let's go! 🚀" : "How can I help?"}`);
+                            return;
+                        }
+                    }
+                    
+                    d = true; lx = e.clientX; ly = e.clientY; this.c.style.cursor = 'grabbing';
+                });
+                this.c.addEventListener('mousemove', e => {
+                    if (!d) return;
+                    this.cam.x -= (e.clientX - lx) / this.cam.zoom;
+                    this.cam.y -= (e.clientY - ly) / this.cam.zoom;
+                    lx = e.clientX; ly = e.clientY;
+                });
+                this.c.addEventListener('mouseup', () => { d = false; this.c.style.cursor = 'grab'; });
+                this.c.addEventListener('wheel', e => { e.preventDefault(); this.cam.zoom = Math.max(0.4, Math.min(2.5, this.cam.zoom * (e.deltaY > 0 ? 0.9 : 1.1))); }, { passive: false });
+            }
+
+            gm() { return this.viewMode === 'iso' ? this.iso : this.td; }
+
+            async init() {
+                const loadingText = document.getElementById('loadingText');
+                const progressBar = document.getElementById('progress');
+                let loaded = 0;
+                const total = AGENT_CONFIG.length + Object.keys(FURNITURE).length + Object.keys(BYTE_SPRITES).length;
+
+                // Load agents
+                for (const data of AGENT_CONFIG) {
+                    loadingText.textContent = `Loading ${data.name}...`;
+                    const imageData = await loadImage(data.imagePath);
+                    this.agents.set(data.id, new Agent(data, imageData));
+                    loaded++; progressBar.style.width = `${(loaded / total) * 100}%`;
+                }
+
+                // Load furniture
+                for (const [key, path] of Object.entries(FURNITURE)) {
+                    loadingText.textContent = `Loading ${key}...`;
+                    this.furniture[key] = await loadImage(path);
+                    loaded++; progressBar.style.width = `${(loaded / total) * 100}%`;
+                }
+
+                // Load Byte
+                for (const [key, path] of Object.entries(BYTE_SPRITES)) {
+                    loadingText.textContent = `Loading Byte ${key}...`;
+                    this.byteSprites[key] = await loadImage(path);
+                    loaded++; progressBar.style.width = `${(loaded / total) * 100}%`;
+                }
+
+                this.byte = new Byte(this.byteSprites);
+                
+                document.getElementById('loading').classList.add('hidden');
+                updateTimeDisplay();
+                this.renderUI();
+                this.start();
+            }
+
+            start() {
+                const loop = (n) => {
+                    const dt = n - this.lastTime; this.lastTime = n;
+                    this.blink = Math.sin(n / 150) > 0;
+                    
+                    // Update all
+                    this.agents.forEach(a => a.update(dt, Array.from(this.agents.values()), this.particles));
+                    if (this.byte) this.byte.update(dt, this.timeOfDay);
+                    this.particles.update();
+                    
+                    // Emit ambient particles
+                    if (particlesEnabled && Math.random() < 0.05) {
+                        // Coffee steam
+                        const cf = this.gm().toScreen(-9, 5, 0);
+                        this.particles.emit('coffee', (cf.x - this.cam.x) * this.cam.zoom + (Math.random()-0.5)*20, (cf.y - this.cam.y) * this.cam.zoom - 30);
+                        
+                        // Server dust
+                        const sr = this.gm().toScreen(9, 5, 0);
+                        this.particles.emit('dust', (sr.x - this.cam.x) * this.cam.zoom + (Math.random()-0.5)*80, (sr.y - this.cam.y) * this.cam.zoom + (Math.random()-0.5)*60);
+                        
+                        // T-Rex aura
+                        const tr = this.gm().toScreen(0, 0, 0);
+                        this.particles.emit('aura', (tr.x - this.cam.x) * this.cam.zoom + (Math.random()-0.5)*200, (tr.y - this.cam.y) * this.cam.zoom + (Math.random()-0.5)*100);
+                    }
+                    
+                    this.render();
+                    requestAnimationFrame(loop);
+                };
+                requestAnimationFrame(loop);
+            }
+
+            drawTree(ctx, x, y, cam) {
+                const pos = this.gm().toScreen(x, y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * this.cam.zoom;
+                const size = 75 * cam.zoom;
+                ctx.fillStyle = '#6B4423';
+                ctx.fillRect(px - size*0.12, py - size*0.25, size*0.24, size*0.5);
+                ctx.fillStyle = '#228B22';
+                ctx.beginPath(); ctx.arc(px, py - size*0.45, size*0.35, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#32CD32';
+                ctx.beginPath(); ctx.arc(px - size*0.12, py - size*0.35, size*0.2, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(px + size*0.12, py - size*0.35, size*0.2, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(px, py - size*0.6, size*0.2, 0, Math.PI*2); ctx.fill();
+            }
+
+            drawMegaTRex(ctx, cam) {
+                const pos = this.gm().toScreen(0, 0, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const size = 320 * cam.zoom;
+                
+                ctx.strokeStyle = '#E8E4D9'; ctx.fillStyle = '#D4D0C5'; ctx.lineWidth = 6 * cam.zoom;
+                ctx.beginPath(); ctx.ellipse(px, py - size*0.55, size*0.35, size*0.28, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(px + size*0.18, py - size*0.62, size*0.1, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#FFF';
+                for(let i=0; i<8; i++) { const tx = px - size*0.3 + i*size*0.1; ctx.beginPath(); ctx.moveTo(tx, py - size*0.35); ctx.lineTo(tx + size*0.05, py - size*0.15); ctx.lineTo(tx + size*0.1, py - size*0.35); ctx.fill(); }
+                ctx.strokeStyle = '#E8E4D9'; ctx.lineWidth = 14 * cam.zoom; ctx.beginPath(); ctx.moveTo(px, py - size*0.25); ctx.quadraticCurveTo(px + size*0.15, py, px, py + size*0.35); ctx.stroke();
+                ctx.lineWidth = 6 * cam.zoom;
+                for(let i=0; i<5; i++) { const ry = py - size*0.15 + i*size*0.18; ctx.beginPath(); ctx.moveTo(px, ry); ctx.lineTo(px - size*0.4, ry + size*0.05); ctx.stroke(); ctx.beginPath(); ctx.moveTo(px, ry); ctx.lineTo(px + size*0.25, ry + size*0.05); ctx.stroke(); }
+                ctx.lineWidth = 12 * cam.zoom; ctx.beginPath(); ctx.moveTo(px, py + size*0.35); ctx.quadraticCurveTo(px - size*0.6, py + size*0.6, px - size*1, py + size*0.45); ctx.stroke();
+                ctx.lineWidth = 4 * cam.zoom; ctx.beginPath(); ctx.moveTo(px - size*0.15, py - size*0.05); ctx.lineTo(px - size*0.35, py + size*0.1); ctx.stroke();
+                ctx.fillStyle = '#E8E4D9'; ctx.font = `bold ${18*cam.zoom}px "Press Start 2P"`; ctx.textAlign = 'center'; ctx.fillText('🦖 MEGA T-REX', px, py + size*0.85);
+                ctx.font = `${11*cam.zoom}px monospace`; ctx.fillText('⚠️ DO NOT FEED ⚠️', px, py + size*0.95);
+            }
+
+            drawPoster(ctx, x, y, text, color, cam) {
+                const pos = this.gm().toScreen(x, y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const w = 40 * cam.zoom, h = 50 * cam.zoom;
+                
+                // Poster background
+                ctx.fillStyle = color;
+                ctx.fillRect(px - w/2, py - h/2, w, h);
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2 * cam.zoom;
+                ctx.strokeRect(px - w/2, py - h/2, w, h);
+                
+                // Text
+                ctx.fillStyle = '#FFF';
+                ctx.font = `bold ${8 * cam.zoom}px "Press Start 2P"`;
+                ctx.textAlign = 'center';
+                
+                // Wrap text
+                const words = text.split(' ');
+                let line = '';
+                let lines = [];
+                words.forEach(word => {
+                    if (line.length + word.length < 8) line += word + ' ';
+                    else { lines.push(line); line = word + ' '; }
+                });
+                lines.push(line);
+                
+                lines.forEach((l, i) => {
+                    ctx.fillText(l, px, py - h/4 + i * 12 * cam.zoom);
+                });
+            }
+
+            render() {
+                const ctx = this.ctx, c = this.c, m = this.gm();
+                ctx.fillStyle = '#151520'; ctx.fillRect(0, 0, c.width, c.height);
+
+                // Floor
+                for (let x = -14; x <= 14; x++) {
+                    for (let y = -14; y <= 14; y++) {
+                        const p = m.toScreen(x, y, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom;
+                        const inOffice = x >= -10 && x <= 10 && y >= -10 && y <= 10;
+                        const isGym = y > 6 && x >= -8 && x <= 8;
+                        
+                        if (isGym) ctx.fillStyle = ((x + y) % 2 === 0) ? '#2a4a3a' : '#253a2f';
+                        else if (inOffice) ctx.fillStyle = ((x + y) % 2 === 0) ? '#C9A86C' : '#B8985C';
+                        else ctx.fillStyle = ((x + y) % 2 === 0) ? '#252535' : '#202030';
+                        
+                        if (this.viewMode === 'topdown') { const ts = 72 * this.cam.zoom; ctx.fillRect(cx - ts/2, cy - ts/2, ts, ts); }
+                        else { const tw = 52 * this.cam.zoom, th = 26 * this.cam.zoom; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx+tw, cy+th); ctx.lineTo(cx, cy+th*2); ctx.lineTo(cx-tw, cy+th); ctx.closePath(); ctx.fill(); }
+                    }
+                }
+
+                // Walls
+                for (let x = -10; x <= 10; x++) { const p = m.toScreen(x, -11, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom; ctx.fillStyle = (x % 2 === 0) ? '#F0E6D2' : '#E6DCC2'; ctx.fillRect(cx - 36 * this.cam.zoom, cy - 85 * this.cam.zoom, 72 * this.cam.zoom, 85 * this.cam.zoom); }
+
+                // Posters on walls
+                this.drawPoster(ctx, -7, -11, 'WORK HARDER', '#DC143C', this.cam);
+                this.drawPoster(ctx, 0, -11, 'TO THE MOON', '#4169E1', this.cam);
+                this.drawPoster(ctx, 7, -11, 'PIXEL PERFECT', '#228B22', this.cam);
+
+                // Windows
+                [-6, 0, 6].forEach(wx => { 
+                    const p = m.toScreen(wx, -11, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom; 
+                    // Window sky color based on time
+                    const skyColors = { 'DAWN': 'linear-gradient(180deg, #FFA07A, #FFB6C1)', 'DAY': '#87CEEB', 'DUSK': 'linear-gradient(180deg, #FF6B6B, #9370DB)', 'NIGHT': '#191970' };
+                    ctx.fillStyle = this.timeOfDay.name === 'DAY' ? '#87CEEB' : this.timeOfDay.name === 'NIGHT' ? '#191970' : '#FF9966';
+                    ctx.fillRect(cx - 32 * this.cam.zoom, cy - 70 * this.cam.zoom, 64 * this.cam.zoom, 55 * this.cam.zoom); 
+                    ctx.strokeStyle = '#5c4033'; ctx.lineWidth = 4 * this.cam.zoom; ctx.strokeRect(cx - 32 * this.cam.zoom, cy - 70 * this.cam.zoom, 64 * this.cam.zoom, 55 * this.cam.zoom); 
+                    ctx.beginPath(); ctx.moveTo(cx, cy - 70 * this.cam.zoom); ctx.lineTo(cx, cy - 15 * this.cam.zoom); ctx.moveTo(cx - 32 * this.cam.zoom, cy - 42 * this.cam.zoom); ctx.lineTo(cx + 32 * this.cam.zoom, cy - 42 * this.cam.zoom); ctx.stroke(); 
+                });
+
+                // Trees
+                [{x: -9, y: 6}, {x: 9, y: 6}, {x: -10, y: -3}, {x: 10, y: -3}].forEach(tree => this.drawTree(ctx, tree.x, tree.y, this.cam));
+
+                // MEGA T-Rex
+                this.drawMegaTRex(ctx, this.cam);
+
+                // Gym
+                const gymY = 8;
+                [-6, -3, 0, 3, 6].forEach((gx, i) => {
+                    const p = m.toScreen(gx, gymY, 0);
+                    if (this.furniture.treadmill?.success) {
+                        const s = 55 * this.cam.zoom;
+                        ctx.drawImage(this.furniture.treadmill.img, (p.x - this.cam.x) * this.cam.zoom - s/2, (p.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                    }
+                });
+                const db = m.toScreen(-8, gymY + 2, 0);
+                if (this.furniture.dumbbells?.success) {
+                    const s = 40 * this.cam.zoom;
+                    ctx.drawImage(this.furniture.dumbbells.img, (db.x - this.cam.x) * this.cam.zoom - s/2, (db.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                }
+                const wb = m.toScreen(8, gymY + 2, 0);
+                if (this.furniture.weightBench?.success) {
+                    const s = 50 * this.cam.zoom;
+                    ctx.drawImage(this.furniture.weightBench.img, (wb.x - this.cam.x) * this.cam.zoom - s/2, (wb.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                }
+                const gymLabel = m.toScreen(0, gymY + 3, 0);
+                ctx.fillStyle = '#0f0';
+                ctx.font = `${12 * this.cam.zoom}px "Press Start 2P"`;
+                ctx.textAlign = 'center';
+                ctx.fillText('🏋️ GYM ZONE', (gymLabel.x - this.cam.x) * this.cam.zoom, (gymLabel.y - this.cam.y) * this.cam.zoom);
+
+                // Server room
+                const sr = m.toScreen(9, 5, 0);
+                ctx.fillStyle = '#1a1a2e'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 65 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 55 * this.cam.zoom, 130 * this.cam.zoom, 110 * this.cam.zoom);
+                for (let r = 0; r < 2; r++) { ctx.fillStyle = '#2a2a3a'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 60 * this.cam.zoom + r * 65 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 50 * this.cam.zoom, 55 * this.cam.zoom, 100 * this.cam.zoom); for (let i = 0; i < 7; i++) { ctx.fillStyle = this.blink ? '#0f0' : '#050'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 55 * this.cam.zoom + r * 65 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 45 * this.cam.zoom + i * 14 * this.cam.zoom, 14 * this.cam.zoom, 9 * this.cam.zoom); } }
+                ctx.fillStyle = '#0f0'; ctx.font = `${11 * this.cam.zoom}px "Press Start 2P"`; ctx.textAlign = 'center'; ctx.fillText('💾 SERVER', (sr.x - this.cam.x) * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 62 * this.cam.zoom);
+
+                // Coffee
+                const cf = m.toScreen(-9, 5, 0);
+                if (this.furniture.coffeeMachine?.success) {
+                    const s = 45 * this.cam.zoom;
+                    ctx.drawImage(this.furniture.coffeeMachine.img, (cf.x - this.cam.x) * this.cam.zoom - s/2, (cf.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                }
+
+                // Vending
+                const vm = m.toScreen(-9, 3, 0);
+                if (this.furniture.vendingMachine?.success) {
+                    const s = 50 * this.cam.zoom;
+                    ctx.drawImage(this.furniture.vendingMachine.img, (vm.x - this.cam.x) * this.cam.zoom - s/2, (vm.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                }
+
+                // Render entities sorted by depth
+                const entities = [
+                    ...Array.from(this.agents.values()).map(a => ({ type: 'agent', obj: a, y: a.y + a.x })),
+                    this.byte ? { type: 'byte', obj: this.byte, y: this.byte.y + this.byte.x } : null
+                ].filter(e => e).sort((a, b) => a.y - b.y);
+
+                entities.forEach(e => {
+                    if (e.type === 'agent') e.obj.render(ctx, m, this.cam, this.viewMode, this.particles);
+                    else if (e.type === 'byte') e.obj.render(ctx, m, this.cam);
+                });
+
+                // Particles
+                this.particles.render(ctx, this.cam);
+
+                // Time of day overlay
+                ctx.fillStyle = this.timeOfDay.overlay;
+                ctx.fillRect(0, 0, c.width, c.height);
+            }
+
+            renderUI() {
+                const list = document.getElementById('agentList');
+                list.innerHTML = `<div style="color:#00d4ff;font-family:'Press Start 2P';font-size:0.5rem;margin-bottom:15px;">👥 AGENTS + 🐶 BYTE</div>` +
+                `<div class="agent-card" onclick="findByte()"><div style="width:45px;height:45px;background:#D2691E;border:2px solid #00d4ff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;border-radius:4px;">🐶</div><div><div style="font-weight:bold;color:#fff">Byte</div><div style="font-size:0.75rem;color:#888;">Office Pet</div><div style="font-size:0.7rem;color:#D2691E;">Cyber-Corgi</div></div></div>` +
+                Array.from(this.agents.values()).map(a => {
+                    const loaded = a?.imageData?.success;
+                    return `<div class="agent-card" onclick="findAgent('${a.id}')"><div style="width:45px;height:45px;background:${loaded ? '#2a2a3a' : '#1a1a1a'};border:2px solid ${loaded ? '#00d4ff' : '#666'};display:flex;align-items:center;justify-content:center;font-size:1.3rem;border-radius:4px;">${a.getStatusBadge()}</div><div><div style="font-weight:bold;color:#fff">${a.name}</div><div style="font-size:0.75rem;color:#888;">${a.role}</div><div style="font-size:0.7rem;color:#00d4ff;">${a.personality}</div></div></div>`;
+                }).join('');
+            }
+        }
+
+        let game;
+        function init() { game = new Game(); game.init(); }
+        function resetCam() { game.cam.x = 0; game.cam.y = -30; game.cam.zoom = 0.9; }
+        function toggleList() { document.getElementById('agentList').classList.toggle('active'); }
+        function toggleView() { game.viewMode = game.viewMode === 'iso' ? 'topdown' : 'iso'; game.cam.x = 0; game.cam.y = -30; }
+        function toggleParticles() { 
+            particlesEnabled = !particlesEnabled; 
+            document.getElementById('particleBtn').textContent = particlesEnabled ? '✨ FX ON' : '✨ FX OFF';
+            document.getElementById('particleBtn').classList.toggle('active', particlesEnabled);
+        }
+        function findByte() { 
+            if (game.byte) {
+                const pos = game.gm().toScreen(game.byte.x, game.byte.y, 0);
+                game.cam.x = pos.x - game.c.width / 2 / game.cam.zoom;
+                game.cam.y = pos.y - game.c.height / 2 / game.cam.zoom;
+                addToChatHistory('Byte', 'Woof! Found me! 🐶');
+            }
+        }
+        function findAgent(id) {
+            const a = game.agents.get(id);
+            if (a) {
+                const pos = game.gm().toScreen(a.x, a.y, 0);
+                game.cam.x = pos.x - game.c.width / 2 / game.cam.zoom;
+                game.cam.y = pos.y - game.c.height / 2 / game.cam.zoom;
+                addToChatHistory(a.name, `Here I am! ${a.getStatusBadge()}`);
+            }
+        }
+        function zoomIn() { game.cam.zoom = Math.min(2.5, game.cam.zoom * 1.15); }
+        function zoomOut() { game.cam.zoom = Math.max(0.4, game.cam.zoom / 1.15); }
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
