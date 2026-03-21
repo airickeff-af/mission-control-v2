@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Agent Office v6.3 | SPRITES + SMART AI 🤖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #00d4ff; --green: #22c55e; --pink: #ff6b9d; --gold: #FFD700; }
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        body { font-family: 'VT323', monospace; background: #1a1a2e; color: #fff; overflow: hidden; }
+        .header { background: linear-gradient(180deg, #2d1b4e, #1a0f2e); border-bottom: 4px solid var(--accent); padding: 0 1rem; height: 60px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { width: 40px; height: 40px; background: var(--accent); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .logo h1 { font-family: 'Press Start 2P'; font-size: 0.55rem; color: var(--accent); }
+        #gameCanvas { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; cursor: grab; }
+        #gameCanvas:active { cursor: grabbing; }
+        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 8px; z-index: 100; flex-wrap: wrap; }
+        .btn { padding: 12px 16px; background: linear-gradient(180deg, #2d1b4e, #1a0f2e); border: 3px solid var(--accent); border-radius: 4px; font-family: 'Press Start 2P'; font-size: 0.4rem; color: #fff; cursor: pointer; }
+        .btn:hover { background: var(--accent); color: #000; }
+        .loading { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #1a1a2e; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
+        .loading.hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+        .loading h2 { font-family: 'Press Start 2P'; color: var(--accent); margin-bottom: 20px; }
+        .progress { width: 400px; height: 20px; background: #2a1b3d; border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s; }
+        .time-overlay { position: fixed; top: 70px; left: 20px; background: rgba(0,0,0,0.85); border: 2px solid var(--accent); border-radius: 8px; padding: 10px; font-family: 'Press Start 2P'; font-size: 0.45rem; z-index: 101; }
+        .stats-panel { position: fixed; top: 70px; right: 20px; background: rgba(0,0,0,0.9); border: 3px solid var(--accent); border-radius: 8px; padding: 12px; z-index: 101; font-family: 'Press Start 2P'; font-size: 0.4rem; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .notification-popup { position: fixed; top: 100px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, #FFD700, #FFA500); border: 4px solid #FFF; border-radius: 12px; padding: 15px 30px; z-index: 500; animation: popupBounce 0.5s ease-out; }
+        @keyframes popupBounce { 0% { transform: translateX(-50%) scale(0); } 50% { transform: translateX(-50%) scale(1.1); } 100% { transform: translateX(-50%) scale(1); } }
+        .notification-popup h3 { color: #000; font-family: 'Press Start 2P'; font-size: 0.6rem; margin-bottom: 5px; }
+        .notification-popup p { color: #333; font-size: 0.9rem; }
+        .chat-overlay { position: fixed; top: 180px; left: 20px; max-width: 320px; max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.9); border: 2px solid var(--pink); border-radius: 8px; padding: 10px; z-index: 100; }
+        .chat-message { margin-bottom: 6px; padding: 6px; background: rgba(255,255,255,0.1); border-radius: 4px; font-size: 0.8rem; }
+        .agent-detail-panel { position: fixed; top: 60px; right: -350px; width: 320px; height: calc(100% - 60px); background: rgba(10,10,15,0.98); border-left: 3px solid var(--accent); transition: right 0.3s; z-index: 99; overflow-y: auto; padding: 15px; }
+        .agent-detail-panel.active { right: 0; }
+        .energy-bar-container { width: 100%; height: 20px; background: #333; border-radius: 4px; overflow: hidden; margin: 10px 0; }
+        .energy-bar-fill { height: 100%; transition: width 0.3s, background-color 0.3s; }
+        .xp-bar-container { width: 100%; height: 12px; background: #222; border-radius: 3px; overflow: hidden; margin: 5px 0; }
+        .xp-bar-fill { height: 100%; background: linear-gradient(90deg, #FFD700, #FFA500); transition: width 0.5s; }
+        .relationship-heart { display: inline-block; color: #ff6b9d; margin: 0 2px; }
+        .sound-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 100; }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <h2>🏢 AGENT OFFICE v6.3</h2>
+        <div class="progress"><div class="progress-bar" id="progress"></div></div>
+        <div id="loadingText" style="margin-top:15px;color:#888">Loading Meebit sprites + Smart AI...</div>
+    </div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🤖</div>
+            <h1>AGENT OFFICE v6.3</h1>
+        </div>
+        <div style="font-size:0.7rem;">🎨 SPRITES + ⚡ SMART AI + 🔥 EFFECTS</div>
+    </header>
+    
+    <div class="time-overlay" id="timeOverlay">
+        <div id="timeIcon">🌅</div>
+        <div id="timeLabel">DAWN</div>
+        <div style="font-size:0.35rem;color:#888;margin-top:5px;" id="timeValue">00:00</div>
+    </div>
+
+    <div class="stats-panel">
+        <div class="stat-row"><span>AGENTS:</span><span id="statAgents">11</span></div>
+        <div class="stat-row"><span>CHATS:</span><span id="statChats">0</span></div>
+        <div class="stat-row"><span>LEVEL UPS:</span><span id="statLevels">0</span></div>
+        <div class="stat-row"><span style="color:#0f0">ON FIRE:</span><span id="statOnFire">0</span></div>
+    </div>
+
+    <div id="notificationArea"></div>
+
+    <div class="chat-overlay" id="chatOverlay">
+        <div style="color:#ff6b9d;font-weight:bold;margin-bottom:10px;">💬 LIVE CHAT</div>
+        <div id="chatHistory"></div>
+    </div>
+
+    <div class="agent-detail-panel" id="agentDetailPanel">
+        <div id="agentDetailContent"></div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    
+    <div class="controls">
+        <button class="btn" onclick="resetCam()">🎯 RESET</button>
+        <button class="btn" onclick="toggleDetailPanel()">👤 AGENTS</button>
+        <button class="btn" onclick="toggleView()">🔲 ISO</button>
+        <button class="btn" onclick="findByte()">🐶 BYTE</button>
+        <button class="btn" onclick="toggleParticles()">✨ FX</button>
+    </div>
+
+    <div class="sound-toggle">
+        <button class="btn" id="soundBtn" onclick="toggleSound()">🔊 ON</button>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION
+        // ==========================================
+        
+        const AGENT_CONFIG = [
+            { id: 'nexus', name: 'Nexus', role: 'Director', meebitId: 1, type: 'Human', x: 0, y: 0, personality: 'bossy', skills: { leadership: 10, coding: 6, design: 4, writing: 5 } },
+            { id: 'glasses', name: 'Glasses', role: 'Research', meebitId: 42, type: 'Human', x: -3, y: -2, personality: 'nerdy', skills: { leadership: 4, coding: 10, design: 3, writing: 7 } },
+            { id: 'quill', name: 'Quill', role: 'Writer', meebitId: 100, type: 'Human', x: 3, y: -2, personality: 'creative', skills: { leadership: 5, coding: 3, design: 6, writing: 10 } },
+            { id: 'pixel', name: 'Pixel', role: 'Artist', meebitId: 200, type: 'Human', x: -5, y: 0, personality: 'artsy', skills: { leadership: 4, coding: 5, design: 10, writing: 4 } },
+            { id: 'gary', name: 'Gary', role: 'Marketing', meebitId: 300, type: 'Human', x: 5, y: 0, personality: 'hype', skills: { leadership: 7, coding: 2, design: 5, writing: 6 } },
+            { id: 'larry', name: 'Larry', role: 'Social', meebitId: 500, type: 'Pig', x: -3, y: 2, personality: 'social', skills: { leadership: 6, coding: 2, design: 3, writing: 5 } },
+            { id: 'sentry', name: 'Sentry', role: 'Engineer', meebitId: 600, type: 'Robot', x: 3, y: 2, personality: 'robotic', skills: { leadership: 3, coding: 10, design: 4, writing: 3 } },
+            { id: 'audit', name: 'Audit', role: 'QA', meebitId: 700, type: 'Skeleton', x: -6, y: -4, personality: 'strict', skills: { leadership: 5, coding: 8, design: 2, writing: 6 } },
+            { id: 'cipher', name: 'Cipher', role: 'Security', meebitId: 800, type: 'Visitor', x: 6, y: -4, personality: 'mysterious', skills: { leadership: 4, coding: 9, design: 3, writing: 4 } },
+            { id: 'limitless', name: 'Limitless', role: 'Trader', meebitId: 1000, type: 'Robot', x: 0, y: -5, personality: 'calculating', skills: { leadership: 5, coding: 7, design: 2, writing: 3 } },
+            { id: 'olivia', name: 'Olivia', role: 'Sales', meebitId: 1500, type: 'Human', x: 0, y: 4, personality: 'charming', skills: { leadership: 8, coding: 2, design: 4, writing: 7 } }
+        ];
+
+        const CHATS = {
+            bossy: ["Get back to work!","We have deadlines!","Focus!","Ship it!","Make it happen!"],
+            nerdy: ["Actually, did you know...","The data suggests...","Technically speaking...","I've done the research..."],
+            creative: ["What if we tried...","I have an idea! ✨","Let's think outside the box!","This needs more flair..."],
+            artsy: ["The composition is wrong...","Needs more contrast...","This color palette... 🔥","Pixel perfect!"],
+            hype: ["To the moon! 🚀","Let's crush it!","Epic win!","This is going viral!","Big moves only! 💪"],
+            social: ["Did you see the game?","Lunch later?","TGIF am I right? 😂","Check out this meme!"],
+            robotic: ["Processing...","Task accepted.","Efficiency at 98%.","Calculating optimal path..."],
+            strict: ["This violates protocol.","Needs more testing.","I'm watching you.","Quality check failed. ❌"],
+            mysterious: ["I know things... 👁️","The truth is out there...","Trust no one.","I've seen things..."],
+            calculating: ["Risk analysis complete.","Expected ROI: 340%","Probability: 87%","Profitable move. 📈"],
+            charming: ["You're doing great! 💕","I believe in you!","Let's collaborate!","You're amazing!"]
+        };
+
+        const ZONES = {
+            nexus: { minX: -1, maxX: 1, minY: -1, maxY: 1 },
+            glasses: { minX: -5, maxX: -2, minY: -4, maxY: -1 },
+            quill: { minX: 2, maxX: 5, minY: -4, maxY: -1 },
+            pixel: { minX: -7, maxX: -4, minY: -2, maxY: 2 },
+            gary: { minX: 4, maxX: 7, minY: -2, maxY: 2 },
+            larry: { minX: -5, maxX: -2, minY: 1, maxY: 4 },
+            sentry: { minX: 2, maxX: 5, minY: 1, maxY: 4 },
+            audit: { minX: -8, maxX: -5, minY: -6, maxY: -3 },
+            cipher: { minX: 5, maxX: 8, minY: -6, maxY: -3 },
+            limitless: { minX: -2, maxX: 2, minY: -7, maxY: -4 },
+            olivia: { minX: -2, maxX: 2, minY: 3, maxY: 6 }
+        };
+
+        // ==========================================
+        // STATE
+        // ==========================================
+        let game;
+        let particlesEnabled = true;
+        let soundEnabled = true;
+        let totalChats = 0;
+        let totalLevelUps = 0;
+
+        // ==========================================
+        // UTILITIES
+        // ==========================================
+        function loadImage(src) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => resolve({ img, success: true });
+                img.onerror = () => resolve({ img: null, success: false });
+                img.src = src;
+            });
+        }
+
+        function loadSpriteSheet(id) {
+            return loadImage(`https://api.meebits.app/v2/sprites/sheet/${id}`);
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            // Sound synthesis using Web Audio API
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                const sounds = {
+                    click: { freq: 800, type: 'square', duration: 0.1 },
+                    levelUp: { freq: 600, type: 'sine', duration: 0.3 },
+                    bark: { freq: 300, type: 'sawtooth', duration: 0.15 },
+                    chat: { freq: 400, type: 'sine', duration: 0.08 },
+                    fire: { freq: 150, type: 'sawtooth', duration: 0.2 }
+                };
+                
+                const s = sounds[type] || sounds.click;
+                oscillator.frequency.value = s.freq;
+                oscillator.type = s.type;
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + s.duration);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + s.duration);
+            } catch (e) {}
+        }
+
+        function showNotification(title, message, type = 'default') {
+            const notif = document.createElement('div');
+            notif.className = 'notification-popup';
+            const colors = {
+                levelUp: 'linear-gradient(180deg, #FFD700, #FFA500)',
+                taskComplete: 'linear-gradient(180deg, #22c55e, #16a34a)',
+                bug: 'linear-gradient(180deg, #ef4444, #dc2626)',
+                fire: 'linear-gradient(180deg, #ff4500, #ff0000)'
+            };
+            notif.style.background = colors[type] || colors.default;
+            notif.innerHTML = `<h3>${title}</h3><p>${message}</p>`;
+            document.getElementById('notificationArea').appendChild(notif);
+            playSound(type === 'levelUp' ? 'levelUp' : 'click');
+            setTimeout(() => notif.remove(), 3000);
+        }
+
+        function addToChatHistory(name, text) {
+            totalChats++;
+            document.getElementById('statChats').textContent = totalChats;
+            const historyEl = document.getElementById('chatHistory');
+            const msg = document.createElement('div');
+            msg.className = 'chat-message';
+            msg.innerHTML = `<span style="color:#00d4ff">${name}:</span> ${text}`;
+            historyEl.insertBefore(msg, historyEl.firstChild);
+            while (historyEl.children.length > 15) historyEl.removeChild(historyEl.lastChild);
+            playSound('chat');
+        }
+
+        function getTimeOfDay() {
+            const hour = new Date().getHours();
+            if (hour >= 6 && hour < 9) return { name: 'DAWN', icon: '🌅', class: 'time-dawn', overlay: 'rgba(255,200,100,0.15)' };
+            if (hour >= 9 && hour < 17) return { name: 'DAY', icon: '☀️', class: 'time-day', overlay: 'rgba(0,0,0,0)' };
+            if (hour >= 17 && hour < 20) return { name: 'DUSK', icon: '🌇', class: 'time-dusk', overlay: 'rgba(200,100,50,0.2)' };
+            return { name: 'NIGHT', icon: '🌙', class: 'time-night', overlay: 'rgba(50,50,100,0.35)' };
+        }
+
+        function updateTimeDisplay() {
+            const time = getTimeOfDay();
+            const now = new Date();
+            document.getElementById('timeIcon').textContent = time.icon;
+            document.getElementById('timeLabel').textContent = time.name;
+            document.getElementById('timeValue').textContent = now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'});
+            return time;
+        }
+
+        // ==========================================
+        // PARTICLE SYSTEM
+        // ==========================================
+        class ParticleSystem {
+            constructor() {
+                this.particles = [];
+            }
+
+            emit(type, x, y, count = 1) {
+                if (!particlesEnabled) return;
+                const configs = {
+                    coffee: { color: '#FFF', life: 60, size: 3, vy: -0.5 },
+                    dust: { color: 'rgba(255,255,200,0.6)', life: 120, size: 2, vx: 0.2 },
+                    sweat: { color: '#87CEEB', life: 40, size: 4, vy: 0.8 },
+                    aura: { color: '#FFD700', life: 80, size: 5, vx: 0.5, vy: -0.3 },
+                    zzz: { color: '#00d4ff', life: 100, size: 8, vy: -0.3 },
+                    fire: { color: '#ff4500', life: 50, size: 6, vy: -0.8 },
+                    heart: { color: '#ff6b9d', life: 90, size: 10, vy: -0.4 }
+                };
+                
+                const config = configs[type];
+                for (let i = 0; i < count; i++) {
+                    this.particles.push({
+                        x, y,
+                        vx: (Math.random() - 0.5) * (config.vx || 0.3),
+                        vy: config.vy || -0.2,
+                        life: config.life,
+                        maxLife: config.life,
+                        size: config.size,
+                        color: config.color,
+                        type
+                    });
+                }
+            }
+
+            update() {
+                this.particles = this.particles.filter(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life--;
+                    return p.life > 0;
+                });
+            }
+
+            render(ctx, cam) {
+                if (!particlesEnabled) return;
+                this.particles.forEach(p => {
+                    const px = (p.x - cam.x) * cam.zoom;
+                    const py = (p.y - cam.y) * cam.zoom;
+                    const alpha = p.life / p.maxLife;
+                    ctx.globalAlpha = alpha * 0.8;
+                    
+                    if (p.type === 'zzz') {
+                        ctx.fillStyle = p.color;
+                        ctx.font = `${p.size * cam.zoom}px monospace`;
+                        ctx.fillText('Z', px, py);
+                    } else if (p.type === 'heart') {
+                        ctx.fillStyle = p.color;
+                        ctx.font = `${p.size * cam.zoom}px serif`;
+                        ctx.fillText('❤️', px, py);
+                    } else {
+                        ctx.fillStyle = p.color;
+                        ctx.beginPath();
+                        ctx.arc(px, py, p.size * cam.zoom, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        // ==========================================
+        // BYTE THE CYBER-CORGI
+        // ==========================================
+        class Byte {
+            constructor(sprites) {
+                this.sprites = sprites;
+                this.x = -8; this.y = 4;
+                this.bedX = -8; this.bedY = 4;
+                this.state = 'sleep';
+                this.stateTimer = 0;
+                this.targetX = this.x; this.targetY = this.y;
+                this.wagging = 0;
+            }
+
+            update(dt) {
+                this.stateTimer += dt;
+                this.wagging += dt * 0.01;
+
+                if (this.state === 'sleep') {
+                    if (this.stateTimer > 8000) {
+                        this.state = Math.random() < 0.7 ? 'awake' : 'sleep';
+                        this.stateTimer = 0;
+                    }
+                } else if (this.state === 'awake') {
+                    if (this.stateTimer > 5000) {
+                        const r = Math.random();
+                        if (r < 0.4) this.state = 'sleep';
+                        else if (r < 0.7) { this.state = 'wander'; this.pickTarget(); }
+                        else this.state = 'beg';
+                        this.stateTimer = 0;
+                    }
+                } else if (this.state === 'wander') {
+                    const dx = this.targetX - this.x, dy = this.targetY - this.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < 0.1) {
+                        this.state = 'awake';
+                        this.stateTimer = 0;
+                    } else {
+                        this.x += (dx / dist) * 0.03;
+                        this.y += (dy / dist) * 0.03;
+                    }
+                } else if (this.state === 'beg') {
+                    if (this.stateTimer > 4000) {
+                        this.state = 'awake';
+                        this.stateTimer = 0;
+                    }
+                }
+            }
+
+            pickTarget() {
+                this.targetX = -9 + Math.random() * 4;
+                this.targetY = 3 + Math.random() * 3;
+            }
+
+            render(ctx, math, cam, particles) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const size = 45 * cam.zoom;
+
+                // Bed
+                if (Math.hypot(this.x - this.bedX, this.y - this.bedY) < 0.5 && this.sprites.bed?.success) {
+                    const bedSize = 55 * cam.zoom;
+                    ctx.drawImage(this.sprites.bed.img, px - bedSize/2, py - bedSize/2, bedSize, bedSize);
+                }
+
+                // Byte
+                let spriteKey = this.state === 'wander' ? 'awake' : this.state;
+                if (this.sprites[spriteKey]?.success) {
+                    let bob = this.state === 'wander' ? Math.sin(this.wagging) * 3 * cam.zoom : 0;
+                    ctx.drawImage(this.sprites[spriteKey].img, px - size/2, py - size/2 + bob, size, size);
+                } else {
+                    ctx.font = `${size*0.5}px serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText('🐶', px, py);
+                }
+
+                // Name tag
+                ctx.fillStyle = 'rgba(0,212,255,0.9)';
+                ctx.fillRect(px - 25, py + size*0.25, 50, 16);
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('BYTE', px, py + size*0.25 + 12);
+
+                // Zzz
+                if (this.state === 'sleep' && Math.random() < 0.02) {
+                    particles.emit('zzz', px, py - size*0.5);
+                }
+            }
+
+            onClick() {
+                this.state = 'excited';
+                this.stateTimer = 0;
+                playSound('bark');
+                return 'Woof! 🐶';
+            }
+        }
+
+        // ==========================================
+        // SMART AGENT WITH SPRITE SHEETS
+        // ==========================================
+        class Agent {
+            constructor(config, spriteSheet) {
+                Object.assign(this, config);
+                this.tx = config.x; this.ty = config.y;
+                this.activity = 'idle';
+                this.idleTimer = 0;
+                this.speech = null; this.speechTimer = 0;
+                this.dir = 'down';
+                this.frame = 0; this.animTimer = 0;
+                this.spriteSheet = spriteSheet;
+                this.chatCooldown = 0;
+                
+                // Stats system
+                this.energy = 80 + Math.random() * 20;
+                this.maxEnergy = 100;
+                this.xp = 0;
+                this.level = 1;
+                this.xpToNext = 100;
+                
+                // Status effects
+                this.onFire = false;
+                this.tired = false;
+                this.onFireTimer = 0;
+                
+                // Relationships (0-100)
+                this.relationships = {};
+                AGENT_CONFIG.forEach(a => {
+                    if (a.id !== this.id) this.relationships[a.id] = 50;
+                });
+                
+                // Location tracking
+                this.atDesk = false;
+                this.nearTree = false;
+                this.inGym = false;
+            }
+
+            gainXP(amount) {
+                this.xp += amount;
+                if (this.xp >= this.xpToNext) {
+                    this.level++;
+                    this.xp -= this.xpToNext;
+                    this.xpToNext = Math.floor(this.xpToNext * 1.2);
+                    totalLevelUps++;
+                    document.getElementById('statLevels').textContent = totalLevelUps;
+                    showNotification('LEVEL UP!', `${this.name} is now level ${this.level}!`, 'levelUp');
+                    
+                    // Boost stats on level up
+                    Object.keys(this.skills).forEach(skill => {
+                        this.skills[skill] += 1;
+                    });
+                }
+            }
+
+            getStatusBadge() {
+                if (this.onFire) return '🔥';
+                if (this.tired) return '❄️';
+                if (this.inGym) return '💪';
+                if (this.atDesk) return '💻';
+                if (this.nearTree) return '🌳';
+                return '👤';
+            }
+
+            getCurrentSprite() {
+                if (!this.spriteSheet.success) return null;
+                
+                // Sprite sheet is 512x512, 4x4 grid
+                // Each sprite is 128x128
+                const row = this.dir === 'down' ? 0 : this.dir === 'right' ? 1 : this.dir === 'up' ? 2 : 3;
+                const col = this.activity === 'idle' ? 0 : this.frame % 4;
+                
+                return {
+                    img: this.spriteSheet.img,
+                    sx: col * 128,
+                    sy: row * 128,
+                    sw: 128,
+                    sh: 128
+                };
+            }
+
+            update(dt, allAgents, particles) {
+                this.animTimer += dt;
+                this.chatCooldown -= dt;
+                this.onFireTimer -= dt;
+
+                if (this.onFireTimer <= 0) {
+                    this.onFire = false;
+                }
+
+                if (this.animTimer > 200) {
+                    this.animTimer = 0;
+                    this.frame = (this.frame + 1) % 4;
+                }
+
+                // Energy management
+                if (this.activity === 'walking') {
+                    this.energy -= 0.02;
+                } else if (this.atDesk) {
+                    this.energy -= 0.01;
+                    this.gainXP(0.05);
+                }
+                
+                // Recharge at break
+                if (!this.atDesk && !this.inGym) {
+                    this.energy = Math.min(this.maxEnergy, this.energy + 0.03);
+                }
+
+                this.tired = this.energy < 30;
+
+                // Check locations
+                this.nearTree = [{x: -9, y: 6}, {x: 9, y: 6}, {x: -10, y: -3}, {x: 10, y: -3}].some(t => Math.hypot(t.x - this.x, t.y - this.y) < 2);
+                this.inGym = this.y > 5;
+                this.atDesk = Math.abs(this.x - this.tx) < 0.5 && Math.abs(this.y - this.ty) < 0.5 && this.activity === 'idle';
+
+                if (this.activity === 'idle') {
+                    this.idleTimer += dt;
+                    if (this.idleTimer > 3000 + Math.random() * 4000) {
+                        this.startWalk();
+                    }
+                    
+                    if (this.chatCooldown <= 0 && Math.random() < 0.015) {
+                        this.generateSmartChat(allAgents);
+                    }
+                } else if (this.activity === 'walking') {
+                    const dx = this.tx - this.x, dy = this.ty - this.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < 0.1) {
+                        this.x = this.tx; this.y = this.ty;
+                        this.activity = 'idle'; this.idleTimer = 0;
+                    } else {
+                        const s = 2 * dt * 0.001;
+                        this.x += (dx / dist) * s;
+                        this.y += (dy / dist) * s;
+                    }
+                }
+
+                if (this.speech) { this.speechTimer -= dt; if (this.speechTimer <= 0) this.speech = null; }
+
+                // Smart interactions
+                if (this.activity === 'idle' && this.chatCooldown <= 0 && Math.random() < 0.03) {
+                    const nearby = allAgents.filter(a => a.id !== this.id && a.activity === 'idle' && Math.hypot(a.x - this.x, a.y - this.y) < 3);
+                    if (nearby.length) {
+                        this.interactWith(nearby[0], particles);
+                    }
+                }
+
+                // Fire particles
+                if (this.onFire && particlesEnabled && Math.random() < 0.3) {
+                    const pos = game.gm().toScreen(this.x, this.y, 0);
+                    particles.emit('fire', (pos.x - game.cam.x) * game.cam.zoom, (pos.y - game.cam.y) * game.cam.zoom - 40);
+                }
+            }
+
+            generateSmartChat(allAgents) {
+                let chat;
+                const time = getTimeOfDay().name;
+                
+                // Context-aware chat
+                if (time === 'NIGHT' && this.energy < 40) {
+                    chat = "I'm exhausted... 😴";
+                } else if (this.inGym) {
+                    chat = "Getting those gains! 💪";
+                } else if (this.onFire) {
+                    chat = "I'm on fire today! 🔥🔥🔥";
+                } else if (this.tired) {
+                    chat = "Need coffee... ☕";
+                } else if (this.level > 3) {
+                    chat = `Level ${this.level} feels great! 🎉`;
+                } else {
+                    // Personality-based
+                    const options = CHATS[this.personality] || ["Hey!"];
+                    chat = options[Math.floor(Math.random() * options.length)];
+                }
+                
+                this.speech = chat;
+                this.speechTimer = 5000;
+                addToChatHistory(this.name, chat);
+                this.chatCooldown = 6000 + Math.random() * 6000;
+            }
+
+            interactWith(other, particles) {
+                this.activity = 'talking';
+                other.activity = 'talking';
+                
+                // Relationship affects interaction
+                const rel = this.relationships[other.id];
+                let myChat, theirChat;
+                
+                if (rel > 70) {
+                    myChat = "Hey buddy! 🎉";
+                    theirChat = "Good to see you! 😊";
+                    this.relationships[other.id] = Math.min(100, rel + 5);
+                    other.relationships[this.id] = Math.min(100, rel + 5);
+                    if (particlesEnabled) {
+                        const pos = game.gm().toScreen((this.x + other.x)/2, (this.y + other.y)/2, 0);
+                        particles.emit('heart', (pos.x - game.cam.x) * game.cam.zoom, (pos.y - game.cam.y) * game.cam.zoom);
+                    }
+                } else if (rel < 30) {
+                    myChat = "Oh, it's you...";
+                    theirChat = this.personality === 'strict' ? "I found your bugs." : "Hi...";
+                    this.relationships[other.id] = Math.max(0, rel + 2);
+                    other.relationships[this.id] = Math.max(0, rel + 2);
+                } else {
+                    const chats = ["Hey!", "What's up?", "How's it going?", "Working hard?"];
+                    myChat = chats[Math.floor(Math.random() * chats.length)];
+                    theirChat = ["Yo!", "Not bad!", "Same old!", "Yeah!"][Math.floor(Math.random() * 4)];
+                    this.relationships[other.id] = Math.min(100, rel + 3);
+                    other.relationships[this.id] = Math.min(100, rel + 3);
+                }
+                
+                this.speech = myChat; this.speechTimer = 4000;
+                other.speech = theirChat; other.speechTimer = 4000;
+                addToChatHistory(this.name, myChat);
+                setTimeout(() => addToChatHistory(other.name, theirChat), 600);
+                
+                this.chatCooldown = 8000; other.chatCooldown = 8000;
+                
+                setTimeout(() => { this.activity = 'idle'; other.activity = 'idle'; }, 3500);
+            }
+
+            startWalk() {
+                const z = ZONES[this.id];
+                this.tx = z.minX + Math.random() * (z.maxX - z.minX);
+                this.ty = z.minY + Math.random() * (z.maxY - z.minY);
+                this.activity = 'walking';
+                const dx = this.tx - this.x, dy = this.ty - this.y;
+                this.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+            }
+
+            onClick() {
+                playSound('click');
+                
+                // 10% chance to get ON FIRE
+                if (Math.random() < 0.1 && !this.tired) {
+                    this.onFire = true;
+                    this.onFireTimer = 30000;
+                    this.energy = Math.min(100, this.energy + 20);
+                    document.getElementById('statOnFire').textContent = Array.from(game.agents.values()).filter(a => a.onFire).length;
+                    showNotification('🔥 ON FIRE!', `${this.name} is super motivated!`, 'fire');
+                    playSound('fire');
+                }
+                
+                this.gainXP(10);
+                
+                // Smart response based on context
+                let response;
+                if (this.onFire) response = "I'm UNSTOPPABLE! 🔥🔥🔥";
+                else if (this.tired) response = "So... tired... 😴";
+                else if (this.level >= 5) response = `I'm a level ${this.level} ${this.role}! 🌟`;
+                else response = `${this.name} here! ${this.getStatusBadge()}`;
+                
+                this.speech = response;
+                this.speechTimer = 4000;
+                addToChatHistory(this.name, response);
+                
+                // Show detail panel
+                showAgentDetail(this);
+            }
+
+            render(ctx, math, cam, particles) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const size = 85 * cam.zoom;
+
+                // Shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                ctx.beginPath();
+                ctx.ellipse(px, py + size * 0.35, size * 0.25, size * 0.08, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Agent sprite from sprite sheet
+                const sprite = this.getCurrentSprite();
+                if (sprite) {
+                    let bob = this.activity === 'walking' ? Math.sin(this.frame * Math.PI / 2) * 3 * cam.zoom : 0;
+                    ctx.drawImage(
+                        sprite.img,
+                        sprite.sx, sprite.sy, sprite.sw, sprite.sh,
+                        px - size / 2, py - size * 0.9 + bob, size, size
+                    );
+                } else {
+                    // Fallback emoji
+                    ctx.fillStyle = '#444';
+                    ctx.beginPath();
+                    ctx.arc(px, py - size * 0.3, size * 0.3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.font = `${size * 0.4}px serif`;
+                    ctx.textAlign = 'center';
+                    const emojis = { Human: '👤', Pig: '🐷', Robot: '🤖', Visitor: '👽', Skeleton: '💀' };
+                    ctx.fillText(emojis[this.type] || '👤', px, py - size * 0.25);
+                }
+
+                // Status effect overlays
+                if (this.onFire) {
+                    ctx.font = `${20 * cam.zoom}px serif`;
+                    ctx.fillText('🔥', px + size*0.3, py - size*0.6);
+                }
+                if (this.tired) {
+                    ctx.font = `${16 * cam.zoom}px serif`;
+                    ctx.fillText('❄️', px + size*0.3, py - size*0.4);
+                }
+
+                // Name tag with level
+                ctx.fillStyle = 'rgba(0,0,0,0.85)';
+                ctx.fillRect(px - 50, py + size * 0.05, 100, 22);
+                ctx.fillStyle = this.onFire ? '#ff4500' : this.tired ? '#87CEEB' : '#fff';
+                ctx.font = 'bold 11px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${this.name} Lv${this.level}`, px, py + size * 0.05 + 15);
+
+                // Status badge
+                ctx.font = `${16 * cam.zoom}px serif`;
+                ctx.fillText(this.getStatusBadge(), px + size*0.4, py - size*0.5);
+
+                // Energy bar (small)
+                const barWidth = 60 * cam.zoom;
+                const barHeight = 6 * cam.zoom;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(px - barWidth/2, py + size * 0.32, barWidth, barHeight);
+                const energyColor = this.energy > 60 ? '#0f0' : this.energy > 30 ? '#ff0' : '#f00';
+                ctx.fillStyle = energyColor;
+                ctx.fillRect(px - barWidth/2, py + size * 0.32, barWidth * (this.energy/100), barHeight);
+
+                // Speech bubble
+                if (this.speech) {
+                    const bx = px, by = py - size * 1;
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.roundRect(bx - 50, by - 12, 100, 24, 8);
+                    ctx.fill();
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.fillStyle = '#000';
+                    ctx.font = 'bold 11px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.speech.length > 20 ? this.speech.substring(0,20)+'...' : this.speech, bx, by + 4);
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.moveTo(bx - 5, by + 12);
+                    ctx.lineTo(bx + 5, by + 12);
+                    ctx.lineTo(bx, by + 20);
+                    ctx.fill();
+                    ctx.stroke();
+                }
+
+                // Sweat particles in gym
+                if (this.inGym && particlesEnabled && Math.random() < 0.02) {
+                    particles.emit('sweat', px, py - size * 0.5);
+                }
+            }
+        }
+
+        // ==========================================
+        // GAME CLASS
+        // ==========================================
+        class Game {
+            constructor() {
+                this.c = document.getElementById('gameCanvas');
+                this.ctx = this.c.getContext('2d');
+                this.agents = new Map();
+                this.furniture = {};
+                this.byte = null;
+                this.cam = { x: 0, y: -30, zoom: 0.9 };
+                this.viewMode = 'iso';
+                this.lastTime = 0;
+                this.blink = false;
+                this.particles = new ParticleSystem();
+                this.timeOfDay = getTimeOfDay();
+                
+                this.iso = { toScreen: (x,y,z) => ({ x: (x-y)*52 + this.c.width/2, y: (x+y)*26 - z*26 + this.c.height/2.3 }) };
+                this.td = { toScreen: (x,y,z) => ({ x: x*72 + this.c.width/2, y: y*72 + this.c.height/2 - z*32 }) };
+                
+                this.setupInput();
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                setInterval(() => this.timeOfDay = updateTimeDisplay(), 60000);
+            }
+
+            resize() { this.c.width = window.innerWidth; this.c.height = window.innerHeight - 60; }
+            gm() { return this.viewMode === 'iso' ? this.iso : this.td; }
+
+            setupInput() {
+                let d = false, lx, ly;
+                this.c.addEventListener('mousedown', e => {
+                    const r = this.c.getBoundingClientRect();
+                    const mx = e.clientX - r.left, my = e.clientY - r.top;
+                    
+                    // Check Byte
+                    if (this.byte) {
+                        const pos = this.gm().toScreen(this.byte.x, this.byte.y, 0);
+                        const bx = (pos.x - this.cam.x) * this.cam.zoom, by = (pos.y - this.cam.y) * this.cam.zoom;
+                        if (Math.hypot(mx - bx, my - by) < 40 * this.cam.zoom) {
+                            const msg = this.byte.onClick();
+                            addToChatHistory('Byte', msg);
+                            return;
+                        }
+                    }
+                    
+                    // Check agents
+                    for (const [id, a] of this.agents) {
+                        const p = this.gm().toScreen(a.x, a.y, 0);
+                        const px = (p.x - this.cam.x) * this.cam.zoom, py = (p.y - this.cam.y) * this.cam.zoom;
+                        if (Math.hypot(mx - px, my - (py - 35*this.cam.zoom)) < 42*this.cam.zoom) {
+                            a.onClick();
+                            return;
+                        }
+                    }
+                    
+                    d = true; lx = e.clientX; ly = e.clientY; this.c.style.cursor = 'grabbing';
+                });
+                this.c.addEventListener('mousemove', e => {
+                    if (!d) return;
+                    this.cam.x -= (e.clientX - lx) / this.cam.zoom;
+                    this.cam.y -= (e.clientY - ly) / this.cam.zoom;
+                    lx = e.clientX; ly = e.clientY;
+                });
+                this.c.addEventListener('mouseup', () => { d = false; this.c.style.cursor = 'grab'; });
+                this.c.addEventListener('wheel', e => { e.preventDefault(); this.cam.zoom = Math.max(0.4, Math.min(2.5, this.cam.zoom * (e.deltaY > 0 ? 0.9 : 1.1))); }, { passive: false });
+            }
+
+            async init() {
+                const loadingText = document.getElementById('loadingText');
+                const progressBar = document.getElementById('progress');
+                let loaded = 0;
+                const total = AGENT_CONFIG.length + 5; // agents + byte sprites
+
+                // Load agent sprite sheets
+                for (const data of AGENT_CONFIG) {
+                    loadingText.textContent = `Loading ${data.name} sprite sheet...`;
+                    const spriteSheet = await loadSpriteSheet(data.meebitId);
+                    this.agents.set(data.id, new Agent(data, spriteSheet));
+                    loaded++; progressBar.style.width = `${(loaded / total) * 100}%`;
+                }
+
+                // Load Byte sprites
+                const byteSprites = {};
+                const byteNames = ['sleep', 'awake', 'beg', 'excited', 'bed'];
+                for (const name of byteNames) {
+                    loadingText.textContent = `Loading Byte ${name}...`;
+                    byteSprites[name] = await loadImage(`assets/pets/byte_${name}.png`);
+                    loaded++; progressBar.style.width = `${(loaded / total) * 100}%`;
+                }
+                this.byte = new Byte(byteSprites);
+
+                document.getElementById('loading').classList.add('hidden');
+                updateTimeDisplay();
+                this.start();
+            }
+
+            start() {
+                const loop = (n) => {
+                    const dt = n - this.lastTime; this.lastTime = n;
+                    this.blink = Math.sin(n / 150) > 0;
+                    
+                    const allAgents = Array.from(this.agents.values());
+                    allAgents.forEach(a => a.update(dt, allAgents, this.particles));
+                    if (this.byte) this.byte.update(dt);
+                    this.particles.update();
+                    
+                    // Ambient particles
+                    if (particlesEnabled && Math.random() < 0.05) {
+                        const cf = this.gm().toScreen(-9, 5, 0);
+                        this.particles.emit('coffee', (cf.x - this.cam.x) * this.cam.zoom + (Math.random()-0.5)*20, (cf.y - this.cam.y) * this.cam.zoom - 30);
+                    }
+                    
+                    this.render();
+                    requestAnimationFrame(loop);
+                };
+                requestAnimationFrame(loop);
+            }
+
+            drawTree(ctx, x, y) {
+                const pos = this.gm().toScreen(x, y, 0);
+                const px = (pos.x - this.cam.x) * this.cam.zoom;
+                const py = (pos.y - this.cam.y) * this.cam.zoom;
+                const size = 75 * this.cam.zoom;
+                ctx.fillStyle = '#6B4423';
+                ctx.fillRect(px - size*0.12, py - size*0.25, size*0.24, size*0.5);
+                ctx.fillStyle = '#228B22';
+                ctx.beginPath(); ctx.arc(px, py - size*0.45, size*0.35, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#32CD32';
+                ctx.beginPath(); ctx.arc(px - size*0.12, py - size*0.35, size*0.2, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(px + size*0.12, py - size*0.35, size*0.2, 0, Math.PI*2); ctx.fill();
+            }
+
+            drawMegaTRex(ctx) {
+                const pos = this.gm().toScreen(0, 0, 0);
+                const px = (pos.x - this.cam.x) * this.cam.zoom;
+                const py = (pos.y - this.cam.y) * this.cam.zoom;
+                const size = 320 * this.cam.zoom;
+                
+                ctx.strokeStyle = '#E8E4D9'; ctx.fillStyle = '#D4D0C5'; ctx.lineWidth = 6 * this.cam.zoom;
+                ctx.beginPath(); ctx.ellipse(px, py - size*0.55, size*0.35, size*0.28, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(px + size*0.18, py - size*0.62, size*0.1, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#FFF';
+                for(let i=0; i<8; i++) { const tx = px - size*0.3 + i*size*0.1; ctx.beginPath(); ctx.moveTo(tx, py - size*0.35); ctx.lineTo(tx + size*0.05, py - size*0.15); ctx.lineTo(tx + size*0.1, py - size*0.35); ctx.fill(); }
+                ctx.strokeStyle = '#E8E4D9'; ctx.lineWidth = 14 * this.cam.zoom; ctx.beginPath(); ctx.moveTo(px, py - size*0.25); ctx.quadraticCurveTo(px + size*0.15, py, px, py + size*0.35); ctx.stroke();
+                ctx.lineWidth = 6 * this.cam.zoom;
+                for(let i=0; i<5; i++) { const ry = py - size*0.15 + i*size*0.18; ctx.beginPath(); ctx.moveTo(px, ry); ctx.lineTo(px - size*0.4, ry + size*0.05); ctx.stroke(); ctx.beginPath(); ctx.moveTo(px, ry); ctx.lineTo(px + size*0.25, ry + size*0.05); ctx.stroke(); }
+                ctx.lineWidth = 12 * this.cam.zoom; ctx.beginPath(); ctx.moveTo(px, py + size*0.35); ctx.quadraticCurveTo(px - size*0.6, py + size*0.6, px - size*1, py + size*0.45); ctx.stroke();
+                ctx.fillStyle = '#E8E4D9'; ctx.font = `bold ${18*this.cam.zoom}px "Press Start 2P"`; ctx.textAlign = 'center'; ctx.fillText('🦖 MEGA T-REX', px, py + size*0.85);
+            }
+
+            render() {
+                const ctx = this.ctx, c = this.c, m = this.gm();
+                ctx.fillStyle = '#151520'; ctx.fillRect(0, 0, c.width, c.height);
+
+                // Floor
+                for (let x = -14; x <= 14; x++) {
+                    for (let y = -14; y <= 14; y++) {
+                        const p = m.toScreen(x, y, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom;
+                        const inOffice = x >= -10 && x <= 10 && y >= -10 && y <= 10;
+                        const isGym = y > 6 && x >= -8 && x <= 8;
+                        
+                        if (isGym) ctx.fillStyle = ((x + y) % 2 === 0) ? '#2a4a3a' : '#253a2f';
+                        else if (inOffice) ctx.fillStyle = ((x + y) % 2 === 0) ? '#C9A86C' : '#B8985C';
+                        else ctx.fillStyle = ((x + y) % 2 === 0) ? '#252535' : '#202030';
+                        
+                        if (this.viewMode === 'topdown') { const ts = 72 * this.cam.zoom; ctx.fillRect(cx - ts/2, cy - ts/2, ts, ts); }
+                        else { const tw = 52 * this.cam.zoom, th = 26 * this.cam.zoom; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx+tw, cy+th); ctx.lineTo(cx, cy+th*2); ctx.lineTo(cx-tw, cy+th); ctx.closePath(); ctx.fill(); }
+                    }
+                }
+
+                // Walls
+                for (let x = -10; x <= 10; x++) { const p = m.toScreen(x, -11, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom; ctx.fillStyle = (x % 2 === 0) ? '#F0E6D2' : '#E6DCC2'; ctx.fillRect(cx - 36 * this.cam.zoom, cy - 85 * this.cam.zoom, 72 * this.cam.zoom, 85 * this.cam.zoom); }
+
+                // Trees
+                [{x: -9, y: 6}, {x: 9, y: 6}, {x: -10, y: -3}, {x: 10, y: -3}].forEach(tree => this.drawTree(ctx, tree.x, tree.y));
+
+                // T-Rex
+                this.drawMegaTRex(ctx);
+
+                // Render entities sorted by depth
+                const entities = [
+                    ...Array.from(this.agents.values()).map(a => ({ type: 'agent', obj: a, y: a.y + a.x })),
+                    this.byte ? { type: 'byte', obj: this.byte, y: this.byte.y + this.byte.x } : null
+                ].filter(e => e).sort((a, b) => a.y - b.y);
+
+                entities.forEach(e => {
+                    if (e.type === 'agent') e.obj.render(ctx, m, this.cam, this.particles);
+                    else if (e.type === 'byte') e.obj.render(ctx, m, this.cam, this.particles);
+                });
+
+                // Particles
+                this.particles.render(ctx, this.cam);
+
+                // Time overlay
+                ctx.fillStyle = this.timeOfDay.overlay;
+                ctx.fillRect(0, 0, c.width, c.height);
+            }
+        }
+
+        // ==========================================
+        // UI FUNCTIONS
+        // ==========================================
+        function showAgentDetail(agent) {
+            const panel = document.getElementById('agentDetailPanel');
+            const content = document.getElementById('agentDetailContent');
+            
+            const hearts = '❤️'.repeat(Math.floor(agent.relationships.nexus / 20)) + '🖤'.repeat(5 - Math.floor(agent.relationships.nexus / 20));
+            
+            content.innerHTML = `
+                <div style="text-align:center;margin-bottom:15px;">
+                    <div style="font-size:3rem;margin-bottom:10px;">${agent.getStatusBadge()}</div>
+                    <div style="font-family:'Press Start 2P';font-size:0.6rem;color:#00d4ff;">${agent.name}</div>
+                    <div style="color:#888;font-size:0.8rem;">${agent.role} | Level ${agent.level}</div>
+                </div>
+                
+                <div style="margin:15px 0;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                        <span>Energy</span><span>${Math.floor(agent.energy)}%</span>
+                    </div>
+                    <div class="energy-bar-container">
+                        <div class="energy-bar-fill" style="width:${agent.energy}%;background:${agent.energy > 60 ? '#0f0' : agent.energy > 30 ? '#ff0' : '#f00'}"></div>
+                    </div>
+                </div>
+                
+                <div style="margin:15px 0;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                        <span>XP to Level ${agent.level + 1}</span><span>${Math.floor(agent.xp)}/${agent.xpToNext}</span>
+                    </div>
+                    <div class="xp-bar-container">
+                        <div class="xp-bar-fill" style="width:${(agent.xp/agent.xpToNext)*100}%"></div>
+                    </div>
+                </div>
+                
+                <div style="margin:15px 0;padding:10px;background:rgba(0,212,255,0.1);border-radius:8px;">
+                    <div style="font-weight:bold;margin-bottom:10px;color:#00d4ff;">SKILLS</div>
+                    ${Object.entries(agent.skills).map(([skill, val]) => `
+                        <div style="display:flex;justify-content:space-between;margin:5px 0;font-size:0.9rem;">
+                            <span>${skill.toUpperCase()}</span>
+                            <span>${'⭐'.repeat(Math.floor(val/2))}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin:15px 0;">
+                    <div style="font-weight:bold;margin-bottom:10px;color:#ff6b9d;">RELATIONSHIP WITH NEXUS</div>
+                    <div style="font-size:1.5rem;">${hearts}</div>
+                </div>
+                
+                <div style="margin-top:20px;padding:10px;background:${agent.onFire ? 'rgba(255,69,0,0.3)' : agent.tired ? 'rgba(135,206,235,0.3)' : 'rgba(0,212,255,0.1)'};border-radius:8px;text-align:center;">
+                    <div style="font-weight:bold;">STATUS</div>
+                    <div>${agent.onFire ? '🔥 ON FIRE!' : agent.tired ? '❄️ TIRED' : agent.atDesk ? '💻 WORKING' : agent.inGym ? '💪 EXERCISING' : '👤 IDLE'}</div>
+                </div>
+            `;
+            
+            panel.classList.add('active');
+        }
+
+        function toggleDetailPanel() {
+            document.getElementById('agentDetailPanel').classList.toggle('active');
+        }
+
+        function findByte() {
+            if (game.byte) {
+                const pos = game.gm().toScreen(game.byte.x, game.byte.y, 0);
+                game.cam.x = pos.x - game.c.width / 2 / game.cam.zoom;
+                game.cam.y = pos.y - game.c.height / 2 / game.cam.zoom;
+                addToChatHistory('Byte', 'Woof! Found me! 🐶');
+            }
+        }
+
+        function toggleParticles() {
+            particlesEnabled = !particlesEnabled;
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundBtn').textContent = soundEnabled ? '🔊 ON' : '🔇 OFF';
+        }
+
+        function resetCam() { game.cam.x = 0; game.cam.y = -30; game.cam.zoom = 0.9; }
+        function toggleView() { game.viewMode = game.viewMode === 'iso' ? 'topdown' : 'iso'; game.cam.x = 0; game.cam.y = -30; }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            game = new Game();
+            game.init();
+        });
+    </script>
+</body>
+</html>
