@@ -103,18 +103,19 @@
         let chatHistory = [];
         let selectedAgent = null;
 
+        // LOCAL Meebit images - downloaded to assets/meebits/
         const AGENT_CONFIG = [
-            { id: 'nexus', name: 'Nexus', role: 'Director', meebitId: 1, type: 'Human', x: 0, y: 0, personality: 'bossy', traits: ['Type','Human','Hair Style','Bald','Shirt','Athletic Jacket'] },
-            { id: 'glasses', name: 'Glasses', role: 'Research', meebitId: 42, type: 'Human', x: -3, y: -2, personality: 'nerdy' },
-            { id: 'quill', name: 'Quill', role: 'Writer', meebitId: 100, type: 'Human', x: 3, y: -2, personality: 'creative' },
-            { id: 'pixel', name: 'Pixel', role: 'Artist', meebitId: 200, type: 'Human', x: -5, y: 0, personality: 'artsy' },
-            { id: 'gary', name: 'Gary', role: 'Marketing', meebitId: 300, type: 'Human', x: 5, y: 0, personality: 'hype' },
-            { id: 'larry', name: 'Larry', role: 'Social', meebitId: 500, type: 'Pig', x: -3, y: 2, personality: 'social' },
-            { id: 'sentry', name: 'Sentry', role: 'Engineer', meebitId: 600, type: 'Robot', x: 3, y: 2, personality: 'robotic' },
-            { id: 'audit', name: 'Audit', role: 'QA', meebitId: 700, type: 'Skeleton', x: -6, y: -4, personality: 'strict' },
-            { id: 'cipher', name: 'Cipher', role: 'Security', meebitId: 800, type: 'Visitor', x: 6, y: -4, personality: 'mysterious' },
-            { id: 'limitless', name: 'Limitless', role: 'Trader', meebitId: 1000, type: 'Robot', x: 0, y: -5, personality: 'calculating' },
-            { id: 'olivia', name: 'Olivia', role: 'Sales', meebitId: 1500, type: 'Human', x: 0, y: 4, personality: 'charming' }
+            { id: 'nexus', name: 'Nexus', role: 'Director', imagePath: 'assets/meebits/meebit-001.png', type: 'Human', x: 0, y: 0, personality: 'bossy' },
+            { id: 'glasses', name: 'Glasses', role: 'Research', imagePath: 'assets/meebits/meebit-042.png', type: 'Human', x: -3, y: -2, personality: 'nerdy' },
+            { id: 'quill', name: 'Quill', role: 'Writer', imagePath: 'assets/meebits/meebit-100.png', type: 'Human', x: 3, y: -2, personality: 'creative' },
+            { id: 'pixel', name: 'Pixel', role: 'Artist', imagePath: 'assets/meebits/meebit-200.png', type: 'Human', x: -5, y: 0, personality: 'artsy' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', imagePath: 'assets/meebits/meebit-300.png', type: 'Human', x: 5, y: 0, personality: 'hype' },
+            { id: 'larry', name: 'Larry', role: 'Social', imagePath: 'assets/meebits/meebit-500.png', type: 'Pig', x: -3, y: 2, personality: 'social' },
+            { id: 'sentry', name: 'Sentry', role: 'Engineer', imagePath: 'assets/meebits/meebit-600.png', type: 'Robot', x: 3, y: 2, personality: 'robotic' },
+            { id: 'audit', name: 'Audit', role: 'QA', imagePath: 'assets/meebits/meebit-700.png', type: 'Skeleton', x: -6, y: -4, personality: 'strict' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', imagePath: 'assets/meebits/meebit-800.png', type: 'Visitor', x: 6, y: -4, personality: 'mysterious' },
+            { id: 'limitless', name: 'Limitless', role: 'Trader', imagePath: 'assets/meebits/meebit-1000.png', type: 'Robot', x: 0, y: -5, personality: 'calculating' },
+            { id: 'olivia', name: 'Olivia', role: 'Sales', imagePath: 'assets/meebits/meebit-1500.png', type: 'Human', x: 0, y: 4, personality: 'charming' }
         ];
 
         // AI Response templates based on personality
@@ -288,18 +289,15 @@
         }
 
         class Agent {
-            constructor(config, spriteData, fullImageData) {
+            constructor(config, imageData) {
                 Object.assign(this, config);
                 this.tx = config.x; this.ty = config.y;
                 this.activity = 'idle'; this.idleTimer = 0;
                 this.speech = null; this.speechTimer = 0;
                 this.dir = 'down';
                 this.frame = 0; this.animTimer = 0;
-                this.spriteData = spriteData;
-                this.fullImageData = fullImageData;
-                this.frameSize = 128;
+                this.imageData = imageData;
                 this.chatCooldown = 0;
-                this.useFullImage = true; // Use full image instead of sprite sheet
             }
 
             update(dt, all) {
@@ -374,27 +372,18 @@
                 ctx.ellipse(px, py + size * 0.35, size * 0.25, size * 0.08, 0, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Draw agent - USE FULL IMAGE if available
-                if (this.fullImageData.success) {
+                // Draw agent - USE LOCAL IMAGE
+                if (this.imageData.success) {
                     let bob = this.activity === 'walking' ? Math.sin(this.frame * Math.PI / 2) * 3 * cam.zoom : 0;
                     ctx.drawImage(
-                        this.fullImageData.img,
+                        this.imageData.img,
                         px - size / 2,
                         py - size * 0.9 + bob,
                         size,
                         size
                     );
-                } else if (this.spriteData.success) {
-                    // Fallback to sprite sheet
-                    const frame = this.getSpriteFrame();
-                    let bob = this.activity === 'walking' ? Math.sin(this.frame * Math.PI / 2) * 3 * cam.zoom : 0;
-                    ctx.drawImage(
-                        this.spriteData.img,
-                        frame.sx, frame.sy, frame.sw, frame.sh,
-                        px - size / 2, py - size * 0.9 + bob, size, size
-                    );
                 } else {
-                    // Final fallback - emoji
+                    // Fallback - emoji
                     ctx.fillStyle = '#444';
                     ctx.beginPath();
                     ctx.arc(px, py - size * 0.3, size * 0.3, 0, Math.PI * 2);
