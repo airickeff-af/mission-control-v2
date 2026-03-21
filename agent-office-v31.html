@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>🏢 Agent Office v3.1 | MEEBITS + FIXED DRAG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-primary: #0a0a0f; --accent-cyan: #00d4ff; --accent-green: #22c55e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        body { font-family: 'VT323', monospace; background: var(--bg-primary); color: #eaeaea; min-height: 100vh; overflow: hidden; }
+        .header { background: linear-gradient(180deg, #1a0f2e 0%, #2d1b4e 100%); border-bottom: 4px solid var(--accent-cyan); padding: 0 1rem; height: 60px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+        .brand { display: flex; align-items: center; gap: 0.5rem; }
+        .logo { width: 40px; height: 40px; background: var(--accent-cyan); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .brand-text h1 { font-family: 'Press Start 2P', cursive; font-size: 0.6rem; color: var(--accent-cyan); text-shadow: 2px 2px 0 #000; }
+        .live-indicator { display: flex; align-items: center; gap: 0.5rem; font-size: 0.7rem; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-green); animation: pulse 1s infinite; box-shadow: 0 0 10px var(--accent-green); }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        #officeCanvas { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; width: 100%; height: calc(100% - 60px); background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0f 100%); cursor: grab; }
+        #officeCanvas:active { cursor: grabbing; }
+        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 8px; z-index: 100; flex-wrap: wrap; }
+        .btn { padding: 12px 18px; background: linear-gradient(180deg, #2d1b4e 0%, #1a0f2e 100%); border: 3px solid var(--accent-cyan); border-radius: 4px; font-family: 'Press Start 2P', cursive; font-size: 0.45rem; color: #fff; cursor: pointer; transition: all 0.1s; box-shadow: 3px 3px 0 rgba(0,0,0,0.3); }
+        .btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 rgba(0,0,0,0.3); background: var(--accent-cyan); color: #000; }
+        .btn.active { background: var(--accent-cyan); color: #000; }
+        .stats-overlay { position: fixed; top: 70px; right: 20px; background: rgba(10, 10, 15, 0.95); border: 3px solid var(--accent-cyan); border-radius: 8px; padding: 15px; font-family: 'Press Start 2P', cursive; font-size: 0.5rem; z-index: 100; min-width: 160px; }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .agent-panel { position: fixed; top: 60px; right: -350px; width: 320px; height: calc(100% - 60px); background: rgba(10, 10, 15, 0.98); border-left: 3px solid var(--accent-cyan); z-index: 99; transition: right 0.3s ease; overflow-y: auto; }
+        .agent-panel.active { right: 0; }
+        .team-title { font-family: 'Press Start 2P', cursive; font-size: 0.5rem; color: var(--accent-cyan); margin: 15px 15px 10px; }
+        .agent-card { display: flex; align-items: center; gap: 10px; padding: 12px; margin: 0 15px 8px; background: #1a1a2e; border-radius: 6px; cursor: pointer; }
+        .agent-card:hover { background: rgba(0, 212, 255, 0.15); }
+        .agent-avatar-img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; border: 2px solid var(--accent-cyan); }
+        .feature-legend { position: fixed; bottom: 20px; right: 20px; background: rgba(10, 10, 15, 0.9); border: 2px solid var(--accent-cyan); border-radius: 8px; padding: 12px; font-size: 0.7rem; z-index: 100; max-width: 220px; }
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0f; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; transition: opacity 0.5s; }
+        .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+        .loading-text { font-family: 'Press Start 2P', cursive; font-size: 1rem; color: var(--accent-cyan); margin-bottom: 20px; }
+        .loading-bar { width: 300px; height: 20px; background: #1a1a2e; border: 2px solid var(--accent-cyan); border-radius: 4px; overflow: hidden; }
+        .loading-fill { height: 100%; background: linear-gradient(90deg, var(--accent-cyan), #ff6b9d); width: 0%; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">🏢</div>
+            <div class="brand-text">
+                <h1>AGENT OFFICE v3.1</h1>
+            </div>
+        </div>
+        <div class="live-indicator"><span class="status-dot"></span><span>11 AGENTS + REAL MEEBITS</span></div>
+    </header>
+    
+    <div class="loading-overlay" id="loading">
+        <div class="loading-text">🏢 LOADING MEEBITS...</div>
+        <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+        <div style="margin-top:15px;font-size:0.8rem;color:#888" id="loadingText">Fetching Meebits from API...</div>
+    </div>
+    
+    <canvas id="officeCanvas"></canvas>
+    
+    <div class="controls">
+        <button class="btn" onclick="resetCamera()">🎯 RESET</button>
+        <button class="btn" onclick="togglePanel()">👥 TEAM</button>
+        <button class="btn" onclick="toggleViewMode()" id="viewBtn">🔲 ISO</button>
+        <button class="btn" onclick="toggleMeebits()" id="meebitBtn">🎨 PIXEL</button>
+        <button class="btn" onclick="openVRM()">🎭 VRM</button>
+    </div>
+    
+    <div class="stats-overlay">
+        <div class="stat-row"><span>AGENTS:</span><span id="agentCount">0/11</span></div>
+        <div class="stat-row"><span>VIEW:</span><span id="viewMode">ISO</span></div>
+        <div class="stat-row"><span>MODE:</span><span id="spriteMode">PIXEL</span></div>
+    </div>
+
+    <div class="agent-panel" id="agentPanel"></div>
+
+    <div class="feature-legend">
+        <div style="color:#00d4ff;font-family:'Press Start 2P';font-size:0.5rem;margin-bottom:8px;">🏢 CONTROLS</div>
+        <div>🖱️ Drag to pan</div>
+        <div>📜 Scroll to zoom</div>
+        <div>👆 Click agent to focus</div>
+        <div>💬 Watch agents chat!</div>
+    </div>
+
+    <script>
+        // Agent config with Meebit IDs (using some popular/public Meebits)
+        const AGENT_CONFIG = [
+            { id: 'nexus', name: 'Nexus', role: 'Orchestrator', meebitId: 1, x: 0, y: 0, color: '#00d4ff' },
+            { id: 'glasses', name: 'Glasses', role: 'Researcher', meebitId: 42, x: -4, y: -3, color: '#3b82f6' },
+            { id: 'quill', name: 'Quill', role: 'Writer', meebitId: 100, x: 4, y: -3, color: '#ec4899' },
+            { id: 'pixel', name: 'Pixel', role: 'Designer', meebitId: 200, x: -6, y: 0, color: '#a855f7' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', meebitId: 300, x: 6, y: 0, color: '#f59e0b' },
+            { id: 'larry', name: 'Larry', role: 'Social', meebitId: 500, x: -4, y: 3, color: '#06b6d4' },
+            { id: 'sentry', name: 'Sentry', role: 'DevOps', meebitId: 600, x: 4, y: 3, color: '#ef4444' },
+            { id: 'audit', name: 'Audit', role: 'QA', meebitId: 700, x: -7, y: -5, color: '#8b5cf6' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', meebitId: 800, x: 7, y: -5, color: '#6366f1' },
+            { id: 'limitless', name: 'Limitless', role: 'Trading Bot', meebitId: 1000, x: 0, y: -6, color: '#22c55e' },
+            { id: 'olivia', name: 'Olivia', role: 'DealFlow', meebitId: 1500, x: 0, y: 5, color: '#10b981' }
+        ];
+
+        const ZONES = {
+            nexus: { minX: -2, maxX: 2, minY: -2, maxY: 2 },
+            glasses: { minX: -6, maxX: -2, minY: -5, maxY: -1 },
+            quill: { minX: 2, maxX: 6, minY: -5, maxY: -1 },
+            pixel: { minX: -8, maxX: -4, minY: -2, maxY: 2 },
+            gary: { minX: 4, maxX: 8, minY: -2, maxY: 2 },
+            larry: { minX: -6, maxX: -2, minY: 1, maxY: 5 },
+            sentry: { minX: 2, maxX: 6, minY: 1, maxY: 5 },
+            audit: { minX: -9, maxX: -5, minY: -7, maxY: -3 },
+            cipher: { minX: 5, maxX: 9, minY: -7, maxY: -3 },
+            limitless: { minX: -2, maxX: 2, minY: -8, maxY: -4 },
+            olivia: { minX: -2, maxX: 2, minY: 3, maxY: 7 }
+        };
+
+        // Meebit image loader
+        async function loadMeebitImage(id) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => resolve(img);
+                img.onerror = () => resolve(null);
+                // Try multiple sources
+                img.src = `https://meebits.app/api/v1/meebits/${id}/image`;
+            });
+        }
+
+        class Agent {
+            constructor(config, meebitImg) {
+                Object.assign(this, config);
+                this.tx = config.x;
+                this.ty = config.y;
+                this.activity = 'idle';
+                this.idleTimer = 0;
+                this.speech = null;
+                this.speechTimer = 0;
+                this.partner = null;
+                this.dir = 'down';
+                this.meebitImg = meebitImg;
+                this.frame = 0;
+                this.animTimer = 0;
+            }
+
+            update(dt, allAgents) {
+                this.animTimer += dt;
+                if (this.animTimer > 150) {
+                    this.animTimer = 0;
+                    this.frame = (this.frame + 1) % 4;
+                }
+
+                if (this.activity === 'idle') {
+                    this.idleTimer += dt;
+                    if (this.idleTimer > 2000 + Math.random() * 5000) {
+                        this.startWalk();
+                    }
+                } else if (this.activity === 'walking') {
+                    const dx = this.tx - this.x;
+                    const dy = this.ty - this.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < 0.1) {
+                        this.x = this.tx;
+                        this.y = this.ty;
+                        this.activity = 'idle';
+                        this.idleTimer = 0;
+                    } else {
+                        const speed = 1.5 * dt * 0.001;
+                        this.x += (dx / dist) * speed;
+                        this.y += (dy / dist) * speed;
+                    }
+                }
+
+                if (this.speech) {
+                    this.speechTimer -= dt;
+                    if (this.speechTimer <= 0) this.speech = null;
+                }
+
+                // Random interactions
+                if (this.activity === 'idle' && Math.random() < 0.002) {
+                    const nearby = allAgents.filter(a => 
+                        a.id !== this.id && 
+                        a.activity === 'idle' && 
+                        Math.hypot(a.x - this.x, a.y - this.y) < 2
+                    );
+                    if (nearby.length) {
+                        const p = nearby[0];
+                        this.activity = 'talking';
+                        this.partner = p;
+                        p.activity = 'talking';
+                        p.partner = this;
+                        
+                        const chats = ['Hey!', 'How\'s it going?', 'Almost done!', 'Coffee?', 'Deploy?', 'Nice work!', 'Bug fix?'];
+                        this.speech = chats[Math.floor(Math.random() * chats.length)];
+                        this.speechTimer = 2500;
+                        p.speech = chats[Math.floor(Math.random() * chats.length)];
+                        p.speechTimer = 2500;
+                        
+                        setTimeout(() => {
+                            this.activity = 'idle';
+                            this.partner = null;
+                            p.activity = 'idle';
+                            p.partner = null;
+                        }, 3000);
+                    }
+                }
+            }
+
+            startWalk() {
+                const z = ZONES[this.id];
+                this.tx = z.minX + Math.random() * (z.maxX - z.minX);
+                this.ty = z.minY + Math.random() * (z.maxY - z.minY);
+                this.activity = 'walking';
+                const dx = this.tx - this.x;
+                const dy = this.ty - this.y;
+                this.dir = Math.abs(dx) > Math.abs(dy) ? 
+                    (dx > 0 ? 'right' : 'left') : 
+                    (dy > 0 ? 'down' : 'up');
+            }
+
+            render(ctx, math, cam, viewMode, useMeebits) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const size = (viewMode === 'topdown' ? 35 : 45) * cam.zoom;
+
+                // Shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.beginPath();
+                ctx.ellipse(px, py + size * 0.4, size * 0.4, size * 0.15, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (useMeebits && this.meebitImg) {
+                    // Draw real Meebit image
+                    const imgSize = size * 1.2;
+                    ctx.save();
+                    ctx.translate(px, py - size * 0.3);
+                    
+                    // Bobbing animation when walking
+                    if (this.activity === 'walking') {
+                        ctx.translate(0, Math.sin(this.frame * Math.PI / 2) * 3);
+                    }
+                    
+                    ctx.drawImage(this.meebitImg, -imgSize/2, -imgSize, imgSize, imgSize);
+                    ctx.restore();
+                } else {
+                    // Pixel art fallback
+                    this.renderPixel(ctx, px, py, size, viewMode);
+                }
+
+                // Status dot
+                const statusColors = { active: '#22c55e', working: '#3b82f6', idle: '#888', busy: '#f59e0b' };
+                ctx.fillStyle = statusColors['working'] || '#888';
+                ctx.beginPath();
+                ctx.arc(px + size * 0.5, py - size * 0.8, size * 0.12, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Name on hover
+                ctx.fillStyle = 'rgba(0,0,0,0.8)';
+                ctx.fillRect(px - 40, py + size * 0.5, 80, 20);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 11px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.name, px, py + size * 0.5 + 14);
+
+                // Speech bubble
+                if (this.speech) {
+                    const bx = px;
+                    const by = py - size * 1.2;
+                    ctx.fillStyle = 'rgba(255,255,100,0.95)';
+                    ctx.beginPath();
+                    ctx.roundRect(bx - 45, by - 12, 90, 24, 8);
+                    ctx.fill();
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.fillStyle = '#000';
+                    ctx.font = 'bold 11px monospace';
+                    ctx.fillText(this.speech, bx, by + 4);
+                }
+            }
+
+            renderPixel(ctx, px, py, size, viewMode) {
+                // Body
+                ctx.fillStyle = this.color;
+                if (viewMode === 'topdown') {
+                    ctx.beginPath();
+                    ctx.arc(px, py - size * 0.2, size * 0.4, 0, Math.PI * 2);
+                    ctx.fill();
+                    // Direction indicator
+                    const angle = { up: -Math.PI/2, down: Math.PI/2, left: Math.PI, right: 0 }[this.dir] || 0;
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.arc(px + Math.cos(angle) * size * 0.25, py - size * 0.2 + Math.sin(angle) * size * 0.25, size * 0.12, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.fillRect(px - size/3, py - size, size/1.5, size * 0.7);
+                    ctx.fillStyle = '#fdbf60';
+                    ctx.fillRect(px - size/3, py - size * 1.35, size/1.5, size * 0.4);
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(px - size/4, py - size * 1.2, size/8, size/12);
+                    ctx.fillRect(px + size/12, py - size * 1.2, size/8, size/12);
+                }
+                
+                // Role emoji
+                ctx.font = `${size * 0.35}px serif`;
+                ctx.textAlign = 'center';
+                const roles = { 'Orchestrator': '🎯', 'Researcher': '🔍', 'Writer': '✍️', 'Designer': '🎨', 'Marketing': '📢', 'Social': '🐦', 'DevOps': '🔧', 'QA': '✅', 'Security': '🔒', 'Trading Bot': '🤖', 'DealFlow': '💼' };
+                ctx.fillText(roles[this.role] || '👤', px, py - size * 1.5);
+            }
+        }
+
+        class OfficeRenderer {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.agents = new Map();
+                this.cam = { x: 0, y: 0, zoom: 1.0 };
+                this.viewMode = 'iso';
+                this.useMeebits = false;
+                this.blink = false;
+                this.lastTime = 0;
+                
+                // Coordinate systems
+                this.isoMath = {
+                    toScreen: (x, y, z) => ({
+                        x: (x - y) * 40 + this.canvas.width / 2,
+                        y: (x + y) * 20 - z * 20 + this.canvas.height / 2.5
+                    })
+                };
+                this.tdMath = {
+                    toScreen: (x, y, z) => ({
+                        x: x * 55 + this.canvas.width / 2,
+                        y: y * 55 + this.canvas.height / 2 - z * 25
+                    })
+                };
+                
+                this.setupInput();
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight - 60;
+            }
+
+            setupInput() {
+                let isDragging = false;
+                let lastX, lastY;
+                
+                this.canvas.addEventListener('mousedown', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Check agent click
+                    let clicked = null;
+                    for (const agent of this.agents.values()) {
+                        const pos = this.getMath().toScreen(agent.x, agent.y, 0);
+                        const px = (pos.x - this.cam.x) * this.cam.zoom;
+                        const py = (pos.y - this.cam.y) * this.cam.zoom;
+                        const size = (this.viewMode === 'topdown' ? 35 : 45) * this.cam.zoom;
+                        if (Math.hypot(x - px, y - (py - size * 0.2)) < size * 0.5) {
+                            clicked = agent;
+                            break;
+                        }
+                    }
+                    
+                    if (clicked) {
+                        focusOnAgent(clicked.id);
+                    } else {
+                        isDragging = true;
+                        lastX = e.clientX;
+                        lastY = e.clientY;
+                        this.canvas.style.cursor = 'grabbing';
+                    }
+                });
+                
+                this.canvas.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    
+                    const dx = e.clientX - lastX;
+                    const dy = e.clientY - lastY;
+                    
+                    // FIX: Move camera opposite to drag direction
+                    this.cam.x -= dx / this.cam.zoom;
+                    this.cam.y -= dy / this.cam.zoom;
+                    
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                });
+                
+                this.canvas.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    this.canvas.style.cursor = 'grab';
+                });
+                
+                this.canvas.addEventListener('mouseleave', () => {
+                    isDragging = false;
+                    this.canvas.style.cursor = 'grab';
+                });
+                
+                this.canvas.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const factor = e.deltaY > 0 ? 0.9 : 1.1;
+                    this.cam.zoom = Math.max(0.4, Math.min(3, this.cam.zoom * factor));
+                }, { passive: false });
+            }
+
+            getMath() {
+                return this.viewMode === 'iso' ? this.isoMath : this.tdMath;
+            }
+
+            start() {
+                const loop = (now) => {
+                    const dt = now - this.lastTime;
+                    this.lastTime = now;
+                    this.blink = Math.sin(now / 150) > 0;
+                    
+                    this.agents.forEach(agent => agent.update(dt, Array.from(this.agents.values())));
+                    this.render();
+                    requestAnimationFrame(loop);
+                };
+                requestAnimationFrame(loop);
+            }
+
+            render() {
+                const ctx = this.ctx;
+                const c = this.canvas;
+                const math = this.getMath();
+                
+                ctx.fillStyle = '#0a0a0f';
+                ctx.fillRect(0, 0, c.width, c.height);
+                
+                this.drawFloor(math);
+                this.drawWalls(math);
+                this.drawWindows(math);
+                this.drawFurniture(math);
+                
+                // Sort agents by Y for depth
+                const sorted = Array.from(this.agents.values())
+                    .sort((a, b) => (a.y + a.x) - (b.y + b.x));
+                sorted.forEach(agent => agent.render(ctx, math, this.cam, this.viewMode, this.useMeebits));
+            }
+
+            drawFloor(math) {
+                const ctx = this.ctx;
+                for (let x = -12; x <= 12; x++) {
+                    for (let y = -12; y <= 12; y++) {
+                        const pos = math.toScreen(x, y, 0);
+                        const cx = (pos.x - this.cam.x) * this.cam.zoom;
+                        const cy = (pos.y - this.cam.y) * this.cam.zoom;
+                        
+                        const isZone = Object.values(ZONES).some(z => 
+                            x >= z.minX && x <= z.maxX && 
+                            y >= z.minY && y <= z.maxY
+                        );
+                        
+                        ctx.fillStyle = isZone ? 
+                            ((x + y) % 2 === 0 ? '#C4A77D' : '#B89A6F') :
+                            ((x + y) % 2 === 0 ? '#1a1a2e' : '#151525');
+                        
+                        if (this.viewMode === 'topdown') {
+                            const ts = 55 * this.cam.zoom;
+                            ctx.fillRect(cx - ts/2, cy - ts/2, ts, ts);
+                            ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+                            ctx.lineWidth = 1;
+                            ctx.strokeRect(cx - ts/2, cy - ts/2, ts, ts);
+                        } else {
+                            const tw = 40 * this.cam.zoom;
+                            const th = 20 * this.cam.zoom;
+                            ctx.beginPath();
+                            ctx.moveTo(cx, cy);
+                            ctx.lineTo(cx + tw, cy + th);
+                            ctx.lineTo(cx, cy + th * 2);
+                            ctx.lineTo(cx - tw, cy + th);
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                    }
+                }
+            }
+
+            drawWalls(math) {
+                const ctx = this.ctx;
+                // Back wall
+                for (let x = -10; x <= 10; x++) {
+                    const pos = math.toScreen(x, -10, 0);
+                    const cx = (pos.x - this.cam.x) * this.cam.zoom;
+                    const cy = (pos.y - this.cam.y) * this.cam.zoom;
+                    ctx.fillStyle = (x % 2 === 0) ? '#e6d7b8' : '#d7c8a8';
+                    ctx.fillRect(cx - 28 * this.cam.zoom, cy - 70 * this.cam.zoom, 56 * this.cam.zoom, 70 * this.cam.zoom);
+                }
+            }
+
+            drawWindows(math) {
+                const ctx = this.ctx;
+                [-6, -2, 2, 6].forEach(wx => {
+                    const pos = math.toScreen(wx, -10, 0);
+                    const cx = (pos.x - this.cam.x) * this.cam.zoom;
+                    const cy = (pos.y - this.cam.y) * this.cam.zoom;
+                    
+                    // Sky
+                    ctx.fillStyle = '#87CEEB';
+                    ctx.fillRect(cx - 22 * this.cam.zoom, cy - 55 * this.cam.zoom, 44 * this.cam.zoom, 45 * this.cam.zoom);
+                    
+                    // Window frame
+                    ctx.strokeStyle = '#5c4033';
+                    ctx.lineWidth = 3 * this.cam.zoom;
+                    ctx.strokeRect(cx - 22 * this.cam.zoom, cy - 55 * this.cam.zoom, 44 * this.cam.zoom, 45 * this.cam.zoom);
+                    
+                    // Cross
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy - 55 * this.cam.zoom);
+                    ctx.lineTo(cx, cy - 10 * this.cam.zoom);
+                    ctx.moveTo(cx - 22 * this.cam.zoom, cy - 32 * this.cam.zoom);
+                    ctx.lineTo(cx + 22 * this.cam.zoom, cy - 32 * this.cam.zoom);
+                    ctx.stroke();
+                });
+            }
+
+            drawFurniture(math) {
+                const ctx = this.ctx;
+                
+                // Meeting table (center)
+                const mt = math.toScreen(0, 0, 0);
+                ctx.fillStyle = '#8B4513';
+                ctx.beginPath();
+                ctx.ellipse((mt.x - this.cam.x) * this.cam.zoom, (mt.y - this.cam.y) * this.cam.zoom, 65 * this.cam.zoom, 35 * this.cam.zoom, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#5D4037';
+                ctx.lineWidth = 3 * this.cam.zoom;
+                ctx.stroke();
+                
+                // Pool table
+                const pt = math.toScreen(8, -3, 0);
+                ctx.fillStyle = '#228B22';
+                ctx.fillRect((pt.x - this.cam.x) * this.cam.zoom - 60 * this.cam.zoom, (pt.y - this.cam.y) * this.cam.zoom - 30 * this.cam.zoom, 120 * this.cam.zoom, 60 * this.cam.zoom);
+                ctx.strokeStyle = '#8B4513';
+                ctx.lineWidth = 8 * this.cam.zoom;
+                ctx.strokeRect((pt.x - this.cam.x) * this.cam.zoom - 60 * this.cam.zoom, (pt.y - this.cam.y) * this.cam.zoom - 30 * this.cam.zoom, 120 * this.cam.zoom, 60 * this.cam.zoom);
+                
+                // Gym
+                const gy = math.toScreen(-8, 0, 0);
+                ctx.fillStyle = '#333';
+                ctx.fillRect((gy.x - this.cam.x) * this.cam.zoom - 45 * this.cam.zoom, (gy.y - this.cam.y) * this.cam.zoom - 25 * this.cam.zoom, 35 * this.cam.zoom, 55 * this.cam.zoom);
+                ctx.fillStyle = '#00CED1';
+                ctx.fillRect((gy.x - this.cam.x) * this.cam.zoom - 45 * this.cam.zoom, (gy.y - this.cam.y) * this.cam.zoom - 30 * this.cam.zoom, 35 * this.cam.zoom, 10 * this.cam.zoom);
+                
+                // Server room
+                const sr = math.toScreen(8, 5, 0);
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 55 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 45 * this.cam.zoom, 110 * this.cam.zoom, 90 * this.cam.zoom);
+                // Server racks with blinking lights
+                for (let r = 0; r < 2; r++) {
+                    ctx.fillStyle = '#333';
+                    ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 50 * this.cam.zoom + r * 55 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 40 * this.cam.zoom, 45 * this.cam.zoom, 80 * this.cam.zoom);
+                    for (let i = 0; i < 6; i++) {
+                        ctx.fillStyle = this.blink ? '#00ff00' : '#00aa00';
+                        ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 45 * this.cam.zoom + r * 55 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 35 * this.cam.zoom + i * 12 * this.cam.zoom, 10 * this.cam.zoom, 6 * this.cam.zoom);
+                    }
+                }
+                ctx.fillStyle = '#00ff00';
+                ctx.font = `${9 * this.cam.zoom}px "Press Start 2P"`;
+                ctx.textAlign = 'center';
+                ctx.fillText('MEMORY', (sr.x - this.cam.x) * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 50 * this.cam.zoom);
+                
+                // Recharge area
+                const ra = math.toScreen(-8, 6, 0);
+                // Fridge
+                ctx.fillStyle = '#FFF';
+                ctx.fillRect((ra.x - this.cam.x) * this.cam.zoom - 35 * this.cam.zoom, (ra.y - this.cam.y) * this.cam.zoom - 45 * this.cam.zoom, 70 * this.cam.zoom, 90 * this.cam.zoom);
+                ctx.fillStyle = 'rgba(135,206,235,0.6)';
+                ctx.fillRect((ra.x - this.cam.x) * this.cam.zoom - 30 * this.cam.zoom, (ra.y - this.cam.y) * this.cam.zoom - 40 * this.cam.zoom, 60 * this.cam.zoom, 80 * this.cam.zoom);
+                // Drinks
+                ['#FF0000', '#00FF00', '#0000FF', '#FFD700'].forEach((c, i) => {
+                    ctx.fillStyle = c;
+                    ctx.fillRect((ra.x - this.cam.x) * this.cam.zoom - 25 * this.cam.zoom + (i % 2) * 30 * this.cam.zoom, (ra.y - this.cam.y) * this.cam.zoom - 30 * this.cam.zoom + Math.floor(i / 2) * 35 * this.cam.zoom, 10 * this.cam.zoom, 20 * this.cam.zoom);
+                });
+            }
+        }
+
+        // Global variables
+        let renderer;
+        let loadedCount = 0;
+
+        async function init() {
+            const canvas = document.getElementById('officeCanvas');
+            renderer = new OfficeRenderer(canvas);
+            
+            // Load Meebits
+            const loadingEl = document.getElementById('loadingText');
+            const loadingFill = document.getElementById('loadingFill');
+            
+            for (const config of AGENT_CONFIG) {
+                loadingEl.textContent = `Loading Meebit ${config.meebitId}...`;
+                const img = await loadMeebitImage(config.meebitId);
+                renderer.agents.set(config.id, new Agent(config, img));
+                loadedCount++;
+                loadingFill.style.width = `${(loadedCount / AGENT_CONFIG.length) * 100}%`;
+            }
+            
+            document.getElementById('agentCount').textContent = `${loadedCount}/11`;
+            document.getElementById('loading').classList.add('hidden');
+            
+            renderer.start();
+            renderPanel();
+        }
+
+        function renderPanel() {
+            const panel = document.getElementById('agentPanel');
+            const teams = {
+                'Leadership': AGENT_CONFIG.filter(a => a.role === 'Orchestrator'),
+                'Intelligence': AGENT_CONFIG.filter(a => ['Researcher', 'Trading Bot'].includes(a.role)),
+                'Creative': AGENT_CONFIG.filter(a => ['Designer', 'Writer'].includes(a.role)),
+                'Growth': AGENT_CONFIG.filter(a => ['Marketing', 'Social', 'DealFlow'].includes(a.role)),
+                'Operations': AGENT_CONFIG.filter(a => ['DevOps', 'QA', 'Security'].includes(a.role))
+            };
+            
+            panel.innerHTML = Object.entries(teams).map(([name, agents]) => 
+                agents.length ? `
+                    <div class="team-title">${name}</div>
+                    ${agents.map(a => `
+                        <div class="agent-card" onclick="focusOnAgent('${a.id}')">
+                            <img class="agent-avatar-img" src="https://meebits.app/api/v1/meebits/${a.meebitId}/image" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><rect fill=%22${a.color.replace('#','%23')}%22 width=%2240%22 height=%2240%22/><text x=%2220%22 y=%2225%22 text-anchor=%22middle%22 font-size=%2220%22>${a.role === 'Orchestrator' ? '🎯' : a.role === 'Researcher' ? '🔍' : a.role === 'Writer' ? '✍️' : a.role === 'Designer' ? '🎨' : a.role === 'Marketing' ? '📢' : a.role === 'Social' ? '🐦' : a.role === 'DevOps' ? '🔧' : a.role === 'QA' ? '✅' : a.role === 'Security' ? '🔒' : a.role === 'Trading Bot' ? '🤖' : '💼'}</text></svg>'" alt="${a.name}">
+                            <div style="flex:1">
+                                <div style="font-weight:bold;">${a.name}</div>
+                                <div style="font-size:0.75rem;color:#888;">${a.role}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                ` : ''
+            ).join('');
+        }
+
+        function resetCamera() {
+            if (!renderer) return;
+            renderer.cam.x = 0;
+            renderer.cam.y = 0;
+            renderer.cam.zoom = 1.0;
+        }
+
+        function togglePanel() {
+            document.getElementById('agentPanel').classList.toggle('active');
+        }
+
+        function toggleViewMode() {
+            if (!renderer) return;
+            renderer.viewMode = renderer.viewMode === 'iso' ? 'topdown' : 'iso';
+            renderer.cam.x = 0;
+            renderer.cam.y = 0;
+            renderer.cam.zoom = 1.0;
+            document.getElementById('viewMode').textContent = renderer.viewMode === 'iso' ? 'ISO' : 'TOP';
+            document.getElementById('viewBtn').textContent = renderer.viewMode === 'iso' ? '🔲 ISO' : '⬜ TOP';
+        }
+
+        function toggleMeebits() {
+            if (!renderer) return;
+            renderer.useMeebits = !renderer.useMeebits;
+            document.getElementById('spriteMode').textContent = renderer.useMeebits ? 'MEEBIT' : 'PIXEL';
+            document.getElementById('meebitBtn').textContent = renderer.useMeebits ? '🎨 MEEBIT' : '👤 PIXEL';
+            document.getElementById('meebitBtn').classList.toggle('active', renderer.useMeebits);
+        }
+
+        function openVRM() {
+            window.open('https://airickeff-af.github.io/mission-control-v2/agent-office-meebit.html', '_blank');
+        }
+
+        function focusOnAgent(id) {
+            const agent = renderer.agents.get(id);
+            if (!agent) return;
+            const math = renderer.getMath();
+            if (renderer.viewMode === 'topdown') {
+                renderer.cam.x = agent.x * 55;
+                renderer.cam.y = agent.y * 55;
+            } else {
+                renderer.cam.x = (agent.x - agent.y) * 40;
+                renderer.cam.y = (agent.x + agent.y) * 20 - 100;
+            }
+            renderer.cam.zoom = 1.8;
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
