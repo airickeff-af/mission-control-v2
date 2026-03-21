@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Agent Office v4.4 | CHATTING NON-STOP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root { --accent: #00d4ff; --green: #22c55e; --pink: #ff6b9d; }
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        body { font-family: 'VT323', monospace; background: #0a0a0f; color: #fff; overflow: hidden; }
+        .header { background: linear-gradient(180deg, #1a0f2e, #2d1b4e); border-bottom: 4px solid var(--accent); padding: 0 1rem; height: 60px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { width: 40px; height: 40px; background: var(--accent); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .logo h1 { font-family: 'Press Start 2P'; font-size: 0.55rem; color: var(--accent); }
+        #gameCanvas { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; cursor: grab; }
+        #gameCanvas:active { cursor: grabbing; }
+        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 8px; z-index: 100; }
+        .btn { padding: 12px 16px; background: linear-gradient(180deg, #2d1b4e, #1a0f2e); border: 3px solid var(--accent); border-radius: 4px; font-family: 'Press Start 2P'; font-size: 0.4rem; color: #fff; cursor: pointer; }
+        .btn:hover { background: var(--accent); color: #000; }
+        .loading { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0f; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
+        .loading.hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+        .loading h2 { font-family: 'Press Start 2P'; color: var(--accent); margin-bottom: 20px; }
+        .progress { width: 400px; height: 20px; background: #1a1a2e; border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s; }
+        .stats { position: fixed; top: 70px; right: 20px; background: rgba(0,0,0,0.9); border: 3px solid var(--accent); border-radius: 8px; padding: 12px; font-family: 'Press Start 2P'; font-size: 0.45rem; }
+        .chat-overlay { position: fixed; top: 70px; left: 20px; max-width: 300px; max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.8); border: 2px solid var(--pink); border-radius: 8px; padding: 10px; z-index: 100; }
+        .chat-message { margin-bottom: 8px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; font-size: 0.85rem; }
+        .chat-name { color: var(--accent); font-weight: bold; }
+        .agent-list { position: fixed; top: 60px; right: -300px; width: 280px; height: calc(100% - 60px); background: rgba(10,10,15,0.98); border-left: 3px solid var(--accent); transition: right 0.3s; z-index: 99; overflow-y: auto; padding: 15px; }
+        .agent-list.active { right: 0; }
+        .agent-card { display: flex; align-items: center; gap: 10px; padding: 10px; margin-bottom: 8px; background: #1a1a2e; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <h2>🏢 LOADING AGENT OFFICE v4.4...</h2>
+        <div class="progress"><div class="progress-bar" id="progress"></div></div>
+        <div id="loadingText" style="margin-top:15px;color:#888">Loading chatty agents...</div>
+    </div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🏢</div>
+            <h1>AGENT OFFICE v4.4</h1>
+        </div>
+        <div style="font-size:0.7rem;">💬 NON-STOP CHAT</div>
+    </header>
+    
+    <div class="chat-overlay" id="chatOverlay">
+        <div style="color:#ff6b9d;font-weight:bold;margin-bottom:10px;">💬 LIVE CHAT</div>
+        <div id="chatHistory"></div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    
+    <div class="controls">
+        <button class="btn" onclick="resetCam()">🎯 RESET</button>
+        <button class="btn" onclick="toggleList()">👥 TEAM</button>
+        <button class="btn" onclick="toggleView()">🔲 ISO</button>
+        <button class="btn" onclick="toggleChatMute()">🔊 MUTE</button>
+        <button class="btn" onclick="zoomIn()">➕</button>
+        <button class="btn" onclick="zoomOut()">➖</button>
+    </div>
+    
+    <div class="stats">
+        <div>AGENTS: <span id="agentCount">11</span></div>
+        <div>CHATS: <span id="chatCount">0</span></div>
+        <div style="color:#ff6b9d;margin-top:8px;">💬 ALWAYS TALKING</div>
+    </div>
+    
+    <div class="agent-list" id="agentList"></div>
+
+    <script>
+        // Agent definitions with personalities
+        const AGENT_CONFIG = [
+            { id: 'nexus', name: 'Nexus', role: 'Director', meebitId: 17600, type: 'Human', x: 0, y: 0, personality: 'bossy' },
+            { id: 'glasses', name: 'Glasses', role: 'Research', meebitId: 1234, type: 'Human', x: -3, y: -2, personality: 'nerdy' },
+            { id: 'quill', name: 'Quill', role: 'Writer', meebitId: 5555, type: 'Human', x: 3, y: -2, personality: 'creative' },
+            { id: 'pixel', name: 'Pixel', role: 'Artist', meebitId: 8888, type: 'Human', x: -5, y: 0, personality: 'artsy' },
+            { id: 'gary', name: 'Gary', role: 'Marketing', meebitId: 9999, type: 'Human', x: 5, y: 0, personality: 'hype' },
+            { id: 'larry', name: 'Larry', role: 'Social', meebitId: 6666, type: 'Pig', x: -3, y: 2, personality: 'social' },
+            { id: 'sentry', name: 'Sentry', role: 'Engineer', meebitId: 4444, type: 'Robot', x: 3, y: 2, personality: 'robotic' },
+            { id: 'audit', name: 'Audit', role: 'QA', meebitId: 2222, type: 'Skeleton', x: -6, y: -4, personality: 'strict' },
+            { id: 'cipher', name: 'Cipher', role: 'Security', meebitId: 1111, type: 'Visitor', x: 6, y: -4, personality: 'mysterious' },
+            { id: 'limitless', name: 'Limitless', role: 'Trader', meebitId: 7777, type: 'Robot', x: 0, y: -5, personality: 'calculating' },
+            { id: 'olivia', name: 'Olivia', role: 'Sales', meebitId: 3333, type: 'Human', x: 0, y: 4, personality: 'charming' }
+        ];
+
+        // HUGE chat database - agents talk constantly
+        const CHAT_DATABASE = {
+            work: [
+                "This code is a mess!", "Who wrote this?", "It works on my machine!", "Time to refactor!",
+                "Deploying now!", "Server is down!", "Server is back up!", "Found the bug!", "Fixed it!",
+                "Need coffee...", "Coffee acquired!", "Brain not functioning", "In the zone!",
+                "Meeting in 5!", "Not another meeting!", "Standup time!", "Can we async this?",
+                "Scope creep again!", "That's not in the spec!", "Client wants WHAT?!", "We need more time!",
+                "Crunch time!", "Ship it!", "LGTM!", "Needs more testing...", "Tests passing!",
+                "CI/CD broke!", "Pipeline green!", "Merge conflict!", "Git blame shows...",
+                "Documentation please!", "RTFM!", "Stack Overflow time!", "Copy-paste from SO!",
+                "Works perfectly!", "How did this ever work?", "Legacy code...", "Technical debt!",
+                "Rewrite everything!", "Don't touch it!", "If it ain't broke...", "It's broke!",
+                "Friday deploy? No!", "Hotfix incoming!", "Rollback! Rollback!", "All hands!"
+            ],
+            casual: [
+                "Hey!", "Yo!", "Sup!", "Morning!", "Afternoon!", "Evening!",
+                "How's it going?", "What's up?", "How are you?", "Doing good!", "Not bad!", "Could be better...",
+                "Lunch time?", "Pizza?", "Sushi?", "Tacos?", "I'm starving!", "Just ate!", "Food coma...",
+                "Weekend plans?", "Gaming tonight?", "New episode out!", "Did you see the game?",
+                "TGIF!", "Monday again?!", "Hump day!", "Almost weekend!", "Can't wait for Friday!",
+                "Need vacation...", "Burned out...", "So motivated!", "Crushing it!", "On fire! 🔥",
+                "Check this out!", "Look at this!", "You won't believe...", "Guess what?!", "No way!",
+                "LOL!", "LMAO!", "ROFL!", "😂", "🤣", "😅", "😎", "🤔", "😴", "🤯"
+            ],
+            nerdy: [
+                "The blockchain...", "Web3 is the future!", "AI will replace us!", "Have you tried Rust?",
+                "Rust is better!", "Go is faster!", "Python is easiest!", "JS is weird...", "TypeScript saves lives!",
+                "Microservices!", "Monolith!", "Serverless!", "Kubernetes!", "Dockerize everything!",
+                "To the moon! 🚀", "HODL!", "Buy the dip!", "Crypto winter...", "NFTs are dead!",
+                "Bitcoin maxi!", "Ethereum merge!", "Gas fees too high!", "Layer 2 solutions!",
+                "Machine learning!", "Neural networks!", "Deep learning!", "Training models...", "GPU usage 100%!",
+                "Quantum computing!", "The singularity!", "AGI when?", "ChatGPT wrote this!", "Prompt engineering!"
+            ],
+            bossy: [
+                "Get back to work!", "Deadline is TOMORROW!", "We need to talk...", "My office, now!",
+                "Performance review time!", "You're doing great!", "Step it up!", "Crunch time!",
+                "All hands meeting!", "Town hall in 10!", " Quarterly goals!", "KPIs looking good!",
+                "Raise incoming!", "Bonus season!", "Budget cuts...", "Hiring freeze!", "We're expanding!",
+                "New project!", "Priority shift!", "Drop everything!", "This is urgent!", "ASAP!"
+            ]
+        };
+
+        const ZONES = {
+            nexus: { minX: -1, maxX: 1, minY: -1, maxY: 1 },
+            glasses: { minX: -5, maxX: -2, minY: -4, maxY: -1 },
+            quill: { minX: 2, maxX: 5, minY: -4, maxY: -1 },
+            pixel: { minX: -7, maxX: -4, minY: -2, maxY: 2 },
+            gary: { minX: 4, maxX: 7, minY: -2, maxY: 2 },
+            larry: { minX: -5, maxX: -2, minY: 1, maxY: 4 },
+            sentry: { minX: 2, maxX: 5, minY: 1, maxY: 4 },
+            audit: { minX: -8, maxX: -5, minY: -6, maxY: -3 },
+            cipher: { minX: 5, maxX: 8, minY: -6, maxY: -3 },
+            limitless: { minX: -2, maxX: 2, minY: -7, maxY: -4 },
+            olivia: { minX: -2, maxX: 2, minY: 3, maxY: 6 }
+        };
+
+        const FURNITURE = {
+            desk: 'assets/furniture/desk.png',
+            chairFront: 'assets/furniture/chair_front.png',
+            chairBack: 'assets/furniture/chair_back.png',
+            chairLeft: 'assets/furniture/chair_left.png',
+            chairRight: 'assets/furniture/chair_right.png',
+            floorWood: 'assets/furniture/floor_wood.png',
+            meetingTable: 'assets/furniture/meeting_table.png',
+            whiteboard: 'assets/furniture/whiteboard.png',
+            plant: 'assets/furniture/plant.png',
+            commanderDesk: 'assets/furniture/commander_desk.png',
+            cabinet: 'assets/furniture/cabinet.png',
+            waterCooler: 'assets/furniture/water_cooler.png'
+        };
+
+        let chatMuted = false;
+        let totalChats = 0;
+
+        function loadImage(src) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve({ img, success: true });
+                img.onerror = () => resolve({ img: null, success: false });
+                img.src = src;
+            });
+        }
+
+        async function loadMeebitSprite(meebitId) {
+            const url = `https://api.meebits.app/v2/sprites/sheet/${String(meebitId).padStart(5, '0')}`;
+            return loadImage(url);
+        }
+
+        function getRandomChat(personality) {
+            let category = 'casual';
+            if (personality === 'bossy') category = Math.random() > 0.5 ? 'bossy' : 'work';
+            else if (personality === 'nerdy') category = Math.random() > 0.5 ? 'nerdy' : 'work';
+            else if (personality === 'robotic') category = 'work';
+            else if (Math.random() > 0.6) category = 'work';
+            else if (Math.random() > 0.5) category = 'nerdy';
+            
+            const chats = CHAT_DATABASE[category];
+            return chats[Math.floor(Math.random() * chats.length)];
+        }
+
+        function addToChatHistory(name, text) {
+            if (chatMuted) return;
+            totalChats++;
+            document.getElementById('chatCount').textContent = totalChats;
+            
+            const history = document.getElementById('chatHistory');
+            const msg = document.createElement('div');
+            msg.className = 'chat-message';
+            msg.innerHTML = `<span class="chat-name">${name}:</span> ${text}`;
+            history.insertBefore(msg, history.firstChild);
+            
+            // Keep only last 20 messages
+            while (history.children.length > 20) {
+                history.removeChild(history.lastChild);
+            }
+        }
+
+        class Agent {
+            constructor(config, spriteData) {
+                Object.assign(this, config);
+                this.tx = config.x; this.ty = config.y;
+                this.activity = 'idle'; this.idleTimer = 0;
+                this.speech = null; this.speechTimer = 0;
+                this.partner = null; this.dir = 'down';
+                this.frame = 0; this.animTimer = 0;
+                this.spriteData = spriteData;
+                this.frameSize = 128;
+                this.chatCooldown = 0;
+            }
+
+            update(dt, all) {
+                this.animTimer += dt;
+                if (this.animTimer > 150) { this.animTimer = 0; this.frame = (this.frame + 1) % 4; }
+                
+                this.chatCooldown -= dt;
+
+                if (this.activity === 'idle') {
+                    this.idleTimer += dt;
+                    if (this.idleTimer > 2000 + Math.random() * 3000) this.startWalk();
+                    
+                    // RANDOM CHATTING - agents talk to themselves!
+                    if (this.chatCooldown <= 0 && Math.random() < 0.02) {
+                        this.speech = getRandomChat(this.personality);
+                        this.speechTimer = 4000;
+                        addToChatHistory(this.name, this.speech);
+                        this.chatCooldown = 5000 + Math.random() * 5000;
+                    }
+                } else if (this.activity === 'walking') {
+                    const dx = this.tx - this.x, dy = this.ty - this.y, dist = Math.hypot(dx, dy);
+                    if (dist < 0.1) { this.x = this.tx; this.y = this.ty; this.activity = 'idle'; this.idleTimer = 0; }
+                    else { const s = 2 * dt * 0.001; this.x += (dx / dist) * s; this.y += (dy / dist) * s; }
+                }
+
+                if (this.speech) { this.speechTimer -= dt; if (this.speechTimer <= 0) this.speech = null; }
+
+                // AGENTS CHAT WITH EACH OTHER CONSTANTLY
+                if (this.activity === 'idle' && this.chatCooldown <= 0 && Math.random() < 0.05) {
+                    const nearby = all.filter(a =>
+                        a.id !== this.id &&
+                        a.activity === 'idle' &&
+                        Math.hypot(a.x - this.x, a.y - this.y) < 3
+                    );
+                    if (nearby.length) {
+                        const p = nearby[0];
+                        this.activity = 'talking'; p.activity = 'talking';
+                        
+                        // Generate conversation
+                        const myChat = getRandomChat(this.personality);
+                        const theirChat = getRandomChat(p.personality);
+                        
+                        this.speech = myChat; this.speechTimer = 5000;
+                        p.speech = theirChat; p.speechTimer = 5000;
+                        
+                        addToChatHistory(this.name, myChat);
+                        setTimeout(() => addToChatHistory(p.name, theirChat), 1000);
+                        
+                        this.chatCooldown = 8000 + Math.random() * 7000;
+                        p.chatCooldown = 8000 + Math.random() * 7000;
+                        
+                        setTimeout(() => { this.activity = 'idle'; p.activity = 'idle'; }, 4000);
+                    }
+                }
+            }
+
+            startWalk() {
+                const z = ZONES[this.id];
+                this.tx = z.minX + Math.random() * (z.maxX - z.minX);
+                this.ty = z.minY + Math.random() * (z.maxY - z.minY);
+                this.activity = 'walking';
+                const dx = this.tx - this.x, dy = this.ty - this.y;
+                this.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+            }
+
+            getSpriteFrame() {
+                const rowMap = { down: 0, right: 1, up: 2, left: 3 };
+                const row = rowMap[this.dir] || 0;
+                const col = this.activity === 'walking' ? this.frame : 0;
+                return { sx: col * this.frameSize, sy: row * this.frameSize, sw: this.frameSize, sh: this.frameSize };
+            }
+
+            render(ctx, math, cam, vm) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom, py = (pos.y - cam.y) * cam.zoom;
+                const size = 100 * cam.zoom;
+                
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.beginPath(); ctx.ellipse(px, py + size * 0.35, size * 0.3, size * 0.1, 0, 0, Math.PI * 2); ctx.fill();
+                
+                if (this.spriteData.success) {
+                    const frame = this.getSpriteFrame();
+                    let bob = this.activity === 'walking' ? Math.sin(this.frame * Math.PI / 2) * 5 * cam.zoom : 0;
+                    ctx.drawImage(this.spriteData.img, frame.sx, frame.sy, frame.sw, frame.sh, px - size / 2, py - size * 0.8 + bob, size, size);
+                } else {
+                    ctx.fillStyle = '#333'; ctx.beginPath(); ctx.arc(px, py - size * 0.3, size * 0.4, 0, Math.PI * 2); ctx.fill();
+                    ctx.font = `${size * 0.5}px serif`; ctx.textAlign = 'center';
+                    const emojis = { Human: '👤', Pig: '🐷', Robot: '🤖', Visitor: '👽', Skeleton: '💀' };
+                    ctx.fillText(emojis[this.type] || '👤', px, py - size * 0.2);
+                }
+                
+                ctx.fillStyle = 'rgba(0,0,0,0.85)'; ctx.fillRect(px - 50, py + size * 0.1, 100, 22);
+                ctx.fillStyle = '#fff'; ctx.font = 'bold 12px monospace'; ctx.textAlign = 'center'; ctx.fillText(this.name, px, py + size * 0.1 + 15);
+                ctx.fillStyle = 'rgba(0,212,255,0.3)'; ctx.fillRect(px - 50, py + size * 0.1 + 24, 100, 16);
+                ctx.fillStyle = '#00d4ff'; ctx.font = '10px monospace'; ctx.fillText(`${this.role} [${this.type}]`, px, py + size * 0.1 + 35);
+                
+                // SPEECH BUBBLE - Always visible when talking!
+                if (this.speech) {
+                    const bx = px, by = py - size * 1.1;
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.moveTo(bx - 60, by - 20);
+                    ctx.lineTo(bx + 60, by - 20);
+                    ctx.quadraticCurveTo(bx + 70, by - 20, bx + 70, by - 10);
+                    ctx.lineTo(bx + 70, by + 10);
+                    ctx.quadraticCurveTo(bx + 70, by + 20, bx + 60, by + 20);
+                    ctx.lineTo(bx - 60, by + 20);
+                    ctx.quadraticCurveTo(bx - 70, by + 20, bx - 70, by + 10);
+                    ctx.lineTo(bx - 70, by - 10);
+                    ctx.quadraticCurveTo(bx - 70, by - 20, bx - 60, by - 20);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#000';
+                    ctx.font = 'bold 13px monospace';
+                    ctx.textAlign = 'center';
+                    
+                    // Wrap text
+                    const words = this.speech.split(' ');
+                    let line = '';
+                    let lines = [];
+                    for (let word of words) {
+                        if ((line + word).length > 12) {
+                            lines.push(line.trim());
+                            line = word + ' ';
+                        } else line += word + ' ';
+                    }
+                    lines.push(line.trim());
+                    
+                    lines.forEach((line, i) => {
+                        ctx.fillText(line, bx, by - 5 + (i * 14));
+                    });
+                    
+                    // Tail
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.moveTo(bx - 8, by + 20);
+                    ctx.lineTo(bx + 8, by + 20);
+                    ctx.lineTo(bx, by + 32);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            }
+        }
+
+        class Game {
+            constructor() {
+                this.c = document.getElementById('gameCanvas');
+                this.ctx = this.c.getContext('2d');
+                this.agents = new Map();
+                this.furniture = {};
+                this.cam = { x: 0, y: 0, zoom: 1 };
+                this.viewMode = 'iso';
+                this.lastTime = 0;
+                this.blink = false;
+                this.iso = { toScreen: (x,y,z) => ({ x: (x-y)*50 + this.c.width/2, y: (x+y)*25 - z*25 + this.c.height/2.5 }) };
+                this.td = { toScreen: (x,y,z) => ({ x: x*70 + this.c.width/2, y: y*70 + this.c.height/2 - z*30 }) };
+                this.setupInput();
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+
+            resize() { this.c.width = window.innerWidth; this.c.height = window.innerHeight - 60; }
+
+            setupInput() {
+                let d = false, lx, ly;
+                this.c.addEventListener('mousedown', e => {
+                    const r = this.c.getBoundingClientRect();
+                    const mx = e.clientX - r.left, my = e.clientY - r.top;
+                    let cl = null;
+                    for (const a of this.agents.values()) {
+                        const p = this.gm().toScreen(a.x, a.y, 0);
+                        const px = (p.x - this.cam.x) * this.cam.zoom, py = (p.y - this.cam.y) * this.cam.zoom;
+                        if (Math.hypot(mx - px, my - (py - 40*this.cam.zoom)) < 50*this.cam.zoom) { cl = a; break; }
+                    }
+                    if (cl) focusAgent(cl.id);
+                    else { d = true; lx = e.clientX; ly = e.clientY; this.c.style.cursor = 'grabbing'; }
+                });
+                this.c.addEventListener('mousemove', e => {
+                    if (!d) return;
+                    this.cam.x -= (e.clientX - lx) / this.cam.zoom;
+                    this.cam.y -= (e.clientY - ly) / this.cam.zoom;
+                    lx = e.clientX; ly = e.clientY;
+                });
+                this.c.addEventListener('mouseup', () => { d = false; this.c.style.cursor = 'grab'; });
+                this.c.addEventListener('wheel', e => { e.preventDefault(); this.cam.zoom = Math.max(0.4, Math.min(2.5, this.cam.zoom * (e.deltaY > 0 ? 0.9 : 1.1))); }, { passive: false });
+            }
+
+            gm() { return this.viewMode === 'iso' ? this.iso : this.td; }
+
+            async init() {
+                const loadingText = document.getElementById('loadingText');
+                const progressBar = document.getElementById('progress');
+                let loaded = 0, total = AGENT_CONFIG.length + Object.keys(FURNITURE).length;
+
+                for (const data of AGENT_CONFIG) {
+                    loadingText.textContent = `Loading ${data.name}...`;
+                    const spriteData = await loadMeebitSprite(data.meebitId);
+                    this.agents.set(data.id, new Agent(data, spriteData));
+                    loaded++; progressBar.style.width = `${(loaded / total) * 100}%`;
+                }
+
+                for (const [key, path] of Object.entries(FURNITURE)) {
+                    loadingText.textContent = `Loading ${key}...`;
+                    this.furniture[key] = await loadImage(path);
+                    loaded++; progressBar.style.width = `${(loaded / total) * 100}%`;
+                }
+
+                document.getElementById('loading').classList.add('hidden');
+                this.renderUI();
+                this.start();
+            }
+
+            start() {
+                const loop = (n) => {
+                    const dt = n - this.lastTime; this.lastTime = n;
+                    this.blink = Math.sin(n / 150) > 0;
+                    this.agents.forEach(a => a.update(dt, Array.from(this.agents.values())));
+                    this.render();
+                    requestAnimationFrame(loop);
+                };
+                requestAnimationFrame(loop);
+            }
+
+            render() {
+                const ctx = this.ctx, c = this.c, m = this.gm();
+                ctx.fillStyle = '#0a0a0f'; ctx.fillRect(0, 0, c.width, c.height);
+
+                // Floor
+                for (let x = -10; x <= 10; x++) {
+                    for (let y = -10; y <= 10; y++) {
+                        const p = m.toScreen(x, y, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom;
+                        const inZone = Object.values(ZONES).some(z => x >= z.minX && x <= z.maxX && y >= z.minY && y <= z.maxY);
+                        if (inZone && this.furniture.floorWood?.success) {
+                            const ts = 70 * this.cam.zoom;
+                            ctx.drawImage(this.furniture.floorWood.img, cx - ts/2, cy - ts/2, ts, ts);
+                        } else {
+                            ctx.fillStyle = inZone ? '#C4A77D' : '#1a1a2e';
+                            if (this.viewMode === 'topdown') { const ts = 70 * this.cam.zoom; ctx.fillRect(cx - ts/2, cy - ts/2, ts, ts); }
+                            else { const tw = 50 * this.cam.zoom, th = 25 * this.cam.zoom; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx+tw, cy+th); ctx.lineTo(cx, cy+th*2); ctx.lineTo(cx-tw, cy+th); ctx.closePath(); ctx.fill(); }
+                        }
+                    }
+                }
+
+                // Walls
+                for (let x = -8; x <= 8; x++) { const p = m.toScreen(x, -9, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom; ctx.fillStyle = (x%2) ? '#e6d7b8' : '#d7c8a8'; ctx.fillRect(cx - 35 * this.cam.zoom, cy - 80 * this.cam.zoom, 70 * this.cam.zoom, 80 * this.cam.zoom); }
+
+                // Windows
+                [-5, -1, 3, 7].forEach(wx => { const p = m.toScreen(wx, -9, 0), cx = (p.x - this.cam.x) * this.cam.zoom, cy = (p.y - this.cam.y) * this.cam.zoom; ctx.fillStyle = '#87CEEB'; ctx.fillRect(cx - 28 * this.cam.zoom, cy - 65 * this.cam.zoom, 56 * this.cam.zoom, 50 * this.cam.zoom); ctx.strokeStyle = '#5c4033'; ctx.lineWidth = 3 * this.cam.zoom; ctx.strokeRect(cx - 28 * this.cam.zoom, cy - 65 * this.cam.zoom, 56 * this.cam.zoom, 50 * this.cam.zoom); ctx.beginPath(); ctx.moveTo(cx, cy - 65 * this.cam.zoom); ctx.lineTo(cx, cy - 15 * this.cam.zoom); ctx.moveTo(cx - 28 * this.cam.zoom, cy - 40 * this.cam.zoom); ctx.lineTo(cx + 28 * this.cam.zoom, cy - 40 * this.cam.zoom); ctx.stroke(); });
+
+                // Furniture
+                const cd = m.toScreen(0, 0, 0);
+                if (this.furniture.commanderDesk?.success) {
+                    const s = 80 * this.cam.zoom;
+                    ctx.drawImage(this.furniture.commanderDesk.img, (cd.x - this.cam.x) * this.cam.zoom - s/2, (cd.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                }
+
+                const deskPositions = [{x: -3, y: -2}, {x: 3, y: -2}, {x: -5, y: 0}, {x: 5, y: 0}, {x: -3, y: 2}, {x: 3, y: 2}];
+                deskPositions.forEach(pos => {
+                    const p = m.toScreen(pos.x, pos.y, 0);
+                    if (this.furniture.desk?.success) {
+                        const s = 60 * this.cam.zoom;
+                        ctx.drawImage(this.furniture.desk.img, (p.x - this.cam.x) * this.cam.zoom - s/2, (p.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                    }
+                });
+
+                const mt = m.toScreen(0, 0, 0);
+                if (this.furniture.meetingTable?.success) {
+                    const s = 100 * this.cam.zoom;
+                    ctx.drawImage(this.furniture.meetingTable.img, (mt.x - this.cam.x) * this.cam.zoom - s/2, (mt.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                }
+
+                const wb = m.toScreen(-7, -7, 0);
+                if (this.furniture.whiteboard?.success) {
+                    const s = 50 * this.cam.zoom;
+                    ctx.drawImage(this.furniture.whiteboard.img, (wb.x - this.cam.x) * this.cam.zoom - s/2, (wb.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                }
+
+                const plantPos = [{x: -8, y: 5}, {x: 8, y: 5}];
+                plantPos.forEach(pos => {
+                    const p = m.toScreen(pos.x, pos.y, 0);
+                    if (this.furniture.plant?.success) {
+                        const s = 40 * this.cam.zoom;
+                        ctx.drawImage(this.furniture.plant.img, (p.x - this.cam.x) * this.cam.zoom - s/2, (p.y - this.cam.y) * this.cam.zoom - s/2, s, s);
+                    }
+                });
+
+                const sr = m.toScreen(7, 4, 0);
+                ctx.fillStyle = '#1a1a2e'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 60 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 50 * this.cam.zoom, 120 * this.cam.zoom, 100 * this.cam.zoom);
+                for (let r = 0; r < 2; r++) { ctx.fillStyle = '#333'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 55 * this.cam.zoom + r * 60 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 45 * this.cam.zoom, 50 * this.cam.zoom, 90 * this.cam.zoom); for (let i = 0; i < 6; i++) { ctx.fillStyle = this.blink ? '#0f0' : '#0a0'; ctx.fillRect((sr.x - this.cam.x) * this.cam.zoom - 50 * this.cam.zoom + r * 60 * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 40 * this.cam.zoom + i * 14 * this.cam.zoom, 12 * this.cam.zoom, 8 * this.cam.zoom); } }
+                ctx.fillStyle = '#0f0'; ctx.font = `${10 * this.cam.zoom}px monospace`; ctx.textAlign = 'center'; ctx.fillText('MEMORY', (sr.x - this.cam.x) * this.cam.zoom, (sr.y - this.cam.y) * this.cam.zoom - 55 * this.cam.zoom);
+
+                // Agents
+                Array.from(this.agents.values()).sort((a, b) => (a.y + a.x) - (b.y + b.x)).forEach(a => a.render(ctx, m, this.cam, this.viewMode));
+            }
+
+            renderUI() {
+                const list = document.getElementById('agentList');
+                list.innerHTML = AGENT_CONFIG.map(a => {
+                    const agent = this.agents.get(a.id);
+                    const loaded = agent?.spriteData?.success;
+                    return `<div class="agent-card" onclick="focusAgent('${a.id}')"><div style="width:50px;height:50px;background:${loaded ? '#333' : '#1a1a2e'};border:2px solid ${loaded ? '#0f0' : '#666'};display:flex;align-items:center;justify-content:center;font-size:1.5rem;border-radius:4px;">${loaded ? '✓' : '○'}</div><div><div style="font-weight:bold;">${a.name}</div><div style="font-size:0.8rem;color:#888;">${a.role}</div><div style="font-size:0.7rem;color:${loaded ? '#0f0' : '#888'};">${a.personality}</div></div></div>`;
+                }).join('');
+            }
+        }
+
+        let game;
+        function init() { game = new Game(); game.init(); }
+        function resetCam() { game.cam.x = 0; game.cam.y = 0; game.cam.zoom = 1; }
+        function toggleList() { document.getElementById('agentList').classList.toggle('active'); }
+        function toggleView() { game.viewMode = game.viewMode === 'iso' ? 'topdown' : 'iso'; game.cam.x = 0; game.cam.y = 0; document.getElementById('viewLabel').textContent = game.viewMode === 'iso' ? 'ISO' : 'TOP'; }
+        function toggleChatMute() { chatMuted = !chatMuted; }
+        function zoomIn() { game.cam.zoom = Math.min(2.5, game.cam.zoom * 1.2); }
+        function zoomOut() { game.cam.zoom = Math.max(0.4, game.cam.zoom / 1.2); }
+        function focusAgent(id) { const a = game.agents.get(id); if (!a) return; game.cam.x = game.viewMode === 'topdown' ? a.x * 70 : (a.x - a.y) * 50; game.cam.y = game.viewMode === 'topdown' ? a.y * 70 : (a.x + a.y) * 25 - 80; game.cam.zoom = 2; }
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
