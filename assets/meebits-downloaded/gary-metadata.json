@@ -1,0 +1,65 @@
+{
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Human"
+    },
+    {
+      "trait_type": "Hair Style",
+      "value": "Buzzcut"
+    },
+    {
+      "trait_type": "Hair Color",
+      "value": "Dark"
+    },
+    {
+      "trait_type": "Beard",
+      "value": "Big"
+    },
+    {
+      "trait_type": "Beard Color",
+      "value": "Dark"
+    },
+    {
+      "trait_type": "Hat",
+      "value": "Headphones"
+    },
+    {
+      "trait_type": "Hat Color",
+      "value": "Magenta"
+    },
+    {
+      "trait_type": "Shirt",
+      "value": "Hoodie"
+    },
+    {
+      "trait_type": "Shirt Color",
+      "value": "Magenta"
+    },
+    {
+      "trait_type": "Pants",
+      "value": "Athletic Shorts"
+    },
+    {
+      "trait_type": "Pants Color",
+      "value": "Magenta"
+    },
+    {
+      "trait_type": "Shoes",
+      "value": "Neon Sneakers"
+    },
+    {
+      "trait_type": "Tattoo",
+      "value": "No"
+    }
+  ],
+  "description": "Meebits are 20,000 unique 3D voxel characters created by a custom generative algorithm.",
+  "image": "https://api.meebits.app/v2/images/yugalabs_full/00300",
+  "license_terms": "https://licenseterms.meebits.app/",
+  "mb1_portrait": "https://api.meebits.app/v2/images/yugalabs_portrait/00300",
+  "name": "Meebit #300",
+  "original_image": "https://api.meebits.app/v2/images/larvalabs_full/00300",
+  "sprite_sheet": "https://api.meebits.app/v2/sprites/sheet/00300",
+  "vrm": "https://api.meebits.app/v2/3d/larvalabs_vrm/00300",
+  "external_url": "https://opensea.io/item/ethereum/0x7bd29408f11d2bfc23c34f18275bbf23bb716bc7/300"
+}

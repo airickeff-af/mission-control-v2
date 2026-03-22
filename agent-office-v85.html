@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Agent Office v8.5 | LOCAL VRM + SMARTER AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@2.0.0/lib/three-vrm.min.js"></script>
+    <style>
+        :root { --accent: #00d4ff; --green: #22c55e; --pink: #ff6b9d; --gold: #ffd700; }
+        * { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+        body { font-family: 'VT323', monospace; background: #1a1a2e; color: #fff; overflow: hidden; }
+        .header { background: linear-gradient(180deg, #2d1b4e, #1a0f2e); border-bottom: 4px solid var(--accent); padding: 0 1rem; height: 60px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        #gameCanvas { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; cursor: grab; }
+        #vrmCanvas { position: fixed; top: 60px; left: 0; right: 0; bottom: 0; display: none; background: #1a1a2e; }
+        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 8px; z-index: 100; flex-wrap: wrap; }
+        .btn { padding: 12px 16px; background: linear-gradient(180deg, #2d1b4e, #1a0f2e); border: 3px solid var(--accent); border-radius: 4px; font-family: 'Press Start 2P'; font-size: 0.4rem; color: #fff; cursor: pointer; transition: all 0.2s; }
+        .btn:hover { background: var(--accent); color: #000; }
+        .mode-selector { position: fixed; top: 70px; right: 20px; background: rgba(0,0,0,0.9); border: 2px solid var(--gold); border-radius: 8px; padding: 10px; z-index: 102; }
+        .mode-btn { display: block; width: 100%; margin: 4px 0; padding: 8px 12px; font-family: 'Press Start 2P'; font-size: 0.35rem; background: #2a1a3a; border: 2px solid #555; color: #fff; cursor: pointer; }
+        .mode-btn:hover, .mode-btn.active { background: var(--green); border-color: var(--green); }
+        .loading { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #1a1a2e; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
+        .loading.hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+        .progress { width: 400px; height: 20px; background: #2a1b3d; border: 2px solid var(--accent); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); width: 0%; transition: width 0.3s; }
+        .chat-overlay { position: fixed; top: 130px; left: 20px; max-width: 350px; max-height: 250px; overflow-y: auto; background: rgba(0,0,0,0.9); border: 2px solid var(--pink); border-radius: 8px; padding: 10px; z-index: 100; }
+        .agent-list { position: fixed; top: 60px; right: -350px; width: 330px; height: calc(100% - 60px); background: rgba(10,10,15,0.98); border-left: 3px solid var(--accent); transition: right 0.3s; z-index: 99; overflow-y: auto; padding: 15px; }
+        .agent-list.active { right: 0; }
+        .agent-card { display: flex; align-items: center; gap: 10px; padding: 10px; margin-bottom: 8px; background: #1a1a2e; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+        .agent-card:hover { background: rgba(0,212,255,0.2); }
+        .stats-panel { position: fixed; top: 70px; left: 20px; background: rgba(0,0,0,0.95); border: 2px solid var(--gold); border-radius: 8px; padding: 15px; z-index: 101; display: none; min-width: 250px; }
+        .stats-panel.active { display: block; }
+        .stat-bar { height: 10px; background: #333; border-radius: 5px; margin: 5px 0; overflow: hidden; }
+        .stat-fill { height: 100%; border-radius: 5px; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <h2 style="color:#00d4ff;font-family:'Press Start 2P';margin-bottom:20px;">🏢 AGENT OFFICE v8.5<br>LOCAL VRM + SMART AI</h2>
+        <div class="progress"><div class="progress-bar" id="progress"></div></div>
+        <div id="loadingText" style="margin-top:15px;color:#888">Loading Agents...</div>
+    </div>
+
+    <header class="header">
+        <div class="logo">
+            <div style="width:40px;height:40px;background:#00d4ff;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🎮</div>
+            <h1 style="font-family:'Press Start 2P';font-size:0.5rem;color:#00d4ff;">AGENT OFFICE v8.5</h1>
+        </div>
+        <div style="font-size:0.7rem;">🧠 SMARTER AI + 👤 LOCAL VRM</div>
+    </header>
+
+    <div class="mode-selector">
+        <div style="color:var(--gold);font-family:'Press Start 2P';font-size:0.4rem;margin-bottom:8px;">🎨 MODE</div>
+        <button class="mode-btn active" onclick="setMode('sprites')">🎭 SPRITES</button>
+        <button class="mode-btn" onclick="setMode('vrm')">👤 VRM 3D</button>
+        <button class="mode-btn" onclick="setMode('kairo')">🏢 KAIROSOFT</button>
+    </div>
+
+    <div class="stats-panel" id="statsPanel">
+        <div id="statsContent"></div>
+    </div>
+
+    <div class="chat-overlay" id="chatOverlay">
+        <div style="color:#ff6b9d;font-weight:bold;margin-bottom:10px;">💬 LIVE CHAT</div>
+        <div id="chatHistory"></div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    <canvas id="vrmCanvas"></canvas>
+    
+    <div class="controls">
+        <button class="btn" onclick="resetCam()">🎯 RESET</button>
+        <button class="btn" onclick="toggleList()">👥 TEAM</button>
+        <button class="btn" onclick="toggleView()">🔲 ISO</button>
+        <button class="btn" onclick="findByte()">🐶 BYTE</button>
+    </div>
+    
+    <div class="agent-list" id="agentList"></div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION - LOCAL ASSETS
+        // ============================================
+        const ASSET_BASE = './assets/meebits-downloaded/';
+        
+        const AGENTS = [
+            { id: 'nexus', name: 'Nexus', role: 'Director', meebitId: 1, type: 'Human', 
+              personality: 'leader', color: '#00d4ff', emoji: '👑', 
+              preferredFurniture: ['nexus_desk', 'round_table'],
+              skills: ['strategy', 'management', 'vision'] },
+            { id: 'glasses', name: 'Glasses', role: 'Research', meebitId: 42, type: 'Human',
+              personality: 'analyst', color: '#ff6b9d', emoji: '🔍',
+              preferredFurniture: ['research_table', 'bookshelf'],
+              skills: ['data', 'analysis', 'research'] },
+            { id: 'quill', name: 'Quill', role: 'Writer', meebitId: 100, type: 'Human',
+              personality: 'creative', color: '#ffd700', emoji: '✍️',
+              preferredFurniture: ['writer_desk', 'lamp'],
+              skills: ['writing', 'storytelling', 'editing'] },
+            { id: 'pixel', name: 'Pixel', role: 'Artist', meebitId: 200, type: 'Human',
+              personality: 'artsy', color: '#ff00ff', emoji: '🎨',
+              preferredFurniture: ['art_easel', 'paint_shelf'],
+              skills: ['design', 'art', 'creativity'] },
+            { id: 'gary', name: 'Gary', role: 'Marketing', meebitId: 300, type: 'Human',
+              personality: 'hype', color: '#22c55e', emoji: '📈',
+              preferredFurniture: ['growth_board', 'hype_desk'],
+              skills: ['growth', 'campaigns', 'hype'] },
+            { id: 'larry', name: 'Larry', role: 'Social', meebitId: 500, type: 'Pig',
+              personality: 'social', color: '#ff8c00', emoji: '🐷',
+              preferredFurniture: ['meme_station', 'community_board'],
+              skills: ['community', 'memes', 'engagement'] },
+            { id: 'sentry', name: 'Sentry', role: 'Engineer', meebitId: 600, type: 'Robot',
+              personality: 'robotic', color: '#00ff00', emoji: '🤖',
+              preferredFurniture: ['server_rack1', 'terminal'],
+              skills: ['coding', 'systems', 'devops'] },
+            { id: 'audit', name: 'Audit', role: 'QA', meebitId: 700, type: 'Skeleton',
+              personality: 'strict', color: '#ffffff', emoji: '💀',
+              preferredFurniture: ['bug_board', 'test_station'],
+              skills: ['testing', 'quality', 'bugs'] },
+            { id: 'cipher', name: 'Cipher', role: 'Security', meebitId: 800, type: 'Visitor',
+              personality: 'mysterious', color: '#9400d3', emoji: '👽',
+              preferredFurniture: ['crypto_vault', 'monitor_wall'],
+              skills: ['security', 'crypto', 'stealth'] },
+            { id: 'limitless', name: 'Limitless', role: 'Trader', meebitId: 1000, type: 'Robot',
+              personality: 'calculating', color: '#00ffff', emoji: '💹',
+              preferredFurniture: ['trading_desk', 'chart_screen'],
+              skills: ['trading', 'analysis', 'risk'] },
+            { id: 'olivia', name: 'Olivia', role: 'Sales', meebitId: 1500, type: 'Human',
+              personality: 'charming', color: '#ff1493', emoji: '💼',
+              preferredFurniture: ['deal_table', 'phone'],
+              skills: ['deals', 'negotiation', 'relationships'] }
+        ];
+
+        // Furniture with interaction zones
+        const FURNITURE = [
+            { id: 'nexus_desk', type: 'desk', x: 0, y: 0, label: 'Director\'s Desk', emoji: '🖥️', color: '#8B4513', workType: 'management' },
+            { id: 'research_table', type: 'desk', x: -4, y: -2, label: 'Research Station', emoji: '🔬', color: '#5c4033', workType: 'research' },
+            { id: 'writer_desk', type: 'desk', x: 3, y: -2, label: 'Writing Desk', emoji: '📝', color: '#5c4033', workType: 'creative' },
+            { id: 'art_easel', type: 'desk', x: -6, y: 0, label: 'Digital Canvas', emoji: '🎨', color: '#8B4513', workType: 'creative' },
+            { id: 'hype_desk', type: 'desk', x: 5, y: 1, label: 'Campaign Desk', emoji: '📈', color: '#5c4033', workType: 'marketing' },
+            { id: 'meme_station', type: 'desk', x: -4, y: 3, label: 'Meme Factory', emoji: '🐷', color: '#ff8c00', workType: 'social' },
+            { id: 'server_rack1', type: 'server', x: 3, y: 3, label: 'Server Rack A', emoji: '🖥️', color: '#00ff00', workType: 'tech' },
+            { id: 'terminal', type: 'desk', x: 3, y: 2, label: 'Dev Terminal', emoji: '⌨️', color: '#00aa00', workType: 'tech' },
+            { id: 'test_station', type: 'desk', x: -6.5, y: -5, label: 'Test Bench', emoji: '✅', color: '#888888', workType: 'qa' },
+            { id: 'crypto_vault', type: 'safe', x: 7, y: -4, label: 'Crypto Vault', emoji: '🔐', color: '#9400d3', workType: 'security' },
+            { id: 'trading_desk', type: 'desk', x: 0, y: -5, label: 'Trading Station', emoji: '💹', color: '#00ffff', workType: 'trading' },
+            { id: 'deal_table', type: 'desk', x: 0, y: 4, label: 'Deal Table', emoji: '💼', color: '#ff1493', workType: 'sales' },
+            { id: 'coffee_machine', type: 'appliance', x: -8, y: 3, label: 'Coffee Machine', emoji: '☕', color: '#8B4513', workType: 'break' },
+            { id: 'sofa', type: 'seat', x: -8, y: 5, label: 'Lounge Sofa', emoji: '🛋️', color: '#8B4513', workType: 'rest' },
+            { id: 'treadmill', type: 'gym', x: -6, y: 7, label: 'Treadmill', emoji: '🏃', color: '#silver', workType: 'exercise' },
+            { id: 'pool_table', type: 'game', x: 6, y: 7, label: 'Pool Table', emoji: '🎱', color: '#228B22', workType: 'game' },
+            { id: 'dog_bed', type: 'pet', x: -8, y: 4, label: 'Byte\'s Bed', emoji: '🛏️', color: '#D2691E', workType: 'pet' },
+            { id: 'trex', type: 'statue', x: 5, y: -7, label: '🦖 T-REX', emoji: '🦖', color: '#228B22', workType: 'decor' },
+        ];
+
+        // ============================================
+        // SMART AGENT WITH BEHAVIOR SYSTEM
+        // ============================================
+        class SmartAgent {
+            constructor(config, assets) {
+                this.config = config;
+                this.assets = assets; // { sprite: img, vrm: url, full: img }
+                this.x = (Math.random() - 0.5) * 10;
+                this.y = (Math.random() - 0.5) * 10;
+                this.tx = this.x;
+                this.ty = this.y;
+                this.state = 'idle';
+                this.stateTimer = 0;
+                this.energy = 100;
+                this.happiness = 80;
+                this.skillLevel = {};
+                this.config.skills.forEach(s => this.skillLevel[s] = 50 + Math.random() * 50);
+                this.currentTask = null;
+                this.taskProgress = 0;
+                this.speech = null;
+                this.speechTimer = 0;
+                this.frame = 0;
+                this.direction = 0;
+                this.isMoving = false;
+            }
+
+            update(dt, allAgents, timeOfDay) {
+                this.stateTimer += dt;
+                
+                // Energy management
+                if (this.state === 'working') {
+                    this.energy -= dt * 0.005;
+                    this.taskProgress += dt * 0.0002;
+                } else if (this.state === 'idle' || this.state === 'resting') {
+                    this.energy = Math.min(100, this.energy + dt * 0.003);
+                }
+                
+                // State machine
+                switch (this.state) {
+                    case 'idle':
+                        this.handleIdle(dt, allAgents, timeOfDay);
+                        break;
+                    case 'walking':
+                        this.handleWalking(dt);
+                        break;
+                    case 'working':
+                        this.handleWorking(dt);
+                        break;
+                    case 'resting':
+                        this.handleResting(dt);
+                        break;
+                    case 'socializing':
+                        this.handleSocializing(dt, allAgents);
+                        break;
+                }
+                
+                // Update animation frame
+                if (this.isMoving) {
+                    this.frame = (this.frame + 1) % 8;
+                } else {
+                    this.frame = 0;
+                }
+                
+                // Clear speech
+                if (this.speechTimer > 0) {
+                    this.speechTimer -= dt;
+                    if (this.speechTimer <= 0) this.speech = null;
+                }
+            }
+
+            handleIdle(dt, allAgents, timeOfDay) {
+                // Find preferred furniture based on needs
+                if (this.energy < 30 && Math.random() < 0.01) {
+                    this.goToFurniture('rest');
+                } else if (this.energy > 60 && Math.random() < 0.008) {
+                    this.goToFurniture(this.getPreferredWorkType());
+                } else if (Math.random() < 0.005) {
+                    // Socialize
+                    const nearby = this.findNearbyAgents(allAgents, 5);
+                    if (nearby.length > 0) {
+                        this.startSocializing(nearby[0]);
+                    } else {
+                        this.wander();
+                    }
+                }
+            }
+
+            handleWalking(dt) {
+                const dx = this.tx - this.x;
+                const dy = this.ty - this.y;
+                const dist = Math.hypot(dx, dy);
+                
+                if (dist < 0.1) {
+                    this.x = this.tx;
+                    this.y = this.ty;
+                    this.isMoving = false;
+                    if (this.targetFurniture) {
+                        this.startWorking(this.targetFurniture);
+                    } else {
+                        this.state = 'idle';
+                    }
+                } else {
+                    this.x += (dx / dist) * 0.03;
+                    this.y += (dy / dist) * 0.03;
+                    this.direction = Math.abs(dx) > Math.abs(dy) 
+                        ? (dx > 0 ? 3 : 2) : (dy > 0 ? 0 : 1);
+                    this.isMoving = true;
+                }
+            }
+
+            handleWorking(dt) {
+                if (this.taskProgress >= 1) {
+                    this.completeTask();
+                } else if (this.energy < 20) {
+                    this.state = 'idle';
+                    this.speak("Need a break...");
+                }
+            }
+
+            handleResting(dt) {
+                if (this.stateTimer > 5000 || this.energy > 90) {
+                    this.state = 'idle';
+                    this.speak("Refreshed!");
+                }
+            }
+
+            handleSocializing(dt, allAgents) {
+                if (this.stateTimer > 3000) {
+                    this.state = 'idle';
+                    this.happiness = Math.min(100, this.happiness + 10);
+                }
+            }
+
+            getPreferredWorkType() {
+                const map = {
+                    'management': 'management', 'research': 'research', 'creative': 'creative',
+                    'marketing': 'marketing', 'social': 'social', 'tech': 'tech',
+                    'qa': 'qa', 'security': 'security', 'trading': 'trading', 'sales': 'sales'
+                };
+                return map[this.config.role.toLowerCase()] || 'creative';
+            }
+
+            goToFurniture(workType) {
+                const options = FURNITURE.filter(f => f.workType === workType);
+                if (options.length > 0) {
+                    const target = options[Math.floor(Math.random() * options.length)];
+                    this.tx = target.x + (Math.random() - 0.5);
+                    this.ty = target.y + (Math.random() - 0.5);
+                    this.targetFurniture = target;
+                    this.state = 'walking';
+                    this.isMoving = true;
+                }
+            }
+
+            startWorking(furniture) {
+                this.state = 'working';
+                this.currentTask = furniture;
+                this.taskProgress = 0;
+                this.speak(`Working at ${furniture.label}`);
+            }
+
+            completeTask() {
+                this.state = 'idle';
+                this.taskProgress = 0;
+                this.skillLevel[this.getPreferredWorkType()] += 1;
+                this.speak("Task complete! ✅");
+                this.targetFurniture = null;
+            }
+
+            startSocializing(otherAgent) {
+                this.state = 'socializing';
+                this.stateTimer = 0;
+                const greetings = ["Hey!", "What's up?", "How's it going?", "Nice to see you!"];
+                this.speak(greetings[Math.floor(Math.random() * greetings.length)]);
+            }
+
+            wander() {
+                this.tx = (Math.random() - 0.5) * 14;
+                this.ty = (Math.random() - 0.5) * 14;
+                this.state = 'walking';
+                this.isMoving = true;
+                this.targetFurniture = null;
+            }
+
+            findNearbyAgents(allAgents, radius) {
+                return Array.from(allAgents.values()).filter(a => {
+                    if (a === this) return false;
+                    return Math.hypot(a.x - this.x, a.y - this.y) < radius;
+                });
+            }
+
+            speak(text) {
+                this.speech = text;
+                this.speechTimer = 4000;
+                addToChat(this.config.name, text, this.config.color);
+            }
+
+            render(ctx, math, cam, mode) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const size = 90 * cam.zoom;
+
+                // Shadow
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.beginPath();
+                ctx.ellipse(px, py + size * 0.4, size * 0.25, size * 0.06, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Render based on mode
+                if (mode === 'sprites' && this.assets.sprite) {
+                    this.renderSprite(ctx, px, py, size);
+                } else if (mode === 'kairo') {
+                    this.renderKairosoft(ctx, px, py, size);
+                } else {
+                    // Fallback
+                    ctx.font = `${size * 0.8}px serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.config.emoji, px, py);
+                }
+
+                // Name + role
+                ctx.fillStyle = 'rgba(0,0,0,0.85)';
+                ctx.fillRect(px - 55, py + size * 0.15, 110, 20);
+                ctx.fillStyle = this.config.color;
+                ctx.font = 'bold 10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.config.name, px, py + size * 0.22);
+                ctx.fillStyle = '#888';
+                ctx.font = '8px monospace';
+                ctx.fillText(this.config.role, px, py + size * 0.3);
+
+                // State indicator
+                const stateEmoji = { idle: this.config.emoji, walking: '🚶', 
+                    working: '💻', resting: '☕', socializing: '💬' }[this.state];
+                ctx.font = `${14 * cam.zoom}px serif`;
+                ctx.fillText(stateEmoji, px + size * 0.35, py - size * 0.5);
+
+                // Speech
+                if (this.speech) {
+                    this.renderSpeechBubble(ctx, px, py - size * 0.8, this.speech, cam.zoom);
+                }
+            }
+
+            renderSprite(ctx, px, py, size) {
+                const img = this.assets.sprite;
+                const frameWidth = 128;
+                const frameHeight = 128;
+                const col = this.frame % 8;
+                const row = this.direction;
+                const sx = col * frameWidth;
+                const sy = row * frameHeight;
+                ctx.drawImage(img, sx, sy, frameWidth, frameHeight,
+                    px - size/2, py - size, size, size);
+            }
+
+            renderKairosoft(ctx, px, py, size) {
+                // Simple chibi style
+                ctx.fillStyle = '#ffdbac'; // Skin
+                ctx.beginPath();
+                ctx.arc(px, py - size * 0.6, size * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = this.config.color; // Shirt
+                ctx.fillRect(px - size * 0.2, py - size * 0.35, size * 0.4, size * 0.35);
+                
+                // Eyes
+                ctx.fillStyle = '#000';
+                ctx.fillRect(px - size * 0.1, py - size * 0.65, size * 0.06, size * 0.08);
+                ctx.fillRect(px + size * 0.05, py - size * 0.65, size * 0.06, size * 0.08);
+            }
+
+            renderSpeechBubble(ctx, x, y, text, zoom) {
+                ctx.font = `bold ${10 * zoom}px monospace`;
+                const width = Math.min(ctx.measureText(text).width + 16, 140 * zoom);
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(x - width/2, y - 20, width, 20);
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x - width/2, y - 20, width, 20);
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'center';
+                ctx.fillText(text, x, y - 5);
+            }
+        }
+
+        // ============================================
+        // BYTE THE CYBER-CORGI
+        // ============================================
+        class Byte {
+            constructor() {
+                this.x = -8;
+                this.y = 4;
+                this.state = 'sleep';
+                this.stateTimer = 0;
+                this.frame = 0;
+            }
+            update(dt) {
+                this.stateTimer += dt;
+                if (this.state === 'sleep' && this.stateTimer > 8000) {
+                    this.state = Math.random() < 0.7 ? 'wander' : 'sleep';
+                    this.stateTimer = 0;
+                } else if (this.state === 'wander') {
+                    if (this.stateTimer > 3000) {
+                        this.state = 'sleep';
+                        this.stateTimer = 0;
+                    }
+                }
+                this.frame = (this.frame + 1) % 4;
+            }
+            render(ctx, math, cam) {
+                const pos = math.toScreen(this.x, this.y, 0);
+                const px = (pos.x - cam.x) * cam.zoom;
+                const py = (pos.y - cam.y) * cam.zoom;
+                const size = 35 * cam.zoom;
+                
+                if (this.state === 'sleep') {
+                    ctx.fillStyle = '#4a3728';
+                    ctx.fillRect(px - size, py - size * 0.2, size * 2, size * 0.6);
+                }
+                
+                ctx.fillStyle = '#D2691E';
+                ctx.beginPath();
+                ctx.arc(px, py - size * 0.3, size * 0.4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#00d4ff';
+                ctx.fillRect(px - 20, py + size * 0.2, 40, 14);
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('BYTE', px, py + size * 0.3);
+            }
+        }
+
+        // ============================================
+        // VRM 3D SCENE
+        // ============================================
+        let vrmScene = null;
+        let vrmModels = new Map();
+
+        async function initVRMScene() {
+            const canvas = document.getElementById('vrmCanvas');
+            canvas.style.display = 'block';
+            document.getElementById('gameCanvas').style.display = 'none';
+            
+            if (vrmScene) return;
+            
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a1a2e);
+            
+            const camera = new THREE.PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
+            camera.position.set(0, 20, 40);
+            camera.lookAt(0, 0, 0);
+            
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+            renderer.setSize(canvas.width, canvas.height);
+            renderer.shadowMap.enabled = true;
+            
+            // Lights
+            const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambient);
+            const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+            dir.position.set(10, 20, 10);
+            dir.castShadow = true;
+            scene.add(dir);
+            
+            // Floor
+            const floorGeo = new THREE.PlaneGeometry(50, 50);
+            const floorMat = new THREE.MeshStandardMaterial({ color: 0xC9A86C });
+            const floor = new THREE.Mesh(floorGeo, floorMat);
+            floor.rotation.x = -Math.PI / 2;
+            floor.receiveShadow = true;
+            scene.add(floor);
+            
+            // Grid
+            const grid = new THREE.GridHelper(50, 50, 0x888888, 0x888888);
+            grid.position.y = 0.01;
+            scene.add(grid);
+            
+            vrmScene = { scene, camera, renderer };
+            
+            // Load VRM models
+            await loadVRMModels();
+            
+            animateVRM();
+        }
+
+        async function loadVRMModels() {
+            const loader = new THREE.VRMLoader();
+            
+            for (const agent of AGENTS) {
+                const vrmUrl = `${ASSET_BASE}${agent.id}.vrm`;
+                try {
+                    const vrm = await new Promise((resolve, reject) => {
+                        loader.load(vrmUrl, resolve, undefined, reject);
+                    });
+                    vrm.scene.position.set(
+                        (Math.random() - 0.5) * 20,
+                        0,
+                        (Math.random() - 0.5) * 20
+                    );
+                    vrm.scene.scale.set(1.5, 1.5, 1.5);
+                    vrmScene.scene.add(vrm.scene);
+                    vrmModels.set(agent.id, vrm);
+                    console.log(`Loaded VRM: ${agent.id}`);
+                } catch (e) {
+                    console.warn(`Failed to load VRM for ${agent.id}:`, e);
+                }
+            }
+        }
+
+        function animateVRM() {
+            if (renderMode !== 'vrm') return;
+            requestAnimationFrame(animateVRM);
+            
+            // Rotate models slowly
+            vrmModels.forEach(vrm => {
+                vrm.scene.rotation.y += 0.01;
+            });
+            
+            vrmScene.renderer.render(vrmScene.scene, vrmScene.camera);
+        }
+
+        // ============================================
+        // MAIN GAME
+        // ============================================
+        class Game {
+            constructor() {
+                this.c = document.getElementById('gameCanvas');
+                this.ctx = this.c.getContext('2d');
+                this.agents = new Map();
+                this.byte = new Byte();
+                this.cam = { x: 0, y: -100, zoom: 0.8 };
+                this.viewMode = 'iso';
+                this.timeOfDay = { name: 'DAY', overlay: 'rgba(0,0,0,0)' };
+                
+                this.iso = { 
+                    toScreen: (x, y, z) => ({ 
+                        x: (x - y) * 52 + this.c.width / 2, 
+                        y: (x + y) * 26 - z * 26 + this.c.height / 2.3 
+                    }) 
+                };
+                this.td = { 
+                    toScreen: (x, y, z) => ({ 
+                        x: x * 72 + this.c.width / 2, 
+                        y: y * 72 + this.c.height / 2 - z * 32 
+                    }) 
+                };
+                
+                this.setupInput();
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+            
+            resize() { 
+                this.c.width = window.innerWidth; 
+                this.c.height = window.innerHeight - 60;
+                const vrmCanvas = document.getElementById('vrmCanvas');
+                vrmCanvas.width = window.innerWidth;
+                vrmCanvas.height = window.innerHeight - 60;
+            }
+            
+            gm() { return this.viewMode === 'iso' ? this.iso : this.td; }
+            
+            setupInput() {
+                let dragging = false, lx, ly;
+                this.c.addEventListener('mousedown', e => {
+                    const r = this.c.getBoundingClientRect();
+                    const mx = e.clientX - r.left;
+                    const my = e.clientY - r.top;
+                    
+                    // Check agent click
+                    for (const [id, agent] of this.agents) {
+                        const p = this.gm().toScreen(agent.x, agent.y, 0);
+                        const px = (p.x - this.cam.x) * this.cam.zoom;
+                        const py = (p.y - this.cam.y) * this.cam.zoom;
+                        if (Math.hypot(mx - px, my - (py - 40)) < 40 * this.cam.zoom) {
+                            showAgentStats(agent);
+                            return;
+                        }
+                    }
+                    
+                    dragging = true;
+                    lx = e.clientX;
+                    ly = e.clientY;
+                });
+                
+                this.c.addEventListener('mousemove', e => {
+                    if (!dragging) return;
+                    this.cam.x -= (e.clientX - lx) / this.cam.zoom;
+                    this.cam.y -= (e.clientY - ly) / this.cam.zoom;
+                    lx = e.clientX;
+                    ly = e.clientY;
+                });
+                
+                this.c.addEventListener('mouseup', () => dragging = false);
+                
+                this.c.addEventListener('wheel', e => { 
+                    e.preventDefault(); 
+                    this.cam.zoom = Math.max(0.4, Math.min(2.5, this.cam.zoom * (e.deltaY > 0 ? 0.9 : 1.1))); 
+                }, { passive: false });
+            }
+            
+            async init() {
+                const progress = document.getElementById('progress');
+                const loadingText = document.getElementById('loadingText');
+                
+                for (let i = 0; i < AGENTS.length; i++) {
+                    const config = AGENTS[i];
+                    loadingText.textContent = `Loading ${config.name}...`;
+                    
+                    // Load local assets
+                    const assets = { sprite: null, vrm: `${ASSET_BASE}${config.id}.vrm`, full: null };
+                    
+                    try {
+                        const spriteImg = new Image();
+                        spriteImg.src = `${ASSET_BASE}${config.id}-sprite.png`;
+                        await new Promise((resolve, reject) => {
+                            spriteImg.onload = resolve;
+                            spriteImg.onerror = reject;
+                            setTimeout(reject, 5000);
+                        });
+                        assets.sprite = spriteImg;
+                    } catch (e) {
+                        console.warn(`Failed to load sprite for ${config.id}`);
+                    }
+                    
+                    this.agents.set(config.id, new SmartAgent(config, assets));
+                    progress.style.width = `${((i + 1) / AGENTS.length) * 100}%`;
+                }
+                
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hidden');
+                    this.renderUI();
+                    this.start();
+                }, 500);
+            }
+            
+            start() {
+                let lastTime = 0;
+                const loop = (now) => {
+                    const dt = now - lastTime;
+                    lastTime = now;
+                    
+                    if (renderMode !== 'vrm') {
+                        this.agents.forEach(a => a.update(dt, this.agents, this.timeOfDay));
+                        this.byte.update(dt);
+                        this.render();
+                    }
+                    requestAnimationFrame(loop);
+                };
+                requestAnimationFrame(loop);
+            }
+            
+            render() {
+                const ctx = this.ctx;
+                const c = this.c;
+                const m = this.gm();
+                
+                ctx.fillStyle = '#151520';
+                ctx.fillRect(0, 0, c.width, c.height);
+                
+                // Floor
+                for (let x = -15; x <= 15; x++) {
+                    for (let y = -15; y <= 15; y++) {
+                        const p = m.toScreen(x, y, 0);
+                        const cx = (p.x - this.cam.x) * this.cam.zoom;
+                        const cy = (p.y - this.cam.y) * this.cam.zoom;
+                        const inOffice = x >= -10 && x <= 10 && y >= -10 && y <= 10;
+                        ctx.fillStyle = ((x + y) % 2 === 0) 
+                            ? (inOffice ? '#C9A86C' : '#252535')
+                            : (inOffice ? '#B8985C' : '#202030');
+                        
+                        const tw = 52 * this.cam.zoom;
+                        const th = 26 * this.cam.zoom;
+                        ctx.beginPath();
+                        ctx.moveTo(cx, cy);
+                        ctx.lineTo(cx + tw, cy + th);
+                        ctx.lineTo(cx, cy + th * 2);
+                        ctx.lineTo(cx - tw, cy + th);
+                        ctx.closePath();
+                        ctx.fill();
+                    }
+                }
+                
+                // Furniture
+                FURNITURE.forEach(f => this.renderFurniture(ctx, m, f));
+                
+                // Agents (sorted by depth)
+                const entities = [
+                    ...Array.from(this.agents.values()).map(a => ({ type: 'agent', obj: a, y: a.y + a.x })),
+                    { type: 'byte', obj: this.byte, y: this.byte.y + this.byte.x }
+                ].sort((a, b) => a.y - b.y);
+                
+                entities.forEach(e => {
+                    if (e.type === 'agent') e.obj.render(ctx, m, this.cam, renderMode);
+                    else if (e.type === 'byte') e.obj.render(ctx, m, this.cam);
+                });
+            }
+            
+            renderFurniture(ctx, m, f) {
+                const p = m.toScreen(f.x, f.y, 0);
+                const px = (p.x - this.cam.x) * this.cam.zoom;
+                const py = (p.y - this.cam.y) * this.cam.zoom;
+                const w = f.x === 'trex' ? 80 * this.cam.zoom : 30 * this.cam.zoom;
+                
+                ctx.fillStyle = f.color;
+                ctx.beginPath();
+                ctx.ellipse(px, py, w, w * 0.6, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.font = `${20 * this.cam.zoom}px serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText(f.emoji, px, py + 5);
+            }
+            
+            renderUI() {
+                const list = document.getElementById('agentList');
+                list.innerHTML = `<div style="color:#00d4ff;font-family:'Press Start 2P';font-size:0.5rem;margin-bottom:15px;">👥 AGENTS</div>` +
+                    Array.from(this.agents.values()).map(a => 
+                        `<div class="agent-card" onclick="findAgent('${a.config.id}')">` +
+                            `<div style="width:40px;height:40px;border:2px solid ${a.config.color};display:flex;align-items:center;justify-content:center;border-radius:4px;">${a.config.emoji}</div>` +
+                            `<div><div style="font-weight:bold;">${a.config.name}</div><div style="font-size:0.7rem;color:#888;">${a.config.role} | ${a.state}</div></div>` +
+                        `</div>`
+                    ).join('');
+            }
+        }
+
+        // ============================================
+        // UTILS
+        // ============================================
+        let renderMode = 'sprites';
+        let game;
+
+        function setMode(mode) {
+            renderMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (mode === 'vrm') {
+                initVRMScene();
+            } else {
+                document.getElementById('gameCanvas').style.display = 'block';
+                document.getElementById('vrmCanvas').style.display = 'none';
+            }
+            addToChat('System', `Mode: ${mode.toUpperCase()}`, '#00d4ff');
+        }
+
+        function addToChat(name, text, color) {
+            const history = document.getElementById('chatHistory');
+            const msg = document.createElement('div');
+            msg.style.cssText = 'margin-bottom:6px;padding:6px;background:rgba(255,255,255,0.1);border-radius:4px;';
+            msg.innerHTML = `<span style="color:${color}">${name}:</span> ${text}`;
+            history.insertBefore(msg, history.firstChild);
+            while (history.children.length > 15) history.removeChild(history.lastChild);
+        }
+
+        function showAgentStats(agent) {
+            const panel = document.getElementById('statsPanel');
+            const content = document.getElementById('statsContent');
+            
+            let skillsHtml = '';
+            for (const [skill, level] of Object.entries(agent.skillLevel)) {
+                skillsHtml += `<div style="margin:5px 0;"><div style="font-size:0.7rem;color:#888;">${skill}</div><div class="stat-bar"><div class="stat-fill" style="width:${level}%;background:${agent.config.color};"></div></div></div>`;
+            }
+            
+            content.innerHTML = `
+                <div style="text-align:center;margin-bottom:10px;">
+                    <div style="font-size:2rem;">${agent.config.emoji}</div>
+                    <div style="font-size:1.2rem;color:${agent.config.color};font-weight:bold;">${agent.config.name}</div>
+                    <div style="color:#888;">${agent.config.role}</div>
+                </div>
+                <div style="margin:10px 0;">
+                    <div style="display:flex;justify-content:space-between;font-size:0.8rem;"><span>⚡ Energy</span><span>${Math.round(agent.energy)}%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:${agent.energy}%;background:${agent.energy > 50 ? '#22c55e' : '#ff4444'};"></div></div>
+                </div>
+                <div style="margin:10px 0;">
+                    <div style="display:flex;justify-content:space-between;font-size:0.8rem;"><span>😊 Happiness</span><span>${Math.round(agent.happiness)}%</span></div>
+                    <div class="stat-bar"><div class="stat-fill" style="width:${agent.happiness}%;background:#ff6b9d;"></div></div>
+                </div>
+                <div style="font-size:0.7rem;color:#888;margin-top:10px;">Skills:</div>
+                ${skillsHtml}
+                <div style="font-size:0.7rem;color:#888;margin-top:10px;">State: <span style="color:${agent.config.color};">${agent.state}</span></div>
+            `;
+            
+            panel.classList.add('active');
+            setTimeout(() => panel.classList.remove('active'), 6000);
+        }
+
+        function init() { game = new Game(); game.init(); }
+        function resetCam() { game.cam.x = 0; game.cam.y = -100; game.cam.zoom = 0.8; }
+        function toggleList() { document.getElementById('agentList').classList.toggle('active'); }
+        function toggleView() { game.viewMode = game.viewMode === 'iso' ? 'topdown' : 'iso'; }
+        function findByte() { 
+            game.cam.x = game.iso.toScreen(game.byte.x, game.byte.y, 0).x - game.c.width/2/game.cam.zoom;
+            game.cam.y = game.iso.toScreen(game.byte.x, game.byte.y, 0).y - game.c.height/2/game.cam.zoom;
+        }
+        function findAgent(id) {
+            const agent = game.agents.get(id);
+            if (agent) {
+                game.cam.x = game.iso.toScreen(agent.x, agent.y, 0).x - game.c.width/2/game.cam.zoom;
+                game.cam.y = game.iso.toScreen(agent.x, agent.y, 0).y - game.c.height/2/game.cam.zoom;
+            }
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
