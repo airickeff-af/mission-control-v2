@@ -94,9 +94,63 @@
 
     <script>
         // ============================================
-        // REAL MEEBIT SPRITE SHEET CONFIGURATION
+        // MEEBCO API MODULE - Full Meebits Integration
         // ============================================
-        // Meebits sprite sheets are 1024x1024 with:
+        const Meebco = {
+            baseUrl: 'https://meebits.app/meebit',
+            
+            async get(id) {
+                const res = await fetch(`${this.baseUrl}/${id}`);
+                if (!res.ok) throw new Error(`Meebit ${id} not found (${res.status})`);
+                return res.json();
+            },
+            
+            async loadSprite(id) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => resolve(img);
+                    img.onerror = () => reject(new Error(`Failed to load sprite for Meebit ${id}`));
+                    img.src = `${this.baseUrl}/${id}.png`;
+                });
+            },
+            
+            async loadImage(id) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => resolve(img);
+                    img.onerror = () => reject(new Error(`Failed to load image for Meebit ${id}`));
+                    img.src = `${this.baseUrl}/${id}.png?type=full`;
+                });
+            },
+            
+            spriteConfig: {
+                width: 1024,
+                height: 1024,
+                frameWidth: 128,
+                frameHeight: 128,
+                framesPerRow: 8,
+                directions: { DOWN: 0, UP: 1, LEFT: 2, RIGHT: 3 }
+            },
+            
+            getFrameCoords(direction, frameNum) {
+                const { frameWidth, frameHeight, framesPerRow } = this.spriteConfig;
+                const row = direction;
+                const col = frameNum % framesPerRow;
+                return {
+                    sx: col * frameWidth,
+                    sy: row * frameHeight,
+                    sw: frameWidth,
+                    sh: frameHeight
+                };
+            },
+            
+            drawFrame(ctx, spriteSheet, direction, frameNum, x, y, size) {
+                const { sx, sy, sw, sh } = this.getFrameCoords(direction, frameNum);
+                ctx.drawImage(spriteSheet, sx, sy, sw, sh, x, y, size, size);
+            }
+        };
         // - Row 0: Front view (down) - 8 frames
         // - Row 1: Back view (up) - 8 frames  
         // - Row 2: Left view - 8 frames
@@ -934,32 +988,55 @@
                     this.agentRelationships.set(config.id, relationships);
                 }
 
-                // Load Meebit sprite sheets from official API
+                // Load Meebit metadata AND sprites from official API
                 for (const config of AGENT_CONFIG) {
                     loadingText.textContent = `Loading ${config.name}...`;
-                    loadingDetail.textContent = `Fetching Meebit #${config.meebitId} sprite sheet...`;
+                    loadingDetail.textContent = `Fetching Meebit #${config.meebitId} metadata...`;
                     
-                    // Try multiple sprite sources
+                    let metadata = null;
                     let spriteData = null;
                     
-                    // Source 1: Direct from Meebits API
-                    const apiUrl = `https://meebits.app/meebit/${config.meebitId}.png`;
-                    spriteData = await loadImage(apiUrl);
-                    
-                    // Source 2: IPFS fallback
-                    if (!spriteData.success) {
-                        const ipfsUrl = `https://ipfs.io/ipfs/QmYkj2nM1zCfm9j3jE3j3jE3j3jE3j3jE3j3/${config.meebitId}.png`;
-                        spriteData = await loadImage(ipfsUrl);
+                    try {
+                        // Fetch full metadata
+                        metadata = await Meebco.get(config.meebitId);
+                        loadingDetail.textContent = `Loading sprite sheet for ${metadata.type} #${config.meebitId}...`;
+                    } catch (err) {
+                        console.warn(`Failed to fetch metadata for ${config.name}:`, err);
+                        metadata = { 
+                            id: config.meebitId, 
+                            type: config.type,
+                            attributes: [],
+                            sprite_sheet: `${Meebco.baseUrl}/${config.meebitId}.png`
+                        };
                     }
                     
-                    // Source 3: Local fallback
-                    if (!spriteData.success) {
-                        const localUrl = `assets/meebits/meebit-${String(config.meebitId).padStart(3, '0')}.png`;
-                        spriteData = await loadImage(localUrl);
+                    // Load sprite sheet using metadata.sprite_sheet URL
+                    const spriteUrl = metadata.sprite_sheet || `${Meebco.baseUrl}/${config.meebitId}.png`;
+                    loadingDetail.textContent = `Loading sprite sheet: ${spriteUrl.slice(0, 50)}...`;
+                    
+                    try {
+                        spriteData = await loadImage(spriteUrl);
+                    } catch (err) {
+                        console.warn(`Failed to load sprite from ${spriteUrl} for ${config.name}:`, err);
+                        // Fallback to direct URL
+                        spriteData = await loadImage(`${Meebco.baseUrl}/${config.meebitId}.png`);
                     }
 
                     const spriteSheet = spriteData.success ? new SpriteSheet(spriteData.img, SPRITE_CONFIG) : null;
-                    const agent = new SmartAgent(config, spriteSheet, this.agentRelationships.get(config.id));
+                    
+                    // Merge metadata with config
+                    const enrichedConfig = {
+                        ...config,
+                        meebitType: metadata.type,
+                        meebitAttributes: metadata.attributes || [],
+                        meebitImage: metadata.image,
+                        meebitVrm: metadata.vrm,
+                        spriteSheetUrl: metadata.sprite_sheet,
+                        externalUrl: metadata.external_url
+                    };
+                    
+                    const agent = new SmartAgent(enrichedConfig, spriteSheet, this.agentRelationships.get(config.id));
+                    agent.meebitData = metadata; // Store full metadata
                     this.agents.set(config.id, agent);
                     
                     loaded++;
@@ -1088,11 +1165,12 @@
                 list.innerHTML = `<div style="color:#00d4ff;font-family:'Press Start 2P';font-size:0.5rem;margin-bottom:15px;">👥 SMART AGENTS</div>` +
                     Array.from(this.agents.values()).map(a => {
                         const hasSprite = a.spriteSheet && a.spriteSheet.image;
+                        const meebitType = a.config.meebitType || 'Unknown';
                         return `<div class="agent-card" onclick="findAgent('${a.config.id}')">` +
                             `<div style="width:45px;height:45px;background:${hasSprite ? '#2a2a3a' : '#1a1a1a'};border:2px solid ${a.config.color};display:flex;align-items:center;justify-content:center;font-size:1.3rem;border-radius:4px;">${a.config.emoji}</div>` +
                             `<div style="flex:1;">` +
                                 `<div style="font-weight:bold;color:#fff">${a.config.name}</div>` +
-                                `<div style="font-size:0.75rem;color:#888;">${a.config.role}</div>` +
+                                `<div style="font-size:0.75rem;color:#888;">${a.config.role} • ${meebitType}</div>` +
                                 `<div style="font-size:0.65rem;color:${a.energy > 50 ? '#0f0' : '#f00'};">⚡${Math.round(a.energy)}% | 😊${Math.round(a.happiness)}%</div>` +
                             `</div>` +
                             `<div style="font-size:0.6rem;color:#666;">${a.state}</div>` +
@@ -1118,11 +1196,27 @@
                     }
                 }
                 
+                // Build Meebit traits display
+                let traitsHtml = '';
+                if (agent.meebitData && agent.meebitData.attributes) {
+                    const traits = agent.meebitData.attributes.slice(0, 3);
+                    traitsHtml = traits.map(attr => 
+                        `<div style="font-size:0.65rem;color:#666;display:inline-block;margin:2px 4px 2px 0;padding:2px 6px;background:#1a1a1a;border-radius:3px;">${attr.trait_type}: <span style="color:#888;">${attr.value}</span></div>`
+                    ).join('');
+                }
+                
+                const meebitType = agent.config.meebitType || agent.meebitData?.type || 'Unknown';
+                const meebitId = agent.config.meebitId;
+                
                 content.innerHTML = `
                     <div style="text-align:center;margin-bottom:15px;">
                         <div style="font-size:2rem;">${agent.config.emoji}</div>
                         <div style="font-size:1.2rem;color:${agent.config.color};font-weight:bold;">${agent.config.name}</div>
                         <div style="font-size:0.9rem;color:#888;">${agent.config.role}</div>
+                        <div style="font-size:0.65rem;color:#666;margin-top:5px;">
+                            Meebit #${meebitId} • ${meebitType}
+                        </div>
+                        ${traitsHtml ? `<div style="margin-top:5px;">${traitsHtml}</div>` : ''}
                     </div>
                     <div style="margin-bottom:8px;">
                         <div style="display:flex;justify-content:space-between;font-size:0.8rem;">
@@ -1156,11 +1250,12 @@
                         <div style="font-size:0.75rem;color:#888;margin-bottom:5px;">Current State: <span style="color:${agent.config.color};">${agent.state.toUpperCase()}</span></div>
                         <div style="font-size:0.75rem;color:#888;margin-bottom:5px;">Mood: ${agent.memory.mood}</div>
                         ${bestFriend ? `<div style="font-size:0.75rem;color:#888;">Best Friend: ${this.agents.get(bestFriend)?.config.name} (${Math.round(bestRel)}%)</div>` : ''}
+                        ${agent.config.externalUrl ? `<a href="${agent.config.externalUrl}" target="_blank" style="font-size:0.65rem;color:#00d4ff;text-decoration:none;display:block;margin-top:8px;">🔗 View on OpenSea →</a>` : ''}
                     </div>
                 `;
                 
                 stats.classList.add('active');
-                setTimeout(() => stats.classList.remove('active'), 5000);
+                setTimeout(() => stats.classList.remove('active'), 8000);
             }
         }
 
