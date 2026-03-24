@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⛏️ Agent Office v10.0 - Minecraft Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mc-grass: #5c8c3d;
+            --mc-dirt: #866043;
+            --mc-stone: #7d7d7d;
+            --mc-wood: #6b4c2a;
+            --mc-planks: #9c7346;
+            --mc-leaves: #3a7a3a;
+            --mc-water: #3d4ec9;
+            --mc-lava: #c93a0b;
+            --mc-gold: #f5af23;
+            --mc-iron: #e0e0e0;
+            --mc-diamond: #4aedd0;
+            --mc-emerald: #4ade3f;
+            --mc-bedrock: #2a2a2a;
+            --mc-torch: #ffaa00;
+            --bg-sky: #87CEEB;
+            --bg-night: #1a1a2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        body {
+            font-family: 'VT323', monospace;
+            background: linear-gradient(180deg, var(--bg-sky) 0%, #b8e6f0 50%, #5c8c3d 50%, #4a7a2f 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body.night {
+            background: linear-gradient(180deg, var(--bg-night) 0%, #2a2a4e 50%, #3a5a2a 50%, #2a4a1f 100%);
+        }
+
+        /* Minecraft-style Header */
+        .mc-header {
+            background: var(--mc-bedrock);
+            border-bottom: 8px solid #1a1a1a;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.5);
+        }
+
+        .mc-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .mc-icon {
+            font-size: 2.5rem;
+            text-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+        }
+
+        .mc-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: #fff;
+            text-shadow: 3px 3px 0 #000;
+            line-height: 1.5;
+        }
+
+        .mc-title span {
+            color: var(--mc-emerald);
+        }
+
+        /* Minecraft Button */
+        .mc-btn {
+            background: var(--mc-stone);
+            border: 4px solid #5a5a5a;
+            border-bottom-color: #3a3a3a;
+            border-right-color: #3a3a3a;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-shadow: 2px 2px 0 #000;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+            transition: all 0.1s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .mc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+        }
+
+        .mc-btn:active {
+            transform: translateY(2px);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            border: 4px solid #3a3a3a;
+            border-bottom-color: #5a5a5a;
+            border-right-color: #5a5a5a;
+        }
+
+        .mc-btn.gold {
+            background: var(--mc-gold);
+            border-color: #c4901a;
+            border-bottom-color: #8a6000;
+            border-right-color: #8a6000;
+            color: #3a3000;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .mc-btn.diamond {
+            background: var(--mc-diamond);
+            border-color: #2abba0;
+            border-bottom-color: #1a7a60;
+            border-right-color: #1a7a60;
+            color: #0a3a30;
+        }
+
+        /* Main Container */
+        .mc-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Minecraft Block Style */
+        .mc-block {
+            background: var(--mc-planks);
+            border: 4px solid var(--mc-wood);
+            border-bottom-color: #5a4020;
+            border-right-color: #5a4020;
+            box-shadow: 
+                inset -4px -4px 0 rgba(0,0,0,0.2),
+                inset 4px 4px 0 rgba(255,255,255,0.1),
+                6px 6px 0 rgba(0,0,0,0.3);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .mc-block.stone {
+            background: var(--mc-stone);
+            border-color: #5a5a5a;
+            border-bottom-color: #3a3a3a;
+            border-right-color: #3a3a3a;
+        }
+
+        .mc-block.crafting {
+            background: #c4a574;
+            border-color: #8b7355;
+            border-bottom-color: #5a4a3a;
+            border-right-color: #5a4a3a;
+        }
+
+        .mc-block.grass {
+            background: var(--mc-grass);
+            border-color: #4a7c2d;
+            border-bottom-color: #3a5c1d;
+            border-right-color: #3a5c1d;
+        }
+
+        .mc-block-header {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 #000;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 4px solid rgba(0,0,0,0.2);
+        }
+
+        /* Minecraft Item Grid */
+        .mc-inventory {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 0.5rem;
+            background: #c6c6c6;
+            border: 4px solid #8b8b8b;
+            padding: 1rem;
+            box-shadow: inset 4px 4px 0 rgba(0,0,0,0.2);
+        }
+
+        .mc-slot {
+            aspect-ratio: 1;
+            background: #8b8b8b;
+            border: 3px solid #373737;
+            border-top-color: #fff;
+            border-left-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.1s;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .mc-slot:hover {
+            background: #a5a5a5;
+            transform: scale(1.05);
+        }
+
+        .mc-slot:active {
+            border: 3px solid #fff;
+            border-top-color: #373737;
+            border-left-color: #373737;
+        }
+
+        .mc-item {
+            font-size: 2rem;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+        }
+
+        .mc-item-name {
+            font-size: 0.65rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            text-align: center;
+            margin-top: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            padding: 0 2px;
+        }
+
+        .mc-item-count {
+            position: absolute;
+            bottom: 2px;
+            right: 4px;
+            font-size: 0.8rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            font-weight: bold;
+        }
+
+        /* Agent Status Cards - Minecraft Style */
+        .mc-agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .mc-agent-card {
+            background: var(--mc-planks);
+            border: 4px solid var(--mc-wood);
+            border-bottom-color: #5a4020;
+            border-right-color: #5a4020;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .mc-agent-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.3);
+        }
+
+        .mc-agent-header {
+            background: var(--mc-stone);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 4px solid rgba(0,0,0,0.2);
+        }
+
+        .mc-agent-avatar {
+            width: 48px;
+            height: 48px;
+            background: #8b8b8b;
+            border: 3px solid #373737;
+            border-top-color: #fff;
+            border-left-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .mc-agent-info {
+            flex: 1;
+        }
+
+        .mc-agent-name {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .mc-agent-role {
+            font-size: 0.85rem;
+            color: #c6c6c6;
+            margin-top: 0.25rem;
+        }
+
+        .mc-agent-body {
+            padding: 1rem;
+        }
+
+        .mc-health-bar {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 0.75rem;
+        }
+
+        .mc-heart {
+            color: #ff4444;
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .mc-heart.lost {
+            color: #444;
+        }
+
+        .mc-status {
+            font-size: 0.9rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .mc-status::before {
+            content: '⛏️ ';
+        }
+
+        .mc-status.working::before { content: '⚒️ '; }
+        .mc-status.idle::before { content: '💤 '; }
+        .mc-status.trading::before { content: '💎 '; }
+        .mc-status.writing::before { content: '📜 '; }
+
+        /* Minecraft Objects Reference */
+        .mc-objects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+
+        .mc-object {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .mc-object-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.5));
+        }
+
+        .mc-object-name {
+            font-size: 0.8rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* Stats Bar */
+        .mc-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .mc-stat {
+            background: var(--mc-stone);
+            border: 4px solid #5a5a5a;
+            border-bottom-color: #3a3a3a;
+            border-right-color: #3a3a3a;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: inset 4px 4px 0 rgba(255,255,255,0.1);
+        }
+
+        .mc-stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .mc-stat-value {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .mc-stat-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        .mc-footer {
+            background: var(--mc-bedrock);
+            border-top: 8px solid #1a1a1a;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .mc-footer-text {
+            color: #888;
+            font-size: 1rem;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mc-inventory {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            .mc-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="mc-header">
+        <div class="mc-logo">
+            <div class="mc-icon">⛏️</div>
+            <div class="mc-title">
+                AGENT OFFICE<br>
+                <span>MINECRAFT EDITION v10.0</span>
+            </div>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <button class="mc-btn" onclick="toggleDayNight()">☀️/🌙 Toggle</button>
+            <a href="index.html" class="mc-btn gold">← Back</a>
+        </div>
+    </header>
+
+    <div class="mc-container">
+        <!-- Stats Bar -->
+        <div class="mc-stats">
+            <div class="mc-stat">
+                <div class="mc-stat-icon">👤</div>
+                <div class="mc-stat-value">11</div>
+                <div class="mc-stat-label">Agents</div>
+            </div>
+            <div class="mc-stat">
+                <div class="mc-stat-icon">📦</div>
+                <div class="mc-stat-value">54</div>
+                <div class="mc-stat-label">Blocks</div>
+            </div>
+            <div class="mc-stat">
+                <div class="mc-stat-icon">⛏️</div>
+                <div class="mc-stat-value">247</div>
+                <div class="mc-stat-label">Tasks</div>
+            </div>
+            <div class="mc-stat">
+                <div class="mc-stat-icon">💎</div>
+                <div class="mc-stat-value">v10</div>
+                <div class="mc-stat-label">Version</div>
+            </div>
+        </div>
+
+        <!-- Agent Status -->
+        <div class="mc-block">
+            <div class="mc-block-header">
+                <span>👤</span>
+                <span>AGENT STATUS</span>
+            </div>
+            
+            <div class="mc-agents-grid" id="agentGrid">
+                <!-- Agents will be populated by JS -->
+            </div>
+        </div>
+
+        <!-- Minecraft Office Objects -->
+        <div class="mc-block crafting">
+            <div class="mc-block-header">
+                <span>🛠️</span>
+                <span>OFFICE CRAFTING TABLE</span>
+            </div>
+            
+            <div class="mc-inventory" id="officeInventory">
+                <!-- Office items as Minecraft blocks -->
+            </div>
+        </div>
+
+        <!-- Object Reference -->
+        <div class="mc-block stone">
+            <div class="mc-block-header">
+                <span>📋</span>
+                <span>BLOCK REFERENCE GUIDE</span>
+            </div>
+            
+            <div class="mc-objects-grid">
+                <div class="mc-object">
+                    <div class="mc-object-icon">🖥️</div>
+                    <div class="mc-object-name">Computer = Command Block</div>
+                </div>
+                <div class="mc-object">
+                    <div class="mc-object-icon">📚</div>
+                    <div class="mc-object-name">Research = Bookshelf</div>
+                </div>
+                <div class="mc-object">
+                    <div class="mc-object-icon">🎨</div>
+                    <div class="mc-object-name">Design = Crafting Table</div>
+                </div>
+                <div class="mc-object">
+                    <div class="mc-object-icon">🔐</div>
+                    <div class="mc-object-name">Security = Vault</div>
+                </div>
+                <div class="mc-object">
+                    <div class="mc-object-icon">💹</div>
+                    <div class="mc-object-name">Trading = Gold Blocks</div>
+                </div>
+                <div class="mc-object">
+                    <div class="mc-object-icon">📊</div>
+                    <div class="mc-object-name">Analytics = Redstone</div>
+                </div>
+                <div class="mc-object">
+                    <div class="mc-object-icon">☕</div>
+                    <div class="mc-object-name">Coffee = Brewing Stand</div>
+                </div>
+                <div class="mc-object">
+                    <div class="mc-object-icon">🌳</div>
+                    <div class="mc-object-name">Plants = Saplings</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mc-footer">
+        <p class="mc-footer-text">⛏️ Agent Office Minecraft Edition v10.0 | Crafted by Nexus</p>
+        <p class="mc-footer-text" style="margin-top: 0.5rem;">All agents are busy mining... I mean working! 💎</p>
+    </footer>
+
+    <script>
+        // Minecraft Office Items (like inventory slots)
+        const officeItems = [
+            { icon: '🖥️', name: 'Command Block', type: 'computer', count: 6 },
+            { icon: '📚', name: 'Bookshelf', type: 'research', count: 4 },
+            { icon: '🎨', name: 'Crafting Table', type: 'design', count: 3 },
+            { icon: '⛏️', name: 'Pickaxe', type: 'dev', count: 8 },
+            { icon: '🔐', name: 'Vault', type: 'security', count: 2 },
+            { icon: '💹', name: 'Gold Blocks', type: 'trading', count: 5 },
+            { icon: '📊', name: 'Redstone', type: 'analytics', count: 12 },
+            { icon: '☕', name: 'Brewing Stand', type: 'coffee', count: 3 },
+            { icon: '🌳', name: 'Sapling', type: 'plant', count: 4 },
+            { icon: '💎', name: 'Diamond', type: 'premium', count: 7 },
+            { icon: '📜', name: 'Map', type: 'strategy', count: 2 },
+            { icon: '⚔️', name: 'Sword', type: 'qa', count: 3 },
+            { icon: '🏹', name: 'Bow', type: 'marketing', count: 2 },
+            { icon: '🛡️', name: 'Shield', type: 'security', count: 2 },
+            { icon: '🎣', name: 'Fishing Rod', type: 'outreach', count: 1 },
+            { icon: '🪑', name: 'Chair', type: 'furniture', count: 8 },
+            { icon: '📦', name: 'Chest', type: 'storage', count: 6 },
+            { icon: '🔥', name: 'Furnace', type: 'processing', count: 2 },
+            { icon: '🌾', name: 'Wheat', type: 'break', count: 9 },
+            { icon: '🍞', name: 'Bread', type: 'food', count: 12 },
+            { icon: '🥕', name: 'Carrot', type: 'snack', count: 8 },
+            { icon: '🏠', name: 'Bed', type: 'rest', count: 3 },
+            { icon: '🚪', name: 'Door', type: 'entrance', count: 4 },
+            { icon: '🪜', name: 'Ladder', type: 'stairs', count: 6 },
+            { icon: '💡', name: 'Torch', type: 'light', count: 24 },
+            { icon: '🎵', name: 'Note Block', type: 'audio', count: 2 },
+            { icon: '📻', name: 'Jukebox', type: 'music', count: 1 },
+        ];
+
+        // Agent data
+        const agents = [
+            { name: 'Nexus', role: 'Director', emoji: '👑', hearts: 10, status: 'working', task: 'Orchestrating systems' },
+            { name: 'Glasses', role: 'Researcher', emoji: '👓', hearts: 9, status: 'working', task: 'Analyzing markets' },
+            { name: 'Quill', role: 'Writer', emoji: '✍️', hearts: 8, status: 'working', task: 'Crafting content' },
+            { name: 'Pixel', role: 'Designer', emoji: '🎨', hearts: 7, status: 'working', task: 'Building sprites' },
+            { name: 'Gary', role: 'Marketing', emoji: '📢', hearts: 9, status: 'idle', task: 'Planning campaigns' },
+            { name: 'Larry', role: 'Social', emoji: '🐦', hearts: 6, status: 'working', task: 'Mining followers' },
+            { name: 'Sentry', role: 'DevOps', emoji: '🔧', hearts: 10, status: 'working', task: 'Monitoring servers' },
+            { name: 'Audit', role: 'QA', emoji: '✅', hearts: 8, status: 'working', task: 'Testing builds' },
+            { name: 'Cipher', role: 'Security', emoji: '🔒', hearts: 9, status: 'working', task: 'Guarding vault' },
+            { name: 'Limitless', role: 'Trader', emoji: '💎', hearts: 7, status: 'trading', task: 'Mining crypto' },
+            { name: 'Olivia', role: 'Sales', emoji: '💼', hearts: 8, status: 'working', task: 'Crafting deals' },
+        ];
+
+        // Render office inventory
+        function renderInventory() {
+            const container = document.getElementById('officeInventory');
+            container.innerHTML = officeItems.map(item => `
+                <div class="mc-slot" onclick="selectItem('${item.name}')">
+                    <div class="mc-item">${item.icon}</div>
+                    <div class="mc-item-name">${item.name}</div>
+                    <div class="mc-item-count">${item.count}</div>
+                </div>
+            `).join('');
+        }
+
+        // Render agents
+        function renderAgents() {
+            const container = document.getElementById('agentGrid');
+            container.innerHTML = agents.map(agent => {
+                const hearts = Array(10).fill(0).map((_, i) => 
+                    `<span class="mc-heart ${i >= agent.hearts ? 'lost' : ''}">❤️</span>`
+                ).join('');
+                
+                return `
+                    <div class="mc-agent-card">
+                        <div class="mc-agent-header">
+                            <div class="mc-agent-avatar">${agent.emoji}</div>
+                            <div class="mc-agent-info">
+                                <div class="mc-agent-name">${agent.name}</div>
+                                <div class="mc-agent-role">${agent.role}</div>
+                            </div>
+                        </div>
+                        <div class="mc-agent-body">
+                            <div class="mc-health-bar">${hearts}</div>
+                            <div class="mc-status ${agent.status}">${agent.task}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectItem(itemName) {
+            console.log('Selected:', itemName);
+            // Could show tooltip or detail panel
+        }
+
+        function toggleDayNight() {
+            document.body.classList.toggle('night');
+        }
+
+        // Initialize
+        renderInventory();
+        renderAgents();
+    </script>
+</body>
+</html>
