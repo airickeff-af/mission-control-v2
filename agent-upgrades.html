@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Agent Upgrades | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1a0a2e;
+            --bg-secondary: #0d0618;
+            --bg-card: #2d1b4e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --border-color: #5d4b7e;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+        }
+        
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-header);
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+        }
+        
+        .back-btn {
+            background: var(--accent-pink);
+            color: var(--bg-secondary);
+            border: 3px solid var(--text-primary);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-pixel);
+            text-decoration: none;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-title {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            color: var(--accent-yellow);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        
+        .token-bar {
+            background: linear-gradient(90deg, var(--accent-yellow), #ff9f43);
+            border: 4px solid var(--text-primary);
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+        }
+        
+        .token-count {
+            font-family: var(--font-header);
+            font-size: 1.5rem;
+            color: var(--bg-secondary);
+        }
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .agent-card {
+            background: var(--bg-card);
+            border: 4px solid var(--border-color);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .agent-header {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 3px solid var(--border-color);
+        }
+        
+        .agent-avatar {
+            font-size: 3rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+        }
+        
+        .agent-info {
+            flex: 1;
+        }
+        
+        .agent-name {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+        }
+        
+        .agent-level {
+            font-size: 0.9rem;
+            color: var(--accent-yellow);
+            margin-top: 0.25rem;
+        }
+        
+        .agent-body {
+            padding: 1.5rem;
+        }
+        
+        .capability {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .capability:last-child {
+            border-bottom: none;
+        }
+        
+        .capability-icon {
+            font-size: 1.2rem;
+        }
+        
+        .capability-text {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+        
+        .capability-status {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border: 2px solid;
+        }
+        
+        .status-unlocked {
+            background: rgba(107, 207, 127, 0.2);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        
+        .status-locked {
+            background: rgba(255, 107, 157, 0.2);
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+        
+        .upgrade-btn {
+            background: linear-gradient(90deg, var(--accent-yellow), #ff9f43);
+            color: var(--bg-secondary);
+            border: 3px solid var(--text-primary);
+            padding: 0.75rem;
+            font-family: var(--font-pixel);
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+        }
+        
+        .upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+        }
+        
+        .upgrade-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+        
+        .progress-bar {
+            background: var(--bg-secondary);
+            height: 10px;
+            margin-top: 0.5rem;
+            border: 2px solid var(--border-color);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">🤖 AGENT UPGRADES</div>
+        <a href="index.html" class="back-btn">← Back to Mission Control</a>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-title">ENHANCE YOUR AGENTS</h1>
+        <p class="subtitle">Spend arcade tokens to unlock new capabilities for each agent</p>
+        
+        <div class="token-bar">
+            <div class="token-count">🪙 AVAILABLE TOKENS: 0</div>
+            <div style="font-size: 0.9rem; margin-top: 0.5rem; color: rgba(0,0,0,0.6);">
+                Earn tokens by playing Agent Arcade!
+            </div>
+        </div>
+        
+        <div class="agents-grid">
+            <!-- Glasses -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">👓</div>
+                    <div class="agent-info">
+                        <div class="agent-name">GLASSES</div>
+                        <div class="agent-level">Level 1 - Researcher</div>
+                    </div>
+                </div>
+                <div class="agent-body">
+                    <div class="capability">
+                        <span class="capability-icon">📊</span>
+                        <span class="capability-text">Market Research</span>
+                        <span class="capability-status status-unlocked">✅</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">😊</span>
+                        <span class="capability-text">Sentiment Analysis</span>
+                        <span class="capability-status status-locked">🔒 500🪙</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">📰</span>
+                        <span class="capability-text">News Summarizer</span>
+                        <span class="capability-status status-locked">🔒 1000🪙</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">📈</span>
+                        <span class="capability-text">Daily Brief Generator</span>
+                        <span class="capability-status status-locked">🔒 1500🪙</span>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%;"></div>
+                    </div>
+                    
+                    <button class="upgrade-btn" disabled>
+                        🔒 Need 500 tokens to upgrade
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Quill -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">✍️</div>
+                    <div class="agent-info">
+                        <div class="agent-name">QUILL</div>
+                        <div class="agent-level">Level 1 - Writer</div>
+                    </div>
+                </div>
+                <div class="agent-body">
+                    <div class="capability">
+                        <span class="capability-icon">📝</span>
+                        <span class="capability-text">Content Writing</span>
+                        <span class="capability-status status-unlocked">✅</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">🔍</span>
+                        <span class="capability-text">SEO Optimization</span>
+                        <span class="capability-status status-locked">🔒 500🪙</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">📱</span>
+                        <span class="capability-text">Multi-Platform Format</span>
+                        <span class="capability-status status-locked">🔒 1000🪙</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">🎯</span>
+                        <span class="capability-text">Headline A/B Testing</span>
+                        <span class="capability-status status-locked">🔒 1500🪙</span>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%;"></div>
+                    </div>
+                    
+                    <button class="upgrade-btn" disabled>
+                        🔒 Need 500 tokens to upgrade
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Pixel -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">🎨</div>
+                    <div class="agent-info">
+                        <div class="agent-name">PIXEL</div>
+                        <div class="agent-level">Level 1 - Designer</div>
+                    </div>
+                </div>
+                <div class="agent-body">
+                    <div class="capability">
+                        <span class="capability-icon">🖼️</span>
+                        <span class="capability-text">Sprite Design</span>
+                        <span class="capability-status status-unlocked">✅</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">✨</span>
+                        <span class="capability-text">Animation States</span>
+                        <span class="capability-status status-locked">🔒 500🪙</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">🎨</span>
+                        <span class="capability-text">AI Color Palette</span>
+                        <span class="capability-status status-locked">🔒 1000🪙</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">📐</span>
+                        <span class="capability-text">Auto-Resizer</span>
+                        <span class="capability-status status-locked">🔒 1500🪙</span>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%;"></div>
+                    </div>
+                    
+                    <button class="upgrade-btn" disabled>
+                        🔒 Need 500 tokens to upgrade
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Sentry -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-avatar">🔧</div>
+                    <div class="agent-info">
+                        <div class="agent-name">SENTRY</div>
+                        <div class="agent-level">Level 1 - DevOps</div>
+                    </div>
+                </div>
+                <div class="agent-body">
+                    <div class="capability">
+                        <span class="capability-icon">📊</span>
+                        <span class="capability-text">System Monitoring</span>
+                        <span class="capability-status status-unlocked">✅</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">🔮</span>
+                        <span class="capability-text">Predictive Alerts</span>
+                        <span class="capability-status status-locked">🔒 500🪙</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">⚡</span>
+                        <span class="capability-text">Auto-Scaling</span>
+                        <span class="capability-status status-locked">🔒 1000🪙</span>
+                    </div>
+                    
+                    <div class="capability">
+                        <span class="capability-icon">💰</span>
+                        <span class="capability-text">Cost Optimizer</span>
+                        <span class="capability-status status-locked">🔒 1500🪙</span>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%;"></div>
+                    </div>
+                    
+                    <button class="upgrade-btn" disabled>
+                        🔒 Need 500 tokens to upgrade
+                    </button>
+                </div>
+            </div>
+            
+            <!-- More agents would go here -->
+        </div>
+    </div>
+</body>
+</html>
