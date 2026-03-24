@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 AGENT ARCADE - Cyber Shooter</title>
+    <title>🎮 AGENT ARCADE v2.0 - Cyber Shooter</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * {
@@ -69,7 +69,7 @@
         
         #startScreen h1, #gameOverScreen h1 {
             font-size: 24px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-shadow: 4px 4px 0 #ff00ff;
             animation: pulse 2s infinite;
         }
@@ -84,6 +84,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 15px;
             margin: 20px 0;
+            max-width: 700px;
         }
         
         .agent-btn {
@@ -95,6 +96,7 @@
             text-align: center;
             color: #fff;
             font-size: 8px;
+            position: relative;
         }
         
         .agent-btn:hover {
@@ -107,6 +109,15 @@
             font-size: 32px;
             display: block;
             margin-bottom: 8px;
+        }
+        
+        .agent-ability {
+            font-size: 7px;
+            color: #ffd700;
+            margin-top: 5px;
+            padding: 3px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
         }
         
         .start-btn {
@@ -129,14 +140,23 @@
             display: none !important;
         }
         
-        #controls {
+        .difficulty-indicator {
             position: absolute;
-            bottom: -40px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: #666;
+            bottom: 10px;
+            right: 10px;
             font-size: 8px;
+            color: #ff6b6b;
+        }
+        
+        .token-display {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            padding: 5px 10px;
+            color: #ffd700;
+            font-size: 10px;
         }
     </style>
 </head>
@@ -151,27 +171,39 @@
             <div class="stat">AGENT: <span id="agentName">NEXUS</span></div>
         </div>
         
+        <div class="token-display" id="tokenDisplay">
+            🪙 TOKENS: 0
+        </div>
+        
         <div id="startScreen">
-            <h1>🎮 AGENT ARCADE</h1>
+            <h1>🎮 AGENT ARCADE v2.0</h1>
             <p style="margin-bottom: 20px; color: #ff00ff;">SELECT YOUR AGENT</p>
             
             <div class="agent-select">
-                <div class="agent-btn" onclick="selectAgent('nexus', '👑')">
+                <div class="agent-btn" onclick="selectAgent('nexus')">
                     <span class="emoji">👑</span>
                     NEXUS
+                    <div class="agent-ability">🛡️ SHIELD (Auto-block 1 hit)</div>
                 </div>
-                <div class="agent-btn" onclick="selectAgent('glasses', '👓')">
+                <div class="agent-btn" onclick="selectAgent('glasses')">
                     <span class="emoji">👓</span>
                     GLASSES
+                    <div class="agent-ability">👁️ LASER (High damage)</div>
                 </div>
-                <div class="agent-btn" onclick="selectAgent('limitless', '💎')">
+                <div class="agent-btn" onclick="selectAgent('limitless')">
                     <span class="emoji">💎</span>
                     LIMITLESS
+                    <div class="agent-ability">⚡ RAPID (Fast fire)</div>
                 </div>
-                <div class="agent-btn" onclick="selectAgent('cipher', '🔒')">
+                <div class="agent-btn" onclick="selectAgent('cipher')">
                     <span class="emoji">🔒</span>
                     CIPHER
+                    <div class="agent-ability">💣 BOMB (Splash damage)</div>
                 </div>
+            </div>
+            
+            <div style="color: #aaa; font-size: 8px; margin: 10px 0; max-width: 600px; text-align: center;">
+                🎮 Each agent has unique abilities! Earn 🪙 Arcade Tokens to unlock office upgrades!
             </div>
             
             <button class="start-btn" onclick="startGame()">INSERT COIN / START</button>
@@ -184,7 +216,10 @@
         <div id="gameOverScreen" class="hidden">
             <h1>💀 GAME OVER</h1>
             <p style="color: #ff00ff; margin: 20px 0;">FINAL SCORE: <span id="finalScore">0</span></p>
-            <p style="color: #00ff00; margin-bottom: 30px;">LEVEL REACHED: <span id="finalLevel">1</span></p>
+            <p style="color: #00ff00; margin-bottom: 10px;">LEVEL REACHED: <span id="finalLevel">1</span></p>
+            <p style="color: #ffd700; margin-bottom: 30px;">🪙 TOKENS EARNED: <span id="finalTokens">0</span></p>
+            
+            <div id="unlockMessage" style="color: #00ffff; margin-bottom: 20px; font-size: 10px;"></div>
             
             <button class="start-btn" onclick="restartGame()">TRY AGAIN</button>
         </div>
@@ -198,8 +233,62 @@
         let gameState = 'MENU';
         let score = 0;
         let level = 1;
-        let selectedAgent = { name: 'NEXUS', emoji: '👑', color: '#00ffff' };
+        let tokens = 0;
+        let selectedAgent = null;
         let frameCount = 0;
+        
+        // Agent configurations with abilities
+        const agents = {
+            nexus: { 
+                name: 'NEXUS', 
+                emoji: '👑', 
+                color: '#00ffff', 
+                weapon: 'SHIELD',
+                damage: 2,
+                fireRate: 15,
+                speed: 5,
+                ability: 'shield',
+                abilityCooldown: 0,
+                maxAbilityCooldown: 300,  // 5 seconds at 60fps
+                shieldActive: false
+            },
+            glasses: { 
+                name: 'GLASSES', 
+                emoji: '👓', 
+                color: '#ffaa00', 
+                weapon: 'LASER',
+                damage: 4,  // High damage
+                fireRate: 20,  // Slower
+                speed: 4,
+                ability: 'pierce',
+                abilityCooldown: 0,
+                maxAbilityCooldown: 240
+            },
+            limitless: { 
+                name: 'LIMITLESS', 
+                emoji: '💎', 
+                color: '#00ff00', 
+                weapon: 'RAPID',
+                damage: 1,
+                fireRate: 5,  // Very fast
+                speed: 6,  // Fast
+                ability: 'multishot',
+                abilityCooldown: 0,
+                maxAbilityCooldown: 180
+            },
+            cipher: { 
+                name: 'CIPHER', 
+                emoji: '🔒', 
+                color: '#ff00ff', 
+                weapon: 'BOMB',
+                damage: 3,
+                fireRate: 25,  // Slow
+                speed: 4,
+                ability: 'explosion',
+                abilityCooldown: 0,
+                maxAbilityCooldown: 360
+            }
+        };
         
         // Player
         let player = {
@@ -209,7 +298,6 @@
             height: 40,
             vx: 0,
             vy: 0,
-            speed: 5,
             hp: 3,
             maxHp: 3,
             cooldown: 0,
@@ -227,17 +315,14 @@
         // Input
         const keys = {};
         
-        // Agent Data
-        const agents = {
-            nexus: { name: 'NEXUS', emoji: '👑', color: '#00ffff', weapon: 'LASER', damage: 2 },
-            glasses: { name: 'GLASSES', emoji: '👓', color: '#ffaa00', weapon: 'SNIPER', damage: 3 },
-            limitless: { name: 'LIMITLESS', emoji: '💎', color: '#00ff00', weapon: 'RAPID', damage: 1 },
-            cipher: { name: 'CIPHER', emoji: '🔒', color: '#ff00ff', weapon: 'PLASMA', damage: 2 }
-        };
-        
-        function selectAgent(key, emoji) {
-            selectedAgent = agents[key];
+        function selectAgent(key) {
+            selectedAgent = {...agents[key]};  // Copy to avoid modifying original
             document.getElementById('agentName').textContent = selectedAgent.name;
+            
+            // Set player stats based on agent
+            player.speed = selectedAgent.speed;
+            player.maxHp = key === 'nexus' ? 4 : 3;  // Nexus gets +1 HP
+            player.hp = player.maxHp;
             
             // Visual feedback
             document.querySelectorAll('.agent-btn').forEach(btn => {
@@ -247,6 +332,10 @@
         }
         
         function startGame() {
+            if (!selectedAgent) {
+                alert('Please select an agent!');
+                return;
+            }
             document.getElementById('startScreen').classList.add('hidden');
             gameState = 'PLAYING';
             resetGame();
@@ -262,11 +351,15 @@
         function resetGame() {
             score = 0;
             level = 1;
+            tokens = 0;
             player.x = 100;
             player.y = 225;
-            player.hp = 3;
+            player.hp = player.maxHp;
             player.vx = 0;
             player.vy = 0;
+            player.cooldown = 0;
+            selectedAgent.abilityCooldown = 0;
+            selectedAgent.shieldActive = false;
             bullets = [];
             enemies = [];
             particles = [];
@@ -277,7 +370,7 @@
         
         function generatePlatforms() {
             return [
-                { x: 0, y: 400, width: 800, height: 50 }, // Ground
+                { x: 0, y: 400, width: 800, height: 50 },
                 { x: 200, y: 320, width: 100, height: 20 },
                 { x: 400, y: 260, width: 100, height: 20 },
                 { x: 600, y: 320, width: 100, height: 20 },
@@ -286,12 +379,26 @@
             ];
         }
         
-        // Input handlers
+        // Difficulty scaling by level
+        function getDifficulty() {
+            return {
+                enemySpeed: -2 - (level * 0.3),  // Slower scaling (was 0.5)
+                enemySpawnRate: Math.max(20, 60 - level * 3),  // Spawn faster each level
+                enemyHp: Math.min(5, 1 + Math.floor(level / 2)),  // HP increases every 2 levels
+                maxEnemies: Math.min(15, 5 + level)  // Cap at 15 enemies
+            };
+        }
+        
         document.addEventListener('keydown', (e) => {
             keys[e.code] = true;
             
             if (e.code === 'Space' && gameState === 'PLAYING' && player.cooldown <= 0) {
                 shoot();
+            }
+            
+            // Ability key (Shift)
+            if (e.code === 'ShiftLeft' && gameState === 'PLAYING') {
+                useAbility();
             }
             
             if (e.code === 'KeyP') {
@@ -303,7 +410,68 @@
             keys[e.code] = false;
         });
         
+        function useAbility() {
+            if (selectedAgent.abilityCooldown > 0) return;
+            
+            selectedAgent.abilityCooldown = selectedAgent.maxAbilityCooldown;
+            
+            switch(selectedAgent.ability) {
+                case 'shield':
+                    selectedAgent.shieldActive = true;
+                    createParticles(player.x, player.y, '#00ffff', 20);
+                    setTimeout(() => { selectedAgent.shieldActive = false; }, 3000);
+                    break;
+                    
+                case 'pierce':
+                    // Pierce shot - goes through enemies
+                    bullets.push({
+                        x: player.x + player.width,
+                        y: player.y + player.height / 2,
+                        vx: 15,
+                        vy: 0,
+                        width: 30,
+                        height: 6,
+                        color: '#ffaa00',
+                        damage: selectedAgent.damage * 2,
+                        piercing: true
+                    });
+                    break;
+                    
+                case 'multishot':
+                    // Triple shot
+                    for (let i = -1; i <= 1; i++) {
+                        bullets.push({
+                            x: player.x + player.width,
+                            y: player.y + player.height / 2 + (i * 10),
+                            vx: 10,
+                            vy: i * 2,
+                            width: 15,
+                            height: 4,
+                            color: selectedAgent.color,
+                            damage: selectedAgent.damage
+                        });
+                    }
+                    break;
+                    
+                case 'explosion':
+                    // Bomb that explodes on contact
+                    bullets.push({
+                        x: player.x + player.width,
+                        y: player.y + player.height / 2,
+                        vx: 8,
+                        vy: 0,
+                        width: 20,
+                        height: 20,
+                        color: '#ff00ff',
+                        damage: selectedAgent.damage * 3,
+                        explosive: true
+                    });
+                    break;
+            }
+        }
+        
         function shoot() {
+            // Normal shot
             bullets.push({
                 x: player.x + player.width,
                 y: player.y + player.height / 2,
@@ -312,11 +480,12 @@
                 width: 15,
                 height: 4,
                 color: selectedAgent.color,
-                damage: selectedAgent.damage
+                damage: selectedAgent.damage,
+                piercing: false,
+                explosive: false
             });
-            player.cooldown = selectedAgent.weapon === 'RAPID' ? 5 : 15;
             
-            // Muzzle flash
+            player.cooldown = selectedAgent.fireRate;
             createParticles(player.x + player.width, player.y + player.height / 2, selectedAgent.color, 3);
         }
         
@@ -335,26 +504,39 @@
         }
         
         function spawnEnemy() {
-            const types = ['BUG', 'VIRUS', 'GLITCH'];
-            const type = types[Math.floor(Math.random() * types.length)];
+            const diff = getDifficulty();
+            
+            // Don't spawn if too many enemies
+            if (enemies.length >= diff.maxEnemies) return;
+            
+            const types = ['BUG', 'VIRUS', 'GLITCH', 'BOSS'];
+            let type;
+            
+            // Boss every 5 levels
+            if (level % 5 === 0 && Math.random() < 0.1) {
+                type = 'BOSS';
+            } else {
+                type = types[Math.floor(Math.random() * 3)];
+            }
             
             enemies.push({
                 x: canvas.width + 50,
                 y: Math.random() * 350 + 50,
-                width: 35,
-                height: 35,
-                vx: -2 - (level * 0.5),
+                width: type === 'BOSS' ? 60 : 35,
+                height: type === 'BOSS' ? 60 : 35,
+                vx: diff.enemySpeed * (type === 'BOSS' ? 0.5 : 1),
                 vy: 0,
                 type: type,
-                hp: type === 'BUG' ? 1 : type === 'VIRUS' ? 2 : 3,
-                emoji: type === 'BUG' ? '🐛' : type === 'VIRUS' ? '🦠' : '👾',
-                color: type === 'BUG' ? '#ff0000' : type === 'VIRUS' ? '#00ff00' : '#ff00ff'
+                hp: type === 'BUG' ? 1 : type === 'VIRUS' ? 2 : type === 'GLITCH' ? 3 : 10,
+                maxHp: type === 'BUG' ? 1 : type === 'VIRUS' ? 2 : type === 'GLITCH' ? 3 : 10,
+                emoji: type === 'BUG' ? '🐛' : type === 'VIRUS' ? '🦠' : type === 'GLITCH' ? '👾' : '👹',
+                color: type === 'BUG' ? '#ff0000' : type === 'VIRUS' ? '#00ff00' : type === 'GLITCH' ? '#ff00ff' : '#ff6600'
             });
         }
         
         function spawnPowerUp() {
-            if (Math.random() < 0.1) {
-                const types = ['HP', 'SPEED', 'WEAPON'];
+            if (Math.random() < 0.08) {  // 8% chance
+                const types = ['HP', 'SPEED', 'WEAPON', 'ABILITY'];
                 const type = types[Math.floor(Math.random() * types.length)];
                 
                 powerUps.push({
@@ -363,7 +545,7 @@
                     width: 25,
                     height: 25,
                     type: type,
-                    emoji: type === 'HP' ? '❤️' : type === 'SPEED' ? '⚡' : '🔥',
+                    emoji: type === 'HP' ? '❤️' : type === 'SPEED' ? '⚡' : type === 'WEAPON' ? '🔥' : '✨',
                     vx: -3
                 });
             }
@@ -374,21 +556,23 @@
             
             frameCount++;
             
+            // Update ability cooldown
+            if (selectedAgent.abilityCooldown > 0) {
+                selectedAgent.abilityCooldown--;
+            }
+            
             // Player movement
             if (keys['ArrowLeft']) player.vx = -player.speed;
             else if (keys['ArrowRight']) player.vx = player.speed;
             else player.vx *= 0.8;
             
-            // Jump
             if (keys['ArrowUp'] && player.grounded) {
                 player.vy = player.jumpPower;
                 player.grounded = false;
             }
             
-            // Gravity
             player.vy += 0.6;
             
-            // Apply velocity
             player.x += player.vx;
             player.y += player.vy;
             
@@ -413,17 +597,18 @@
                 gameOver();
             }
             
-            // Cooldown
             if (player.cooldown > 0) player.cooldown--;
             
             // Update bullets
             bullets = bullets.filter(b => {
                 b.x += b.vx;
-                return b.x < canvas.width;
+                b.y += b.vy;
+                return b.x < canvas.width && b.x > 0 && b.y < canvas.height && b.y > 0;
             });
             
-            // Spawn enemies
-            if (frameCount % Math.max(30, 120 - level * 10) === 0) {
+            // Spawn enemies based on difficulty
+            const diff = getDifficulty();
+            if (frameCount % diff.enemySpawnRate === 0) {
                 spawnEnemy();
             }
             
@@ -434,7 +619,7 @@
             enemies = enemies.filter(e => {
                 e.x += e.vx;
                 
-                // Check collision with bullets
+                // Bullet collision
                 for (let i = bullets.length - 1; i >= 0; i--) {
                     let b = bullets[i];
                     if (b.x < e.x + e.width &&
@@ -443,29 +628,53 @@
                         b.y + b.height > e.y) {
                         
                         e.hp -= b.damage;
-                        bullets.splice(i, 1);
+                        
+                        // Explosive effect
+                        if (b.explosive) {
+                            createParticles(e.x + e.width/2, e.y + e.height/2, '#ff00ff', 15);
+                            // Damage nearby enemies
+                            enemies.forEach(ne => {
+                                if (ne !== e) {
+                                    const dist = Math.hypot(ne.x - e.x, ne.y - e.y);
+                                    if (dist < 100) ne.hp -= b.damage;
+                                }
+                            });
+                        }
+                        
+                        if (!b.piercing) bullets.splice(i, 1);
+                        
                         createParticles(e.x + e.width/2, e.y + e.height/2, e.color, 5);
                         
                         if (e.hp <= 0) {
-                            score += e.type === 'BUG' ? 100 : e.type === 'VIRUS' ? 200 : 300;
-                            createParticles(e.x, e.y, '#ffff00', 8);
+                            const points = e.type === 'BOSS' ? 500 : e.type === 'GLITCH' ? 300 : e.type === 'VIRUS' ? 200 : 100;
+                            score += points;
+                            tokens += Math.floor(points / 100);  // 1 token per 100 points
+                            createParticles(e.x, e.y, '#ffff00', 10);
                             return false;
                         }
                     }
                 }
                 
-                // Check collision with player
+                // Player collision
                 if (e.x < player.x + player.width &&
                     e.x + e.width > player.x &&
                     e.y < player.y + player.height &&
                     e.y + e.height > player.y) {
+                    
+                    // Shield blocks one hit
+                    if (selectedAgent.shieldActive) {
+                        selectedAgent.shieldActive = false;
+                        createParticles(player.x, player.y, '#00ffff', 15);
+                        return false;  // Enemy destroyed on shield hit
+                    }
+                    
                     player.hp--;
                     createParticles(player.x, player.y, '#ff0000', 10);
                     if (player.hp <= 0) gameOver();
                     return false;
                 }
                 
-                return e.x > -50;
+                return e.x > -100;
             });
             
             // Update powerups
@@ -480,6 +689,7 @@
                     if (p.type === 'HP' && player.hp < player.maxHp) player.hp++;
                     if (p.type === 'SPEED') player.speed = 8;
                     if (p.type === 'WEAPON') player.cooldown = Math.max(0, player.cooldown - 5);
+                    if (p.type === 'ABILITY') selectedAgent.abilityCooldown = 0;
                     
                     score += 50;
                     return false;
@@ -507,15 +717,29 @@
         }
         
         function updateUI() {
-            document.getElementById('score').textContent = score;
+            document.getElementById('score').textContent = score.toLocaleString();
             document.getElementById('level').textContent = level;
             document.getElementById('hp').textContent = '❤️'.repeat(player.hp) + '🖤'.repeat(player.maxHp - player.hp);
+            document.getElementById('tokenDisplay').textContent = `🪙 TOKENS: ${tokens}`;
         }
         
         function gameOver() {
             gameState = 'GAMEOVER';
-            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalScore').textContent = score.toLocaleString();
             document.getElementById('finalLevel').textContent = level;
+            document.getElementById('finalTokens').textContent = tokens;
+            
+            // Unlock message
+            const unlocks = [];
+            if (score >= 5000) unlocks.push("🛡️ Shield Upgrade");
+            if (score >= 10000) unlocks.push("⚡ Speed Boost");
+            if (score >= 15000) unlocks.push("🔥 Power Shot");
+            
+            const msg = unlocks.length > 0 
+                ? `UNLOCKED: ${unlocks.join(', ')}` 
+                : "Play again to unlock upgrades!";
+            document.getElementById('unlockMessage').textContent = msg;
+            
             document.getElementById('gameOverScreen').classList.remove('hidden');
         }
         
@@ -553,25 +777,42 @@
                 ctx.fillStyle = b.color;
                 ctx.shadowBlur = 10;
                 ctx.shadowColor = b.color;
-                ctx.fillRect(b.x, b.y, b.width, b.height);
+                if (b.explosive) {
+                    ctx.beginPath();
+                    ctx.arc(b.x + 10, b.y + 10, 10, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.fillRect(b.x, b.y, b.width, b.height);
+                }
                 ctx.shadowBlur = 0;
             }
             
-            // Draw enemies
+            // Draw enemies with HP bar
             for (let e of enemies) {
-                ctx.font = '30px Arial';
-                ctx.fillText(e.emoji, e.x, e.y + 28);
+                ctx.font = e.type === 'BOSS' ? '50px Arial' : '30px Arial';
+                ctx.fillText(e.emoji, e.x, e.y + (e.type === 'BOSS' ? 45 : 28));
                 
-                // HP bar
-                ctx.fillStyle = '#ff0000';
-                ctx.fillRect(e.x, e.y - 10, e.width, 4);
-                ctx.fillStyle = '#00ff00';
-                ctx.fillRect(e.x, e.y - 10, e.width * (e.hp / (e.type === 'BUG' ? 1 : e.type === 'VIRUS' ? 2 : 3)), 4);
+                // HP bar for enemies with >1 HP
+                if (e.maxHp > 1) {
+                    ctx.fillStyle = '#ff0000';
+                    ctx.fillRect(e.x, e.y - 15, e.width, 6);
+                    ctx.fillStyle = '#00ff00';
+                    ctx.fillRect(e.x, e.y - 15, e.width * (e.hp / e.maxHp), 6);
+                }
             }
             
             // Draw player
             ctx.font = '35px Arial';
             ctx.fillText(selectedAgent.emoji, player.x, player.y + 32);
+            
+            // Shield effect
+            if (selectedAgent.shieldActive) {
+                ctx.strokeStyle = '#00ffff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(player.x + 20, player.y + 20, 30, 0, Math.PI * 2);
+                ctx.stroke();
+            }
             
             // Weapon glow
             ctx.shadowBlur = 15;
@@ -579,6 +820,13 @@
             ctx.fillStyle = selectedAgent.color;
             ctx.fillRect(player.x + 35, player.y + 15, 8, 8);
             ctx.shadowBlur = 0;
+            
+            // Ability cooldown indicator
+            if (selectedAgent.abilityCooldown > 0) {
+                const cdPct = selectedAgent.abilityCooldown / selectedAgent.maxAbilityCooldown;
+                ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                ctx.fillRect(player.x, player.y - 10, 40 * cdPct, 5);
+            }
             
             // Pause overlay
             if (gameState === 'PAUSED') {
