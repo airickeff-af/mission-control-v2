@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📅 Daily Memory Tracker | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #1a0f2e;
+            --bg-card: #3d2b5e;
+            --bg-card-hover: #4d3b6e;
+            --bg-input: #2d1b4e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
+            --accent-red: #ff6b6b;
+            --border-color: #5d4b7e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --pixel-border: 4px;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pixel-logo {
+            font-size: 2.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .logo-text {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            line-height: 1.4;
+            color: var(--accent-cyan);
+            text-shadow: 2px 2px 0 var(--shadow-color);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Search & Filter Section */
+        .search-section {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 4px 4px 0 var(--shadow-color);
+        }
+
+        .search-header {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-input, .filter-select {
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
+            padding: 0.75rem;
+            color: var(--text-primary);
+            font-family: var(--font-pixel);
+            font-size: 1rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .search-input:focus, .filter-select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .pixel-btn {
+            background: var(--accent-green);
+            color: var(--bg-secondary);
+            border: 2px solid var(--text-primary);
+            box-shadow: 3px 3px 0 var(--shadow-color);
+            padding: 0.75rem 1.5rem;
+            font-family: var(--font-pixel);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--shadow-color);
+        }
+
+        .pixel-btn:active {
+            transform: translate(0, 0);
+            box-shadow: 1px 1px 0 var(--shadow-color);
+        }
+
+        .pixel-btn.secondary {
+            background: var(--accent-cyan);
+        }
+
+        .pixel-btn.accent {
+            background: var(--accent-pink);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 4px 4px 0 var(--shadow-color);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+        }
+
+        .stat-number {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Timeline View */
+        .timeline-container {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 4px 4px 0 var(--shadow-color);
+        }
+
+        .timeline-header {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            color: var(--accent-green);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .timeline-item:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        .timeline-item.active {
+            border-color: var(--accent-green);
+            background: var(--bg-card-hover);
+        }
+
+        .timeline-date {
+            min-width: 100px;
+            text-align: center;
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        .timeline-date .day {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+        }
+
+        .timeline-date .date {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            color: var(--accent-yellow);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-summary {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .timeline-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            border: 2px solid;
+            background: var(--bg-secondary);
+        }
+
+        .tag.project { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .tag.decision { border-color: var(--accent-pink); color: var(--accent-pink); }
+        .tag.meeting { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .tag.task { border-color: var(--accent-green); color: var(--accent-green); }
+        .tag.blocker { border-color: var(--accent-red); color: var(--accent-red); }
+
+        .timeline-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.4rem 0.8rem;
+            font-family: var(--font-pixel);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        /* Detail View */
+        .detail-panel {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            padding: 1.5rem;
+            box-shadow: 4px 4px 0 var(--shadow-color);
+            display: none;
+        }
+
+        .detail-panel.active {
+            display: block;
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .detail-title {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+        }
+
+        .detail-close {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-family: var(--font-pixel);
+            cursor: pointer;
+        }
+
+        .detail-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        /* Project Cross-Reference */
+        .project-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 3px 3px 0 var(--shadow-color);
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .project-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--shadow-color);
+            border-color: var(--accent-cyan);
+        }
+
+        .project-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-name {
+            font-size: 1rem;
+            color: var(--accent-cyan);
+        }
+
+        .project-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Nav */
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--border-color);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Quick Add Form */
+        .quick-add {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 4px 4px 0 var(--shadow-color);
+        }
+
+        .quick-add-header {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            color: var(--accent-pink);
+            margin-bottom: 1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-input, .form-textarea, .form-select {
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
+            padding: 0.75rem;
+            color: var(--text-primary);
+            font-family: var(--font-pixel);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .loading::after {
+            content: '';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="pixel-logo">📅</div>
+            <div class="logo-text">
+                DAILY<br>MEMORY<br><span style="color: var(--accent-pink);">TRACKER</span>
+            </div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html" class="pixel-btn secondary">🧠 Memory Hub</a>
+            <a href="../index.html" class="pixel-btn">← Mission Control</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="totalLogs">0</div>
+                <div class="stat-label">Total Logs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="thisMonth">0</div>
+                <div class="stat-label">This Month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalDecisions">0</div>
+                <div class="stat-label">Decisions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalProjects">0</div>
+                <div class="stat-label">Projects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="lastActive">Today</div>
+                <div class="stat-label">Last Active</div>
+            </div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="search-section">
+            <div class="search-header">
+                🔍 SEARCH & FILTER MEMORY
+            </div>
+            <div class="search-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Search discussions, decisions, projects...</label>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Type to search across all memory...">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Project</label>
+                    <select class="filter-select" id="projectFilter">
+                        <option value="">All Projects</option>
+                        <option value="mission-control">Mission Control</option>
+                        <option value="limitless">Limitless Hunter</option>
+                        <option value="dealflow">DealFlow</option>
+                        <option value="pixel-sanctuary">Pixel Sanctuary</option>
+                        <option value="paws">Paws</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Tag</label>
+                    <select class="filter-select" id="tagFilter">
+                        <option value="">All Tags</option>
+                        <option value="decision">Decision</option>
+                        <option value="task">Task</option>
+                        <option value="meeting">Meeting</option>
+                        <option value="blocker">Blocker</option>
+                    </select>
+                </div>
+                <button class="pixel-btn" onclick="performSearch()">🔍 Search</button>
+            </div>
+        </div>
+
+        <!-- Quick Add -->
+        <div class="quick-add">
+            <div class="quick-add-header">➕ QUICK ADD MEMORY ENTRY</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-input" id="entryDate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Project</label>
+                    <select class="form-select" id="entryProject">
+                        <option value="general">General</option>
+                        <option value="mission-control">Mission Control</option>
+                        <option value="limitless">Limitless Hunter</option>
+                        <option value="dealflow">DealFlow</option>
+                        <option value="pixel-sanctuary">Pixel Sanctuary</option>
+                        <option value="paws">Paws</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label class="form-label">Summary Title</label>
+                    <input type="text" class="form-input" id="entryTitle" placeholder="Brief summary of today's discussion/work...">
+                </div>
+                <div class="form-group full-width">
+                    <label class="form-label">Details (what we discussed, decisions made, action items...)</label>
+                    <textarea class="form-textarea" id="entryDetails" placeholder="Detailed notes about our conversation, decisions, and next steps..."></textarea>
+                </div>
+            </div>
+            <button class="pixel-btn accent" onclick="addMemoryEntry()">💾 Save Memory Entry</button>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <span>📆 MEMORY TIMELINE</span>
+                <span style="font-family: var(--font-pixel); font-size: 0.9rem; color: var(--text-muted);">Click any entry to view full details</span>
+            </div>
+            <div class="timeline" id="memoryTimeline">
+                <div class="loading">Loading memory timeline</div>
+            </div>
+        </div>
+
+        <!-- Detail Panel -->
+        <div class="detail-panel" id="detailPanel">
+            <div class="detail-header">
+                <span class="detail-title" id="detailTitle">Memory Entry</span>
+                <button class="detail-close" onclick="closeDetail()">✕ Close</button>
+            </div>
+            <div class="detail-content" id="detailContent"></div>
+        </div>
+
+        <!-- Project Cross-Reference -->
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <span>🔗 PROJECT MEMORY LINKS</span>
+            </div>
+            <div class="project-links">
+                <a href="#" class="project-card" onclick="filterByProject('mission-control')">
+                    <div class="project-icon">🏢</div>
+                    <div class="project-name">Mission Control</div>
+                    <div class="project-count" id="mcCount">0 entries</div>
+                </a>
+                <a href="#" class="project-card" onclick="filterByProject('limitless')">
+                    <div class="project-icon">🤖</div>
+                    <div class="project-name">Limitless Hunter</div>
+                    <div class="project-count" id="limitlessCount">0 entries</div>
+                </a>
+                <a href="#" class="project-card" onclick="filterByProject('dealflow')">
+                    <div class="project-icon">📊</div>
+                    <div class="project-name">DealFlow</div>
+                    <div class="project-count" id="dealflowCount">0 entries</div>
+                </a>
+                <a href="#" class="project-card" onclick="filterByProject('pixel-sanctuary')">
+                    <div class="project-icon">🎮</div>
+                    <div class="project-name">Pixel Sanctuary</div>
+                    <div class="project-count" id="psCount">0 entries</div>
+                </a>
+                <a href="#" class="project-card" onclick="filterByProject('paws')">
+                    <div class="project-icon">🐾</div>
+                    <div class="project-name">Paws</div>
+                    <div class="project-count" id="pawsCount">0 entries</div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">📅 Daily Memory Tracker | Part of Mission Control v2.0</p>
+        <p class="footer-text" style="margin-top: 0.5rem;">🧠 Every discussion logged • Every decision tracked • Never forget</p>
+    </footer>
+
+    <script>
+        // Memory Data Store
+        let memoryData = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMemoryData();
+            setupEventListeners();
+            document.getElementById('entryDate').valueAsDate = new Date();
+        });
+
+        // Sample data - will be replaced with actual file loading
+        function loadMemoryData() {
+            // This would load from the actual markdown files
+            // For now, using the known log structure
+            memoryData = [
+                {
+                    date: '2026-03-24',
+                    title: 'Vercel Projects Status & Continuous Improvement',
+                    summary: 'Catalogued all 5 Vercel deployments. Created comprehensive status report. Trading bot v1.0 failed (2.4% win rate), v2.0 strategy ready for deployment. Started continuous improvement cycle.',
+                    tags: ['project', 'decision'],
+                    projects: ['mission-control', 'limitless'],
+                    content: `Full discussion about:
+- All Vercel deployments documented
+- Limitless Hunter strategy analysis (v1.0 failed, v2.0 ready)
+- Agent Office v9.5 status
+- Continuous improvement cycle activated
+- Git commits for all changes`
+                },
+                {
+                    date: '2026-03-23',
+                    title: 'Limitless Strategy Analysis - v2.0 Proposed',
+                    summary: 'Analyzed catastrophic -$62.50 loss. Identified fatal flaw: backwards entry logic. Proposed contrarian strategy v2.0 with 52-58% expected win rate.',
+                    tags: ['decision', 'blocker'],
+                    projects: ['limitless'],
+                    content: `Key findings:
+- Old strategy mathematically guaranteed to lose
+- Required 72.9% win rate to breakeven, achieved 2.4%
+- New contrarian strategy: Buy YES <45¢, NO >65¢
+- Paper trading recommended before live deployment`
+                },
+                {
+                    date: '2026-03-22',
+                    title: 'Agent Office v8.0 + Strategy Pivot',
+                    summary: 'Deployed Agent Office v8.0 with 3-mode toggle and 40+ furniture items. Limitless Hunter pivoted to BTC ONLY after strategy failure.',
+                    tags: ['project', 'decision'],
+                    projects: ['mission-control', 'limitless'],
+                    content: `Major updates:
+- Agent Office v8.0: Sprites/VRM/Kairosoft modes
+- Meebits API integration
+- Limitless: Paused multi-asset, now BTC only
+- PolyTrader blocked (regional restriction)`
+                },
+                {
+                    date: '2026-03-21',
+                    title: 'Agent Office v6.3 - Full Deployment',
+                    summary: 'Deployed Agent Office v6.3 with real Meebit sprites, energy system, level up, ON FIRE! effects, and relationship system.',
+                    tags: ['project'],
+                    projects: ['mission-control'],
+                    content: `Features deployed:
+- Real Meebit sprite sheets (4-directional)
+- Energy system with visual bars
+- Level up system with XP
+- ON FIRE! status effect
+- Relationship system with heart particles
+- Smart AI chat with context awareness`
+                },
+                {
+                    date: '2026-03-20',
+                    title: 'Memory Hub + Limitless v3.2',
+                    summary: 'Created Memory Hub for downloadable logs. Updated Limitless Hunter with 30% flip rule and 0.95min check interval.',
+                    tags: ['project', 'task'],
+                    projects: ['mission-control', 'limitless'],
+                    content: `Completed:
+- Memory Hub with all markdown files
+- Limitless v3.2: 30% flip rule, wider price range
+- Jesse Pollak research enhanced
+- Mission Control links updated`
+                },
+                {
+                    date: '2026-03-18',
+                    title: 'Critical Bug Fix - Exit Orders',
+                    summary: 'Fixed critical bug where exit triggers were only logging locally, NOT submitting actual sell orders to the exchange.',
+                    tags: ['blocker', 'decision'],
+                    projects: ['limitless'],
+                    content: `CRITICAL FIX:
+- Issue: Exit triggers only logged, didn't execute sells
+- Impact: Positions expired worthless
+- Fix: Added submitSellOrder() with retry logic
+- Lesson: Detection without execution is useless`
+                }
+            ];
+
+            renderTimeline(memoryData);
+            updateStats();
+        }
+
+        function renderTimeline(data) {
+            const timeline = document.getElementById('memoryTimeline');
+            
+            if (data.length === 0) {
+                timeline.innerHTML = '<div class="loading">No memory entries found</div>';
+                return;
+            }
+
+            timeline.innerHTML = data.map((entry, index) => {
+                const date = new Date(entry.date);
+                const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+                const dayNum = date.getDate();
+                const month = date.toLocaleDateString('en-US', { month: 'short' });
+                
+                return `
+                    <div class="timeline-item" onclick="showDetail(${index})">
+                        <div class="timeline-date">
+                            <div class="day">${dayName.toUpperCase()}</div>
+                            <div class="date">${dayNum}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">${month}</div>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">${entry.title}</div>
+                            <div class="timeline-summary">${entry.summary}</div>
+                            <div class="timeline-tags">
+                                ${entry.tags.map(tag => `<span class="tag ${tag}">${tag.toUpperCase()}</span>`).join('')}
+                                ${entry.projects.map(p => `<span class="tag project">${p}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="timeline-actions">
+                            <button class="action-btn" onclick="event.stopPropagation(); viewFullLog('${entry.date}')">📄 View Full Log</button>
+                            <button class="action-btn" onclick="event.stopPropagation(); askAbout('${entry.date}')">❓ Ask About This</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('totalLogs').textContent = memoryData.length;
+            
+            const thisMonth = memoryData.filter(e => {
+                const entryDate = new Date(e.date);
+                const now = new Date();
+                return entryDate.getMonth() === now.getMonth() && 
+                       entryDate.getFullYear() === now.getFullYear();
+            }).length;
+            document.getElementById('thisMonth').textContent = thisMonth;
+            
+            const decisions = memoryData.filter(e => e.tags.includes('decision')).length;
+            document.getElementById('totalDecisions').textContent = decisions;
+            
+            const projects = [...new Set(memoryData.flatMap(e => e.projects))].length;
+            document.getElementById('totalProjects').textContent = projects;
+            
+            // Update project counts
+            const projectCounts = {
+                'mission-control': memoryData.filter(e => e.projects.includes('mission-control')).length,
+                'limitless': memoryData.filter(e => e.projects.includes('limitless')).length,
+                'dealflow': memoryData.filter(e => e.projects.includes('dealflow')).length,
+                'pixel-sanctuary': memoryData.filter(e => e.projects.includes('pixel-sanctuary')).length,
+                'paws': memoryData.filter(e => e.projects.includes('paws')).length
+            };
+            
+            document.getElementById('mcCount').textContent = projectCounts['mission-control'] + ' entries';
+            document.getElementById('limitlessCount').textContent = projectCounts['limitless'] + ' entries';
+            document.getElementById('dealflowCount').textContent = projectCounts['dealflow'] + ' entries';
+            document.getElementById('psCount').textContent = projectCounts['pixel-sanctuary'] + ' entries';
+            document.getElementById('pawsCount').textContent = projectCounts['paws'] + ' entries';
+        }
+
+        function showDetail(index) {
+            const entry = memoryData[index];
+            document.getElementById('detailTitle').textContent = `${entry.date} - ${entry.title}`;
+            document.getElementById('detailContent').textContent = entry.content;
+            document.getElementById('detailPanel').classList.add('active');
+            
+            // Scroll to detail
+            document.getElementById('detailPanel').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeDetail() {
+            document.getElementById('detailPanel').classList.remove('active');
+        }
+
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const projectFilter = document.getElementById('projectFilter').value;
+            const tagFilter = document.getElementById('tagFilter').value;
+            
+            const filtered = memoryData.filter(entry => {
+                const matchesSearch = !searchTerm || 
+                    entry.title.toLowerCase().includes(searchTerm) ||
+                    entry.summary.toLowerCase().includes(searchTerm) ||
+                    entry.content.toLowerCase().includes(searchTerm);
+                
+                const matchesProject = !projectFilter || entry.projects.includes(projectFilter);
+                const matchesTag = !tagFilter || entry.tags.includes(tagFilter);
+                
+                return matchesSearch && matchesProject && matchesTag;
+            });
+            
+            renderTimeline(filtered);
+        }
+
+        function filterByProject(project) {
+            document.getElementById('projectFilter').value = project;
+            performSearch();
+            document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function addMemoryEntry() {
+            const date = document.getElementById('entryDate').value;
+            const project = document.getElementById('entryProject').value;
+            const title = document.getElementById('entryTitle').value;
+            const details = document.getElementById('entryDetails').value;
+            
+            if (!date || !title || !details) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Add to memory data
+            const newEntry = {
+                date: date,
+                title: title,
+                summary: details.substring(0, 100) + '...',
+                tags: ['task'],
+                projects: [project],
+                content: details
+            };
+            
+            memoryData.unshift(newEntry);
+            renderTimeline(memoryData);
+            updateStats();
+            
+            // Clear form
+            document.getElementById('entryTitle').value = '';
+            document.getElementById('entryDetails').value = '';
+            
+            alert('Memory entry saved! (In real implementation, this would save to the markdown file)');
+        }
+
+        function viewFullLog(date) {
+            const filename = `${date}.md`;
+            window.open(filename, '_blank');
+        }
+
+        function askAbout(date) {
+            const entry = memoryData.find(e => e.date === date);
+            if (entry) {
+                const question = prompt(`Ask about ${date} - ${entry.title}:`);
+                if (question) {
+                    alert(`I would search the memory for: "${question}"\n\nBased on the log from ${date}:\n${entry.summary}`);
+                }
+            }
+        }
+
+        function setupEventListeners() {
+            // Enter key on search
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+            
+            // Auto-search on filter change
+            document.getElementById('projectFilter').addEventListener('change', performSearch);
+            document.getElementById('tagFilter').addEventListener('change', performSearch);
+        }
+    </script>
+</body>
+</html>
