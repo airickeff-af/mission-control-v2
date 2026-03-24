@@ -47,3 +47,7 @@ Status: **COMPLETE** (with data access limitations noted)
 - Monitor bot performance for 24-48 hours
 - Request manual leaderboard access from Limitless team
 - Consider browser automation for real-time leaderboard scraping
+
+---
+
+**Auto-Tags:** #project #limitless

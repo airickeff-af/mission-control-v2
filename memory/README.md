@@ -76,4 +76,7 @@ memory/
 - [ ] Cross-reference linking
 
 ---
+
+**Auto-Tags:** #task #memory-system
+---
 *Implemented: 2026-02-18 05:55 AM CST*
