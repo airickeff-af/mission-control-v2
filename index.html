@@ -474,16 +474,7 @@
         
         <div class="header-nav">
             <button id="headerRefreshBtn" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">🔄 Refresh</button>
-            <a href="data-viewer.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">📁 Data Viewer</a>
-            <a href="agent-analytics.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">📊 Analytics</a>
-            <a href="analytics-dashboard.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; background: linear-gradient(90deg, #6bcf7f, #00f0ff); color: #000;">📈 Dashboard</a>
-            <a href="agent-office-kairosoft.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; background: linear-gradient(90deg, #FF6B35, #FFD700); color: #1a0f2e;">🔥 LIVE Office</a>
-            <a href="agent-office-minecraft.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; background: linear-gradient(90deg, #5c8c3d, #866043); color: #fff;">⛏️ Minecraft</a>
-            <a href="agent-upgrades.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; background: linear-gradient(90deg, #ffd700, #ff9f43); color: #000;">🤖 Upgrades</a>
-            <a href="agent-office-3d.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)); color: var(--bg-secondary);">🏢 3D Office</a>
-            <a href="agent-office.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; background: var(--accent-pink); color: var(--bg-secondary);">🏢 Office</a>
             <a href="memory/index.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; background: var(--accent-green); color: var(--bg-secondary);">🧠 Memory</a>
-            <a href="hksi-paper1-study-guide.html" class="pixel-link" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; background: var(--accent-yellow); color: var(--bg-secondary);">📚 HKSI P1</a>
         </div>
         
         <div class="header-right">
@@ -815,42 +806,8 @@
                 <span class="loading">Loading in-progress tasks...</span>
             </div>
         </div>
-
-        <!-- Task Stats & Refresh Section -->
-        <div class="section-header">
-            <span class="section-icon">📊</span>
-            <h2 class="section-title">TASK DASHBOARD</h2>
-            <div style="margin-left: auto; display: flex; gap: 1rem; align-items: center;">
-                <span style="color: var(--text-muted); font-size: 0.9rem;">Auto-refresh: 1h</span>
-                <button id="refreshBtn" class="pixel-link" style="cursor: pointer; border: none; font-family: var(--font-pixel);">🔄 REFRESH</button>
-            </div>
-        </div>
-
-        <!-- Priority Counters -->
-        <div class="stats-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 1rem;">
-            <div class="stat-box" style="border-color: var(--accent-pink);">
-                <div class="stat-value" id="p0Count" style="color: var(--accent-pink);">-</div>
-                <div class="stat-label">P0 Critical</div>
-            </div>
-            <div class="stat-box" style="border-color: var(--accent-yellow);">
-                <div class="stat-value" id="p1Count" style="color: var(--accent-yellow);">-</div>
-                <div class="stat-label">P1 High</div>
-            </div>
-            <div class="stat-box" style="border-color: var(--text-muted);">
-                <div class="stat-value" id="p2Count" style="color: var(--text-muted);">-</div>
-                <div class="stat-label">P2 Medium</div>
-            </div>
-            <div class="stat-box" style="border-color: var(--accent-green);">
-                <div class="stat-value" id="completed24h" style="color: var(--accent-green);">-</div>
-                <div class="stat-label">Done (24h)</div>
-            </div>
-            <div class="stat-box" style="border-color: var(--accent-cyan);">
-                <div class="stat-value" id="completed7d" style="color: var(--accent-cyan);">-</div>
-                <div class="stat-label">Done (7d)</div>
-            </div>
-        </div>
         
-        <!-- All Tasks Section - Moved above Activity Log -->
+        <!-- All Tasks Section -->
         <div class="section-header">
             <span class="section-icon">📋</span>
             <h2 class="section-title">ALL PENDING TASKS</h2>
