@@ -472,6 +472,50 @@
             </div>
         </div>
 
+        <div class="mc-block crafting">
+            <div class="mc-block-header">
+                <span>🎮</span>
+                <span>AGENT ARCADE - EARN UPGRADES</span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border: 2px solid #5a4a3a;">
+                    <h3 style="color: #ffd700; font-size: 1rem; margin-bottom: 0.5rem;">🏆 ARCADE LEADERBOARD</h3>
+                    <div id="arcadeLeaderboard">
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid #5a4a3a;">
+                            <span>🥇 Nexus</span><span style="color: #00ff00;">12,450 pts</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid #5a4a3a;">
+                            <span>🥈 Limitless</span><span style="color: #00ff00;">10,200 pts</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid #5a4a3a;">
+                            <span>🥉 Glasses</span><span style="color: #00ff00;">8,750 pts</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem;">
+                            <span>4. Cipher</span><span style="color: #00ff00;">7,300 pts</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(0,0,0,0.3); padding: 1rem; border: 2px solid #5a4a3a;">
+                    <h3 style="color: #ff6b6b; font-size: 1rem; margin-bottom: 0.5rem;">⚡ UNLOCKED UPGRADES</h3>
+                    <div id="unlockedUpgrades">
+                        <div style="padding: 0.3rem; color: #00ff00;">✅ Rapid Fire (Limitless)</div>
+                        <div style="padding: 0.3rem; color: #00ff00;">✅ Shield Boost (Cipher)</div>
+                        <div style="padding: 0.3rem; color: #00ff00;">✅ Double XP (Nexus)</div>
+                        <div style="padding: 0.3rem; color: #ffff00;">⏳ Laser Eyes (Glasses) - 2k more pts</div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="agent-arcade.html" class="mc-btn" style="display: block; text-align: center; background: linear-gradient(90deg, #ff6b6b, #ffd93d); color: #000; font-size: 1.2rem; padding: 1rem;">
+                🎮 PLAY AGENT ARCADE →
+            </a>
+            <p style="margin-top: 0.75rem; font-size: 0.85rem; color: #aaa; text-align: center;">
+                Agents earn arcade points during idle time. Higher scores = better office upgrades!
+            </p>
+        </div>
+
         <!-- Agent Status -->
         <div class="mc-block">
             <div class="mc-block-header">
@@ -577,19 +621,28 @@
             { icon: '📻', name: 'Jukebox', type: 'music', count: 1 },
         ];
 
-        // Agent data
+        // Agent data with arcade scores and upgrades
         const agents = [
-            { name: 'Nexus', role: 'Director', emoji: '👑', hearts: 10, status: 'working', task: 'Orchestrating systems' },
-            { name: 'Glasses', role: 'Researcher', emoji: '👓', hearts: 9, status: 'working', task: 'Analyzing markets' },
-            { name: 'Quill', role: 'Writer', emoji: '✍️', hearts: 8, status: 'working', task: 'Crafting content' },
-            { name: 'Pixel', role: 'Designer', emoji: '🎨', hearts: 7, status: 'working', task: 'Building sprites' },
-            { name: 'Gary', role: 'Marketing', emoji: '📢', hearts: 9, status: 'idle', task: 'Planning campaigns' },
-            { name: 'Larry', role: 'Social', emoji: '🐦', hearts: 6, status: 'working', task: 'Mining followers' },
-            { name: 'Sentry', role: 'DevOps', emoji: '🔧', hearts: 10, status: 'working', task: 'Monitoring servers' },
-            { name: 'Audit', role: 'QA', emoji: '✅', hearts: 8, status: 'working', task: 'Testing builds' },
-            { name: 'Cipher', role: 'Security', emoji: '🔒', hearts: 9, status: 'working', task: 'Guarding vault' },
-            { name: 'Limitless', role: 'Trader', emoji: '💎', hearts: 7, status: 'trading', task: 'Mining crypto' },
-            { name: 'Olivia', role: 'Sales', emoji: '💼', hearts: 8, status: 'working', task: 'Crafting deals' },
+            { name: 'Nexus', role: 'Director', emoji: '👑', hearts: 10, status: 'working', task: 'Orchestrating systems', arcadeScore: 12450, upgrades: ['Double XP', 'Command Override'] },
+            { name: 'Glasses', role: 'Researcher', emoji: '👓', hearts: 9, status: 'working', task: 'Analyzing markets', arcadeScore: 8750, upgrades: ['Data Boost'] },
+            { name: 'Quill', role: 'Writer', emoji: '✍️', hearts: 8, status: 'working', task: 'Crafting content', arcadeScore: 5200, upgrades: ['Fast Type'] },
+            { name: 'Pixel', role: 'Designer', emoji: '🎨', hearts: 7, status: 'working', task: 'Building sprites', arcadeScore: 6800, upgrades: ['Color Palette'] },
+            { name: 'Gary', role: 'Marketing', emoji: '📢', hearts: 9, status: 'idle', task: 'Planning campaigns', arcadeScore: 4100, upgrades: [] },
+            { name: 'Larry', role: 'Social', emoji: '🐦', hearts: 6, status: 'working', task: 'Mining followers', arcadeScore: 3900, upgrades: [] },
+            { name: 'Sentry', role: 'DevOps', emoji: '🔧', hearts: 10, status: 'working', task: 'Monitoring servers', arcadeScore: 7200, upgrades: ['Auto-Repair'] },
+            { name: 'Audit', role: 'QA', emoji: '✅', hearts: 8, status: 'working', task: 'Testing builds', arcadeScore: 5600, upgrades: ['Bug Vision'] },
+            { name: 'Cipher', role: 'Security', emoji: '🔒', hearts: 9, status: 'working', task: 'Guarding vault', arcadeScore: 7300, upgrades: ['Shield Boost', 'Firewall'] },
+            { name: 'Limitless', role: 'Trader', emoji: '💎', hearts: 7, status: 'trading', task: 'Mining crypto', arcadeScore: 10200, upgrades: ['Rapid Fire', 'Profit Boost'] },
+            { name: 'Olivia', role: 'Sales', emoji: '💼', hearts: 8, status: 'working', task: 'Crafting deals', arcadeScore: 4800, upgrades: [] },
+        ];
+
+        // Upgrade tiers based on arcade scores
+        const upgradeTiers = [
+            { score: 5000, upgrade: 'Speed Boost', icon: '⚡' },
+            { score: 7500, upgrade: 'Shield +1', icon: '🛡️' },
+            { score: 10000, upgrade: 'Power Shot', icon: '🔥' },
+            { score: 15000, upgrade: 'Laser Eyes', icon: '👁️' },
+            { score: 20000, upgrade: 'Ultimate Mode', icon: '💀' }
         ];
 
         // Render office inventory
@@ -612,6 +665,10 @@
                     `<span class="mc-heart ${i >= agent.hearts ? 'lost' : ''}">❤️</span>`
                 ).join('');
                 
+                // Find next upgrade
+                const nextTier = upgradeTiers.find(t => t.score > agent.arcadeScore);
+                const progress = nextTier ? Math.round((agent.arcadeScore / nextTier.score) * 100) : 100;
+                
                 return `
                     <div class="mc-agent-card">
                         <div class="mc-agent-header">
@@ -624,6 +681,20 @@
                         <div class="mc-agent-body">
                             <div class="mc-health-bar">${hearts}</div>
                             <div class="mc-status ${agent.status}">${agent.task}</div>
+                            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 2px solid rgba(0,0,0,0.2);">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #ffd700; margin-bottom: 0.25rem;">
+                                    <span>🎮 ${agent.arcadeScore.toLocaleString()} pts</span>
+                                    <span>${agent.upgrades.length} upgrades</span>
+                                </div>
+                                ${nextTier ? `
+                                    <div style="background: #3a3a3a; height: 8px; border: 1px solid #5a5a5a;">
+                                        <div style="background: linear-gradient(90deg, #00ff00, #7fff00); height: 100%; width: ${progress}%;"></div>
+                                    </div>
+                                    <div style="font-size: 0.7rem; color: #aaa; margin-top: 0.25rem;">
+                                        Next: ${nextTier.icon} ${nextTier.upgrade} (${progress}%)
+                                    </div>
+                                ` : '<div style="font-size: 0.75rem; color: #00ff00;">✅ Max Level Reached!</div>'}
+                            </div>
                         </div>
                     </div>
                 `;

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIROSOFT - Isometric Grid Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .ui-overlay {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10000;
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            min-width: 250px;
+        }
+        
+        .ui-overlay h1 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #e94560;
+        }
+        
+        .ui-overlay p {
+            font-size: 12px;
+            margin: 5px 0;
+            color: #ccc;
+        }
+        
+        .ui-overlay .info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+        
+        .ui-overlay .tile-info {
+            color: #4ecca3;
+            font-weight: bold;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #e94560;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        
+        button:hover {
+            background: #ff6b6b;
+        }
+        
+        .isometric-tile {
+            border-radius: 2px;
+        }
+        
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            z-index: 10001;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">Loading KAIROSOFT...</div>
+    
+    <div class="ui-overlay">
+        <h1>🎮 KAIROSOFT Grid Test</h1>
+        <p>20×20 Isometric Grid</p>
+        <p>Projection: rotateX(60°) rotateZ(-45°)</p>
+        
+        <div class="info">
+            <p>Last Clicked:</p>
+            <p class="tile-info" id="tile-info">Click a tile...</p>
+            <p>Screen: <span id="screen-pos">-</span></p>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button onclick="resetView()">Reset View</button>
+        <button onclick="toggleGrid()">Toggle Grid</button>
+        <button onclick="randomizeColors()">Randomize</button>
+    </div>
+    
+    <div id="game-container"></div>
+    
+    <script src="isometric-grid.js"></script>
+    <script>
+        let grid;
+        let showGrid = true;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('game-container');
+            
+            // Initialize the isometric grid
+            grid = new IsometricGrid({
+                container: container,
+                gridSize: 20,
+                tileWidth: 64,
+                tileHeight: 32
+            });
+            
+            // Custom click handler
+            grid.onTileClick = function(x, y, event) {
+                document.getElementById('tile-info').textContent = `Tile [${x}, ${y}]`;
+                document.getElementById('screen-pos').textContent = 
+                    `${event.clientX}, ${event.clientY}`;
+                
+                console.log(`Tile clicked: [${x}, ${y}]`);
+                console.log(`Screen position: (${event.clientX}, ${event.clientY})`);
+                console.log(`World position:`, this.gridToWorld(x, y));
+                
+                this.highlightTile(x, y);
+            };
+            
+            // Hide loading
+            document.getElementById('loading').style.display = 'none';
+            
+            console.log('KAIROSOFT Grid initialized!');
+            console.log('Grid size: 20×20');
+            console.log('Projection: rotateX(60°) rotateZ(-45°)');
+        });
+        
+        function resetView() {
+            grid.clearHighlight();
+            document.getElementById('tile-info').textContent = 'Click a tile...';
+        }
+        
+        function toggleGrid() {
+            showGrid = !showGrid;
+            const tiles = document.querySelectorAll('.isometric-tile');
+            tiles.forEach(tile => {
+                tile.style.border = showGrid ? '1px solid rgba(255,255,255,0.2)' : 'none';
+            });
+        }
+        
+        function randomizeColors() {
+            const tiles = document.querySelectorAll('.isometric-tile');
+            tiles.forEach(tile => {
+                const hue = Math.random() * 360;
+                const lightness = 30 + Math.random() * 30;
+                tile.style.background = `linear-gradient(135deg, hsl(${hue}, 60%, ${lightness}%), hsl(${hue}, 60%, ${lightness - 10}%))`;
+            });
+        }
+    </script>
+</body>
+</html>

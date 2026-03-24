@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIROSOFT - Interactive Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .ui-overlay {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10000;
+            background: rgba(13, 27, 42, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+            min-width: 280px;
+            border: 1px solid rgba(65, 90, 119, 0.5);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .ui-overlay h1 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #00d4aa;
+            text-shadow: 0 0 10px rgba(0,212,170,0.3);
+        }
+        
+        .ui-overlay h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #778da9;
+            margin-bottom: 8px;
+        }
+        
+        .ui-overlay p {
+            font-size: 13px;
+            margin: 8px 0;
+            color: #e0e1dd;
+        }
+        
+        .info-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(65, 90, 119, 0.5);
+        }
+        
+        .tile-info {
+            color: #00d4aa;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .coordinates {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .coord-box {
+            background: rgba(0,0,0,0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+        }
+        
+        .coord-box span {
+            color: #778da9;
+            display: block;
+            font-size: 10px;
+            margin-bottom: 2px;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #e63946, #d62839);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.4);
+        }
+        
+        button.secondary {
+            background: linear-gradient(135deg, #415a77, #1b263b);
+            box-shadow: 0 4px 15px rgba(65, 90, 119, 0.3);
+        }
+        
+        button.secondary:hover {
+            box-shadow: 0 6px 20px rgba(65, 90, 119, 0.4);
+        }
+        
+        button.success {
+            background: linear-gradient(135deg, #00d4aa, #00b894);
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+        }
+        
+        button.success:hover {
+            box-shadow: 0 6px 20px rgba(0, 212, 170, 0.4);
+        }
+        
+        .isometric-tile {
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .isometric-tile.marked {
+            background: linear-gradient(135deg, #e63946, #d62839) !important;
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.5);
+        }
+        
+        .isometric-tile.path {
+            background: linear-gradient(135deg, #00d4aa, #00b894) !important;
+            box-shadow: 0 0 15px rgba(0, 212, 170, 0.5);
+        }
+        
+        .legend {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: rgba(13, 27, 42, 0.95);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            border: 1px solid rgba(65, 90, 119, 0.5);
+        }
+        
+        .legend h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #00d4aa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 0;
+            font-size: 12px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .stats {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: rgba(13, 27, 42, 0.95);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            border: 1px solid rgba(65, 90, 119, 0.5);
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .stats span {
+            color: #00d4aa;
+        }
+        
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            z-index: 10001;
+            text-align: center;
+        }
+        
+        .loading::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #00d4aa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .mode-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(0,212,170,0.2);
+            border: 1px solid #00d4aa;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #00d4aa;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        🎮 Initializing KAIROSOFT...
+    </div>
+    
+    <div class="ui-overlay">
+        <h1>🎮 KAIROSOFT Demo</h1>
+        <h2>Isometric Grid System</h2>
+        <p style="font-size: 11px; color: #778da9;">
+            Projection: rotateX(60°) rotateZ(-45°)<br>
+            Grid: 20×20 tiles
+        </p>
+        
+        <div class="info-section">
+            <h2>Selected Tile</h2>
+            <p class="tile-info" id="tile-info">Click any tile...</p>
+            
+            <div class="coordinates">
+                <div class="coord-box">
+                    <span>GRID</span>
+                    <div id="grid-pos">-, -</div>
+                </div>
+                <div class="coord-box">
+                    <span>WORLD</span>
+                    <div id="world-pos">-, -</div>
+                </div>
+                <div class="coord-box">
+                    <span>SCREEN</span>
+                    <div id="screen-pos">-, -</div>
+                </div>
+            </div>
+            
+            <div class="mode-indicator" id="mode-indicator">MODE: Select</div>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <h3>Legend</h3>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, hsl(200,60%,40%), hsl(200,60%,30%))"></div>
+            <span>Default Tile</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #e63946, #d62839)"></div>
+            <span>Marked (Click)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #ffd700, #ffaa00)"></div>
+            <span>Highlighted</span>
+        </div>
+    </div>
+    
+    <div class="stats">
+        <div>Tiles: <span>400</span></div>
+        <div>Marked: <span id="marked-count">0</span></div>
+        <div>FPS: <span id="fps">60</span></div>
+    </div>
+    
+    <div class="controls">
+        <button onclick="clearAll()">Clear All</button>
+        <button class="secondary" onclick="toggleGrid()">Toggle Grid</button>
+        <button class="secondary" onclick="randomizeColors()">Randomize</button>
+        <button class="success" onclick="demoPath()">Demo Path</button>
+    </div>
+    
+    <div id="game-container"></div>
+    
+    <script src="isometric-grid.js"></script>
+    <script>
+        let grid;
+        let showGrid = true;
+        let markedTiles = new Set();
+        let currentMode = 'select';
+        
+        // FPS counter
+        let frameCount = 0;
+        let lastTime = performance.now();
+        
+        function updateFPS() {
+            frameCount++;
+            const currentTime = performance.now();
+            if (currentTime >= lastTime + 1000) {
+                document.getElementById('fps').textContent = frameCount;
+                frameCount = 0;
+                lastTime = currentTime;
+            }
+            requestAnimationFrame(updateFPS);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('game-container');
+            
+            // Initialize the isometric grid
+            grid = new IsometricGrid({
+                container: container,
+                gridSize: 20,
+                tileWidth: 64,
+                tileHeight: 32
+            });
+            
+            // Enhanced click handler
+            grid.onTileClick = function(x, y, event) {
+                const key = `${x},${y}`;
+                const tile = this.tileElements.get(key);
+                
+                // Update UI
+                document.getElementById('tile-info').textContent = `Tile [${x}, ${y}]`;
+                document.getElementById('grid-pos').textContent = `${x}, ${y}`;
+                
+                const worldPos = this.gridToWorld(x, y);
+                document.getElementById('world-pos').textContent = 
+                    `${Math.round(worldPos.x)}, ${Math.round(worldPos.y)}`;
+                document.getElementById('screen-pos').textContent = 
+                    `${event.clientX}, ${event.clientY}`;
+                
+                // Toggle marked state
+                if (markedTiles.has(key)) {
+                    markedTiles.delete(key);
+                    tile.classList.remove('marked');
+                } else {
+                    markedTiles.add(key);
+                    tile.classList.add('marked');
+                }
+                
+                updateMarkedCount();
+                
+                // Log for debugging
+                console.log('%c[KAIROSOFT]', 'color: #00d4aa; font-weight: bold;', {
+                    tile: { x, y },
+                    world: worldPos,
+                    screen: { x: event.clientX, y: event.clientY },
+                    marked: markedTiles.has(key)
+                });
+            };
+            
+            // Hide loading
+            document.getElementById('loading').style.display = 'none';
+            
+            // Start FPS counter
+            updateFPS();
+            
+            console.log('%c🎮 KAIROSOFT Demo Loaded!', 'color: #00d4aa; font-size: 16px; font-weight: bold;');
+            console.log('%cGrid System:', 'color: #e63946;', {
+                size: '20×20',
+                projection: 'rotateX(60°) rotateZ(-45°)',
+                tiles: 400,
+                features: ['Isometric rendering', 'Click-to-tile', 'Z-index layering', 'Coordinate conversion']
+            });
+        });
+        
+        function updateMarkedCount() {
+            document.getElementById('marked-count').textContent = markedTiles.size;
+        }
+        
+        function clearAll() {
+            markedTiles.forEach(key => {
+                const tile = grid.tileElements.get(key);
+                if (tile) tile.classList.remove('marked');
+            });
+            markedTiles.clear();
+            grid.clearHighlight();
+            updateMarkedCount();
+            
+            document.getElementById('tile-info').textContent = 'Click any tile...';
+            document.getElementById('grid-pos').textContent = '-, -';
+            document.getElementById('world-pos').textContent = '-, -';
+            document.getElementById('screen-pos').textContent = '-, -';
+        }
+        
+        function toggleGrid() {
+            showGrid = !showGrid;
+            const tiles = document.querySelectorAll('.isometric-tile');
+            tiles.forEach(tile => {
+                tile.style.border = showGrid ? '1px solid rgba(255,255,255,0.2)' : 'none';
+            });
+        }
+        
+        function randomizeColors() {
+            const tiles = document.querySelectorAll('.isometric-tile');
+            tiles.forEach((tile, index) => {
+                if (!tile.classList.contains('marked')) {
+                    const x = parseInt(tile.dataset.x);
+                    const y = parseInt(tile.dataset.y);
+                    const hue = (x * 15 + y * 10 + Math.random() * 30) % 360;
+                    const lightness = 35 + Math.random() * 20;
+                    tile.style.background = `linear-gradient(135deg, hsl(${hue}, 60%, ${lightness}%), hsl(${hue}, 60%, ${lightness - 10}%))`;
+                }
+            });
+        }
+        
+        function demoPath() {
+            clearAll();
+            
+            // Create a diagonal path
+            const path = [];
+            for (let i = 0; i < 20; i++) {
+                path.push({ x: i, y: i });
+                if (i < 19) path.push({ x: i + 1, y: i });
+            }
+            
+            // Animate path creation
+            path.forEach((pos, index) => {
+                setTimeout(() => {
+                    const key = `${pos.x},${pos.y}`;
+                    const tile = grid.tileElements.get(key);
+                    if (tile) {
+                        tile.classList.add('path');
+                        setTimeout(() => tile.classList.remove('path'), 1000);
+                    }
+                }, index * 50);
+            });
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'c':
+                case 'C':
+                    clearAll();
+                    break;
+                case 'g':
+                case 'G':
+                    toggleGrid();
+                    break;
+                case 'r':
+                case 'R':
+                    randomizeColors();
+                    break;
+                case 'd':
+                case 'D':
+                    demoPath();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

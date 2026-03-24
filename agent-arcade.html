@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 AGENT ARCADE - Cyber Shooter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden;
+        }
+        
+        #gameContainer {
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+        }
+        
+        #gameCanvas {
+            background: linear-gradient(180deg, #1a0a2e 0%, #0a0a1a 50%, #0d1a0d 100%);
+            border: 4px solid #00ffff;
+            image-rendering: pixelated;
+        }
+        
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            color: #00ffff;
+            font-size: 10px;
+            text-shadow: 2px 2px 0 #000;
+            pointer-events: none;
+        }
+        
+        .stat {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 12px;
+            border: 2px solid #00ffff;
+        }
+        
+        #startScreen, #gameOverScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #00ffff;
+            z-index: 100;
+        }
+        
+        #startScreen h1, #gameOverScreen h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-shadow: 4px 4px 0 #ff00ff;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .agent-select {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .agent-btn {
+            background: #1a1a3e;
+            border: 3px solid #00ffff;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            color: #fff;
+            font-size: 8px;
+        }
+        
+        .agent-btn:hover {
+            background: #00ffff;
+            color: #000;
+            transform: scale(1.1);
+        }
+        
+        .agent-btn .emoji {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .start-btn {
+            background: #00ff00;
+            border: 4px solid #fff;
+            padding: 15px 30px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        #controls {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #666;
+            font-size: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="450"></canvas>
+        
+        <div id="ui">
+            <div class="stat">SCORE: <span id="score">0</span></div>
+            <div class="stat">LEVEL: <span id="level">1</span></div>
+            <div class="stat">HP: <span id="hp">❤️❤️❤️</span></div>
+            <div class="stat">AGENT: <span id="agentName">NEXUS</span></div>
+        </div>
+        
+        <div id="startScreen">
+            <h1>🎮 AGENT ARCADE</h1>
+            <p style="margin-bottom: 20px; color: #ff00ff;">SELECT YOUR AGENT</p>
+            
+            <div class="agent-select">
+                <div class="agent-btn" onclick="selectAgent('nexus', '👑')">
+                    <span class="emoji">👑</span>
+                    NEXUS
+                </div>
+                <div class="agent-btn" onclick="selectAgent('glasses', '👓')">
+                    <span class="emoji">👓</span>
+                    GLASSES
+                </div>
+                <div class="agent-btn" onclick="selectAgent('limitless', '💎')">
+                    <span class="emoji">💎</span>
+                    LIMITLESS
+                </div>
+                <div class="agent-btn" onclick="selectAgent('cipher', '🔒')">
+                    <span class="emoji">🔒</span>
+                    CIPHER
+                </div>
+            </div>
+            
+            <button class="start-btn" onclick="startGame()">INSERT COIN / START</button>
+            
+            <p style="margin-top: 30px; font-size: 8px; color: #666;">
+                ARROWS: Move • SPACE: Shoot • P: Pause
+            </p>
+        </div>
+        
+        <div id="gameOverScreen" class="hidden">
+            <h1>💀 GAME OVER</h1>
+            <p style="color: #ff00ff; margin: 20px 0;">FINAL SCORE: <span id="finalScore">0</span></p>
+            <p style="color: #00ff00; margin-bottom: 30px;">LEVEL REACHED: <span id="finalLevel">1</span></p>
+            
+            <button class="start-btn" onclick="restartGame()">TRY AGAIN</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Game State
+        let gameState = 'MENU';
+        let score = 0;
+        let level = 1;
+        let selectedAgent = { name: 'NEXUS', emoji: '👑', color: '#00ffff' };
+        let frameCount = 0;
+        
+        // Player
+        let player = {
+            x: 100,
+            y: 225,
+            width: 40,
+            height: 40,
+            vx: 0,
+            vy: 0,
+            speed: 5,
+            hp: 3,
+            maxHp: 3,
+            cooldown: 0,
+            jumpPower: -12,
+            grounded: false
+        };
+        
+        // Arrays
+        let bullets = [];
+        let enemies = [];
+        let particles = [];
+        let powerUps = [];
+        let platforms = [];
+        
+        // Input
+        const keys = {};
+        
+        // Agent Data
+        const agents = {
+            nexus: { name: 'NEXUS', emoji: '👑', color: '#00ffff', weapon: 'LASER', damage: 2 },
+            glasses: { name: 'GLASSES', emoji: '👓', color: '#ffaa00', weapon: 'SNIPER', damage: 3 },
+            limitless: { name: 'LIMITLESS', emoji: '💎', color: '#00ff00', weapon: 'RAPID', damage: 1 },
+            cipher: { name: 'CIPHER', emoji: '🔒', color: '#ff00ff', weapon: 'PLASMA', damage: 2 }
+        };
+        
+        function selectAgent(key, emoji) {
+            selectedAgent = agents[key];
+            document.getElementById('agentName').textContent = selectedAgent.name;
+            
+            // Visual feedback
+            document.querySelectorAll('.agent-btn').forEach(btn => {
+                btn.style.borderColor = '#00ffff';
+            });
+            event.target.closest('.agent-btn').style.borderColor = '#ff00ff';
+        }
+        
+        function startGame() {
+            document.getElementById('startScreen').classList.add('hidden');
+            gameState = 'PLAYING';
+            resetGame();
+            gameLoop();
+        }
+        
+        function restartGame() {
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            gameState = 'PLAYING';
+            resetGame();
+        }
+        
+        function resetGame() {
+            score = 0;
+            level = 1;
+            player.x = 100;
+            player.y = 225;
+            player.hp = 3;
+            player.vx = 0;
+            player.vy = 0;
+            bullets = [];
+            enemies = [];
+            particles = [];
+            powerUps = [];
+            platforms = generatePlatforms();
+            updateUI();
+        }
+        
+        function generatePlatforms() {
+            return [
+                { x: 0, y: 400, width: 800, height: 50 }, // Ground
+                { x: 200, y: 320, width: 100, height: 20 },
+                { x: 400, y: 260, width: 100, height: 20 },
+                { x: 600, y: 320, width: 100, height: 20 },
+                { x: 100, y: 200, width: 80, height: 20 },
+                { x: 500, y: 180, width: 80, height: 20 },
+            ];
+        }
+        
+        // Input handlers
+        document.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+            
+            if (e.code === 'Space' && gameState === 'PLAYING' && player.cooldown <= 0) {
+                shoot();
+            }
+            
+            if (e.code === 'KeyP') {
+                gameState = gameState === 'PLAYING' ? 'PAUSED' : 'PLAYING';
+            }
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            keys[e.code] = false;
+        });
+        
+        function shoot() {
+            bullets.push({
+                x: player.x + player.width,
+                y: player.y + player.height / 2,
+                vx: 10,
+                vy: 0,
+                width: 15,
+                height: 4,
+                color: selectedAgent.color,
+                damage: selectedAgent.damage
+            });
+            player.cooldown = selectedAgent.weapon === 'RAPID' ? 5 : 15;
+            
+            // Muzzle flash
+            createParticles(player.x + player.width, player.y + player.height / 2, selectedAgent.color, 3);
+        }
+        
+        function createParticles(x, y, color, count) {
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    life: 30,
+                    color: color,
+                    size: Math.random() * 4 + 2
+                });
+            }
+        }
+        
+        function spawnEnemy() {
+            const types = ['BUG', 'VIRUS', 'GLITCH'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            enemies.push({
+                x: canvas.width + 50,
+                y: Math.random() * 350 + 50,
+                width: 35,
+                height: 35,
+                vx: -2 - (level * 0.5),
+                vy: 0,
+                type: type,
+                hp: type === 'BUG' ? 1 : type === 'VIRUS' ? 2 : 3,
+                emoji: type === 'BUG' ? '🐛' : type === 'VIRUS' ? '🦠' : '👾',
+                color: type === 'BUG' ? '#ff0000' : type === 'VIRUS' ? '#00ff00' : '#ff00ff'
+            });
+        }
+        
+        function spawnPowerUp() {
+            if (Math.random() < 0.1) {
+                const types = ['HP', 'SPEED', 'WEAPON'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                
+                powerUps.push({
+                    x: canvas.width + 30,
+                    y: Math.random() * 350 + 50,
+                    width: 25,
+                    height: 25,
+                    type: type,
+                    emoji: type === 'HP' ? '❤️' : type === 'SPEED' ? '⚡' : '🔥',
+                    vx: -3
+                });
+            }
+        }
+        
+        function update() {
+            if (gameState !== 'PLAYING') return;
+            
+            frameCount++;
+            
+            // Player movement
+            if (keys['ArrowLeft']) player.vx = -player.speed;
+            else if (keys['ArrowRight']) player.vx = player.speed;
+            else player.vx *= 0.8;
+            
+            // Jump
+            if (keys['ArrowUp'] && player.grounded) {
+                player.vy = player.jumpPower;
+                player.grounded = false;
+            }
+            
+            // Gravity
+            player.vy += 0.6;
+            
+            // Apply velocity
+            player.x += player.vx;
+            player.y += player.vy;
+            
+            // Platform collision
+            player.grounded = false;
+            for (let plat of platforms) {
+                if (player.x < plat.x + plat.width &&
+                    player.x + player.width > plat.x &&
+                    player.y + player.height > plat.y &&
+                    player.y + player.height < plat.y + plat.height + 10 &&
+                    player.vy >= 0) {
+                    player.y = plat.y - player.height;
+                    player.vy = 0;
+                    player.grounded = true;
+                }
+            }
+            
+            // Bounds
+            player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+            if (player.y > canvas.height) {
+                player.hp = 0;
+                gameOver();
+            }
+            
+            // Cooldown
+            if (player.cooldown > 0) player.cooldown--;
+            
+            // Update bullets
+            bullets = bullets.filter(b => {
+                b.x += b.vx;
+                return b.x < canvas.width;
+            });
+            
+            // Spawn enemies
+            if (frameCount % Math.max(30, 120 - level * 10) === 0) {
+                spawnEnemy();
+            }
+            
+            // Spawn powerups
+            spawnPowerUp();
+            
+            // Update enemies
+            enemies = enemies.filter(e => {
+                e.x += e.vx;
+                
+                // Check collision with bullets
+                for (let i = bullets.length - 1; i >= 0; i--) {
+                    let b = bullets[i];
+                    if (b.x < e.x + e.width &&
+                        b.x + b.width > e.x &&
+                        b.y < e.y + e.height &&
+                        b.y + b.height > e.y) {
+                        
+                        e.hp -= b.damage;
+                        bullets.splice(i, 1);
+                        createParticles(e.x + e.width/2, e.y + e.height/2, e.color, 5);
+                        
+                        if (e.hp <= 0) {
+                            score += e.type === 'BUG' ? 100 : e.type === 'VIRUS' ? 200 : 300;
+                            createParticles(e.x, e.y, '#ffff00', 8);
+                            return false;
+                        }
+                    }
+                }
+                
+                // Check collision with player
+                if (e.x < player.x + player.width &&
+                    e.x + e.width > player.x &&
+                    e.y < player.y + player.height &&
+                    e.y + e.height > player.y) {
+                    player.hp--;
+                    createParticles(player.x, player.y, '#ff0000', 10);
+                    if (player.hp <= 0) gameOver();
+                    return false;
+                }
+                
+                return e.x > -50;
+            });
+            
+            // Update powerups
+            powerUps = powerUps.filter(p => {
+                p.x += p.vx;
+                
+                if (p.x < player.x + player.width &&
+                    p.x + p.width > player.x &&
+                    p.y < player.y + player.height &&
+                    p.y + p.height > player.y) {
+                    
+                    if (p.type === 'HP' && player.hp < player.maxHp) player.hp++;
+                    if (p.type === 'SPEED') player.speed = 8;
+                    if (p.type === 'WEAPON') player.cooldown = Math.max(0, player.cooldown - 5);
+                    
+                    score += 50;
+                    return false;
+                }
+                
+                return p.x > -30;
+            });
+            
+            // Update particles
+            particles = particles.filter(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.2;
+                p.life--;
+                return p.life > 0;
+            });
+            
+            // Level up
+            if (score > level * 1000) {
+                level++;
+                createParticles(canvas.width/2, canvas.height/2, '#00ff00', 20);
+            }
+            
+            updateUI();
+        }
+        
+        function updateUI() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('level').textContent = level;
+            document.getElementById('hp').textContent = '❤️'.repeat(player.hp) + '🖤'.repeat(player.maxHp - player.hp);
+        }
+        
+        function gameOver() {
+            gameState = 'GAMEOVER';
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalLevel').textContent = level;
+            document.getElementById('gameOverScreen').classList.remove('hidden');
+        }
+        
+        function draw() {
+            // Clear with trail effect
+            ctx.fillStyle = 'rgba(10, 10, 26, 0.3)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw platforms
+            ctx.fillStyle = '#2a1a4e';
+            for (let plat of platforms) {
+                ctx.fillRect(plat.x, plat.y, plat.width, plat.height);
+                ctx.strokeStyle = '#00ffff';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(plat.x, plat.y, plat.width, plat.height);
+            }
+            
+            // Draw particles
+            for (let p of particles) {
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life / 30;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+                ctx.globalAlpha = 1;
+            }
+            
+            // Draw powerups
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            for (let p of powerUps) {
+                ctx.fillText(p.emoji, p.x + p.width/2, p.y + p.height/2 + 7);
+            }
+            
+            // Draw bullets
+            for (let b of bullets) {
+                ctx.fillStyle = b.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = b.color;
+                ctx.fillRect(b.x, b.y, b.width, b.height);
+                ctx.shadowBlur = 0;
+            }
+            
+            // Draw enemies
+            for (let e of enemies) {
+                ctx.font = '30px Arial';
+                ctx.fillText(e.emoji, e.x, e.y + 28);
+                
+                // HP bar
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(e.x, e.y - 10, e.width, 4);
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(e.x, e.y - 10, e.width * (e.hp / (e.type === 'BUG' ? 1 : e.type === 'VIRUS' ? 2 : 3)), 4);
+            }
+            
+            // Draw player
+            ctx.font = '35px Arial';
+            ctx.fillText(selectedAgent.emoji, player.x, player.y + 32);
+            
+            // Weapon glow
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = selectedAgent.color;
+            ctx.fillStyle = selectedAgent.color;
+            ctx.fillRect(player.x + 35, player.y + 15, 8, 8);
+            ctx.shadowBlur = 0;
+            
+            // Pause overlay
+            if (gameState === 'PAUSED') {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffff00';
+                ctx.font = '30px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText('PAUSED', canvas.width/2, canvas.height/2);
+            }
+        }
+        
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+    </script>
+</body>
+</html>
