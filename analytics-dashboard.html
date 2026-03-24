@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Analytics Dashboard | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-primary: #1a0a2e;
+            --bg-secondary: #0d0618;
+            --bg-card: #2d1b4e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --border-color: #5d4b7e;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 16px;
+        }
+        
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 4px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-header);
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+        }
+        
+        .back-btn {
+            background: var(--accent-pink);
+            color: var(--bg-secondary);
+            border: 3px solid var(--text-primary);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-pixel);
+            text-decoration: none;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-title {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            color: var(--accent-yellow);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 4px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+        }
+        
+        .stat-value {
+            font-family: var(--font-header);
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value.positive { color: var(--accent-green); }
+        .stat-value.negative { color: var(--accent-pink); }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-card {
+            background: var(--bg-card);
+            border: 4px solid var(--border-color);
+            padding: 1.5rem;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+        }
+        
+        .chart-title {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        }
+        
+        .section-icon {
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-yellow);
+            flex: 1;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border: 4px solid var(--border-color);
+        }
+        
+        .data-table th {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            text-align: left;
+            font-family: var(--font-header);
+            font-size: 0.55rem;
+            color: var(--accent-cyan);
+            border-bottom: 3px solid var(--border-color);
+        }
+        
+        .data-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .data-table tr:hover {
+            background: rgba(0, 240, 255, 0.05);
+        }
+        
+        .badge {
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            border: 2px solid;
+        }
+        
+        .badge-win {
+            background: rgba(107, 207, 127, 0.2);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        
+        .badge-loss {
+            background: rgba(255, 107, 157, 0.2);
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+        }
+        
+        .progress-bar {
+            background: var(--bg-secondary);
+            height: 20px;
+            border: 2px solid var(--border-color);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">📊 ANALYTICS DASHBOARD</div>
+        <a href="index.html" class="back-btn">← Back</a>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-title">MISSION CONTROL ANALYTICS</h1>
+        <p class="subtitle">Real-time performance metrics and insights</p>
+        
+        <!-- Key Metrics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalPnl">+$0.00</div>
+                <div class="stat-label">Total P&L</div>
+                <div class="stat-change" style="color: var(--accent-green);">↑ 0% vs last week</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="winRate">0%</div>
+                <div class="stat-label">Win Rate</div>
+                <div class="stat-change" style="color: var(--text-secondary);">Target: 60%</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="totalTrades">0</div>
+                <div class="stat-label">Total Trades</div>
+                <div class="stat-change" style="color: var(--accent-cyan);">Today: 0</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="avgProfit">$0.00</div>
+                <div class="stat-label">Avg Profit/Trade</div>
+                <div class="stat-change" style="color: var(--text-secondary);">Fees included</div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-title">📈 P&L OVER TIME (7 DAYS)</div>
+                <div class="chart-container">
+                    <canvas id="pnlChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">🎯 WIN/LOSS DISTRIBUTION</div>
+                <div class="chart-container">
+                    <canvas id="winLossChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">🔥 TRADES BY PATTERN</div>
+                <div class="chart-container">
+                    <canvas id="patternChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">⏰ TRADES BY HOUR</div>
+                <div class="chart-container">
+                    <canvas id="hourChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Trades Table -->
+        <div class="section-header">
+            <span class="section-icon">📋</span>
+            <span class="section-title">RECENT TRADES</span>
+        </div>
+        
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>TIME</th>
+                    <th>ASSET</th>
+                    <th>OUTCOME</th>
+                    <th>PATTERN</th>
+                    <th>AMOUNT</th>
+                    <th>P&L</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+            <tbody id="tradesTableBody">
+                <tr>
+                    <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                        No trades recorded yet. Bot is running and waiting for opportunities...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
+        <!-- Agent Productivity -->
+        <div class="section-header">
+            <span class="section-icon">👥</span>
+            <span class="section-title">AGENT PRODUCTIVITY</span>
+        </div>
+        
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>AGENT</th>
+                    <th>ROLE</span>
+                    <th>TASKS COMPLETED</th>
+                    <th>ARCADE SCORE</th>
+                    <th>UPGRADES</th>
+                    <th>EFFICIENCY</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>👑 Nexus</td>
+                    <td>Director</td>
+                    <td>247</td>
+                    <td>12,450</td>
+                    <td>2</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 95%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>👓 Glasses</td>
+                    <td>Researcher</td>
+                    <td>156</td>
+                    <td>8,750</td>
+                    <td>1</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 82%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>💎 Limitless</td>
+                    <td>Trader</td>
+                    <td>89</td>
+                    <td>10,200</td>
+                    <td>2</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>🔒 Cipher</td>
+                    <td>Security</td>
+                    <td>134</td>
+                    <td>7,300</td>
+                    <td>2</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 88%;"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
+        <!-- Cost Tracking -->
+        <div class="section-header">
+            <span class="section-icon">💰</span>
+            <span class="section-title">API COST TRACKING</span>
+        </div>
+        
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div class="chart-title">💸 DAILY API COSTS</div>
+                <div class="chart-container">
+                    <canvas id="costChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">📊 COST BREAKDOWN</div>
+                <div style="padding: 2rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding: 1rem; background: rgba(0,240,255,0.1); border: 2px solid var(--accent-cyan);">
+                        <span>Trading API</span>
+                        <span style="color: var(--accent-cyan); font-weight: bold;">$0.00</span>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; padding: 1rem; background: rgba(255,107,157,0.1); border: 2px solid var(--accent-pink);">
+                        <span>Data/API Calls</span>
+                        <span style="color: var(--accent-pink); font-weight: bold;">$0.00</span>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; padding: 1rem; background: rgba(107,207,127,0.1); border: 2px solid var(--accent-green);">
+                        <span>Total (24h)</span>
+                        <span style="color: var(--accent-green); font-weight: bold;">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Chart.js configuration
+        Chart.defaults.font.family = "'VT323', monospace";
+        Chart.defaults.color = '#b8a9d9';
+        
+        // P&L Chart
+        const pnlCtx = document.getElementById('pnlChart').getContext('2d');
+        new Chart(pnlCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Cumulative P&L',
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                    borderColor: '#00f0ff',
+                    backgroundColor: 'rgba(0, 240, 255, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        grid: { color: 'rgba(93, 75, 126, 0.3)' },
+                        ticks: { callback: v => '$' + v }
+                    },
+                    x: {
+                        grid: { color: 'rgba(93, 75, 126, 0.3)' }
+                    }
+                }
+            }
+        });
+        
+        // Win/Loss Chart
+        const winLossCtx = document.getElementById('winLossChart').getContext('2d');
+        new Chart(winLossCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Wins', 'Losses'],
+                datasets: [{
+                    data: [0, 0],
+                    backgroundColor: ['#6bcf7f', '#ff6b9d'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20 }
+                    }
+                }
+            }
+        });
+        
+        // Pattern Chart
+        const patternCtx = document.getElementById('patternChart').getContext('2d');
+        new Chart(patternCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Extreme Reversion', '3-Down Bounce', 'Breakout'],
+                datasets: [{
+                    label: 'Trades',
+                    data: [0, 0, 0],
+                    backgroundColor: ['#00f0ff', '#ffd93d', '#ff6b9d']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(93, 75, 126, 0.3)' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+        
+        // Hour Chart
+        const hourCtx = document.getElementById('hourChart').getContext('2d');
+        new Chart(hourCtx, {
+            type: 'bar',
+            data: {
+                labels: ['00', '03', '06', '09', '12', '15', '18', '21'],
+                datasets: [{
+                    label: 'Trades',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: '#6bcf7f'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(93, 75, 126, 0.3)' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+        
+        // Cost Chart
+        const costCtx = document.getElementById('costChart').getContext('2d');
+        new Chart(costCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'API Cost',
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                    borderColor: '#ff6b9d',
+                    backgroundColor: 'rgba(255, 107, 157, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        grid: { color: 'rgba(93, 75, 126, 0.3)' },
+                        ticks: { callback: v => '$' + v }
+                    },
+                    x: {
+                        grid: { color: 'rgba(93, 75, 126, 0.3)' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
