@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌅 Morning Command Brief | EricF</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1a0f2e;
+            --bg-secondary: #0d0618;
+            --bg-card: #2d1b4e;
+            --bg-card-hover: #3d2b5e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
+            --border-color: #5d4b7e;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --pixel-border: 4px;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: linear-gradient(180deg, #1a0f2e 0%, #0d0618 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
+        }
+
+        .greeting {
+            font-family: var(--font-header);
+            font-size: 0.8rem;
+            color: var(--accent-yellow);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0 var(--shadow-color);
+        }
+
+        .datetime {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Priority Alert Box */
+        .priority-box {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-orange));
+            border: 4px solid var(--text-primary);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .priority-title {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            color: var(--bg-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .priority-text {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            box-shadow: 4px 4px 0 var(--shadow-color);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-header);
+            font-size: 0.55rem;
+            color: var(--accent-cyan);
+            flex: 1;
+        }
+
+        .section-content {
+            padding: 1.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-item {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .stat-item:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-family: var(--font-header);
+            font-size: 1rem;
+            color: var(--accent-cyan);
+        }
+
+        .stat-value.positive { color: var(--accent-green); }
+        .stat-value.negative { color: var(--accent-pink); }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Priority List */
+        .priority-list {
+            list-style: none;
+        }
+
+        .priority-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            margin-bottom: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .priority-item:hover {
+            border-color: var(--accent-yellow);
+            transform: translateX(5px);
+        }
+
+        .priority-rank {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            color: var(--accent-yellow);
+            min-width: 40px;
+        }
+
+        .priority-content {
+            flex: 1;
+        }
+
+        .priority-name {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .priority-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .priority-tag {
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            border: 2px solid;
+        }
+
+        .tag-p0 { border-color: var(--accent-pink); color: var(--accent-pink); }
+        .tag-p1 { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .tag-p2 { border-color: var(--accent-green); color: var(--accent-green); }
+
+        /* Activity Feed */
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            min-width: 60px;
+        }
+
+        .activity-text {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        /* Quick Actions */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            box-shadow: 3px 3px 0 var(--shadow-color);
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .action-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--shadow-color);
+            border-color: var(--accent-cyan);
+        }
+
+        .action-btn:active {
+            transform: translate(0, 0);
+            box-shadow: 1px 1px 0 var(--shadow-color);
+        }
+
+        .action-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-text {
+            font-size: 1rem;
+            color: var(--accent-cyan);
+        }
+
+        .action-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--border-color);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .greeting { font-size: 0.6rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="greeting">🌅 GOOD MORNING, COMMANDER</div>
+        <div class="datetime" id="datetime">Loading...</div>
+    </header>
+
+    <main class="container">
+        <!-- Priority Alert -->
+        <div class="priority-box">
+            <div class="priority-title">⚡ TODAY'S FOCUS</div>
+            <div class="priority-text" id="todayFocus">Review trading bot v2.0 performance & prioritize Kairosoft tasks</div>
+        </div>
+
+        <!-- Daily Memory Link -->
+        <div class="section-card" style="border-color: var(--accent-pink); box-shadow: 4px 4px 0 var(--accent-pink);">
+            <div class="section-header" style="background: var(--accent-pink); color: var(--bg-secondary);">
+                <span class="section-icon">📅</span>
+                <span class="section-title" style="color: var(--bg-secondary);">DAILY MEMORY TRACKER</span>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                    Every discussion we have is logged here. Search by project, date, or topic. 
+                    Ask me about any previous conversation and I'll check the memory.
+                </p>
+                <a href="memory/daily-tracker.html" class="action-btn" style="background: var(--accent-pink); color: var(--bg-secondary); border-color: var(--bg-secondary); display: inline-flex; width: auto; padding: 0.75rem 1.5rem;">
+                    <span style="font-size: 1.1rem;">🚀 Open Memory Tracker</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Trading Performance -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">🤖</span>
+                <span class="section-title">OVERNIGHT TRADING</span>
+            </div>
+            <div class="section-content">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="tradePnl">--</div>
+                        <div class="stat-label">P&L (24h)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="tradeCount">--</div>
+                        <div class="stat-label">Trades</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="winRate">--</div>
+                        <div class="stat-label">Win Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="balance">$20.39</div>
+                        <div class="stat-label">Balance</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.9rem; color: var(--text-muted);">
+                    📊 Strategy v2.0 deployed: Contrarian approach (buy <45¢, fade >65¢)
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Priorities -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <span class="section-title">TOP 3 PRIORITIES</span>
+            </div>
+            <div class="section-content">
+                <ul class="priority-list" id="priorityList">
+                    <li class="priority-item">
+                        <span class="priority-rank">#1</span>
+                        <div class="priority-content">
+                            <div class="priority-name">Monitor Limitless v2.0 Performance</div>
+                            <div class="priority-meta">Trading Bot • Real Money • Deployed Today</div>
+                        </div>
+                        <span class="priority-tag tag-p0">P0</span>
+                    </li>
+                    <li class="priority-item">
+                        <span class="priority-rank">#2</span>
+                        <div class="priority-content">
+                            <div class="priority-name">Complete KAIRO-01 to KAIRO-05 Tasks</div>
+                            <div class="priority-meta">Agent Office • Kairosoft Rebuild • Overdue</div>
+                        </div>
+                        <span class="priority-tag tag-p0">P0</span>
+                    </li>
+                    <li class="priority-item">
+                        <span class="priority-rank">#3</span>
+                        <div class="priority-content">
+                            <div class="priority-name">LinkedIn Outreach Integration</div>
+                            <div class="priority-meta">DealFlow • Automation • High Value</div>
+                        </div>
+                        <span class="priority-tag tag-p1">P1</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">📰</span>
+                <span class="section-title">RECENT ACTIVITY</span>
+            </div>
+            <div class="section-content">
+                <div class="activity-item">
+                    <span class="activity-time">Now</span>
+                    <span class="activity-text">📅 Daily Memory System deployed - All discussions now logged</span>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-time">Now</span>
+                    <span class="activity-text">🤖 Limitless v2.0 deployed with contrarian strategy</span>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-time">Today</span>
+                    <span class="activity-text">🌅 Morning Command Brief microapp created</span>
+                </div>
+                <div class="activity-item">
+                    <span class="activity-time">Mar 23</span>
+                    <span class="activity-text">📊 Strategy v2.0 analysis completed - Fatal flaw identified in v1.0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blockers -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">🚧</span>
+                <span class="section-title">BLOCKERS</span>
+            </div>
+            <div class="section-content">
+                <div class="activity-item" style="border: none; padding: 0;">
+                    <span class="activity-text" style="color: var(--accent-pink);">
+                        🔴 PolyTrader: Regional restriction (403 error) - Needs VPN/proxy
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">⚡</span>
+                <span class="section-title">QUICK ACTIONS</span>
+            </div>
+            <div class="section-content">
+                <div class="actions-grid">
+                    <a href="../agent-office-live.html" class="action-btn">
+                        <div class="action-icon">🏢</div>
+                        <div class="action-text">Agent Office</div>
+                        <div class="action-desc">Check agent activity</div>
+                    </a>
+                    
+                    <a href="../token-alerts.html" class="action-btn">
+                        <div class="action-icon">📊</div>
+                        <div class="action-text">Token Tracker</div>
+                        <div class="action-desc">View usage metrics</div>
+                    </a>
+                    
+                    <a href="../deals.html" class="action-btn">
+                        <div class="action-icon">💼</div>
+                        <div class="action-text">DealFlow</div>
+                        <div class="action-desc">Review leads</div>
+                    </a>
+                    
+                    <a href="memory/daily-tracker.html" class="action-btn" style="border-color: var(--accent-pink);">
+                        <div class="action-icon">📅</div>
+                        <div class="action-text" style="color: var(--accent-pink);">Daily Memory</div>
+                        <div class="action-desc">Search all discussions & logs</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-text">🌅 Morning Command Brief | Auto-generated daily at 6:00 AM</p>
+        <p class="footer-text" style="margin-top: 0.5rem;">Last updated: <span id="lastUpdated">Just now</span></p>
+    </footer>
+
+    <script>
+        // Update datetime
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('en-US', options);
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 60000);
+        
+        // Load trading stats (would fetch from API in production)
+        function loadTradingStats() {
+            // Placeholder - would fetch from trade_database.json
+            document.getElementById('tradePnl').textContent = '+$0.00';
+            document.getElementById('tradePnl').className = 'stat-value positive';
+            document.getElementById('tradeCount').textContent = '0';
+            document.getElementById('winRate').textContent = '--';
+        }
+        
+        loadTradingStats();
+        
+        // Update last updated time
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+    </script>
+</body>
+</html>
