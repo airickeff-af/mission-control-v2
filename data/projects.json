@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-20T16:26:00+08:00",
+  "lastUpdated": "2026-03-25T21:20:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -14,9 +14,10 @@
       "priority": 1,
       "deployBy": "2026-02-26",
       "stats": {
-        "totalContacts": 90,
-        "withEmails": 79,
-        "readyForOutreach": 80,
+        "totalContacts": 223,
+        "withEmails": 180,
+        "readyForOutreach": 180,
+        "verified": 2,
         "stablecoins": 40,
         "rwa": 30,
         "original": 20
@@ -24,16 +25,71 @@
     },
     {
       "id": "mission-control",
-      "name": "Mission Control",
+      "name": "Mission Control Dashboard",
       "status": "deployed",
       "completion": 94,
-      "url": "https://mission-control-v2-sepia.vercel.app",
+      "url": "https://dashboard-ten-sand-20.vercel.app",
       "pendingTasks": 8,
       "lead": "Nexus",
       "targetCompletion": "2026-02-26",
       "targetPercent": 100,
       "priority": 2,
       "deployBy": "2026-02-26"
+    },
+    {
+      "id": "agent-office-latest",
+      "name": "Agent Office (Latest)",
+      "status": "deployed",
+      "completion": 95,
+      "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v95.html",
+      "pendingTasks": 2,
+      "lead": "Pixel",
+      "targetCompletion": "2026-03-25",
+      "targetPercent": 100,
+      "priority": 3,
+      "deployBy": "2026-03-25",
+      "description": "Latest Agent Office v9.5 - Meebit style with arcade integration",
+      "versions": [
+        {"version": "v9.5", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v95.html", "date": "2026-03-22"},
+        {"version": "v9.0", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v90.html", "date": "2026-03-22"},
+        {"version": "v8.5", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v85.html", "date": "2026-03-22"},
+        {"version": "v8.0", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v80.html", "date": "2026-03-22"},
+        {"version": "v7.0", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v70.html", "date": "2026-03-22"}
+      ]
+    },
+    {
+      "id": "agent-office-kairosoft",
+      "name": "Agent Office - Kairosoft Style",
+      "status": "deployed",
+      "completion": 90,
+      "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-kairosoft.html",
+      "pendingTasks": 3,
+      "lead": "Pixel",
+      "targetCompletion": "2026-03-20",
+      "targetPercent": 100,
+      "priority": 4,
+      "deployBy": "2026-03-20",
+      "description": "Kairosoft game-style pixel art office with chibi agents"
+    },
+    {
+      "id": "agent-office-2d-scroller",
+      "name": "Agent Office - 2D Scroller",
+      "status": "deployed",
+      "completion": 85,
+      "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-minecraft.html",
+      "pendingTasks": 2,
+      "lead": "Pixel",
+      "targetCompletion": "2026-03-24",
+      "targetPercent": 100,
+      "priority": 5,
+      "deployBy": "2026-03-24",
+      "description": "2D side-scrolling platformer style agent office",
+      "features": [
+        "Side-scrolling navigation",
+        "Platformer mechanics",
+        "Agent sprite animation",
+        "Interactive environments"
+      ]
     },
     {
       "id": "paws",
@@ -45,12 +101,12 @@
       "lead": "Paws-Replacement",
       "targetCompletion": "2026-02-26",
       "targetPercent": 100,
-      "priority": 3,
+      "priority": 6,
       "deployBy": "2026-02-26"
     },
     {
       "id": "mc-project",
-      "name": "MC Project",
+      "name": "MC Project (Meemo)",
       "status": "deployed",
       "completion": 100,
       "url": "https://airickeff-af.github.io/mc-project/",
@@ -58,7 +114,7 @@
       "lead": "Meemo-Replacement",
       "targetCompletion": "2026-02-25",
       "targetPercent": 100,
-      "priority": 4,
+      "priority": 7,
       "deployBy": "2026-02-25"
     },
     {
@@ -71,7 +127,7 @@
       "lead": "ZooKeeper",
       "targetCompletion": "2026-02-27",
       "targetPercent": 100,
-      "priority": 5,
+      "priority": 8,
       "deployBy": "2026-02-27",
       "features": [
         "8-directional movement",
@@ -84,44 +140,46 @@
       "id": "limitless-hunter",
       "name": "Limitless Hunter",
       "status": "active",
-      "completion": 85,
-      "url": "limitless-rules.html",
-      "pendingTasks": 2,
+      "completion": 90,
+      "url": "https://dashboard-ten-sand-20.vercel.app/limitless-rules.html",
+      "pendingTasks": 1,
       "lead": "Limitless",
-      "targetCompletion": "2026-03-20",
+      "targetCompletion": "2026-03-25",
       "targetPercent": 100,
-      "priority": 6,
-      "deployBy": "2026-03-20",
-      "description": "Automated binary options trading bot for Limitless Exchange (BTC/ETH/SOL/DOGE)",
+      "priority": 9,
+      "deployBy": "2026-03-25",
+      "description": "Automated binary options trading bot for Limitless Exchange (BTC/ETH/SOL)",
       "mode": "FULLY AUTONOMOUS",
       "walletAddress": "0xd82...4037",
       "location": "/agents/limitless/",
       "stats": {
         "balance": 20.39,
-        "maxPosition": 3.25,
-        "maxConcurrent": 2,
-        "takeProfit": "+15%",
-        "stopLoss": "-10%",
-        "maxHoldMinutes": 14,
-        "entryWindow": "15min to expiry",
-        "checkInterval": "1.0min",
-        "status": "Running v3.1.3"
+        "maxPosition": 3.06,
+        "maxConcurrent": 3,
+        "takeProfit": "+5%",
+        "stopLoss": "-5%",
+        "maxHoldMinutes": 30,
+        "entryWindow": "6 minutes",
+        "checkInterval": "6 min",
+        "status": "Running - 15min Strategy"
       }
     },
     {
       "id": "polytrader",
       "name": "PolyTrader",
-      "status": "active",
+      "status": "blocked",
       "completion": 75,
       "url": null,
       "pendingTasks": 3,
       "lead": "Limitless",
       "targetCompletion": "2026-03-25",
       "targetPercent": 100,
-      "priority": 7,
+      "priority": 10,
       "deployBy": "2026-03-25",
-      "description": "Polymarket prediction market trading bot (0% fees vs 3% on Limitless)",
-      "mode": "PAPER TRADING",
+      "description": "Polymarket prediction market trading bot (BLOCKED - Regional restriction)",
+      "mode": "REGION_BLOCKED",
+      "blocker": "Singapore IP blocked by Polymarket",
+      "solution": "Need US-based VPS/VPN",
       "location": "/agents/polymarket/",
       "language": "Python 3.11+",
       "keyDifferences": [
@@ -130,7 +188,7 @@
         "<15 min expiry filter"
       ],
       "stats": {
-        "status": "Ready for trading",
+        "status": "Ready but blocked",
         "files": "polytrader.py, .env, requirements.txt"
       }
     },
@@ -139,12 +197,12 @@
       "name": "HKSI Paper 1 Study Guide",
       "status": "deployed",
       "completion": 100,
-      "url": "hksi-paper1-study-guide.html",
+      "url": "https://dashboard-ten-sand-20.vercel.app/hksi-paper1-study-guide.html",
       "pendingTasks": 0,
       "lead": "Glasses",
       "targetCompletion": "2026-03-14",
       "targetPercent": 100,
-      "priority": 8,
+      "priority": 11,
       "deployBy": "2026-03-14",
       "description": "Comprehensive SFC licensing exam study guide (60 MCQs, 90min, 70% pass)",
       "examVersion": "3.4.2 (Oct 2024)",
@@ -171,7 +229,7 @@
       "lead": "Pixel",
       "targetCompletion": "2026-04-01",
       "targetPercent": 100,
-      "priority": 9,
+      "priority": 12,
       "deployBy": "2026-04-01",
       "description": "Kairosoft-style browser game with Meebit aesthetics",
       "location": "/agents/tower-defense-dev/",
@@ -196,7 +254,7 @@
       "lead": "Quill",
       "targetCompletion": "2026-03-25",
       "targetPercent": 100,
-      "priority": 10,
+      "priority": 13,
       "deployBy": "2026-03-25",
       "description": "Deep-dive research profiles on crypto/AI/tech industry figures",
       "outputLocation": "/root/.openclaw/workspace/quill/profiles/",
@@ -254,27 +312,51 @@
     },
     {
       "id": "memory-hub",
-      "name": "🧠 Memory Hub",
+      "name": "Memory Hub",
       "status": "deployed",
       "completion": 90,
-      "url": "memory/index.html",
+      "url": "https://dashboard-ten-sand-20.vercel.app/memory/index.html",
       "pendingTasks": 0,
       "lead": "Nexus",
       "targetCompletion": "2026-03-20",
       "targetPercent": 100,
-      "priority": 0,
+      "priority": 14,
       "deployBy": "2026-03-20",
       "description": "Downloadable memory archive with procedural, semantic, and episodic memory files",
       "memoryFiles": {
         "procedural": ["NEVER_FORGET.md", "agents.md"],
         "semantic": ["MEMORY.md", "projects.md", "decisions.md", "lessons.md", "preferences.md"],
-        "episodic": ["2026-03-20.md", "2026-03-18.md", "2026-03-16.md", "2026-03-14.md", "maintenance-report-2026-03-01.md"],
-        "totalFiles": 19
+        "episodic": ["2026-03-25.md", "2026-03-24.md", "2026-03-20.md", "2026-03-18.md", "2026-03-16.md"],
+        "totalFiles": 20
       },
       "stats": {
-        "totalFiles": 19,
-        "lastUpdated": "2026-03-20T16:26:00+08:00"
+        "totalFiles": 20,
+        "lastUpdated": "2026-03-25T21:20:00+08:00"
       }
+    },
+    {
+      "id": "agent-arcade",
+      "name": "Agent Arcade",
+      "status": "deployed",
+      "completion": 80,
+      "url": "https://dashboard-ten-sand-20.vercel.app/agent-arcade.html",
+      "pendingTasks": 3,
+      "lead": "Pixel",
+      "targetCompletion": "2026-03-25",
+      "targetPercent": 100,
+      "priority": 15,
+      "deployBy": "2026-03-25",
+      "description": "Arcade games featuring Mission Control agents (Tower Defense, Space Shooter)",
+      "games": [
+        "Tower Defense",
+        "Space Shooter",
+        "Memory Match"
+      ],
+      "features": [
+        "Earn arcade tokens",
+        "Unlock office furniture",
+        "Agent-specific abilities"
+      ]
     },
     {
       "id": "sentry-maintenance",
@@ -286,12 +368,12 @@
       "lead": "Sentry",
       "targetCompletion": "2026-02-28",
       "targetPercent": 100,
-      "priority": 12,
+      "priority": 16,
       "deployBy": "2026-02-28",
       "description": "72-hour automated memory maintenance",
       "schedule": "Every 72 hours",
-      "lastRun": "2026-03-01T08:07:00+08:00",
-      "nextRun": "2026-03-04T08:07:00+08:00"
+      "lastRun": "2026-03-25T08:07:00+08:00",
+      "nextRun": "2026-03-28T08:07:00+08:00"
     }
   ]
 }
