@@ -190,18 +190,18 @@
       "id": "quill-research",
       "name": "Quill Research",
       "status": "active",
-      "completion": 60,
-      "url": null,
-      "pendingTasks": 1,
+      "completion": 75,
+      "url": "https://dashboard-ten-sand-20.vercel.app/micah-johnson.html",
+      "pendingTasks": 0,
       "lead": "Quill",
-      "targetCompletion": "2026-02-28",
+      "targetCompletion": "2026-03-25",
       "targetPercent": 100,
       "priority": 10,
-      "deployBy": "2026-02-28",
+      "deployBy": "2026-03-25",
       "description": "Deep-dive research profiles on crypto/AI/tech industry figures",
       "outputLocation": "/root/.openclaw/workspace/quill/profiles/",
       "profilesUrl": "https://github.com/airickeff-af/mission-control-v2/tree/main/quill/profiles",
-      "articlesUrl": "TBD - Local workspace first",
+      "articlesUrl": "https://dashboard-ten-sand-20.vercel.app/micah-johnson.html",
       "publishingWorkflow": {
         "step1": "Save to /root/.openclaw/workspace/quill/profiles/",
         "step2": "Polish and finalize locally",
@@ -213,14 +213,42 @@
         ]
       },
       "dailyTarget": "2 profiles (3500-4000 words each)",
+      "profiles": [
+        {
+          "name": "Sam Altman",
+          "date": "2026-02-25",
+          "words": 4500,
+          "file": "2026-02-25-sam-altman.md",
+          "topic": "OpenAI CEO, AI revolution"
+        },
+        {
+          "name": "Kris Marszalek",
+          "date": "2026-02-25",
+          "words": 3800,
+          "file": "2026-02-25-kris-marszalek.md",
+          "topic": "Crypto.com CEO"
+        },
+        {
+          "name": "Micah Johnson",
+          "date": "2026-03-25",
+          "words": 5200,
+          "file": "2026-03-25-micah-johnson.html",
+          "topic": "MLB to NFT Artist to NYT Bestseller",
+          "url": "https://dashboard-ten-sand-20.vercel.app/micah-johnson.html",
+          "featured": true
+        }
+      ],
       "stats": {
         "profilesCompleted": 3,
-        "profilesPending": 1,
-        "wordsPerProfile": "3500-4000",
+        "profilesPending": 0,
+        "wordsPerProfile": "3500-5200",
+        "totalWords": 13500,
         "topics": [
           "Crypto",
           "AI",
-          "Tech"
+          "Tech",
+          "Sports",
+          "Art"
         ]
       }
     },
