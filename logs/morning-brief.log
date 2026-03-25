@@ -1,0 +1,23 @@
+[0;36m[MORNING BRIEF][0m Generating brief for 2026-03-25 at 06:00 AM
+[0;32m[MORNING BRIEF][0m Updated with:
+  - Trading P&L: $-62.5000025
+  - Total Trades: 83
+  - Win Rate: 0%
+On branch master
+Your branch is ahead of 'origin/master' by 38 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+	modified:   ARCHIVE/mission-control-final-backup/dashboard (modified content)
+	modified:   mirofish (modified content, untracked content)
+	modified:   mission-control-v2 (modified content, untracked content)
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	agents/limitless/morning_report.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+[0;32m[MORNING BRIEF][0m Complete!
