@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-25T21:20:00+08:00",
+  "lastUpdated": "2026-03-28T04:10:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -374,6 +374,42 @@
       "schedule": "Every 72 hours",
       "lastRun": "2026-03-25T08:07:00+08:00",
       "nextRun": "2026-03-28T08:07:00+08:00"
+    },
+    {
+      "id": "x-spaces-capture",
+      "name": "X Spaces Capture",
+      "status": "deployed",
+      "completion": 100,
+      "url": "https://dashboard-ten-sand-20.vercel.app/x-spaces-capture.html",
+      "pendingTasks": 0,
+      "lead": "Nexus",
+      "targetCompletion": "2026-03-28",
+      "targetPercent": 100,
+      "priority": 17,
+      "deployBy": "2026-03-28",
+      "description": "Complete transcript + summary pipeline for X (Twitter) Spaces - 100% local with Whisper",
+      "location": "/agents/spaces-capture/",
+      "version": "v1.1",
+      "features": [
+        "Smart Detect - Universal URL resolver",
+        "Quick Capture - Streamlined workflow",
+        "Whisper Transcription - Local AI",
+        "AI Summary - Topics, quotes, action items",
+        "Full-Text Search - Local indexing"
+      ],
+      "techStack": [
+        "Node.js",
+        "Whisper.cpp",
+        "ffmpeg",
+        "Local algorithms"
+      ],
+      "noExternalApis": true,
+      "stats": {
+        "linesOfCode": 4096,
+        "files": 9,
+        "modules": 5,
+        "status": "Operational"
+      }
     }
   ]
 }

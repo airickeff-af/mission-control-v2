@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎙️ X Spaces Capture | Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #1a0f2e;
+            --bg-card: #3d2b5e;
+            --bg-card-hover: #4d3b6e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
+            --border-color: #5d4b7e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --pixel-border: 4px;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f0e6ff;
+            --bg-secondary: #e0d0f0;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f0ff;
+            --text-primary: #2d1b4e;
+            --text-secondary: #5d4b7e;
+            --text-muted: #8a7a99;
+            --accent-cyan: #0099aa;
+            --accent-pink: #e91e63;
+            --accent-yellow: #f9a825;
+            --accent-green: #4caf50;
+            --accent-orange: #ff9800;
+            --border-color: #d0c0e0;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root[data-theme="auto"] {
+                --bg-primary: #f0e6ff;
+                --bg-secondary: #e0d0f0;
+                --bg-card: #ffffff;
+                --bg-card-hover: #f5f0ff;
+                --text-primary: #2d1b4e;
+                --text-secondary: #5d4b7e;
+                --text-muted: #8a7a99;
+            }
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pixel-logo {
+            font-size: 2.5rem;
+            filter: drop-shadow(3px 3px 0 var(--shadow-color));
+        }
+
+        .logo-text {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            line-height: 1.3;
+            color: var(--text-primary);
+        }
+
+        .logo-text span {
+            color: var(--accent-cyan);
+            font-size: 0.5rem;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 4px dashed var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .hero-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .hero h1 {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-cyan);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pixel-card {
+            background: var(--bg-card);
+            border: var(--pixel-border) solid var(--border-color);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+            margin-bottom: 2rem;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .pixel-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0 var(--shadow-color);
+        }
+
+        .card-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-family: var(--font-header);
+            font-size: 0.7rem;
+            flex: 1;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .pixel-input {
+            width: 100%;
+            padding: 1rem;
+            font-family: var(--font-pixel);
+            font-size: 1.1rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .pixel-input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .pixel-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-family: var(--font-pixel);
+            font-size: 1.1rem;
+            background: var(--accent-cyan);
+            color: var(--bg-secondary);
+            border: 3px solid var(--text-primary);
+            box-shadow: 4px 4px 0 var(--shadow-color);
+            cursor: pointer;
+            transition: all 0.1s;
+            text-decoration: none;
+        }
+
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+        }
+
+        .pixel-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--shadow-color);
+        }
+
+        .pixel-btn.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .pixel-btn.accent {
+            background: var(--accent-pink);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-yellow);
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .workflow-step {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            min-width: 40px;
+        }
+
+        .step-content h4 {
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            border: 2px solid;
+            margin-left: 0.5rem;
+        }
+
+        .status-badge.ready {
+            background: rgba(107, 207, 127, 0.2);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .status-badge.pending {
+            background: rgba(255, 159, 67, 0.2);
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--border-color);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .code-block {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            color: var(--accent-green);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 0.8rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .pixel-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="pixel-logo">🎙️</div>
+            <div class="logo-text">
+                X SPACES<br>CAPTURE<br><span>v1.1</span>
+            </div>
+        </div>
+        
+        <div class="header-nav">
+            <a href="index.html" class="back-link">← Back to Mission Control</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <span class="hero-icon">🎙️</span>
+            <h1>X SPACES CAPTURE SYSTEM</h1>
+            <p>Complete transcript + summary pipeline for X (Twitter) Spaces. <strong>No external APIs required</strong> - 100% local processing with Whisper.</p>
+            
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-value">🎯</div>
+                    <div class="stat-label">Local AI</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">🔒</div>
+                    <div class="stat-label">Private</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">⚡</div>
+                    <div class="stat-label">Fast</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">🔍</div>
+                    <div class="stat-label">Searchable</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <div class="feature-title">SMART DETECT</div>
+                <div class="feature-desc">Auto-detects Space URLs from tweets, profiles, or direct links</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎙️</div>
+                <div class="feature-title">WHISPER TRANSCRIBE</div>
+                <div class="feature-desc">Local transcription using OpenAI Whisper - no API keys needed</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <div class="feature-title">AI SUMMARY</div>
+                <div class="feature-desc">Extracts topics, key points, action items, and quotes automatically</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔎</div>
+                <div class="feature-title">FULL-TEXT SEARCH</div>
+                <div class="feature-desc">Search across all captured transcripts with local indexing</div>
+            </div>
+        </section>
+
+        <div class="pixel-card">
+            <div class="card-header">
+                <span class="card-icon">⚡</span>
+                <h3 class="card-title">QUICK START</h3>
+                <span class="status-badge ready">READY</span>
+            </div>
+            <div class="card-content">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Paste Space URL</h4>
+                        <p>Copy the Space URL from X and paste it below</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Record Audio</h4>
+                        <p>Follow instructions to record the Space using browser extension or OBS</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Get Transcript + Summary</h4>
+                        <p>Auto-generated transcript with topics, quotes, and action items</p>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 1.5rem;">
+                    <label>🔗 X Space URL or Tweet Link</label>
+                    <input type="text" class="pixel-input" id="spaceUrl" placeholder="https://x.com/i/spaces/... or https://x.com/user/status/...">
+                </div>
+
+                <div class="btn-group">
+                    <button class="pixel-btn" onclick="detectSpace()">
+                        🔍 Detect Space
+                    </button>
+                    <button class="pixel-btn secondary" onclick="showInstructions()">
+                        📖 View Instructions
+                    </button>
+                </div>
+
+                <div id="resultArea" style="margin-top: 1.5rem; display: none;">
+                    <!-- Results will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="pixel-card">
+            <div class="card-header">
+                <span class="card-icon">📋</span>
+                <h3 class="card-title">CLI COMMANDS</h3>
+                <span class="status-badge ready">TERMINAL</span>
+            </div>
+            <div class="card-content">
+                <p style="margin-bottom: 1rem;">Run these commands in your terminal:</p>
+                
+                <div class="code-block">
+# Smart detect any X URL
+node src/smart-detect.js --url "https://x.com/i/spaces/XXXX"
+
+# Quick capture mode
+node src/quick-capture.js --start --name "Space Name"
+
+# Search transcripts
+node src/search.js --query "bitcoin ETF"
+
+# Process existing audio
+node src/transcribe.js --audio "recording.wav"
+node src/summarize.js --transcript "space.json"
+                </div>
+
+                <div class="btn-group">
+                    <a href="https://github.com/airickeff-af/mission-control-v2/tree/main/agents/spaces-capture" target="_blank" class="pixel-btn secondary">
+                        📁 View Source
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pixel-card">
+            <div class="card-header">
+                <span class="card-icon">📊</span>
+                <h3 class="card-title">SYSTEM STATUS</h3>
+            </div>
+            <div class="card-content">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="padding: 1rem; background: var(--bg-secondary); border-left: 4px solid var(--accent-green);">
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Status</div>
+                        <div style="font-size: 1.2rem; color: var(--accent-green);">🟢 OPERATIONAL</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-secondary); border-left: 4px solid var(--accent-cyan);">
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Components</div>
+                        <div style="font-size: 1.2rem; color: var(--accent-cyan);">5 Modules</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-secondary); border-left: 4px solid var(--accent-yellow);">
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Lines of Code</div>
+                        <div style="font-size: 1.2rem; color: var(--accent-yellow);">4,096</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-secondary); border-left: 4px solid var(--accent-pink);">
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">Version</div>
+                        <div style="font-size: 1.2rem; color: var(--accent-pink);">v1.1</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-text">
+            🎙️ X Spaces Capture System v1.1 | Built by Nexus (Air1ck3ff)<br>
+            Part of Mission Control Multi-Agent System
+        </div>
+    </footer>
+
+    <script>
+        function detectSpace() {
+            const url = document.getElementById('spaceUrl').value;
+            const resultArea = document.getElementById('resultArea');
+            
+            if (!url) {
+                resultArea.innerHTML = '<div style="color: var(--accent-pink);">⚠️ Please enter a URL</div>';
+                resultArea.style.display = 'block';
+                return;
+            }
+
+            // Check if it's a direct Space URL
+            const spaceMatch = url.match(/x\.com\/i\/spaces\/(\w+)/i);
+            
+            if (spaceMatch) {
+                resultArea.innerHTML = `
+                    <div style="padding: 1rem; background: rgba(107, 207, 127, 0.1); border: 2px solid var(--accent-green);">
+                        <div style="color: var(--accent-green); font-weight: bold;">✅ Space URL Detected!</div>
+                        <div style="margin-top: 0.5rem; color: var(--text-secondary);">Space ID: ${spaceMatch[1]}</div>
+                        <div style="margin-top: 1rem;">
+                            <strong>Next Steps:</strong>
+                            <ol style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Run: <code>node src/quick-capture.js --start</code></li>
+                                <li>Follow the recording instructions</li>
+                                <li>Auto-transcription will begin when done</li>
+                            </ol>
+                        </div>
+                    </div>
+                `;
+            } else if (url.match(/x\.com\/\w+\/status\/\d+/i)) {
+                resultArea.innerHTML = `
+                    <div style="padding: 1rem; background: rgba(255, 159, 67, 0.1); border: 2px solid var(--accent-orange);">
+                        <div style="color: var(--accent-orange); font-weight: bold;">📝 Tweet URL Detected</div>
+                        <div style="margin-top: 0.5rem; color: var(--text-secondary);">This is a tweet, not a direct Space URL.</div>
+                        <div style="margin-top: 1rem;">
+                            <strong>Next Steps:</strong>
+                            <ol style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Open the tweet in your browser</li>
+                                <li>Look for "Join Space" button or 🔴 LIVE badge</li>
+                                <li>Click to open the Space</li>
+                                <li>Copy the Space URL from address bar</li>
+                                <li>Paste it here and click Detect again</li>
+                            </ol>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultArea.innerHTML = `
+                    <div style="padding: 1rem; background: rgba(255, 107, 157, 0.1); border: 2px solid var(--accent-pink);">
+                        <div style="color: var(--accent-pink); font-weight: bold;">❌ Invalid URL</div>
+                        <div style="margin-top: 0.5rem; color: var(--text-secondary);">
+                            Expected formats:<br>
+                            • https://x.com/i/spaces/XXXXX<br>
+                            • https://x.com/user/status/123...
+                        </div>
+                    </div>
+                `;
+            }
+            
+            resultArea.style.display = 'block';
+        }
+
+        function showInstructions() {
+            const resultArea = document.getElementById('resultArea');
+            resultArea.innerHTML = `
+                <div style="padding: 1rem; background: var(--bg-secondary); border: 2px solid var(--border-color);">
+                    <div style="font-weight: bold; margin-bottom: 1rem;">📖 RECORDING OPTIONS</div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Option 1: Chrome Audio Capture (Easiest)</strong>
+                        <ol style="margin-top: 0.5rem; padding-left: 1.5rem; color: var(--text-muted);">
+                            <li>Install "Chrome Audio Capture" extension</li>
+                            <li>Click extension icon → Start Capture</li>
+                            <li>Keep Space tab ACTIVE</li>
+                            <li>When done, click Save Capture</li>
+                        </ol>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Option 2: OBS Studio (Best Quality)</strong>
+                        <ol style="margin-top: 0.5rem; padding-left: 1.5rem; color: var(--text-muted);">
+                            <li>Open OBS</li>
+                            <li>Add "Audio Output Capture" source</li>
+                            <li>Select browser audio</li>
+                            <li>Start Recording</li>
+                        </ol>
+                    </div>
+                    
+                    <div>
+                        <strong>Option 3: Audacity (Free)</strong>
+                        <ol style="margin-top: 0.5rem; padding-left: 1.5rem; color: var(--text-muted);">
+                            <li>Open Audacity</li>
+                            <li>Set input to "Stereo Mix"</li>
+                            <li>Click Record</li>
+                            <li>Export as WAV when done</li>
+                        </ol>
+                    </div>
+                </div>
+            `;
+            resultArea.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
