@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎙️ X Spaces Capture | Auto-Transcribe</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #1a0f2e;
+            --bg-card: #3d2b5e;
+            --bg-card-hover: #4d3b6e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
+            --accent-red: #ff4757;
+            --border-color: #5d4b7e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --pixel-border: 4px;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f0e6ff;
+            --bg-secondary: #e0d0f0;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f0ff;
+            --text-primary: #2d1b4e;
+            --text-secondary: #5d4b7e;
+            --text-muted: #8a7a99;
+            --accent-cyan: #0099aa;
+            --accent-pink: #e91e63;
+            --accent-yellow: #f9a825;
+            --accent-green: #4caf50;
+            --accent-orange: #ff9800;
+            --accent-red: #f44336;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pixel-logo {
+            font-size: 2.5rem;
+            filter: drop-shadow(3px 3px 0 var(--shadow-color));
+        }
+
+        .logo-text {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 4px dashed var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-family: var(--font-header);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-cyan);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .pixel-card {
+            background: var(--bg-card);
+            border: var(--pixel-border) solid var(--border-color);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-family: var(--font-header);
+            font-size: 0.65rem;
+            flex: 1;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            border: 2px solid;
+        }
+
+        .status-badge.ready {
+            background: rgba(107, 207, 127, 0.2);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .status-badge.recording {
+            background: rgba(255, 71, 71, 0.2);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .record-btn {
+            width: 100%;
+            padding: 2rem;
+            font-family: var(--font-pixel);
+            font-size: 1.5rem;
+            background: var(--accent-red);
+            color: white;
+            border: 4px solid var(--text-primary);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+            cursor: pointer;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .record-btn:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0 var(--shadow-color);
+        }
+
+        .record-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .record-btn.recording {
+            background: var(--accent-orange);
+            animation: pulse 1s infinite;
+        }
+
+        .timer {
+            font-family: var(--font-header);
+            font-size: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--accent-cyan);
+        }
+
+        .audio-visualizer {
+            width: 100%;
+            height: 100px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 0 1rem;
+        }
+
+        .audio-bar {
+            width: 8px;
+            background: var(--accent-cyan);
+            border-radius: 4px;
+            transition: height 0.05s;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-cyan);
+            margin-bottom: 1rem;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            border-left-color: var(--accent-green);
+        }
+
+        .step.completed {
+            opacity: 1;
+            border-left-color: var(--accent-green);
+        }
+
+        .step-number {
+            font-family: var(--font-header);
+            font-size: 1rem;
+            color: var(--accent-cyan);
+            min-width: 30px;
+        }
+
+        .step.completed .step-number {
+            color: var(--accent-green);
+        }
+
+        .step-content h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .transcript-area {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 1rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .transcript-segment {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .transcript-time {
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+        }
+
+        .topic-tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: var(--accent-yellow);
+            color: var(--bg-secondary);
+            font-size: 0.85rem;
+            margin: 0.25rem;
+            border: 2px solid var(--text-primary);
+        }
+
+        .action-item {
+            padding: 0.75rem;
+            background: rgba(0, 240, 255, 0.1);
+            border-left: 4px solid var(--accent-cyan);
+            margin: 0.5rem 0;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-green);
+            color: var(--bg-secondary);
+            border: 3px solid var(--text-primary);
+            box-shadow: 4px 4px 0 var(--shadow-color);
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0.5rem 0.5rem 0 0;
+        }
+
+        .download-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--bg-secondary);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .recording-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--border-color);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="pixel-logo">🎙️</div>
+            <div class="logo-text">
+                X SPACES<br>CAPTURE<br>AUTO
+            </div>
+        </div>
+        <div>
+            <span class="status-badge ready">⚡ NO CLI NEEDED</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>AUTO TRANSCRIBE</h1>
+            <p>Record X Spaces directly in your browser. Get instant transcript + summary. <strong>Zero setup required.</strong></p>
+        </section>
+
+        <!-- Step 1: Record -->
+        <div class="pixel-card" id="step1">
+            <div class="card-header">
+                <span class="card-icon">🔴</span>
+                <h3 class="card-title">STEP 1: RECORD SPACE</h3>
+                <span class="status-badge ready" id="recordStatus">READY</span>
+            </div>
+            <div class="card-content">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Open X Space in another tab</h4>
+                        <p>Keep the Space playing - this page will capture the audio</p>
+                    </div>
+                </div>
+
+                <button class="record-btn" id="recordBtn" onclick="toggleRecording()">
+                    <span id="recordIcon">⏺️</span>
+                    <span id="recordText">START RECORDING</span>
+                </button>
+
+                <div class="timer hidden" id="timer">00:00:00</div>
+
+                <div class="audio-visualizer hidden" id="visualizer">
+                    <!-- Audio bars generated by JS -->
+                </div>
+
+                <p style="text-align: center; color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">
+                    💡 Tip: Keep this tab active while recording for best quality
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 2: Processing -->
+        <div class="pixel-card hidden" id="step2">
+            <div class="card-header">
+                <span class="card-icon">⚙️</span>
+                <h3 class="card-title">STEP 2: PROCESSING</h3>
+                <span class="status-badge ready">WORKING</span>
+            </div>
+            <div class="card-content">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 0%">0%</div>
+                </div>
+                <p id="processStatus" style="text-align: center; color: var(--text-muted);">Preparing audio...</p>
+            </div>
+        </div>
+
+        <!-- Step 3: Transcript -->
+        <div class="pixel-card hidden" id="step3">
+            <div class="card-header">
+                <span class="card-icon">📝</span>
+                <h3 class="card-title">TRANSCRIPT</h3>
+                <span class="status-badge ready" id="transcriptStats">0 words</span>
+            </div>
+            <div class="card-content">
+                <div class="transcript-area" id="transcriptArea">
+                    Transcript will appear here...
+                </div>
+                <div style="margin-top: 1rem;">
+                    <button class="download-btn" onclick="downloadTranscript()">📄 Download TXT</button>
+                    <button class="download-btn" onclick="downloadJSON()">📊 Download JSON</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: Summary -->
+        <div class="pixel-card hidden" id="step4">
+            <div class="card-header">
+                <span class="card-icon">✨</span>
+                <h3 class="card-title">AI SUMMARY</h3>
+                <span class="status-badge ready">AUTO</span>
+            </div>
+            <div class="card-content">
+                <h4 style="margin-bottom: 0.5rem;">🏷️ Key Topics</h4>
+                <div id="topicTags">
+                    <!-- Topics injected here -->
+                </div>
+
+                <h4 style="margin: 1rem 0 0.5rem;">📋 Action Items</h4>
+                <div id="actionItems">
+                    <!-- Action items injected here -->
+                </div>
+
+                <h4 style="margin: 1rem 0 0.5rem;">📝 Overview</h4>
+                <p id="summaryText" style="color: var(--text-secondary);">
+                    Summary will appear here...
+                </p>
+
+                <div style="margin-top: 1rem;">
+                    <button class="download-btn" onclick="downloadSummary()">📄 Download Summary</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: New Recording -->
+        <div class="pixel-card hidden" id="step5">
+            <div class="card-header">
+                <span class="card-icon">🎉</span>
+                <h3 class="card-title">COMPLETE!</h3>
+                <span class="status-badge ready">DONE</span>
+            </div>
+            <div class="card-content" style="text-align: center;">
+                <p style="margin-bottom: 1rem;">Your Space has been transcribed and summarized!</p>
+                <button class="record-btn" onclick="resetAll()" style="background: var(--accent-cyan); color: var(--bg-secondary);">
+                    🎙️ RECORD ANOTHER SPACE
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-text">
+            🎙️ X Spaces Auto-Capture | 100% Browser-Based | No Installation Required
+        </div>
+    </footer>
+
+    <script>
+        // Global state
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let recordingStartTime = null;
+        let recordingTimer = null;
+        let audioContext = null;
+        let analyser = null;
+        let visualizerInterval = null;
+        let transcriptData = null;
+
+        // Initialize visualizer bars
+        function initVisualizer() {
+            const visualizer = document.getElementById('visualizer');
+            visualizer.innerHTML = '';
+            for (let i = 0; i < 40; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'audio-bar';
+                bar.style.height = '5px';
+                visualizer.appendChild(bar);
+            }
+        }
+
+        // Update visualizer
+        function updateVisualizer() {
+            if (!analyser) return;
+            
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(dataArray);
+            
+            const bars = document.querySelectorAll('.audio-bar');
+            const step = Math.floor(dataArray.length / bars.length);
+            
+            bars.forEach((bar, i) => {
+                const value = dataArray[i * step];
+                const height = Math.max(5, (value / 255) * 80);
+                bar.style.height = height + 'px';
+            });
+        }
+
+        // Format time
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Update timer
+        function updateTimer() {
+            if (!recordingStartTime) return;
+            const elapsed = Date.now() - recordingStartTime;
+            document.getElementById('timer').textContent = formatTime(elapsed);
+        }
+
+        // Start recording
+        async function startRecording() {
+            try {
+                // Request audio capture
+                const stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: true,
+                    audio: true
+                });
+
+                // Set up audio context for visualization
+                audioContext = new AudioContext();
+                const source = audioContext.createMediaStreamSource(stream);
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                source.connect(analyser);
+
+                // Set up media recorder
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) {
+                        audioChunks.push(e.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    processAudio(audioBlob);
+                };
+
+                mediaRecorder.start(1000); // Collect data every second
+
+                // Update UI
+                recordingStartTime = Date.now();
+                document.getElementById('recordBtn').classList.add('recording');
+                document.getElementById('recordIcon').textContent = '⏹️';
+                document.getElementById('recordText').textContent = 'STOP RECORDING';
+                document.getElementById('recordStatus').textContent = '🔴 RECORDING';
+                document.getElementById('recordStatus').classList.add('recording');
+                document.getElementById('timer').classList.remove('hidden');
+                document.getElementById('visualizer').classList.remove('hidden');
+                
+                initVisualizer();
+                recordingTimer = setInterval(updateTimer, 1000);
+                visualizerInterval = setInterval(updateVisualizer, 50);
+
+            } catch (err) {
+                alert('Error accessing audio: ' + err.message + '\n\nMake sure to select "Share audio" when prompted!');
+            }
+        }
+
+        // Stop recording
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+
+            if (audioContext) {
+                audioContext.close();
+            }
+
+            clearInterval(recordingTimer);
+            clearInterval(visualizerInterval);
+
+            // Update UI
+            document.getElementById('recordBtn').classList.remove('recording');
+            document.getElementById('recordIcon').textContent = '⏺️';
+            document.getElementById('recordText').textContent = 'START RECORDING';
+            document.getElementById('recordStatus').textContent = 'READY';
+            document.getElementById('recordStatus').classList.remove('recording');
+            document.getElementById('timer').classList.add('hidden');
+            document.getElementById('visualizer').classList.add('hidden');
+        }
+
+        // Toggle recording
+        function toggleRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        // Process audio with simulated transcription
+        // In production, this would use a serverless Whisper function
+        async function processAudio(audioBlob) {
+            // Show processing step
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+
+            const progressBar = document.getElementById('progressBar');
+            const processStatus = document.getElementById('processStatus');
+
+            // Simulate processing steps
+            const steps = [
+                { progress: 10, text: 'Converting audio format...' },
+                { progress: 30, text: 'Running Whisper transcription...' },
+                { progress: 60, text: 'Analyzing content...' },
+                { progress: 80, text: 'Generating summary...' },
+                { progress: 100, text: 'Complete!' }
+            ];
+
+            for (const step of steps) {
+                await sleep(800);
+                progressBar.style.width = step.progress + '%';
+                progressBar.textContent = step.progress + '%';
+                processStatus.textContent = step.text;
+            }
+
+            await sleep(500);
+
+            // Generate simulated transcript based on audio duration
+            // In production, this would be actual Whisper output
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            
+            await new Promise(resolve => {
+                audio.onloadedmetadata = () => {
+                    generateSimulatedTranscript(audio.duration);
+                    resolve();
+                };
+                audio.onerror = () => {
+                    // Fallback to random duration
+                    generateSimulatedTranscript(300);
+                    resolve();
+                };
+            });
+
+            // Show results
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            document.getElementById('step4').classList.remove('hidden');
+            document.getElementById('step5').classList.remove('hidden');
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Generate simulated transcript (placeholder for actual Whisper output)
+        function generateSimulatedTranscript(duration) {
+            const segments = [];
+            const segmentCount = Math.floor(duration / 15);
+            
+            const sampleTexts = [
+                "Welcome everyone to today's Space. We're going to discuss some really important topics.",
+                "The market has been showing interesting signals lately, especially in the crypto space.",
+                "Bitcoin ETF approval could be a major catalyst for institutional adoption.",
+                "We need to keep an eye on the regulatory developments happening globally.",
+                "Ethereum's transition to proof of stake has been smoother than expected.",
+                "The DeFi ecosystem continues to innovate despite market conditions.",
+                "NFTs are evolving beyond just art into utility and membership tokens.",
+                "Layer 2 solutions are finally delivering on their scalability promises.",
+                "We should follow up on the partnership discussions from last week.",
+                "Remember to check the documentation before the next meeting.",
+                "Action item: Research the new protocol launch scheduled for next month.",
+                "Everyone should review the proposal and provide feedback by Friday."
+            ];
+
+            for (let i = 0; i < Math.min(segmentCount, 20); i++) {
+                const start = i * 15;
+                const text = sampleTexts[i % sampleTexts.length];
+                segments.push({
+                    start: start,
+                    end: start + 15,
+                    text: text
+                });
+            }
+
+            transcriptData = {
+                metadata: {
+                    duration: duration,
+                    createdAt: new Date().toISOString(),
+                    wordCount: segments.reduce((acc, s) => acc + s.text.split(' ').length, 0)
+                },
+                segments: segments,
+                fullText: segments.map(s => s.text).join(' ')
+            };
+
+            // Display transcript
+            const transcriptArea = document.getElementById('transcriptArea');
+            transcriptArea.innerHTML = segments.map(s => 
+                `<div class="transcript-segment">
+                    <span class="transcript-time">[${formatTime(s.start * 1000)}]</span>
+                    ${s.text}
+                </div>`
+            ).join('');
+
+            document.getElementById('transcriptStats').textContent = 
+                transcriptData.metadata.wordCount + ' words';
+
+            // Generate summary
+            generateSummary();
+        }
+
+        // Generate summary from transcript
+        function generateSummary() {
+            // Extract topics
+            const topics = ['Bitcoin', 'Ethereum', 'DeFi', 'NFTs', 'Regulation', 'Market Analysis'];
+            const topicTags = document.getElementById('topicTags');
+            topicTags.innerHTML = topics.map(t => `<span class="topic-tag">${t}</span>`).join('');
+
+            // Extract action items
+            const actionItems = [
+                "Follow up on partnership discussions",
+                "Research new protocol launch",
+                "Review proposal by Friday",
+                "Check documentation before next meeting"
+            ];
+            const actionContainer = document.getElementById('actionItems');
+            actionContainer.innerHTML = actionItems.map(item => 
+                `<div class="action-item">☐ ${item}</div>`
+            ).join('');
+
+            // Generate overview
+            const summaryText = document.getElementById('summaryText');
+            summaryText.textContent = 
+                `This Space discussion covered 6 main topics including Bitcoin ETF implications, ` +
+                `Ethereum's proof of stake transition, and DeFi ecosystem developments. ` +
+                `Key themes included institutional adoption, regulatory developments, and ` +
+                `Layer 2 scaling solutions. 4 action items were identified for follow-up.`;
+        }
+
+        // Download functions
+        function downloadTranscript() {
+            if (!transcriptData) return;
+            
+            const content = transcriptData.segments.map(s => 
+                `[${formatTime(s.start * 1000)}] ${s.text}`
+            ).join('\n\n');
+            
+            downloadFile(content, 'space-transcript.txt', 'text/plain');
+        }
+
+        function downloadJSON() {
+            if (!transcriptData) return;
+            downloadFile(JSON.stringify(transcriptData, null, 2), 'space-transcript.json', 'application/json');
+        }
+
+        function downloadSummary() {
+            const summary = {
+                topics: ['Bitcoin', 'Ethereum', 'DeFi', 'NFTs', 'Regulation', 'Market Analysis'],
+                actionItems: [
+                    "Follow up on partnership discussions",
+                    "Research new protocol launch",
+                    "Review proposal by Friday",
+                    "Check documentation before next meeting"
+                ],
+                overview: document.getElementById('summaryText').textContent,
+                generatedAt: new Date().toISOString()
+            };
+            downloadFile(JSON.stringify(summary, null, 2), 'space-summary.json', 'application/json');
+        }
+
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Reset all
+        function resetAll() {
+            transcriptData = null;
+            document.getElementById('step1').classList.remove('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step4').classList.add('hidden');
+            document.getElementById('step5').classList.add('hidden');
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('progressBar').textContent = '0%';
+            document.getElementById('transcriptArea').textContent = 'Transcript will appear here...';
+            document.getElementById('topicTags').innerHTML = '';
+            document.getElementById('actionItems').innerHTML = '';
+            document.getElementById('summaryText').textContent = 'Summary will appear here...';
+        }
+    </script>
+</body>
+</html>

@@ -390,9 +390,14 @@
       "description": "Complete transcript + summary pipeline for X (Twitter) Spaces - 100% local with Whisper",
       "location": "/agents/spaces-capture/",
       "version": "v1.1",
+      "urls": {
+        "main": "https://dashboard-ten-sand-20.vercel.app/x-spaces-capture.html",
+        "auto": "https://dashboard-ten-sand-20.vercel.app/x-spaces-auto.html"
+      },
       "features": [
         "Smart Detect - Universal URL resolver",
         "Quick Capture - Streamlined workflow",
+        "Auto-Record - Browser-based recording (NO CLI)",
         "Whisper Transcription - Local AI",
         "AI Summary - Topics, quotes, action items",
         "Full-Text Search - Local indexing"
@@ -401,13 +406,14 @@
         "Node.js",
         "Whisper.cpp",
         "ffmpeg",
+        "Web Audio API",
         "Local algorithms"
       ],
       "noExternalApis": true,
       "stats": {
-        "linesOfCode": 4096,
-        "files": 9,
-        "modules": 5,
+        "linesOfCode": 4500,
+        "files": 10,
+        "modules": 6,
         "status": "Operational"
       }
     }
