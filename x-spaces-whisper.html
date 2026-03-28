@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎙️ X Spaces Capture | Auto-Transcribe</title>
+    <title>🎙️ X Spaces Capture | Real Whisper AI</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js"></script>
     <style>
         :root {
             --bg-primary: #2d1b4e;
@@ -25,22 +26,6 @@
             --pixel-border: 4px;
             --font-pixel: 'VT323', monospace;
             --font-header: 'Press Start 2P', cursive;
-        }
-
-        [data-theme="light"] {
-            --bg-primary: #f0e6ff;
-            --bg-secondary: #e0d0f0;
-            --bg-card: #ffffff;
-            --bg-card-hover: #f5f0ff;
-            --text-primary: #2d1b4e;
-            --text-secondary: #5d4b7e;
-            --text-muted: #8a7a99;
-            --accent-cyan: #0099aa;
-            --accent-pink: #e91e63;
-            --accent-yellow: #f9a825;
-            --accent-green: #4caf50;
-            --accent-orange: #ff9800;
-            --accent-red: #f44336;
         }
 
         * { 
@@ -77,7 +62,6 @@
 
         .pixel-logo {
             font-size: 2.5rem;
-            filter: drop-shadow(3px 3px 0 var(--shadow-color));
         }
 
         .logo-text {
@@ -154,10 +138,10 @@
             color: var(--accent-green);
         }
 
-        .status-badge.recording {
-            background: rgba(255, 71, 71, 0.2);
-            border-color: var(--accent-red);
-            color: var(--accent-red);
+        .status-badge.loading {
+            background: rgba(255, 217, 61, 0.2);
+            border-color: var(--accent-yellow);
+            color: var(--accent-yellow);
             animation: pulse 1s infinite;
         }
 
@@ -226,45 +210,25 @@
             transition: height 0.05s;
         }
 
-        .step {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
+        .progress-bar {
+            width: 100%;
+            height: 30px;
             background: var(--bg-secondary);
-            border-left: 4px solid var(--accent-cyan);
-            margin-bottom: 1rem;
-            opacity: 0.5;
-            transition: opacity 0.3s;
+            border: 3px solid var(--border-color);
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
         }
 
-        .step.active {
-            opacity: 1;
-            border-left-color: var(--accent-green);
-        }
-
-        .step.completed {
-            opacity: 1;
-            border-left-color: var(--accent-green);
-        }
-
-        .step-number {
-            font-family: var(--font-header);
-            font-size: 1rem;
-            color: var(--accent-cyan);
-            min-width: 30px;
-        }
-
-        .step.completed .step-number {
-            color: var(--accent-green);
-        }
-
-        .step-content h4 {
-            margin-bottom: 0.25rem;
-        }
-
-        .step-content p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--bg-secondary);
         }
 
         .transcript-area {
@@ -319,6 +283,7 @@
             font-size: 1rem;
             cursor: pointer;
             margin: 0.5rem 0.5rem 0 0;
+            font-family: var(--font-pixel);
         }
 
         .download-btn:hover {
@@ -326,43 +291,24 @@
             box-shadow: 6px 6px 0 var(--shadow-color);
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 30px;
-            background: var(--bg-secondary);
-            border: 3px solid var(--border-color);
-            margin: 1rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
-            transition: width 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            color: var(--bg-secondary);
-        }
-
         .hidden {
             display: none !important;
         }
 
-        .recording-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background: var(--accent-red);
-            border-radius: 50%;
-            animation: blink 1s infinite;
+        .model-status {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            margin-bottom: 1rem;
+            text-align: center;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        .model-status.loading {
+            border-color: var(--accent-yellow);
+        }
+
+        .model-status.ready {
+            border-color: var(--accent-green);
         }
 
         .footer {
@@ -373,9 +319,11 @@
             border-top: 4px solid var(--border-color);
         }
 
-        .footer-text {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        .warning-box {
+            padding: 1rem;
+            background: rgba(255, 159, 67, 0.1);
+            border: 2px solid var(--accent-orange);
+            margin-bottom: 1rem;
         }
     </style>
 </head>
@@ -384,24 +332,28 @@
         <div class="logo-container">
             <div class="pixel-logo">🎙️</div>
             <div class="logo-text">
-                X SPACES<br>CAPTURE<br>AUTO
+                X SPACES<br>CAPTURE<br>REAL AI
             </div>
         </div>
         <div>
-            <span class="status-badge ready">⚡ NO CLI NEEDED</span>
+            <span class="status-badge ready">🧠 REAL WHISPER</span>
         </div>
     </header>
 
     <main class="container">
         <section class="hero">
-            <h1>AUTO TRANSCRIBE</h1>
-            <p>Record X Spaces directly in your browser. Get instant transcript + summary. <strong>Zero setup required.</strong></p>
-            
-            <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(0, 240, 255, 0.1); border: 2px solid var(--accent-cyan); border-radius: 8px; display: inline-block;">
-                <span style="color: var(--accent-cyan);">🧠 Want REAL Whisper AI transcription?</span>
-                <a href="x-spaces-whisper.html" style="color: var(--accent-cyan); text-decoration: underline; margin-left: 0.5rem;">Try Whisper Version →</a>
-            </div>
+            <h1>REAL WHISPER TRANSCRIPTION</h1>
+            <p>Runs OpenAI Whisper directly in your browser. <strong>100% local AI.</strong> No data sent to any server.</p>
         </section>
+
+        <!-- Model Loading Status -->
+        <div class="model-status loading" id="modelStatus">
+            <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">⚡ Loading Whisper AI Model...</div>
+            <div class="progress-bar" style="margin: 0.5rem 0;">
+                <div class="progress-fill" id="modelProgress" style="width: 0%">0%</div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">This may take 30-60 seconds on first load. ~75MB download.</p>
+        </div>
 
         <!-- Step 1: Record -->
         <div class="pixel-card" id="step1">
@@ -411,17 +363,20 @@
                 <span class="status-badge ready" id="recordStatus">READY</span>
             </div>
             <div class="card-content">
-                <div class="step active">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Open X Space in another tab</h4>
-                        <p>Keep the Space playing - this page will capture the audio</p>
-                    </div>
+                <div class="warning-box">
+                    <strong>⚠️ How to capture X Space audio:</strong>
+                    <ol style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                        <li>Open the X Space in <strong>another browser tab</strong></li>
+                        <li>Click "START RECORDING" below</li>
+                        <li>Select <strong>"Share audio"</strong> when prompted</li>
+                        <li>Select the <strong>Space tab</strong> to share</li>
+                        <li>Keep both tabs active during recording</li>
+                    </ol>
                 </div>
 
-                <button class="record-btn" id="recordBtn" onclick="toggleRecording()">
+                <button class="record-btn" id="recordBtn" onclick="toggleRecording()" disabled>
                     <span id="recordIcon">⏺️</span>
-                    <span id="recordText">START RECORDING</span>
+                    <span id="recordText">LOADING AI MODEL...</span>
                 </button>
 
                 <div class="timer hidden" id="timer">00:00:00</div>
@@ -429,34 +384,33 @@
                 <div class="audio-visualizer hidden" id="visualizer">
                     <!-- Audio bars generated by JS -->
                 </div>
+            </div>
+        </div>
 
-                <p style="text-align: center; color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem;">
-                    💡 Tip: Keep this tab active while recording for best quality
+        <!-- Step 2: Transcribing -->
+        <div class="pixel-card hidden" id="step2">
+            <div class="card-header">
+                <span class="card-icon">🧠</span>
+                <h3 class="card-title">STEP 2: AI TRANSCRIPTION</h3>
+                <span class="status-badge loading">PROCESSING</span>
+            </div>
+            <div class="card-content">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="transcribeProgress" style="width: 0%">0%</div>
+                </div>
+                <p id="transcribeStatus" style="text-align: center; color: var(--text-muted);">Preparing audio for Whisper...</p>
+                <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">
+                    💡 This runs 100% in your browser. No data leaves your device.
                 </p>
             </div>
         </div>
 
-        <!-- Step 2: Processing -->
-        <div class="pixel-card hidden" id="step2">
-            <div class="card-header">
-                <span class="card-icon">⚙️</span>
-                <h3 class="card-title">STEP 2: PROCESSING</h3>
-                <span class="status-badge ready">WORKING</span>
-            </div>
-            <div class="card-content">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar" style="width: 0%">0%</div>
-                </div>
-                <p id="processStatus" style="text-align: center; color: var(--text-muted);">Preparing audio...</p>
-            </div>
-        </div>
-
-        <!-- Step 3: Transcript -->
+        <!-- Step 3: Results -->
         <div class="pixel-card hidden" id="step3">
             <div class="card-header">
-                <span class="card-icon">📝</span>
+                <span class="card-icon">✅</span>
                 <h3 class="card-title">TRANSCRIPT</h3>
-                <span class="status-badge ready" id="transcriptStats">0 words</span>
+                <span class="status-badge ready" id="wordCountBadge">0 words</span>
             </div>
             <div class="card-content">
                 <div class="transcript-area" id="transcriptArea">
@@ -478,19 +432,13 @@
             </div>
             <div class="card-content">
                 <h4 style="margin-bottom: 0.5rem;">🏷️ Key Topics</h4>
-                <div id="topicTags">
-                    <!-- Topics injected here -->
-                </div>
+                <div id="topicTags"></div>
 
                 <h4 style="margin: 1rem 0 0.5rem;">📋 Action Items</h4>
-                <div id="actionItems">
-                    <!-- Action items injected here -->
-                </div>
+                <div id="actionItems"></div>
 
                 <h4 style="margin: 1rem 0 0.5rem;">📝 Overview</h4>
-                <p id="summaryText" style="color: var(--text-secondary);">
-                    Summary will appear here...
-                </p>
+                <p id="summaryText" style="color: var(--text-secondary);"></p>
 
                 <div style="margin-top: 1rem;">
                     <button class="download-btn" onclick="downloadSummary()">📄 Download Summary</button>
@@ -506,7 +454,7 @@
                 <span class="status-badge ready">DONE</span>
             </div>
             <div class="card-content" style="text-align: center;">
-                <p style="margin-bottom: 1rem;">Your Space has been transcribed and summarized!</p>
+                <p style="margin-bottom: 1rem;">Your Space has been transcribed with <strong>REAL Whisper AI</strong>!</p>
                 <button class="record-btn" onclick="resetAll()" style="background: var(--accent-cyan); color: var(--bg-secondary);">
                     🎙️ RECORD ANOTHER SPACE
                 </button>
@@ -516,22 +464,59 @@
 
     <footer class="footer">
         <div class="footer-text">
-            🎙️ X Spaces Auto-Capture | 100% Browser-Based | No Installation Required
+            🎙️ X Spaces Real Whisper | OpenAI Whisper running locally in your browser
         </div>
     </footer>
 
     <script>
         // Global state
+        let transcriber = null;
         let mediaRecorder = null;
         let audioChunks = [];
         let recordingStartTime = null;
         let recordingTimer = null;
-        let audioContext = null;
-        let analyser = null;
-        let visualizerInterval = null;
         let transcriptData = null;
 
-        // Initialize visualizer bars
+        // Load Whisper model on page load
+        async function loadWhisperModel() {
+            try {
+                const { pipeline } = window.Transformers;
+                
+                // Update progress
+                const progressBar = document.getElementById('modelProgress');
+                const statusDiv = document.getElementById('modelStatus');
+                
+                // Create transcriber with Xenova's Whisper
+                transcriber = await pipeline(
+                    'automatic-speech-recognition',
+                    'Xenova/whisper-tiny',
+                    {
+                        progress_callback: (progress) => {
+                            const percent = Math.round(progress.progress * 100);
+                            progressBar.style.width = percent + '%';
+                            progressBar.textContent = percent + '%';
+                        }
+                    }
+                );
+
+                // Model loaded
+                statusDiv.classList.remove('loading');
+                statusDiv.classList.add('ready');
+                statusDiv.innerHTML = '<div style="color: var(--accent-green); font-size: 1.2rem;">✅ Whisper AI Model Ready!</div>';
+                
+                // Enable record button
+                const recordBtn = document.getElementById('recordBtn');
+                recordBtn.disabled = false;
+                document.getElementById('recordText').textContent = 'START RECORDING';
+
+            } catch (err) {
+                console.error('Error loading model:', err);
+                document.getElementById('modelStatus').innerHTML = 
+                    '<div style="color: var(--accent-red);">❌ Error loading AI model. Please refresh the page.</div>';
+            }
+        }
+
+        // Initialize visualizer
         function initVisualizer() {
             const visualizer = document.getElementById('visualizer');
             visualizer.innerHTML = '';
@@ -541,23 +526,6 @@
                 bar.style.height = '5px';
                 visualizer.appendChild(bar);
             }
-        }
-
-        // Update visualizer
-        function updateVisualizer() {
-            if (!analyser) return;
-            
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(dataArray);
-            
-            const bars = document.querySelectorAll('.audio-bar');
-            const step = Math.floor(dataArray.length / bars.length);
-            
-            bars.forEach((bar, i) => {
-                const value = dataArray[i * step];
-                const height = Math.max(5, (value / 255) * 80);
-                bar.style.height = height + 'px';
-            });
         }
 
         // Format time
@@ -579,18 +547,11 @@
         // Start recording
         async function startRecording() {
             try {
-                // Request audio capture
+                // Request display media with audio
                 const stream = await navigator.mediaDevices.getDisplayMedia({
                     video: true,
                     audio: true
                 });
-
-                // Set up audio context for visualization
-                audioContext = new AudioContext();
-                const source = audioContext.createMediaStreamSource(stream);
-                analyser = audioContext.createAnalyser();
-                analyser.fftSize = 256;
-                source.connect(analyser);
 
                 // Set up media recorder
                 mediaRecorder = new MediaRecorder(stream);
@@ -604,10 +565,10 @@
 
                 mediaRecorder.onstop = () => {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    processAudio(audioBlob);
+                    transcribeAudio(audioBlob);
                 };
 
-                mediaRecorder.start(1000); // Collect data every second
+                mediaRecorder.start(1000);
 
                 // Update UI
                 recordingStartTime = Date.now();
@@ -615,16 +576,28 @@
                 document.getElementById('recordIcon').textContent = '⏹️';
                 document.getElementById('recordText').textContent = 'STOP RECORDING';
                 document.getElementById('recordStatus').textContent = '🔴 RECORDING';
-                document.getElementById('recordStatus').classList.add('recording');
+                document.getElementById('recordStatus').classList.add('loading');
                 document.getElementById('timer').classList.remove('hidden');
                 document.getElementById('visualizer').classList.remove('hidden');
                 
                 initVisualizer();
                 recordingTimer = setInterval(updateTimer, 1000);
-                visualizerInterval = setInterval(updateVisualizer, 50);
+
+                // Simulate visualizer
+                const visualizerInterval = setInterval(() => {
+                    if (!mediaRecorder || mediaRecorder.state !== 'recording') {
+                        clearInterval(visualizerInterval);
+                        return;
+                    }
+                    const bars = document.querySelectorAll('.audio-bar');
+                    bars.forEach(bar => {
+                        const height = Math.random() * 80 + 5;
+                        bar.style.height = height + 'px';
+                    });
+                }, 100);
 
             } catch (err) {
-                alert('Error accessing audio: ' + err.message + '\n\nMake sure to select "Share audio" when prompted!');
+                alert('Error: ' + err.message + '\n\nMake sure to select "Share audio" when prompted!');
             }
         }
 
@@ -635,19 +608,14 @@
                 mediaRecorder.stream.getTracks().forEach(track => track.stop());
             }
 
-            if (audioContext) {
-                audioContext.close();
-            }
-
             clearInterval(recordingTimer);
-            clearInterval(visualizerInterval);
 
             // Update UI
             document.getElementById('recordBtn').classList.remove('recording');
             document.getElementById('recordIcon').textContent = '⏺️';
             document.getElementById('recordText').textContent = 'START RECORDING';
             document.getElementById('recordStatus').textContent = 'READY';
-            document.getElementById('recordStatus').classList.remove('recording');
+            document.getElementById('recordStatus').classList.remove('loading');
             document.getElementById('timer').classList.add('hidden');
             document.getElementById('visualizer').classList.add('hidden');
         }
@@ -661,89 +629,94 @@
             }
         }
 
-        // Process audio with simulated transcription
-        // In production, this would use a serverless Whisper function
-        async function processAudio(audioBlob) {
-            // Show processing step
+        // Transcribe audio using Whisper
+        async function transcribeAudio(audioBlob) {
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
 
-            const progressBar = document.getElementById('progressBar');
-            const processStatus = document.getElementById('processStatus');
+            const progressBar = document.getElementById('transcribeProgress');
+            const statusText = document.getElementById('transcribeStatus');
 
-            // Simulate processing steps
-            const steps = [
-                { progress: 10, text: 'Converting audio format...' },
-                { progress: 30, text: 'Running Whisper transcription...' },
-                { progress: 60, text: 'Analyzing content...' },
-                { progress: 80, text: 'Generating summary...' },
-                { progress: 100, text: 'Complete!' }
-            ];
+            try {
+                // Convert blob to audio data
+                statusText.textContent = 'Converting audio format...';
+                progressBar.style.width = '20%';
+                progressBar.textContent = '20%';
 
-            for (const step of steps) {
-                await sleep(800);
-                progressBar.style.width = step.progress + '%';
-                progressBar.textContent = step.progress + '%';
-                processStatus.textContent = step.text;
+                const audioContext = new AudioContext();
+                const arrayBuffer = await audioBlob.arrayBuffer();
+                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+                // Convert to mono and resample to 16kHz
+                statusText.textContent = 'Preparing audio for AI...';
+                progressBar.style.width = '40%';
+                progressBar.textContent = '40%';
+
+                const offlineContext = new OfflineAudioContext(1, audioBuffer.duration * 16000, 16000);
+                const source = offlineContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(offlineContext.destination);
+                source.start();
+
+                const resampledBuffer = await offlineContext.startRendering();
+                const audioData = resampledBuffer.getChannelData(0);
+
+                // Run Whisper transcription
+                statusText.textContent = 'Running Whisper AI transcription (this may take a minute)...';
+                progressBar.style.width = '60%';
+                progressBar.textContent = '60%';
+
+                const result = await transcriber(audioData, {
+                    return_timestamps: 'word',
+                    chunk_length_s: 30,
+                    stride_length_s: 5
+                });
+
+                progressBar.style.width = '100%';
+                progressBar.textContent = '100%';
+                statusText.textContent = 'Complete!';
+
+                // Process results
+                processTranscription(result, audioBuffer.duration);
+
+            } catch (err) {
+                console.error('Transcription error:', err);
+                statusText.textContent = 'Error: ' + err.message;
+                statusText.style.color = 'var(--accent-red)';
             }
-
-            await sleep(500);
-
-            // Generate simulated transcript based on audio duration
-            // In production, this would be actual Whisper output
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-            
-            await new Promise(resolve => {
-                audio.onloadedmetadata = () => {
-                    generateSimulatedTranscript(audio.duration);
-                    resolve();
-                };
-                audio.onerror = () => {
-                    // Fallback to random duration
-                    generateSimulatedTranscript(300);
-                    resolve();
-                };
-            });
-
-            // Show results
-            document.getElementById('step2').classList.add('hidden');
-            document.getElementById('step3').classList.remove('hidden');
-            document.getElementById('step4').classList.remove('hidden');
-            document.getElementById('step5').classList.remove('hidden');
         }
 
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        // Generate simulated transcript (placeholder for actual Whisper output)
-        function generateSimulatedTranscript(duration) {
+        // Process transcription results
+        function processTranscription(result, duration) {
             const segments = [];
-            const segmentCount = Math.floor(duration / 15);
-            
-            const sampleTexts = [
-                "Welcome everyone to today's Space. We're going to discuss some really important topics.",
-                "The market has been showing interesting signals lately, especially in the crypto space.",
-                "Bitcoin ETF approval could be a major catalyst for institutional adoption.",
-                "We need to keep an eye on the regulatory developments happening globally.",
-                "Ethereum's transition to proof of stake has been smoother than expected.",
-                "The DeFi ecosystem continues to innovate despite market conditions.",
-                "NFTs are evolving beyond just art into utility and membership tokens.",
-                "Layer 2 solutions are finally delivering on their scalability promises.",
-                "We should follow up on the partnership discussions from last week.",
-                "Remember to check the documentation before the next meeting.",
-                "Action item: Research the new protocol launch scheduled for next month.",
-                "Everyone should review the proposal and provide feedback by Friday."
-            ];
+            let fullText = '';
 
-            for (let i = 0; i < Math.min(segmentCount, 20); i++) {
-                const start = i * 15;
-                const text = sampleTexts[i % sampleTexts.length];
-                segments.push({
-                    start: start,
-                    end: start + 15,
-                    text: text
+            if (result.text) {
+                // Simple transcription without timestamps
+                fullText = result.text;
+                // Create artificial segments
+                const words = fullText.split(' ');
+                const wordsPerSegment = 20;
+                const segmentDuration = duration / Math.ceil(words.length / wordsPerSegment);
+
+                for (let i = 0; i < words.length; i += wordsPerSegment) {
+                    const segmentWords = words.slice(i, i + wordsPerSegment);
+                    const start = (i / wordsPerSegment) * segmentDuration;
+                    segments.push({
+                        start: start,
+                        end: start + segmentDuration,
+                        text: segmentWords.join(' ')
+                    });
+                }
+            } else if (result.chunks) {
+                // Chunked transcription with timestamps
+                result.chunks.forEach(chunk => {
+                    segments.push({
+                        start: chunk.timestamp[0],
+                        end: chunk.timestamp[1] || chunk.timestamp[0] + 5,
+                        text: chunk.text
+                    });
+                    fullText += chunk.text + ' ';
                 });
             }
 
@@ -751,54 +724,95 @@
                 metadata: {
                     duration: duration,
                     createdAt: new Date().toISOString(),
-                    wordCount: segments.reduce((acc, s) => acc + s.text.split(' ').length, 0)
+                    wordCount: fullText.split(/\s+/).filter(w => w.length > 0).length,
+                    model: 'Xenova/whisper-tiny'
                 },
                 segments: segments,
-                fullText: segments.map(s => s.text).join(' ')
+                fullText: fullText.trim()
             };
 
             // Display transcript
+            displayTranscript();
+            generateSummary();
+
+            // Show all steps
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            document.getElementById('step4').classList.remove('hidden');
+            document.getElementById('step5').classList.remove('hidden');
+        }
+
+        // Display transcript
+        function displayTranscript() {
             const transcriptArea = document.getElementById('transcriptArea');
-            transcriptArea.innerHTML = segments.map(s => 
+            transcriptArea.innerHTML = transcriptData.segments.map(s => 
                 `<div class="transcript-segment">
                     <span class="transcript-time">[${formatTime(s.start * 1000)}]</span>
                     ${s.text}
                 </div>`
             ).join('');
 
-            document.getElementById('transcriptStats').textContent = 
+            document.getElementById('wordCountBadge').textContent = 
                 transcriptData.metadata.wordCount + ' words';
-
-            // Generate summary
-            generateSummary();
         }
 
-        // Generate summary from transcript
+        // Generate summary
         function generateSummary() {
+            const text = transcriptData.fullText.toLowerCase();
+            
             // Extract topics
-            const topics = ['Bitcoin', 'Ethereum', 'DeFi', 'NFTs', 'Regulation', 'Market Analysis'];
-            const topicTags = document.getElementById('topicTags');
-            topicTags.innerHTML = topics.map(t => `<span class="topic-tag">${t}</span>`).join('');
+            const topicKeywords = {
+                'Bitcoin': ['bitcoin', 'btc'],
+                'Ethereum': ['ethereum', 'eth'],
+                'Crypto': ['crypto', 'cryptocurrency'],
+                'NFT': ['nft', 'nfts'],
+                'DeFi': ['defi', 'yield', 'liquidity'],
+                'AI': ['ai', 'artificial intelligence', 'machine learning'],
+                'Trading': ['trading', 'trade', 'market'],
+                'Regulation': ['regulation', 'sec', 'compliance']
+            };
+
+            const foundTopics = [];
+            for (const [topic, keywords] of Object.entries(topicKeywords)) {
+                if (keywords.some(kw => text.includes(kw))) {
+                    foundTopics.push(topic);
+                }
+            }
+
+            const topicContainer = document.getElementById('topicTags');
+            topicContainer.innerHTML = foundTopics.length > 0 
+                ? foundTopics.map(t => `<span class="topic-tag">${t}</span>`).join('')
+                : '<span style="color: var(--text-muted);">No specific topics detected</span>';
 
             // Extract action items
-            const actionItems = [
-                "Follow up on partnership discussions",
-                "Research new protocol launch",
-                "Review proposal by Friday",
-                "Check documentation before next meeting"
+            const actionPatterns = [
+                /(?:need to|should|must|will|going to|let's)\s+([^\.]+)/gi,
+                /(?:follow up|check|review|research)\s+([^\.]+)/gi
             ];
+
+            const actionItems = [];
+            actionPatterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.exec(transcriptData.fullText)) !== null) {
+                    const item = match[0].trim();
+                    if (item.length > 10 && item.length < 100) {
+                        actionItems.push(item);
+                    }
+                }
+            });
+
             const actionContainer = document.getElementById('actionItems');
-            actionContainer.innerHTML = actionItems.map(item => 
-                `<div class="action-item">☐ ${item}</div>`
-            ).join('');
+            actionContainer.innerHTML = actionItems.length > 0
+                ? actionItems.slice(0, 5).map(item => `<div class="action-item">☐ ${item}</div>`).join('')
+                : '<span style="color: var(--text-muted);">No action items detected</span>';
 
             // Generate overview
             const summaryText = document.getElementById('summaryText');
             summaryText.textContent = 
-                `This Space discussion covered 6 main topics including Bitcoin ETF implications, ` +
-                `Ethereum's proof of stake transition, and DeFi ecosystem developments. ` +
-                `Key themes included institutional adoption, regulatory developments, and ` +
-                `Layer 2 scaling solutions. 4 action items were identified for follow-up.`;
+                `This ${formatTime(transcriptData.metadata.duration * 1000)} recording contains ` +
+                `${transcriptData.metadata.wordCount} words. ` +
+                `Key topics identified: ${foundTopics.join(', ') || 'General discussion'}. ` +
+                `${actionItems.length} action items extracted.`;
         }
 
         // Download functions
@@ -819,13 +833,8 @@
 
         function downloadSummary() {
             const summary = {
-                topics: ['Bitcoin', 'Ethereum', 'DeFi', 'NFTs', 'Regulation', 'Market Analysis'],
-                actionItems: [
-                    "Follow up on partnership discussions",
-                    "Research new protocol launch",
-                    "Review proposal by Friday",
-                    "Check documentation before next meeting"
-                ],
+                topics: Array.from(document.querySelectorAll('.topic-tag')).map(t => t.textContent),
+                actionItems: Array.from(document.querySelectorAll('.action-item')).map(t => t.textContent.replace('☐ ', '')),
                 overview: document.getElementById('summaryText').textContent,
                 generatedAt: new Date().toISOString()
             };
@@ -852,13 +861,16 @@
             document.getElementById('step3').classList.add('hidden');
             document.getElementById('step4').classList.add('hidden');
             document.getElementById('step5').classList.add('hidden');
-            document.getElementById('progressBar').style.width = '0%';
-            document.getElementById('progressBar').textContent = '0%';
+            document.getElementById('transcribeProgress').style.width = '0%';
+            document.getElementById('transcribeProgress').textContent = '0%';
             document.getElementById('transcriptArea').textContent = 'Transcript will appear here...';
             document.getElementById('topicTags').innerHTML = '';
             document.getElementById('actionItems').innerHTML = '';
-            document.getElementById('summaryText').textContent = 'Summary will appear here...';
+            document.getElementById('summaryText').textContent = '';
         }
+
+        // Load model on page load
+        window.addEventListener('load', loadWhisperModel);
     </script>
 </body>
 </html>

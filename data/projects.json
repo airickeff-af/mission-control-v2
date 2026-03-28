@@ -392,7 +392,8 @@
       "version": "v1.1",
       "urls": {
         "main": "https://dashboard-ten-sand-20.vercel.app/x-spaces-capture.html",
-        "auto": "https://dashboard-ten-sand-20.vercel.app/x-spaces-auto.html"
+        "auto": "https://dashboard-ten-sand-20.vercel.app/x-spaces-auto.html",
+        "real-whisper": "https://dashboard-ten-sand-20.vercel.app/x-spaces-whisper.html"
       },
       "features": [
         "Smart Detect - Universal URL resolver",
