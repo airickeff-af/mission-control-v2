@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎙️ X Spaces Capture Link | Auto-Transcribe</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #2d1b4e;
+            --bg-secondary: #1a0f2e;
+            --bg-card: #3d2b5e;
+            --bg-card-hover: #4d3b6e;
+            --text-primary: #ffffff;
+            --text-secondary: #b8a9d9;
+            --text-muted: #7a6a99;
+            --accent-cyan: #00f0ff;
+            --accent-pink: #ff6b9d;
+            --accent-yellow: #ffd93d;
+            --accent-green: #6bcf7f;
+            --accent-orange: #ff9f43;
+            --accent-red: #ff4757;
+            --border-color: #5d4b7e;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --pixel-border: 4px;
+            --font-pixel: 'VT323', monospace;
+            --font-header: 'Press Start 2P', cursive;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+            image-rendering: pixelated;
+        }
+        
+        body {
+            font-family: var(--font-pixel);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 0 var(--shadow-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pixel-logo {
+            font-size: 2.5rem;
+            filter: drop-shadow(3px 3px 0 var(--shadow-color));
+        }
+
+        .logo-text {
+            font-family: var(--font-header);
+            font-size: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 4px dashed var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-family: var(--font-header);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-cyan);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .pixel-card {
+            background: var(--bg-card);
+            border: var(--pixel-border) solid var(--border-color);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.5rem;
+            border-bottom: var(--pixel-border) solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-family: var(--font-header);
+            font-size: 0.65rem;
+            flex: 1;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .pixel-input {
+            width: 100%;
+            padding: 1rem;
+            font-family: var(--font-pixel);
+            font-size: 1.1rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .pixel-input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .pixel-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-family: var(--font-pixel);
+            font-size: 1.2rem;
+            background: var(--accent-cyan);
+            color: var(--bg-secondary);
+            border: 4px solid var(--text-primary);
+            box-shadow: 4px 4px 0 var(--shadow-color);
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .pixel-btn:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--shadow-color);
+        }
+
+        .pixel-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pixel-btn.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        .pixel-btn.large {
+            width: 100%;
+            justify-content: center;
+            padding: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        .pixel-btn.recording {
+            background: var(--accent-red);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            border: 2px solid;
+        }
+
+        .status-badge.ready {
+            background: rgba(107, 207, 127, 0.2);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .status-badge.loading {
+            background: rgba(255, 217, 61, 0.2);
+            border-color: var(--accent-yellow);
+            color: var(--accent-yellow);
+            animation: pulse 1s infinite;
+        }
+
+        .status-badge.recording {
+            background: rgba(255, 71, 71, 0.2);
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .status-badge.complete {
+            background: rgba(0, 240, 255, 0.2);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--text-muted);
+            margin-bottom: 1rem;
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            border-left-color: var(--accent-cyan);
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        .step.completed {
+            opacity: 1;
+            border-left-color: var(--accent-green);
+        }
+
+        .step-number {
+            font-family: var(--font-header);
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            min-width: 40px;
+        }
+
+        .step.active .step-number {
+            color: var(--accent-cyan);
+        }
+
+        .step.completed .step-number {
+            color: var(--accent-green);
+        }
+
+        .step-content h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .step-actions {
+            margin-top: 1rem;
+        }
+
+        .timer {
+            font-family: var(--font-header);
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--accent-cyan);
+        }
+
+        .speed-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--accent-yellow);
+            color: var(--bg-secondary);
+            font-weight: bold;
+            border: 2px solid var(--text-primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 40px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--bg-secondary);
+            font-weight: bold;
+        }
+
+        .transcript-area {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            padding: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 1rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .transcript-segment {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .transcript-time {
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            font-family: var(--font-header);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .warning-box {
+            padding: 1rem;
+            background: rgba(255, 159, 67, 0.1);
+            border: 2px solid var(--accent-orange);
+            margin-bottom: 1rem;
+        }
+
+        .info-box {
+            padding: 1rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 2px solid var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .success-box {
+            padding: 1rem;
+            background: rgba(107, 207, 127, 0.1);
+            border: 2px solid var(--accent-green);
+            margin-bottom: 1rem;
+        }
+
+        .model-status {
+            padding: 1rem;
+            text-align: center;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .model-status.loading {
+            border-color: var(--accent-yellow);
+        }
+
+        .model-status.ready {
+            border-color: var(--accent-green);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: var(--bg-secondary);
+            border-top: 4px solid var(--border-color);
+        }
+
+        .time-saved {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--accent-green);
+            color: var(--bg-secondary);
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="pixel-logo">🚀</div>
+            <div class="logo-text">
+                X SPACES<br>
+                CAPTURE LINK<br>
+                <span style="color: var(--accent-cyan);">2X SPEED</span>
+            </div>
+        </div>
+        <div>
+            <span class="status-badge ready" id="systemStatus">🧠 AI READY</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>SPACE URL → TRANSCRIPT</h1>
+            <p>Paste an X Space replay URL. We'll capture at <strong>2x speed</strong> and transcribe with Whisper AI.<br>
+            <span class="time-saved">⏱️ 1 hour Space = 30 min capture + 5 min transcribe</span></p>
+        </section>
+
+        <!-- Model Loading Status -->
+        <div class="model-status loading" id="modelStatus">
+            <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">⚡ Loading Whisper AI Model...</div>
+            <div class="progress-bar" style="margin: 0.5rem 0;">
+                <div class="progress-fill" id="modelProgress" style="width: 0%">0%</div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">~75MB download. One-time setup.</p>
+        </div>
+
+        <!-- STEP 1: Enter URL -->
+        <div class="pixel-card" id="step1">
+            <div class="card-header">
+                <span class="card-icon">🔗</span>
+                <h3 class="card-title">STEP 1: PASTE SPACE URL</h3>
+                <span class="status-badge ready">READY</span>
+            </div>
+            <div class="card-content">
+                <div class="input-group">
+                    <label>X Space Replay URL</label>
+                    <input type="text" class="pixel-input" id="spaceUrl" 
+                        placeholder="https://x.com/i/spaces/...">
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ Requirements:</strong>
+                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                        <li>Must be a <strong>replay</strong> (not a live Space)</li>
+                        <li>You need to be logged into X</li>
+                        <li>Keep this tab open during capture</li>
+                    </ul>
+                </div>
+
+                <button class="pixel-btn large" id="openSpaceBtn" onclick="openSpace()">
+                    🚀 OPEN SPACE & START SETUP
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 2: Setup Space Tab -->
+        <div class="pixel-card hidden" id="step2">
+            <div class="card-header">
+                <span class="card-icon">⚙️</span>
+                <h3 class="card-title">STEP 2: SETUP 2X SPEED</h3>
+                <span class="status-badge loading" id="step2Status">WAITING</span>
+            </div>
+            <div class="card-content">
+                <div class="info-box">
+                    <strong>🎯 The Space is now open in a new tab.</strong><br>
+                    Follow these steps to enable 2x speed:
+                </div>
+
+                <div class="step completed">
+                    <div class="step-number">✓</div>
+                    <div class="step-content">
+                        <h4>Space Opened</h4>
+                        <p>Check your other browser tab</p>
+                    </div>
+                </div>
+
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Enable 2x Playback Speed</h4>
+                        <p>Click the <strong>gear icon</strong> on the Space player, then select <strong>2x</strong></p>
+                        <div class="step-actions">
+                            <span class="speed-indicator">⚡ 2X SPEED TARGET</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Start From Beginning</h4>
+                        <p>Click the <strong>rewind button</strong> to go to the start of the Space</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <button class="pixel-btn large" id="startCaptureBtn" onclick="startCapture()" disabled>
+                        ⏺️ START CAPTURE (2X SPEED)
+                    </button>
+                    <p style="text-align: center; margin-top: 0.5rem; color: var(--text-muted);">
+                        Complete steps 2 & 3 above to enable this button
+                    </p>
+                </div>
+
+                <div style="margin-top: 1rem; text-align: center;">
+                    <button class="pixel-btn secondary" onclick="enableCapture()">
+                        ✓ I've set 2x speed & restarted the Space
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: Recording -->
+        <div class="pixel-card hidden" id="step3">
+            <div class="card-header">
+                <span class="card-icon">🔴</span>
+                <h3 class="card-title">STEP 3: CAPTURING AT 2X SPEED</h3>
+                <span class="status-badge recording" id="recordingStatus">● RECORDING</span>
+            </div>
+            <div class="card-content">
+                <div class="info-box">
+                    <strong>📢 Select the Space tab when prompted!</strong><br>
+                    Make sure to check "Share audio" in the dialog.
+                </div>
+
+                <div class="timer" id="captureTimer">00:00:00</div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="captureProgress" style="width: 0%">0%</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                    <div style="padding: 1rem; background: var(--bg-secondary); text-align: center;">
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">Recording Time</div>
+                        <div id="recordingTime" style="font-size: 1.5rem; color: var(--accent-cyan);">--</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-secondary); text-align: center;">
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">Est. Space Time</div>
+                        <div id="spaceTime" style="font-size: 1.5rem; color: var(--accent-green);">--</div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 1rem; text-align: center; color: var(--text-muted);">
+                    Recording at <strong>2x speed</strong>. Don't close this tab!<br>
+                    The transcription will start automatically when you stop.
+                </p>
+
+                <button class="pixel-btn large recording" id="stopCaptureBtn" onclick="stopCapture()" style="margin-top: 1rem;">
+                    ⏹️ STOP CAPTURE & TRANSCRIBE
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 4: Transcribing -->
+        <div class="pixel-card hidden" id="step4">
+            <div class="card-header">
+                <span class="card-icon">🧠</span>
+                <h3 class="card-title">STEP 4: AI TRANSCRIPTION</h3>
+                <span class="status-badge loading">PROCESSING</span>
+            </div>
+            <div class="card-content">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="transcribeProgress" style="width: 0%">0%</div>
+                </div>
+                <p id="transcribeStatus" style="text-align: center; color: var(--text-muted); margin-top: 1rem;">
+                    Running Whisper AI on your captured audio...
+                </p>
+                <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">
+                    💡 This runs 100% in your browser. No data sent to servers.
+                </p>
+            </div>
+        </div>
+
+        <!-- STEP 5: Results -->
+        <div class="pixel-card hidden" id="step5">
+            <div class="card-header">
+                <span class="card-icon">✅</span>
+                <h3 class="card-title">TRANSCRIPT READY</h3>
+                <span class="status-badge complete">COMPLETE</span>
+            </div>
+            <div class="card-content">
+                <div class="success-box">
+                    <strong>🎉 Transcription Complete!</strong><br>
+                    Space captured at 2x speed and transcribed with Whisper AI.
+                </div>
+
+                <div class="transcript-area" id="transcriptArea">
+                    Transcript will appear here...
+                </div>
+
+                <div style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button class="pixel-btn" onclick="downloadTranscript('txt')">
+                        📄 Download TXT
+                    </button>
+                    <button class="pixel-btn" onclick="downloadTranscript('json')">
+                        📊 Download JSON
+                    </button>
+                    <button class="pixel-btn secondary" onclick="copyTranscript()">
+                        📋 Copy to Clipboard
+                    </button>
+                </div>
+
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <button class="pixel-btn large" onclick="resetAll()">
+                        🚀 CAPTURE ANOTHER SPACE
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions Card -->
+        <div class="pixel-card">
+            <div class="card-header">
+                <span class="card-icon">📖</span>
+                <h3 class="card-title">HOW IT WORKS</h3>
+            </div>
+            <div class="card-content">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Paste Space URL</h4>
+                        <p>We open the Space replay in a new browser tab</p>
+                    </div>
+                </div>
+                <div class="step completed">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Set 2x Speed</h4>
+                        <p>You enable 2x playback in the X player (30 min instead of 1 hour!)</p>
+                    </div>
+                </div>
+                <div class="step completed">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Capture Audio</h4>
+                        <p>We record the audio directly from your browser at 2x speed</p>
+                    </div>
+                </div>
+                <div class="step completed">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>AI Transcription</h4>
+                        <p>Whisper AI transcribes locally in ~5 minutes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-text">
+            🚀 X Spaces Capture Link v1.0 | Real-time 2x speed capture + Whisper AI transcription
+        </div>
+    </footer>
+
+    <script>
+        // Global state
+        let transcriber = null;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let recordingStartTime = null;
+        let recordingTimer = null;
+        let capturedAudioBlob = null;
+        let transcriptData = null;
+        let spaceWindow = null;
+
+        // Load Whisper model on page load
+        window.addEventListener('load', loadWhisperModel);
+
+        async function loadWhisperModel() {
+            try {
+                const { pipeline } = window.Transformers;
+                
+                const progressBar = document.getElementById('modelProgress');
+                const statusDiv = document.getElementById('modelStatus');
+                
+                transcriber = await pipeline(
+                    'automatic-speech-recognition',
+                    'Xenova/whisper-tiny',
+                    {
+                        progress_callback: (progress) => {
+                            const percent = Math.round(progress.progress * 100);
+                            progressBar.style.width = percent + '%';
+                            progressBar.textContent = percent + '%';
+                        }
+                    }
+                );
+
+                statusDiv.classList.remove('loading');
+                statusDiv.classList.add('ready');
+                statusDiv.innerHTML = '<div style="color: var(--accent-green); font-size: 1.2rem;">✅ Whisper AI Model Ready!</div>';
+                
+            } catch (err) {
+                console.error('Error loading model:', err);
+                document.getElementById('modelStatus').innerHTML = 
+                    '<div style="color: var(--accent-red);">❌ Error loading AI model. Please refresh.</div>';
+            }
+        }
+
+        // STEP 1: Open Space in new tab
+        function openSpace() {
+            const url = document.getElementById('spaceUrl').value.trim();
+            
+            if (!url || !url.includes('x.com')) {
+                alert('Please enter a valid X Space URL');
+                return;
+            }
+
+            spaceWindow = window.open(url, '_blank');
+            
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('step2').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Enable capture button after user confirms setup
+        function enableCapture() {
+            document.getElementById('startCaptureBtn').disabled = false;
+            document.getElementById('step2Status').textContent = 'READY';
+            document.getElementById('step2Status').classList.remove('loading');
+            document.getElementById('step2Status').classList.add('ready');
+            
+            const steps = document.querySelectorAll('#step2 .step');
+            steps.forEach(step => {
+                step.classList.remove('active');
+                step.classList.add('completed');
+            });
+        }
+
+        // STEP 3: Start capture
+        async function startCapture() {
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: true,
+                    audio: true
+                });
+
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) {
+                        audioChunks.push(e.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    capturedAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    transcribeAudio(capturedAudioBlob);
+                };
+
+                mediaRecorder.start(1000);
+
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('step3').classList.remove('hidden');
+                
+                recordingStartTime = Date.now();
+                recordingTimer = setInterval(updateCaptureTimer, 1000);
+                
+                document.getElementById('step3').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (err) {
+                alert('Error: ' + err.message + '\n\nMake sure to select "Share audio" when prompted!');
+            }
+        }
+
+        // Update capture timer
+        function updateCaptureTimer() {
+            const elapsed = Date.now() - recordingStartTime;
+            const recordingSecs = Math.floor(elapsed / 1000);
+            const spaceSecs = recordingSecs * 2;
+            
+            document.getElementById('captureTimer').textContent = formatTime(elapsed);
+            document.getElementById('recordingTime').textContent = formatDuration(recordingSecs);
+            document.getElementById('spaceTime').textContent = formatDuration(spaceSecs) + ' (2x)';
+            
+            const progress = Math.min((recordingSecs / 1800) * 100, 100);
+            document.getElementById('captureProgress').style.width = progress + '%';
+            document.getElementById('captureProgress').textContent = Math.round(progress) + '%';
+        }
+
+        // Stop capture
+        function stopCapture() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            }
+            
+            clearInterval(recordingTimer);
+            
+            if (spaceWindow && !spaceWindow.closed) {
+                spaceWindow.close();
+            }
+        }
+
+        // STEP 4: Transcribe audio
+        async function transcribeAudio(audioBlob) {
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step4').classList.remove('hidden');
+            document.getElementById('step4').scrollIntoView({ behavior: 'smooth' });
+
+            const progressBar = document.getElementById('transcribeProgress');
+            const statusText = document.getElementById('transcribeStatus');
+
+            try {
+                statusText.textContent = 'Converting audio format...';
+                progressBar.style.width = '20%';
+                progressBar.textContent = '20%';
+
+                const audioContext = new AudioContext();
+                const arrayBuffer = await audioBlob.arrayBuffer();
+                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+                statusText.textContent = 'Preparing audio for AI...';
+                progressBar.style.width = '40%';
+                progressBar.textContent = '40%';
+
+                const offlineContext = new OfflineAudioContext(1, audioBuffer.duration * 16000, 16000);
+                const source = offlineContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(offlineContext.destination);
+                source.start();
+
+                const resampledBuffer = await offlineContext.startRendering();
+                const audioData = resampledBuffer.getChannelData(0);
+
+                statusText.textContent = 'Running Whisper AI transcription...';
+                progressBar.style.width = '60%';
+                progressBar.textContent = '60%';
+
+                const result = await transcriber(audioData, {
+                    return_timestamps: 'word',
+                    chunk_length_s: 30,
+                    stride_length_s: 5
+                });
+
+                progressBar.style.width = '100%';
+                progressBar.textContent = '100%';
+                statusText.textContent = 'Complete!';
+
+                processTranscription(result, audioBuffer.duration);
+
+            } catch (err) {
+                console.error('Transcription error:', err);
+                statusText.textContent = 'Error: ' + err.message;
+                statusText.style.color = 'var(--accent-red)';
+            }
+        }
+
+        // Process transcription results
+        function processTranscription(result, duration) {
+            let fullText = '';
+            
+            if (result.text) {
+                fullText = result.text;
+            } else if (result.chunks) {
+                fullText = result.chunks.map(chunk => chunk.text).join(' ');
+            }
+
+            transcriptData = {
+                text: fullText,
+                duration: duration,
+                timestamp: new Date().toISOString()
+            };
+
+            document.getElementById('step4').classList.add('hidden');
+            document.getElementById('step5').classList.remove('hidden');
+            document.getElementById('step5').scrollIntoView({ behavior: 'smooth' });
+
+            document.getElementById('transcriptArea').textContent = fullText;
+        }
+
+        // Utility functions
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function formatDuration(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            if (hours > 0) {
+                return `${hours}h ${mins}m`;
+            }
+            return `${mins}m ${secs}s`;
+        }
+
+        function downloadTranscript(format) {
+            if (!transcriptData) return;
+
+            let content, filename, mimeType;
+
+            if (format === 'txt') {
+                content = transcriptData.text;
+                filename = `x-space-transcript-${Date.now()}.txt`;
+                mimeType = 'text/plain';
+            } else {
+                content = JSON.stringify(transcriptData, null, 2);
+                filename = `x-space-transcript-${Date.now()}.json`;
+                mimeType = 'application/json';
+            }
+
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function copyTranscript() {
+            if (!transcriptData) return;
+            
+            navigator.clipboard.writeText(transcriptData.text).then(() => {
+                alert('Transcript copied to clipboard!');
+            }).catch(err => {
+                console.error('Copy failed:', err);
+            });
+        }
+
+        function resetAll() {
+            document.getElementById('step5').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+            document.getElementById('spaceUrl').value = '';
+            document.getElementById('transcriptArea').textContent = 'Transcript will appear here...';
+            
+            audioChunks = [];
+            capturedAudioBlob = null;
+            transcriptData = null;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
