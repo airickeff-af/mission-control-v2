@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-28T04:10:00+08:00",
+  "lastUpdated": "2026-03-29T22:30:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -416,6 +416,81 @@
         "files": 10,
         "modules": 6,
         "status": "Operational"
+      }
+    },
+    {
+      "id": "x-spaces-capture-link",
+      "name": "X Spaces Capture Link",
+      "status": "deployed",
+      "completion": 100,
+      "url": "https://airickeff-af.github.io/mission-control-v2/x-spaces-capture-link.html",
+      "pendingTasks": 0,
+      "lead": "Nexus",
+      "targetCompletion": "2026-03-29",
+      "targetPercent": 100,
+      "priority": 18,
+      "deployBy": "2026-03-29",
+      "description": "Space URL → Transcript with 2x speed capture. Paste a Space replay URL, capture at double speed, and get AI transcription with Whisper.",
+      "location": "/mission-control-v2/x-spaces-capture-link.html",
+      "version": "v1.0",
+      "urls": {
+        "main": "https://airickeff-af.github.io/mission-control-v2/x-spaces-capture-link.html"
+      },
+      "features": [
+        "Paste Space URL - Opens in new tab",
+        "2x Speed Capture - 30 min instead of 1 hour",
+        "Real-time Timer - Shows recording vs Space time",
+        "Whisper AI Transcription - Browser-based",
+        "Download TXT/JSON - Export transcripts",
+        "100% Free - No API keys needed"
+      ],
+      "timeSaved": "1 hour Space = 30 min capture + 5 min transcribe",
+      "stats": {
+        "linesOfCode": 850,
+        "status": "Live on GitHub Pages"
+      }
+    },
+    {
+      "id": "onepiece-tcg-collector",
+      "name": "One Piece TCG Collector",
+      "status": "active",
+      "completion": 85,
+      "url": null,
+      "pendingTasks": 3,
+      "lead": "Nexus",
+      "targetCompletion": "2026-04-05",
+      "targetPercent": 100,
+      "priority": 19,
+      "deployBy": "2026-04-05",
+      "description": "Comprehensive card price tracking app for One Piece TCG with EN/JP markets, grading tiers, and camera card scanning",
+      "location": "/onepiece-tcg-collector/",
+      "version": "v1.0",
+      "features": [
+        "Fuzzy Search - Typo-tolerant card finding",
+        "Dual Markets - English (TCGPlayer) + Japanese (Yuyu-tei)",
+        "Grading Tiers - Ungraded, PSA 9/10, BGS 9/9.5/10",
+        "Price Charts - 30-day history with Chart.js",
+        "Card Images - Official CDN integration",
+        "Camera Scanner - Photo-based card recognition",
+        "Auto Price Updates - Daily at 3:00 AM"
+      ],
+      "techStack": [
+        "Node.js",
+        "Express",
+        "SQLite",
+        "Fuse.js",
+        "Chart.js",
+        "WebRTC Camera API"
+      ],
+      "pendingDeployment": {
+        "platform": "Vercel",
+        "status": "Ready - needs auth"
+      },
+      "stats": {
+        "sampleCards": 18,
+        "grades": 6,
+        "currencies": 2,
+        "status": "Ready for deployment"
       }
     }
   ]

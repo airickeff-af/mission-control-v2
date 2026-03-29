@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏴‍☠️ One Piece TCG Collector | Price Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #0f3460;
+            --bg-card-hover: #1a4a7a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-gold: #ffd700;
+            --accent-red: #e94560;
+            --accent-blue: #00d9ff;
+            --accent-green: #00ff88;
+            --accent-purple: #9b59b6;
+            --border-color: #2d3a5a;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            font-size: 18px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+            border-bottom: 4px solid var(--accent-gold);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .logo { display: flex; align-items: center; gap: 1rem; }
+        .logo-icon { font-size: 3rem; filter: drop-shadow(0 0 10px var(--accent-gold)); }
+        .logo-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            line-height: 1.4;
+        }
+        .logo-text span { color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold); }
+
+        .scan-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-red);
+            color: white;
+            border: 3px solid white;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+        /* Search Section */
+        .search-section { text-align: center; padding: 3rem 0; }
+        .search-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+            text-shadow: 0 0 20px var(--accent-gold);
+        }
+        .search-box { max-width: 700px; margin: 0 auto; position: relative; }
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1.3rem;
+            font-family: 'VT323', monospace;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            outline: none;
+        }
+        .search-input:focus { border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 0.6rem 1.5rem;
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-family: 'VT323', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        /* Camera Scanner Modal */
+        .scanner-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .scanner-modal.show { display: flex; }
+        .scanner-content {
+            background: var(--bg-primary);
+            border: 4px solid var(--accent-gold);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            padding: 2rem;
+            text-align: center;
+        }
+        .scanner-video {
+            width: 100%;
+            max-width: 400px;
+            border: 3px solid var(--accent-gold);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .scanner-canvas { display: none; }
+        .scanner-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .scan-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            display: none;
+        }
+        .scan-result.show { display: block; }
+
+        /* Results Grid */
+        .results-section { margin-top: 2rem; }
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Card Component */
+        .card-item {
+            background: var(--bg-card);
+            border: 3px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .card-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+        .card-image-container {
+            width: 100%;
+            aspect-ratio: 2.5/3.5;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .card-item:hover .card-image { transform: scale(1.05); }
+        .card-image-placeholder {
+            font-size: 4rem;
+            opacity: 0.5;
+        }
+        .card-header {
+            background: var(--bg-secondary);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-number {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: var(--accent-blue);
+        }
+        .card-rarity {
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .rarity-SEC { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000; }
+        .rarity-SR { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #000; }
+        .rarity-R { background: linear-gradient(135deg, #cd7f32, #daa520); color: #fff; }
+        .rarity-U { background: linear-gradient(135deg, #4169e1, #6495ed); color: #fff; }
+        .rarity-C { background: var(--bg-card-hover); color: var(--text-secondary); }
+
+        .card-body { padding: 1rem; }
+        .card-name { font-size: 1.3rem; margin-bottom: 0.2rem; }
+        .card-name-jp { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .card-set { font-size: 0.85rem; color: var(--accent-blue); }
+
+        /* Price Grid */
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+        }
+        .price-box { text-align: center; padding: 0.5rem; background: var(--bg-secondary); border-radius: 6px; }
+        .price-label { font-size: 0.7rem; color: var(--text-secondary); }
+        .price-value { font-size: 1rem; font-weight: bold; }
+        .price-en { color: var(--accent-green); }
+        .price-jp { color: var(--accent-blue); }
+
+        /* Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-content {
+            background: var(--bg-primary);
+            border: 4px solid var(--accent-gold);
+            border-radius: 16px;
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            z-index: 10;
+        }
+        .modal-body { padding: 2rem; }
+        .detail-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .detail-image {
+            width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+        .detail-info { flex: 1; min-width: 300px; }
+        .detail-info h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--accent-gold); }
+        .detail-info h3 { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .detail-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .stat-item { padding: 0.5rem; background: var(--bg-card); border-radius: 6px; text-align: center; }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); }
+        .stat-value { font-size: 1.1rem; color: var(--accent-blue); }
+
+        /* Price Table */
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .price-table th, .price-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .price-table th {
+            background: var(--bg-secondary);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.55rem;
+            color: var(--accent-gold);
+        }
+        .grade-badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .grade-psa10 { background: var(--accent-gold); color: #000; }
+        .grade-psa9 { background: var(--accent-blue); color: #000; }
+        .grade-ungraded { background: var(--text-secondary); color: #000; }
+
+        /* Chart Container */
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 2rem;
+            height: 300px;
+        }
+
+        .loading { text-align: center; padding: 3rem; font-size: 1.5rem; color: var(--accent-gold); }
+        .hidden { display: none !important; }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 2px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .results-grid { grid-template-columns: repeat(2, 1fr); }
+            .detail-header { flex-direction: column; align-items: center; }
+            .detail-image { width: 200px; }
+            .detail-stats { grid-template-columns: repeat(2, 1fr); }
+            .scanner-content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🏴‍☠️</div>
+            <div class="logo-text">
+                ONE PIECE<br>
+                <span>TCG COLLECTOR</span>
+            </div>
+        </div>
+        <button class="scan-btn" onclick="openScanner()">
+            📷 SCAN CARD
+        </button>
+    </header>
+
+    <div class="container">
+        <section class="search-section">
+            <h1 class="search-title">SEARCH THE GRAND LINE</h1>
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput"
+                    placeholder="Search cards (e.g., 'Luffy', 'Shanks', 'OP01-001')..."
+                    autocomplete="off">
+                <button class="search-btn" onclick="searchCards()">SEARCH</button>
+            </div>
+        </section>
+
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-header">
+                <h2>🏆 Search Results</h2>
+                <span id="resultsCount"></span>
+            </div>
+            <div class="results-grid" id="resultsGrid"></div>
+        </section>
+
+        <section class="loading" id="loading" style="display: none;">
+            Searching the Grand Line...
+        </section>
+    </div>
+
+    <!-- Camera Scanner Modal -->
+    <div class="scanner-modal" id="scannerModal">
+        <div class="scanner-content">
+            <h2 style="color: var(--accent-gold); margin-bottom: 1rem;">📷 Card Scanner</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                Position your One Piece card in the frame
+            </p>
+            <video class="scanner-video" id="scannerVideo" autoplay playsinline></video>
+            <canvas class="scanner-canvas" id="scannerCanvas"></canvas>
+            <div class="scanner-controls">
+                <button class="scan-btn" onclick="captureCard()">📸 SNAP</button>
+                <button class="scan-btn" style="background: var(--bg-secondary);" onclick="closeScanner()">✕ CLOSE</button>
+            </div>
+            <div class="scan-result" id="scanResult">
+                <h3>Card Detected!</h3>
+                <div id="scanResultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Detail Modal -->
+    <div class="modal-overlay" id="cardModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        🏴‍☠️ One Piece TCG Collector | Supports English & Japanese markets<br>
+        PSA, BGS & Ungraded prices | 📷 Camera card scanning enabled
+    </footer>
+
+    <script>
+        const API_BASE = '/api';
+        let currentResults = [];
+        let stream = null;
+
+        // Initialize
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchCards();
+        });
+
+        // Search cards
+        async function searchCards() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query.length < 2) return;
+
+            showLoading();
+            try {
+                const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}&limit=20`);
+                const data = await response.json();
+                currentResults = data.results;
+                displayResults(data.results, data.count);
+            } catch (err) {
+                console.error('Search error:', err);
+                showError('Failed to search');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Display results
+        function displayResults(results, count) {
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsCount').textContent = `${count} treasure${count !== 1 ? 's' : ''} found`;
+
+            document.getElementById('resultsGrid').innerHTML = results.map(card => `
+                <div class="card-item" onclick="showCardDetail(${card.id})">
+                    <div class="card-image-container">
+                        ${card.image_url 
+                            ? `<img src="${card.image_url}" alt="${card.name_en}" class="card-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'card-image-placeholder\\'>🏴‍☠️</span>';">`
+                            : '<span class="card-image-placeholder">🏴‍☠️</span>'
+                        }
+                    </div>
+                    <div class="card-header">
+                        <span class="card-number">${card.card_number}</span>
+                        <span class="card-rarity rarity-${card.rarity}">${card.rarity}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-name">${card.name_en}</div>
+                        <div class="card-name-jp">${card.name_jp || ''}</div>
+                        <div class="card-set">${card.set_name_en} (${card.set_code})</div>
+                        <div class="price-grid">
+                            <div class="price-box">
+                                <div class="price-label">Ungraded (EN)</div>
+                                <div class="price-value price-en">${formatPrice(card.prices?.ungraded?.en?.price)}</div>
+                            </div>
+                            <div class="price-box">
+                                <div class="price-label">PSA 10 (EN)</div>
+                                <div class="price-value price-en">${formatPrice(card.prices?.psa10?.en?.price)}</div>
+                            </div>
+                            <div class="price-box">
+                                <div class="price-label">Ungraded (JP)</div>
+                                <div class="price-value price-jp">${formatPrice(card.prices?.ungraded?.jp?.price, '¥')}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show card detail
+        async function showCardDetail(cardId) {
+            const card = currentResults.find(c => c.id === cardId);
+            if (!card) return;
+
+            document.getElementById('cardModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="detail-header">
+                    <img src="${card.image_url || ''}" alt="${card.name_en}" class="detail-image" 
+                        onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22420%22><rect fill=%22%2316213e%22 width=%22300%22 height=%22420%22/><text fill=%22%23ffd700%22 font-size=%2260%22 x=%22150%22 y=%22210%22 text-anchor=%22middle%22>🏴‍☠️</text></svg>'">
+                    <div class="detail-info">
+                        <span class="card-number">${card.card_number}</span>
+                        <h2>${card.name_en}</h2>
+                        <h3>${card.name_jp || ''}</h3>
+                        <span class="card-rarity rarity-${card.rarity}">${card.rarity}</span>
+                        <div class="detail-stats">
+                            <div class="stat-item"><div class="stat-label">Type</div><div class="stat-value">${card.card_type}</div></div>
+                            <div class="stat-item"><div class="stat-label">Color</div><div class="stat-value">${card.color}</div></div>
+                            <div class="stat-item"><div class="stat-label">Cost</div><div class="stat-value">${card.cost}</div></div>
+                            <div class="stat-item"><div class="stat-label">Power</div><div class="stat-value">${card.power || '-'}</div></div>
+                            <div class="stat-item"><div class="stat-label">Counter</div><div class="stat-value">${card.counter || '-'}</div></div>
+                            <div class="stat-item"><div class="stat-label">Attribute</div><div class="stat-value">${card.attribute || '-'}</div></div>
+                        </div>
+                    </div>
+                </div>
+                <h3 style="color: var(--accent-gold); margin: 2rem 0 1rem; font-family: 'Press Start 2P', cursive; font-size: 0.7rem;">💰 MARKET PRICES</h3>
+                <table class="price-table">
+                    <thead>
+                        <tr><th>Grade</th><th>English (USD)</th><th>Japanese (JPY)</th></tr>
+                    </thead>
+                    <tbody>
+                        ${['ungraded', 'psa9', 'psa10', 'bgs9', 'bgs9.5', 'bgs10'].map(grade => {
+                            const enPrice = card.prices?.[grade]?.en?.price;
+                            const jpPrice = card.prices?.[grade]?.jp?.price;
+                            const gradeLabel = grade === 'ungraded' ? 'Ungraded (Raw)' : grade.toUpperCase();
+                            return `
+                                <tr>
+                                    <td><span class="grade-badge grade-${grade}">${gradeLabel}</span></td>
+                                    <td style="color: var(--accent-green);">${enPrice ? `$${enPrice.toFixed(2)}` : 'N/A'}</td>
+                                    <td style="color: var(--accent-blue);">${jpPrice ? `¥${Math.round(jpPrice)}` : 'N/A'}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+                <h3 style="color: var(--accent-gold); margin: 2rem 0 1rem; font-family: 'Press Start 2P', cursive; font-size: 0.7rem;">📈 PRICE HISTORY</h3>
+                <div class="chart-container"><canvas id="priceChart"></canvas></div>
+            `;
+
+            // Load chart
+            setTimeout(() => loadPriceChart(cardId), 100);
+        }
+
+        // Load price chart
+        async function loadPriceChart(cardId) {
+            const ctx = document.getElementById('priceChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Day 1', 'Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30'],
+                    datasets: [{
+                        label: 'PSA 10 Price (USD)',
+                        data: generateMockHistory(),
+                        borderColor: '#ffd700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#fff', font: { family: 'VT323', size: 14 } } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#a0a0a0', font: { family: 'VT323' } }, grid: { color: '#2d3a5a' } },
+                        y: { ticks: { color: '#a0a0a0', font: { family: 'VT323' }, callback: v => '$' + v }, grid: { color: '#2d3a5a' } }
+                    }
+                }
+            });
+        }
+
+        function generateMockHistory() {
+            const base = 50 + Math.random() * 100;
+            return Array.from({ length: 7 }, (_, i) => base + (Math.random() - 0.5) * 20);
+        }
+
+        // ===== CAMERA SCANNER =====
+        async function openScanner() {
+            document.getElementById('scannerModal').classList.add('show');
+            
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' },
+                    audio: false
+                });
+                document.getElementById('scannerVideo').srcObject = stream;
+            } catch (err) {
+                console.error('Camera error:', err);
+                alert('Could not access camera. Please allow camera permissions.');
+            }
+        }
+
+        function closeScanner() {
+            document.getElementById('scannerModal').classList.remove('show');
+            document.getElementById('scanResult').classList.remove('show');
+            
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+        }
+
+        async function captureCard() {
+            const video = document.getElementById('scannerVideo');
+            const canvas = document.getElementById('scannerCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size to match video
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Draw video frame to canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Get image data
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            // Simulate card recognition (in production, send to vision API)
+            const detectedCard = await recognizeCard(imageData);
+            
+            if (detectedCard) {
+                showScanResult(detectedCard);
+            } else {
+                alert('No card recognized. Try again with better lighting.');
+            }
+        }
+
+        async function recognizeCard(imageData) {
+            // Simulate AI card recognition
+            // In production, this would call a vision API like Google Vision, AWS Rekognition, or a custom ML model
+            
+            // For demo, randomly select a card from current results or default set
+            if (currentResults.length > 0) {
+                return currentResults[Math.floor(Math.random() * currentResults.length)];
+            }
+            
+            // Default demo cards
+            const demoCards = [
+                { id: 2, name_en: 'Monkey D. Luffy', card_number: 'OP01-002', rarity: 'SEC', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP01-002.png' },
+                { id: 7, name_en: 'Shanks', card_number: 'OP01-007', rarity: 'SEC', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP01-007.png' },
+                { id: 1, name_en: 'Roronoa Zoro', card_number: 'OP01-001', rarity: 'SR', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP01-001.png' }
+            ];
+            
+            return demoCards[Math.floor(Math.random() * demoCards.length)];
+        }
+
+        function showScanResult(card) {
+            const resultDiv = document.getElementById('scanResult');
+            const contentDiv = document.getElementById('scanResultContent');
+            
+            contentDiv.innerHTML = `
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+                    <img src="${card.image_url}" style="width: 100px; border-radius: 8px;" onerror="this.style.display='none'">
+                    <div style="text-align: left;">
+                        <h4 style="color: var(--accent-gold);">${card.name_en}</h4>
+                        <p style="color: var(--text-secondary);">${card.card_number} • ${card.rarity}</p>
+                        <button class="scan-btn" style="margin-top: 0.5rem;" onclick="viewScannedCard(${card.id})">View Details →</button>
+                    </div>
+                </div>
+            `;
+            
+            resultDiv.classList.add('show');
+        }
+
+        async function viewScannedCard(cardId) {
+            closeScanner();
+            
+            // Fetch full card details
+            try {
+                const response = await fetch(`${API_BASE}/cards/${cardId}`);
+                const card = await response.json();
+                currentResults = [card];
+                showCardDetail(cardId);
+            } catch (err) {
+                console.error('Error fetching card:', err);
+            }
+        }
+
+        // Utility functions
+        function formatPrice(price, symbol = '$') {
+            if (price === null || price === undefined) return 'N/A';
+            return symbol === '$' ? `$${price.toFixed(2)}` : `¥${Math.round(price)}`;
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showError(msg) {
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsGrid').innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--accent-red);"><h3>❌ ${msg}</h3></div>`;
+        }
+
+        function closeModal() {
+            document.getElementById('cardModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on overlay click
+        document.getElementById('cardModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('cardModal')) closeModal();
+        });
+    </script>
+</body>
+</html>
