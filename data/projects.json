@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-29T23:00:00+08:00",
+  "lastUpdated": "2026-03-29T23:30:00+08:00",
   "projects": [
     {
       "id": "dealflow",
@@ -50,11 +50,31 @@
       "deployBy": "2026-03-25",
       "description": "Latest Agent Office v9.5 - Meebit style with arcade integration",
       "versions": [
-        {"version": "v9.5", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v95.html", "date": "2026-03-22"},
-        {"version": "v9.0", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v90.html", "date": "2026-03-22"},
-        {"version": "v8.5", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v85.html", "date": "2026-03-22"},
-        {"version": "v8.0", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v80.html", "date": "2026-03-22"},
-        {"version": "v7.0", "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v70.html", "date": "2026-03-22"}
+        {
+          "version": "v9.5",
+          "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v95.html",
+          "date": "2026-03-22"
+        },
+        {
+          "version": "v9.0",
+          "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v90.html",
+          "date": "2026-03-22"
+        },
+        {
+          "version": "v8.5",
+          "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v85.html",
+          "date": "2026-03-22"
+        },
+        {
+          "version": "v8.0",
+          "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v80.html",
+          "date": "2026-03-22"
+        },
+        {
+          "version": "v7.0",
+          "url": "https://dashboard-ten-sand-20.vercel.app/agent-office-v70.html",
+          "date": "2026-03-22"
+        }
       ]
     },
     {
@@ -179,7 +199,7 @@
       "description": "Polymarket prediction market trading bot (BLOCKED - Regional restriction)",
       "mode": "REGION_BLOCKED",
       "blocker": "Singapore IP blocked by Polymarket",
-      "solution": "Need US-based VPS/VPN",
+      "solution": "VPN_SOLUTION.md created - ready for VPS deployment",
       "location": "/agents/polymarket/",
       "language": "Python 3.11+",
       "keyDifferences": [
@@ -222,10 +242,10 @@
     {
       "id": "tower-defense",
       "name": "Idle Tower Defense Game",
-      "status": "active",
-      "completion": 35,
-      "url": null,
-      "pendingTasks": 5,
+      "status": "deployed",
+      "completion": 100,
+      "url": "https://airickeff-af.github.io/mission-control-v2/tower-defense-game.html",
+      "pendingTasks": 0,
       "lead": "Pixel",
       "targetCompletion": "2026-04-01",
       "targetPercent": 100,
@@ -248,7 +268,7 @@
       "id": "quill-research",
       "name": "Quill Research",
       "status": "active",
-      "completion": 75,
+      "completion": 85,
       "url": "https://dashboard-ten-sand-20.vercel.app/micah-johnson.html",
       "pendingTasks": 0,
       "lead": "Quill",
@@ -294,13 +314,20 @@
           "topic": "MLB to NFT Artist to NYT Bestseller",
           "url": "https://dashboard-ten-sand-20.vercel.app/micah-johnson.html",
           "featured": true
+        },
+        {
+          "name": "Vitalik Buterin",
+          "date": "2026-03-29",
+          "words": 450,
+          "file": "2026-03-29-vitalik-buterin.md",
+          "topic": "Ethereum Creator, Crypto Prodigy"
         }
       ],
       "stats": {
-        "profilesCompleted": 3,
+        "profilesCompleted": 4,
         "profilesPending": 0,
         "wordsPerProfile": "3500-5200",
-        "totalWords": 13500,
+        "totalWords": 13950,
         "topics": [
           "Crypto",
           "AI",
@@ -324,9 +351,24 @@
       "deployBy": "2026-03-20",
       "description": "Downloadable memory archive with procedural, semantic, and episodic memory files",
       "memoryFiles": {
-        "procedural": ["NEVER_FORGET.md", "agents.md"],
-        "semantic": ["MEMORY.md", "projects.md", "decisions.md", "lessons.md", "preferences.md"],
-        "episodic": ["2026-03-25.md", "2026-03-24.md", "2026-03-20.md", "2026-03-18.md", "2026-03-16.md"],
+        "procedural": [
+          "NEVER_FORGET.md",
+          "agents.md"
+        ],
+        "semantic": [
+          "MEMORY.md",
+          "projects.md",
+          "decisions.md",
+          "lessons.md",
+          "preferences.md"
+        ],
+        "episodic": [
+          "2026-03-25.md",
+          "2026-03-24.md",
+          "2026-03-20.md",
+          "2026-03-18.md",
+          "2026-03-16.md"
+        ],
         "totalFiles": 20
       },
       "stats": {
@@ -338,9 +380,9 @@
       "id": "agent-arcade",
       "name": "Agent Arcade",
       "status": "deployed",
-      "completion": 80,
+      "completion": 95,
       "url": "https://dashboard-ten-sand-20.vercel.app/agent-arcade.html",
-      "pendingTasks": 3,
+      "pendingTasks": 1,
       "lead": "Pixel",
       "targetCompletion": "2026-03-25",
       "targetPercent": 100,
@@ -430,7 +472,7 @@
       "targetPercent": 100,
       "priority": 18,
       "deployBy": "2026-03-29",
-      "description": "Space URL → Transcript with 2x speed capture. Paste a Space replay URL, capture at double speed, and get AI transcription with Whisper.",
+      "description": "Space URL \u2192 Transcript with 2x speed capture. Paste a Space replay URL, capture at double speed, and get AI transcription with Whisper.",
       "location": "/mission-control-v2/x-spaces-capture-link.html",
       "version": "v1.0",
       "urls": {
