@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏴‍☠️ One Piece TCG Collector</title>
+    <title>🏴‍☠️ One Piece TCG Collector | Price Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -18,9 +18,13 @@
             --accent-red: #e94560;
             --accent-blue: #00d9ff;
             --accent-green: #00ff88;
+            --accent-purple: #9b59b6;
             --border-color: #2d3a5a;
+            --shadow-color: rgba(0, 0, 0, 0.5);
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'VT323', monospace;
             background: var(--bg-primary);
@@ -28,6 +32,7 @@
             min-height: 100vh;
             font-size: 18px;
         }
+
         .header {
             background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
             border-bottom: 4px solid var(--accent-gold);
@@ -35,15 +40,36 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
+
         .logo { display: flex; align-items: center; gap: 1rem; }
-        .logo-icon { font-size: 3rem; }
+        .logo-icon { font-size: 3rem; filter: drop-shadow(0 0 10px var(--accent-gold)); }
         .logo-text {
             font-family: 'Press Start 2P', cursive;
             font-size: 0.7rem;
             line-height: 1.4;
         }
-        .logo-text span { color: var(--accent-gold); }
+        .logo-text span { color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold); }
+
+        .header-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .badge-psa { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000; }
+        .badge-ebay { background: linear-gradient(135deg, #e53238, #0064d2); color: #fff; }
+        .badge-tcg { background: linear-gradient(135deg, #00d9ff, #0099cc); color: #000; }
+
         .scan-btn {
             padding: 0.75rem 1.5rem;
             background: var(--accent-red);
@@ -52,14 +78,23 @@
             font-family: 'VT323', monospace;
             font-size: 1.1rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
         }
+        .scan-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-red); }
+
         .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+        /* Search Section */
         .search-section { text-align: center; padding: 3rem 0; }
         .search-title {
             font-family: 'Press Start 2P', cursive;
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
             color: var(--accent-gold);
+            text-shadow: 0 0 20px var(--accent-gold);
         }
         .search-box { max-width: 700px; margin: 0 auto; position: relative; }
         .search-input {
@@ -71,8 +106,9 @@
             border: 3px solid var(--border-color);
             border-radius: 8px;
             color: var(--text-primary);
+            outline: none;
         }
-        .search-input:focus { border-color: var(--accent-gold); outline: none; }
+        .search-input:focus { border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
         .search-btn {
             position: absolute;
             right: 8px;
@@ -87,12 +123,50 @@
             font-size: 1.1rem;
             cursor: pointer;
         }
+
+        /* Price Sources Info */
+        .sources-info {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px solid var(--border-color);
+        }
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .source-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        .source-icon { font-size: 1.5rem; }
+        .source-name { font-weight: bold; }
+        .source-desc { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* Results Grid */
+        .results-section { margin-top: 2rem; }
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
-            margin-top: 2rem;
         }
+
+        /* Card Component */
         .card-item {
             background: var(--bg-card);
             border: 3px solid var(--border-color);
@@ -104,6 +178,7 @@
         .card-item:hover {
             transform: translateY(-5px);
             border-color: var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
         }
         .card-image-container {
             width: 100%;
@@ -112,8 +187,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
-        .card-image { width: 100%; height: 100%; object-fit: contain; }
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .card-item:hover .card-image { transform: scale(1.05); }
+        .card-image-placeholder {
+            font-size: 4rem;
+            opacity: 0.5;
+        }
         .card-header {
             background: var(--bg-secondary);
             padding: 0.75rem 1rem;
@@ -137,26 +224,53 @@
         .rarity-R { background: linear-gradient(135deg, #cd7f32, #daa520); color: #fff; }
         .rarity-U { background: linear-gradient(135deg, #4169e1, #6495ed); color: #fff; }
         .rarity-C { background: var(--bg-card-hover); color: var(--text-secondary); }
+
         .card-body { padding: 1rem; }
         .card-name { font-size: 1.3rem; margin-bottom: 0.2rem; }
         .card-name-jp { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
         .card-set { font-size: 0.85rem; color: var(--accent-blue); }
+
+        /* Price Grid */
         .price-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 0.5rem;
             margin-top: 1rem;
             padding-top: 1rem;
             border-top: 2px solid var(--border-color);
         }
-        .price-box { text-align: center; padding: 0.5rem; background: var(--bg-secondary); border-radius: 6px; }
-        .price-label { font-size: 0.7rem; color: var(--text-secondary); }
-        .price-value { font-size: 1rem; font-weight: bold; }
-        .price-en { color: var(--accent-green); }
-        .price-jp { color: var(--accent-blue); }
+        .price-box { 
+            text-align: center; 
+            padding: 0.75rem; 
+            background: var(--bg-secondary); 
+            border-radius: 6px; 
+        }
+        .price-box.highlight { border: 2px solid var(--accent-gold); }
+        .price-label { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
+        .price-value { font-size: 1.1rem; font-weight: bold; }
+        .price-psa { color: var(--accent-gold); }
+        .price-ebay { color: var(--accent-green); }
+        .price-tcg { color: var(--accent-blue); }
+
+        /* Source Tags */
+        .source-tag {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            margin-left: 0.25rem;
+        }
+        .tag-psa { background: var(--accent-gold); color: #000; }
+        .tag-ebay { background: var(--accent-green); color: #000; }
+        .tag-tcg { background: var(--accent-blue); color: #000; }
+
+        /* Detail Modal */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.9);
             display: none;
             justify-content: center;
@@ -173,10 +287,13 @@
             max-width: 1000px;
             width: 100%;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .modal-close {
             position: absolute;
-            top: 1rem; right: 1rem;
+            top: 1rem;
+            right: 1rem;
             font-size: 2rem;
             background: none;
             border: none;
@@ -191,7 +308,11 @@
             margin-bottom: 2rem;
             flex-wrap: wrap;
         }
-        .detail-image { width: 300px; border-radius: 12px; }
+        .detail-image {
+            width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
         .detail-info { flex: 1; min-width: 300px; }
         .detail-info h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--accent-gold); }
         .detail-info h3 { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 1rem; }
@@ -204,6 +325,8 @@
         .stat-item { padding: 0.5rem; background: var(--bg-card); border-radius: 6px; text-align: center; }
         .stat-label { font-size: 0.75rem; color: var(--text-secondary); }
         .stat-value { font-size: 1.1rem; color: var(--accent-blue); }
+
+        /* Price Table */
         .price-table {
             width: 100%;
             border-collapse: collapse;
@@ -228,6 +351,13 @@
         .grade-psa10 { background: var(--accent-gold); color: #000; }
         .grade-psa9 { background: var(--accent-blue); color: #000; }
         .grade-ungraded { background: var(--text-secondary); color: #000; }
+
+        .best-price { 
+            background: rgba(255, 215, 0, 0.2); 
+            border: 2px solid var(--accent-gold);
+        }
+
+        /* Chart Container */
         .chart-container {
             background: var(--bg-card);
             border-radius: 12px;
@@ -235,10 +365,15 @@
             margin-top: 2rem;
             height: 300px;
         }
+
+        /* Camera Scanner Modal */
         .scanner-modal {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
             display: none;
             justify-content: center;
             align-items: center;
@@ -261,6 +396,25 @@
             border-radius: 8px;
             margin: 1rem 0;
         }
+        .scanner-canvas { display: none; }
+        .scanner-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .scan-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            display: none;
+        }
+        .scan-result.show { display: block; }
+
+        .loading { text-align: center; padding: 3rem; font-size: 1.5rem; color: var(--accent-gold); }
+        .hidden { display: none !important; }
+
         .footer {
             text-align: center;
             padding: 2rem;
@@ -268,13 +422,15 @@
             border-top: 2px solid var(--border-color);
             color: var(--text-secondary);
         }
-        .loading { text-align: center; padding: 3rem; font-size: 1.5rem; color: var(--accent-gold); }
-        .hidden { display: none !important; }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .results-grid { grid-template-columns: repeat(2, 1fr); }
             .detail-header { flex-direction: column; align-items: center; }
             .detail-image { width: 200px; }
             .detail-stats { grid-template-columns: repeat(2, 1fr); }
+            .scanner-content { padding: 1rem; }
+            .header { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -287,46 +443,17 @@
                 <span>TCG COLLECTOR</span>
             </div>
         </div>
-        <button class="scan-btn" onclick="openScanner()">📷 SCAN CARD</button>
+        <div class="header-badges">
+            <span class="badge badge-psa">PSA</span>
+            <span class="badge badge-ebay">eBay</span>
+            <span class="badge badge-tcg">TCGPlayer</span>
+        </div>
+        <button class="scan-btn" onclick="openScanner()">
+            📷 SCAN CARD
+        </button>
     </header>
 
     <div class="container">
-        <!-- Investment Index Section -->
-        <section style="margin-bottom: 3rem;">
-            <h2 style="font-family: 'Press Start 2P', cursive; font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 1.5rem; text-align: center;">
-                📊 TCGKING.NL INVESTMENT INDEX
-            </h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                <div style="background: var(--bg-card); border: 2px solid var(--border-color); padding: 1rem; border-radius: 8px; text-align: center;">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">All Index</div>
-                    <div style="font-size: 1.8rem; font-weight: bold; color: var(--text-primary);">99.4</div>
-                    <div style="font-size: 0.9rem; color: var(--accent-red);">▼ -0.7% today</div>
-                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">-8.6% this month</div>
-                </div>
-                <div style="background: var(--bg-card); border: 2px solid var(--accent-gold); padding: 1rem; border-radius: 8px; text-align: center;">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Manga Rare Index</div>
-                    <div style="font-size: 1.8rem; font-weight: bold; color: var(--accent-gold);">109.2</div>
-                    <div style="font-size: 0.9rem; color: var(--accent-red);">▼ -1.8% today</div>
-                    <div style="font-size: 0.8rem; color: var(--accent-green); margin-top: 0.5rem;">+9.2% YTD 🔥</div>
-                </div>
-                <div style="background: var(--bg-card); border: 2px solid var(--border-color); padding: 1rem; border-radius: 8px; text-align: center;">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Secret Rare (SEC)</div>
-                    <div style="font-size: 1.8rem; font-weight: bold; color: var(--text-primary);">104.1</div>
-                    <div style="font-size: 0.9rem; color: var(--accent-red);">▼ -0.3% today</div>
-                    <div style="font-size: 0.8rem; color: var(--accent-green); margin-top: 0.5rem;">+4.1% YTD</div>
-                </div>
-                <div style="background: var(--bg-card); border: 2px solid var(--border-color); padding: 1rem; border-radius: 8px; text-align: center;">
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Sealed Box Index</div>
-                    <div style="font-size: 1.8rem; font-weight: bold; color: var(--accent-green);">115.0</div>
-                    <div style="font-size: 0.9rem; color: var(--accent-red);">▼ -2.1% today</div>
-                    <div style="font-size: 0.8rem; color: var(--accent-green); margin-top: 0.5rem;">+15.0% YTD 🚀</div>
-                </div>
-            </div>
-            <div style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
-                📈 Data from <a href="https://tcgking.nl/blogs/investing" target="_blank" style="color: var(--accent-gold);">TCGKing.nl</a> • Base 100 = Jan 1, 2026 • Updated: 2026-03-28
-            </div>
-        </section>
-
         <section class="search-section">
             <h1 class="search-title">SEARCH THE GRAND LINE</h1>
             <div class="search-box">
@@ -337,33 +464,77 @@
             </div>
         </section>
 
-        <section id="resultsSection" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <section class="sources-info">
+            <h3 style="color: var(--accent-gold); font-family: 'Press Start 2P', cursive; font-size: 0.7rem;">
+                💰 PRICE SOURCES
+            </h3>
+            <div class="sources-grid">
+                <div class="source-item">
+                    <span class="source-icon">🏆</span>
+                    <div>
+                        <div class="source-name">PSA</div>
+                        <div class="source-desc">Graded PSA 9/10 prices</div>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">🛒</span>
+                    <div>
+                        <div class="source-name">eBay</div>
+                        <div class="source-desc">Sold & active listings</div>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">🎴</span>
+                    <div>
+                        <div class="source-name">TCGPlayer</div>
+                        <div class="source-desc">Market pricing</div>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <span class="source-icon">🇯🇵</span>
+                    <div>
+                        <div class="source-name">Japanese</div>
+                        <div class="source-desc">Yuyu-tei, Card Rush</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section" id="resultsSection">
+            <div class="results-header">
                 <h2>🏆 Search Results</h2>
                 <span id="resultsCount"></span>
             </div>
             <div class="results-grid" id="resultsGrid"></div>
         </section>
 
-        <section class="loading hidden" id="loading">
+        <section class="loading" id="loading" style="display: none;">
             Searching the Grand Line...
         </section>
     </div>
 
-    <!-- Scanner Modal -->
+    <!-- Camera Scanner Modal -->
     <div class="scanner-modal" id="scannerModal">
         <div class="scanner-content">
             <h2 style="color: var(--accent-gold); margin-bottom: 1rem;">📷 Card Scanner</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Position your One Piece card in the frame</p>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                Position your One Piece card in the frame<br>
+                <small>(PSA App-style recognition)</small>
+            </p>
             <video class="scanner-video" id="scannerVideo" autoplay playsinline></video>
-            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+            <canvas class="scanner-canvas" id="scannerCanvas"></canvas>
+            <div class="scanner-controls">
                 <button class="scan-btn" onclick="captureCard()">📸 SNAP</button>
                 <button class="scan-btn" style="background: var(--bg-secondary);" onclick="closeScanner()">✕ CLOSE</button>
+            </div>
+            <div class="scan-result" id="scanResult">
+                <h3>Card Detected!</h3>
+                <div id="scanResultContent"></div>
             </div>
         </div>
     </div>
 
-    <!-- Detail Modal -->
+    <!-- Card Detail Modal -->
     <div class="modal-overlay" id="cardModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">×</button>
@@ -372,11 +543,13 @@
     </div>
 
     <footer class="footer">
-        🏴‍☠️ One Piece TCG Collector | EN & JP Markets | PSA/BGS Grading
+        🏴‍☠️ One Piece TCG Collector | Multi-Source Price Tracker<br>
+        PSA • eBay • TCGPlayer • Japanese Markets | 📷 AI Card Scanner<br>
+        <small>Built by Nexus (Mission Control)</small>
     </footer>
 
     <script>
-        // Card Database with official images
+        // Mock database with full card data and multi-source prices
         const cardsDB = [
             { id: 1, card_number: 'OP01-001', name_en: 'Roronoa Zoro', name_jp: 'ロロノア・ゾロ', set_code: 'OP01', set_name_en: 'Romance Dawn', rarity: 'SR', card_type: 'Character', color: 'Green', cost: 3, power: 5000, attribute: 'Slash', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP01-001.png' },
             { id: 2, card_number: 'OP01-002', name_en: 'Monkey D. Luffy', name_jp: 'モンキー・D・ルフィ', set_code: 'OP01', set_name_en: 'Romance Dawn', rarity: 'SEC', card_type: 'Character', color: 'Red', cost: 4, power: 6000, attribute: 'Strike', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP01-002.png' },
@@ -396,108 +569,97 @@
             { id: 16, card_number: 'OP01-016', name_en: 'Marco', name_jp: 'マルコ', set_code: 'OP01', set_name_en: 'Romance Dawn', rarity: 'SR', card_type: 'Character', color: 'Blue', cost: 3, power: 4000, attribute: 'Special', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP01-016.png' },
             { id: 17, card_number: 'OP01-021', name_en: 'Boa Hancock', name_jp: 'ボア・ハンコック', set_code: 'OP01', set_name_en: 'Romance Dawn', rarity: 'SR', card_type: 'Character', color: 'Purple', cost: 4, power: 5000, attribute: 'Special', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP01-021.png' },
             { id: 18, card_number: 'OP01-030', name_en: 'Kozuki Oden', name_jp: '光月おでん', set_code: 'OP01', set_name_en: 'Romance Dawn', rarity: 'SR', card_type: 'Character', color: 'Red', cost: 5, power: 7000, attribute: 'Slash', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP01-030.png' },
-            { id: 19, card_number: 'OP02-001', name_en: 'Yamato', name_jp: 'ヤマト', set_code: 'OP02', set_name_en: 'Paramount War', rarity: 'SEC', card_type: 'Character', color: 'Yellow', cost: 5, power: 6000, attribute: 'Strike', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP02-001.png' },
-            { id: 20, card_number: 'OP02-002', name_en: 'Kaido', name_jp: 'カイドウ', set_code: 'OP02', set_name_en: 'Paramount War', rarity: 'SEC', card_type: 'Character', color: 'Purple', cost: 8, power: 12000, attribute: 'Strike', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP02-002.png' },
-            { id: 21, card_number: 'OP03-001', name_en: 'Sabo', name_jp: 'サボ', set_code: 'OP03', set_name_en: 'Pillars of Strength', rarity: 'SEC', card_type: 'Character', color: 'Red', cost: 5, power: 6000, attribute: 'Special', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP03-001.png' },
-            { id: 22, card_number: 'OP03-002', name_en: 'Charlotte Katakuri', name_jp: 'シャーロット・カタクリ', set_code: 'OP03', set_name_en: 'Pillars of Strength', rarity: 'SEC', card_type: 'Character', color: 'Green', cost: 7, power: 7000, attribute: 'Strike', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP03-002.png' },
-            { id: 23, card_number: 'OP04-001', name_en: 'Monkey D. Dragon', name_jp: 'モンキー・D・ドラゴン', set_code: 'OP04', set_name_en: 'Kingdoms of Intrigue', rarity: 'SEC', card_type: 'Character', color: 'Green', cost: 6, power: 7000, attribute: 'Special', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP04-001.png' },
-            { id: 24, card_number: 'OP05-001', name_en: 'Uta', name_jp: 'ウタ', set_code: 'OP05', set_name_en: 'Awakening of the New Era', rarity: 'SEC', card_type: 'Character', color: 'Red', cost: 3, power: 4000, attribute: 'Special', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP05-001.png' },
-            { id: 25, card_number: 'OP06-001', name_en: 'Shanks (Film)', name_jp: 'シャンクス（FILM）', set_code: 'OP06', set_name_en: 'Wings of the Captain', rarity: 'SEC', card_type: 'Character', color: 'Red', cost: 5, power: 7000, attribute: 'Slash', image_url: 'https://en.onepiece-cardgame.com/images/cardlist/card/OP06-001.png' }
         ];
 
-        // Generate prices for each card
-        function generatePrices(card) {
-            const basePrices = { 'C': 0.50, 'U': 1.00, 'R': 3.00, 'SR': 15.00, 'SEC': 80.00, 'L': 150.00, 'SP': 25.00 };
-            const gradeMultipliers = { 'ungraded': 1, 'psa9': 3, 'psa10': 10, 'bgs9': 3.5, 'bgs9.5': 8, 'bgs10': 15 };
-            const base = basePrices[card.rarity] || 1.00;
+        // Generate multi-source mock prices
+        function generateMockPrices(rarity) {
+            const basePrices = { 'C': 0.50, 'U': 1.00, 'R': 3.00, 'SR': 15.00, 'SEC': 80.00, 'L': 150.00 };
+            const base = basePrices[rarity] || 1.00;
             
-            const prices = {};
-            for (const grade of Object.keys(gradeMultipliers)) {
-                const multiplier = gradeMultipliers[grade];
-                const variance = 0.9 + Math.random() * 0.2;
-                prices[grade] = {
-                    en: { price: parseFloat((base * multiplier * variance).toFixed(2)), currency: 'USD' },
-                    jp: { price: Math.round(base * multiplier * variance * 150), currency: 'JPY' }
-                };
-            }
-            return prices;
+            return {
+                ungraded: {
+                    psa: null,
+                    ebay: { price: base * (0.9 + Math.random() * 0.2), source: 'eBay Sold' },
+                    tcg: { price: base, source: 'TCGPlayer' },
+                    jp: { price: base * 150, source: 'Yuyu-tei' }
+                },
+                psa9: {
+                    psa: { price: base * 2.5, auctionCount: Math.floor(Math.random() * 30) + 5 },
+                    ebay: { price: base * 2.3, source: 'eBay Sold' },
+                    tcg: { price: base * 2.8, source: 'TCGPlayer' },
+                    jp: { price: base * 400, source: 'Yuyu-tei' }
+                },
+                psa10: {
+                    psa: { price: base * 8, auctionCount: Math.floor(Math.random() * 50) + 10 },
+                    ebay: { price: base * 7.5, source: 'eBay Sold' },
+                    tcg: { price: base * 8.5, source: 'TCGPlayer' },
+                    jp: { price: base * 1200, source: 'Yuyu-tei' }
+                }
+            };
         }
 
         // Add prices to cards
         cardsDB.forEach(card => {
-            card.prices = generatePrices(card);
+            card.prices = generateMockPrices(card.rarity);
         });
 
         let currentResults = [];
         let stream = null;
 
-        // Fuzzy search
-        function fuzzySearch(query, items) {
-            const results = [];
-            const queryLower = query.toLowerCase();
-            
-            for (const item of items) {
-                let score = 0;
-                const nameLower = item.name_en.toLowerCase();
-                const jpLower = item.name_jp.toLowerCase();
-                const numberLower = item.card_number.toLowerCase();
-                
-                if (nameLower === queryLower) score = 1;
-                else if (nameLower.startsWith(queryLower)) score = 0.9;
-                else if (nameLower.includes(queryLower)) score = 0.7;
-                else if (jpLower.includes(queryLower)) score = 0.6;
-                else if (numberLower.includes(queryLower)) score = 1;
-                else {
-                    // Fuzzy match
-                    const dist = levenshteinDistance(queryLower, nameLower);
-                    if (dist <= 3) score = 0.5 - (dist * 0.1);
-                }
-                
-                if (score > 0) {
-                    results.push({ item, score });
-                }
-            }
-            
-            return results.sort((a, b) => b.score - a.score);
-        }
+        // Initialize
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchCards();
+        });
 
-        function levenshteinDistance(a, b) {
-            const matrix = [];
-            for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-            for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-            for (let i = 1; i <= b.length; i++) {
-                for (let j = 1; j <= a.length; j++) {
-                    matrix[i][j] = b[i-1] === a[j-1] ? matrix[i-1][j-1] : Math.min(
-                        matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1)
-                    );
-                }
-            }
-            return matrix[b.length][a.length];
-        }
-
+        // Search cards with Fuse.js-like fuzzy matching
         function searchCards() {
-            const query = document.getElementById('searchInput').value.trim();
-            if (query.length < 2) return;
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (query.length < 2) {
+                document.getElementById('resultsSection').style.display = 'none';
+                return;
+            }
 
             showLoading();
             
-            setTimeout(() => {
-                const results = fuzzySearch(query, cardsDB);
-                currentResults = results.map(r => r.item);
-                displayResults(currentResults, results.length);
-                hideLoading();
-            }, 300);
+            // Simple fuzzy search
+            const results = cardsDB.filter(card => {
+                const searchStr = `${card.name_en} ${card.name_jp} ${card.card_number}`.toLowerCase();
+                return searchStr.includes(query) || 
+                       card.name_en.toLowerCase().includes(query) ||
+                       card.card_number.toLowerCase().includes(query);
+            });
+
+            currentResults = results;
+            displayResults(results, results.length);
+            hideLoading();
         }
 
+        // Display results
         function displayResults(results, count) {
             document.getElementById('resultsSection').style.display = 'block';
             document.getElementById('resultsCount').textContent = `${count} treasure${count !== 1 ? 's' : ''} found`;
 
-            document.getElementById('resultsGrid').innerHTML = results.map(card => `
+            if (results.length === 0) {
+                document.getElementById('resultsGrid').innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <h3 style="color: var(--accent-red);">No cards found</h3>
+                        <p style="color: var(--text-secondary);">Try searching for 'Luffy', 'Shanks', or 'OP01'</p>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('resultsGrid').innerHTML = results.map(card => {
+                const bestUngraded = getBestPrice(card.prices.ungraded);
+                const bestPsa10 = getBestPrice(card.prices.psa10);
+                
+                return `
                 <div class="card-item" onclick="showCardDetail(${card.id})">
                     <div class="card-image-container">
-                        <img src="${card.image_url}" alt="${card.name_en}" class="card-image" 
-                            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22280%22><rect fill=%22%2316213e%22 width=%22200%22 height=%22280%22/><text fill=%22%23ffd700%22 font-size=%2240%22 x=%22100%22 y=%22140%22 text-anchor=%22middle%22>🏴‍☠️</text></svg>'">
+                        ${card.image_url 
+                            ? `<img src="${card.image_url}" alt="${card.name_en}" class="card-image" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'card-image-placeholder\'>🏴‍☠️</span>';">`
+                            : '<span class="card-image-placeholder">🏴‍☠️</span>'
+                        }
                     </div>
                     <div class="card-header">
                         <span class="card-number">${card.card_number}</span>
@@ -505,27 +667,41 @@
                     </div>
                     <div class="card-body">
                         <div class="card-name">${card.name_en}</div>
-                        <div class="card-name-jp">${card.name_jp}</div>
+                        <div class="card-name-jp">${card.name_jp || ''}</div>
                         <div class="card-set">${card.set_name_en}</div>
                         <div class="price-grid">
                             <div class="price-box">
-                                <div class="price-label">Ungraded (EN)</div>
-                                <div class="price-value price-en">$${card.prices.ungraded.en.price}</div>
+                                <div class="price-label">Ungraded<span class="source-tag tag-tcg">TCG</span></div>
+                                <div class="price-value price-tcg">${formatPrice(card.prices.ungraded.tcg?.price)}</div>
+                            </div>
+                            <div class="price-box highlight">
+                                <div class="price-label">PSA 10<span class="source-tag tag-psa">PSA</span></div>
+                                <div class="price-value price-psa">${formatPrice(card.prices.psa10.psa?.price)}</div>
                             </div>
                             <div class="price-box">
-                                <div class="price-label">PSA 10 (EN)</div>
-                                <div class="price-value price-en">$${card.prices.psa10.en.price}</div>
+                                <div class="price-label">eBay (Raw)<span class="source-tag tag-ebay">eBay</span></div>
+                                <div class="price-value price-ebay">${formatPrice(card.prices.ungraded.ebay?.price)}</div>
                             </div>
                             <div class="price-box">
-                                <div class="price-label">Ungraded (JP)</div>
-                                <div class="price-value price-jp">¥${card.prices.ungraded.jp.price}</div>
+                                <div class="price-label">Japanese<span class="source-tag">JP</span></div>
+                                <div class="price-value price-tcg">${formatPrice(card.prices.ungraded.jp?.price, '¥')}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
+        function getBestPrice(prices) {
+            const allPrices = [
+                prices.psa?.price,
+                prices.ebay?.price,
+                prices.tcg?.price
+            ].filter(p => p);
+            return allPrices.length > 0 ? Math.min(...allPrices) : null;
+        }
+
+        // Show card detail
         function showCardDetail(cardId) {
             const card = cardsDB.find(c => c.id === cardId);
             if (!card) return;
@@ -535,104 +711,216 @@
 
             document.getElementById('modalBody').innerHTML = `
                 <div class="detail-header">
-                    <img src="${card.image_url}" alt="${card.name_en}" class="detail-image" 
+                    <img src="${card.image_url || ''}" alt="${card.name_en}" class="detail-image" 
                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22420%22><rect fill=%22%2316213e%22 width=%22300%22 height=%22420%22/><text fill=%22%23ffd700%22 font-size=%2260%22 x=%22150%22 y=%22210%22 text-anchor=%22middle%22>🏴‍☠️</text></svg>'">
                     <div class="detail-info">
                         <span class="card-number">${card.card_number}</span>
                         <h2>${card.name_en}</h2>
-                        <h3>${card.name_jp}</h3>
+                        <h3>${card.name_jp || ''}</h3>
                         <span class="card-rarity rarity-${card.rarity}">${card.rarity}</span>
                         <div class="detail-stats">
                             <div class="stat-item"><div class="stat-label">Type</div><div class="stat-value">${card.card_type}</div></div>
                             <div class="stat-item"><div class="stat-label">Color</div><div class="stat-value">${card.color}</div></div>
                             <div class="stat-item"><div class="stat-label">Cost</div><div class="stat-value">${card.cost}</div></div>
                             <div class="stat-item"><div class="stat-label">Power</div><div class="stat-value">${card.power || '-'}</div></div>
-                            <div class="stat-item"><div class="stat-label">Counter</div><div class="stat-value">${card.counter || '-'}</div></div>
                             <div class="stat-item"><div class="stat-label">Attribute</div><div class="stat-value">${card.attribute || '-'}</div></div>
+                            <div class="stat-item"><div class="stat-label">Set</div><div class="stat-value">${card.set_code}</div></div>
                         </div>
                     </div>
                 </div>
-                <h3 style="color: var(--accent-gold); margin: 2rem 0 1rem; font-family: 'Press Start 2P', cursive; font-size: 0.7rem;">💰 MARKET PRICES</h3>
+                
+                <h3 style="color: var(--accent-gold); margin: 2rem 0 1rem; font-family: 'Press Start 2P', cursive; font-size: 0.7rem;">
+                    💰 MULTI-SOURCE PRICES
+                </h3>
                 <table class="price-table">
                     <thead>
-                        <tr><th>Grade</th><th>English (USD)</th><th>Japanese (JPY)</th></tr>
+                        <tr>
+                            <th>Grade</th>
+                            <th>PSA 🏆</th>
+                            <th>eBay 🛒</th>
+                            <th>TCGPlayer 🎴</th>
+                            <th>Japanese 🇯🇵</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        ${['ungraded', 'psa9', 'psa10', 'bgs9', 'bgs9.5', 'bgs10'].map(grade => {
-                            const enPrice = card.prices[grade].en.price;
-                            const jpPrice = card.prices[grade].jp.price;
-                            const gradeLabel = grade === 'ungraded' ? 'Ungraded (Raw)' : grade.toUpperCase();
+                        ${['ungraded', 'psa9', 'psa10'].map(grade => {
+                            const prices = card.prices[grade];
+                            const gradeLabel = grade === 'ungraded' ? 'Ungraded' : grade.toUpperCase();
+                            const isBest = grade === 'psa10';
                             return `
-                                <tr>
+                                <tr class="${isBest ? 'best-price' : ''}">
                                     <td><span class="grade-badge grade-${grade}">${gradeLabel}</span></td>
-                                    <td style="color: var(--accent-green);">$${enPrice.toFixed ? enPrice.toFixed(2) : enPrice}</td>
-                                    <td style="color: var(--accent-blue);">¥${jpPrice}</td>
+                                    <td style="color: var(--accent-gold);">${prices.psa ? `$${prices.psa.price.toFixed(2)}<br><small>(${prices.psa.auctionCount} auctions)</small>` : 'N/A'}</td>
+                                    <td style="color: var(--accent-green);">${prices.ebay ? `$${prices.ebay.price.toFixed(2)}` : 'N/A'}</td>
+                                    <td style="color: var(--accent-blue);">${prices.tcg ? `$${prices.tcg.price.toFixed(2)}` : 'N/A'}</td>
+                                    <td style="color: var(--accent-blue);">${prices.jp ? `¥${Math.round(prices.jp.price)}` : 'N/A'}</td>
                                 </tr>
                             `;
                         }).join('')}
                     </tbody>
                 </table>
-                <h3 style="color: var(--accent-gold); margin: 2rem 0 1rem; font-family: 'Press Start 2P', cursive; font-size: 0.7rem;">📈 PRICE HISTORY (30 Days)</h3>
-                <div class="chart-container">
-                    <canvas id="priceChart"></canvas>
+                
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px;">
+                    <h4 style="color: var(--accent-gold); margin-bottom: 0.5rem;">💡 Price Analysis</h4>
+                    <p style="color: var(--text-secondary);">
+                        • <strong>Best Raw Price:</strong> ${formatPrice(getBestPrice(card.prices.ungraded))} (eBay/TCGPlayer)<br>
+                        • <strong>PSA 10 Premium:</strong> ${((card.prices.psa10.psa?.price / card.prices.ungraded.tcg?.price - 1) * 100).toFixed(0)}% above raw<br>
+                        • <strong>Japanese Market:</strong> Typically ${Math.round(card.prices.ungraded.jp?.price / card.prices.ungraded.tcg?.price)}x US prices
+                    </p>
                 </div>
+                
+                <h3 style="color: var(--accent-gold); margin: 2rem 0 1rem; font-family: 'Press Start 2P', cursive; font-size: 0.7rem;">📈 PRICE HISTORY</h3>
+                <div class="chart-container"><canvas id="priceChart"></canvas></div>
             `;
 
-            setTimeout(() => {
-                const ctx = document.getElementById('priceChart');
-                if (ctx) {
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: ['Day 1', 'Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30'],
-                            datasets: [{
-                                label: 'PSA 10 Price (USD)',
-                                data: Array.from({ length: 7 }, () => card.prices.psa10.en.price * (0.9 + Math.random() * 0.2)),
-                                borderColor: '#ffd700',
-                                backgroundColor: 'rgba(255, 215, 0, 0.1)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { legend: { labels: { color: '#fff', font: { family: 'VT323', size: 14 } } } },
-                            scales: {
-                                x: { ticks: { color: '#a0a0a0', font: { family: 'VT323' } }, grid: { color: '#2d3a5a' } },
-                                y: { ticks: { color: '#a0a0a0', font: { family: 'VT323' }, callback: v => '$' + v.toFixed(0) }, grid: { color: '#2d3a5a' } }
-                            }
-                        }
-                    });
-                }
-            }, 100);
+            setTimeout(() => loadPriceChart(card), 100);
         }
 
-        // Camera scanner
+        // Load price chart
+        function loadPriceChart(card) {
+            const ctx = document.getElementById('priceChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Day 1', 'Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30'],
+                    datasets: [
+                        {
+                            label: 'PSA 10 (PSA)',
+                            data: generateMockHistory(card.prices.psa10.psa?.price),
+                            borderColor: '#ffd700',
+                            backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Ungraded (TCG)',
+                            data: generateMockHistory(card.prices.ungraded.tcg?.price),
+                            borderColor: '#00d9ff',
+                            backgroundColor: 'rgba(0, 217, 255, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'eBay Sold',
+                            data: generateMockHistory(card.prices.ungraded.ebay?.price),
+                            borderColor: '#00ff88',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            labels: { color: '#fff', font: { family: 'VT323', size: 14 } } 
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#a0a0a0', font: { family: 'VT323' } }, grid: { color: '#2d3a5a' } },
+                        y: { ticks: { color: '#a0a0a0', font: { family: 'VT323' }, callback: v => '$' + v }, grid: { color: '#2d3a5a' } }
+                    }
+                }
+            });
+        }
+
+        function generateMockHistory(basePrice) {
+            if (!basePrice) return Array(7).fill(0);
+            return Array.from({ length: 7 }, (_, i) => {
+                const variance = (Math.random() - 0.5) * 0.1; // ±5% variance
+                return basePrice * (1 + variance);
+            });
+        }
+
+        // ===== CAMERA SCANNER =====
         async function openScanner() {
             document.getElementById('scannerModal').classList.add('show');
+            
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' },
+                    audio: false
+                });
                 document.getElementById('scannerVideo').srcObject = stream;
             } catch (err) {
-                alert('Could not access camera. Please allow camera permissions.');
+                console.error('Camera error:', err);
+                alert('Could not access camera. Please allow camera permissions or use text search instead.');
             }
         }
 
         function closeScanner() {
             document.getElementById('scannerModal').classList.remove('show');
+            document.getElementById('scanResult').classList.remove('show');
+            
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
                 stream = null;
             }
         }
 
-        function captureCard() {
-            // Simulate card recognition
-            const randomCard = cardsDB[Math.floor(Math.random() * cardsDB.length)];
+        async function captureCard() {
+            const video = document.getElementById('scannerVideo');
+            const canvas = document.getElementById('scannerCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Simulate AI recognition (like PSA App)
+            await new Promise(r => setTimeout(r, 1000));
+            const detectedCard = cardsDB[Math.floor(Math.random() * cardsDB.length)];
+            
+            showScanResult(detectedCard);
+        }
+
+        function showScanResult(card) {
+            const resultDiv = document.getElementById('scanResult');
+            const contentDiv = document.getElementById('scanResultContent');
+            
+            contentDiv.innerHTML = `
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+                    <img src="${card.image_url}" style="width: 100px; border-radius: 8px;" onerror="this.style.display='none'">
+                    <div style="text-align: left;">
+                        <h4 style="color: var(--accent-gold);">${card.name_en}</h4>
+                        <p style="color: var(--text-secondary);">${card.card_number} • ${card.rarity}</p>
+                        <p style="color: var(--accent-green); font-size: 1.2rem;">
+                            PSA 10: ${formatPrice(card.prices.psa10.psa?.price)}
+                        </p>
+                        <button class="scan-btn" style="margin-top: 0.5rem;" onclick="viewScannedCard(${card.id})">
+                            View Full Details →
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            resultDiv.classList.add('show');
+        }
+
+        function viewScannedCard(cardId) {
             closeScanner();
-            showCardDetail(randomCard.id);
+            showCardDetail(cardId);
+        }
+
+        // Utility functions
+        function formatPrice(price, symbol = '$') {
+            if (price === null || price === undefined) return 'N/A';
+            return symbol === '$' ? `$${price.toFixed(2)}` : `¥${Math.round(price)}`;
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
         }
 
         function closeModal() {
@@ -640,23 +928,13 @@
             document.body.style.overflow = '';
         }
 
-        function showLoading() {
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('resultsSection').style.display = 'none';
-        }
-
-        function hideLoading() {
-            document.getElementById('loading').classList.add('hidden');
-        }
-
-        // Event listeners
-        document.getElementById('searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') searchCards();
-        });
-
+        // Close modal on overlay click
         document.getElementById('cardModal').addEventListener('click', (e) => {
             if (e.target === document.getElementById('cardModal')) closeModal();
         });
+
+        // Initial search to show all cards
+        searchCards();
     </script>
 </body>
 </html>
