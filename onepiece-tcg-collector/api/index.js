@@ -8,7 +8,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // In-memory database (for Vercel serverless)
 // In production, use a real database like PlanetScale, Supabase, or MongoDB
@@ -365,6 +366,87 @@ function levenshteinDistance(str1, str2) {
 
 // For Vercel - export the app
 module.exports = app;
+
+// Vision API Card Recognition Endpoint
+app.post('/api/vision/recognize', async (req, res) => {
+    try {
+        // Check if request has image data
+        if (!req.body.image) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'No image provided. Send base64-encoded image in request body.' 
+            });
+        }
+
+        // Check if Google Vision is configured
+        if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+            // Fallback: Use mock recognition for demo
+            console.log('Vision API not configured, using mock recognition');
+            const mockCard = cardsDB[Math.floor(Math.random() * cardsDB.length)];
+            return res.json({
+                success: true,
+                mock: true,
+                card: mockCard,
+                prices: getCardPrices(mockCard.id),
+                recognition: {
+                    cardNumber: mockCard.card_number,
+                    cardName: mockCard.name_en,
+                    confidence: 95,
+                    isJapanese: false
+                },
+                note: 'Running in demo mode. Set GOOGLE_APPLICATION_CREDENTIALS for real Vision API.'
+            });
+        }
+
+        // Real Vision API recognition
+        const CardVisionRecognizer = require('../src/vision-recognizer');
+        const recognizer = new CardVisionRecognizer();
+        
+        // Decode base64 image
+        const imageBuffer = Buffer.from(req.body.image, 'base64');
+        
+        // Recognize card
+        const recognition = await recognizer.recognizeCard(imageBuffer);
+        
+        if (!recognition.success) {
+            return res.json({
+                success: false,
+                error: recognition.error,
+                rawText: recognition.rawText
+            });
+        }
+        
+        // Find matching card in database
+        const match = await recognizer.findMatchingCard(recognition.cardInfo, cardsDB);
+        
+        if (match) {
+            res.json({
+                success: true,
+                card: match.card,
+                prices: getCardPrices(match.card.id),
+                recognition: recognition.cardInfo,
+                confidence: recognition.confidence,
+                matchType: match.matchType,
+                alternatives: match.alternatives || []
+            });
+        } else {
+            res.json({
+                success: false,
+                error: 'Card not found in database',
+                recognition: recognition.cardInfo,
+                confidence: recognition.confidence,
+                suggestions: generateSuggestions(recognition.cardInfo.cardName || '', cardsDB)
+            });
+        }
+        
+    } catch (err) {
+        console.error('Vision recognition error:', err);
+        res.status(500).json({ 
+            success: false, 
+            error: err.message 
+        });
+    }
+});
 
 // For local development
 if (require.main === module) {
