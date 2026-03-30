@@ -5,7 +5,15 @@ A comprehensive card price tracking application for One Piece TCG with support f
 ## Features
 
 - 🔍 **Fuzzy Search** - Find cards even with typos or partial names
-- 🌍 **Dual Markets** - English (TCGPlayer, eBay) and Japanese (Yuyu-tei, Card Rush) prices
+- 📷 **Camera Scanner** - AI-powered card recognition (PSA App-style)
+  - Japanese & English card support
+  - OCR text extraction
+  - Instant price lookup after scan
+- 🌍 **Multi-Source Prices:**
+  - **PSA** (Professional Sports Authenticator) - Graded card prices
+  - **eBay** - Sold listings + Active listings
+  - **TCGPlayer** - Primary market pricing
+  - **Japanese Markets** - Yuyu-tei, Card Rush
 - 💎 **Grading Support** - Ungraded (Raw), PSA 9/10, BGS 9/9.5/10
 - 📊 **Price Charts** - 30-day price history with interactive graphs
 - 🔄 **Auto Updates** - Daily price scraping at 3:00 AM
@@ -47,6 +55,7 @@ Then open http://localhost:3456 in your browser.
 | `GET /api/cards/number/{number}` | Get card by card number |
 | `GET /api/cards/{id}/history` | Get price history |
 | `GET /api/sets` | List all card sets |
+| `GET /api/prices/search?q={card}&number={num}&grade={grade}` | **Multi-source price search** (TCGPlayer, PSA, eBay) |
 
 ## Price Grades
 
@@ -109,14 +118,35 @@ CMD ["npm", "start"]
 ## Data Sources
 
 ### English Market
-- TCGPlayer (primary)
-- eBay Sold Listings
-- CardMarket
+- **TCGPlayer** - Primary market pricing
+- **PSA (Professional Sports Authenticator)** - Graded card prices and auction data
+- **eBay** - Sold listings and active listings for market comparison
 
 ### Japanese Market
 - Yuyu-tei
 - Card Rush
 - Magi
+
+## Camera Card Scanner (PSA App-Style)
+
+The scanner uses AI vision technology similar to the official PSA App:
+
+1. **Point camera at card** - Works with Japanese & English cards
+2. **OCR extracts text** - Card number, name, set code
+3. **Instant match** - Database lookup in <1 second
+4. **Price display** - Shows PSA, eBay, TCGPlayer prices
+
+### Implementation
+See `docs/PSA_SCANNER_INTEGRATION.md` for full technical guide:
+- Google Vision API (recommended for OCR)
+- TensorFlow.js (client-side ML)
+- AWS Rekognition
+
+### Reference Apps
+- **PSA App** (Official) - iOS/Android, instant card ID + PSA prices
+- **OP.TCG** - 32K+ users, AI scanner for One Piece
+- **TCG Stacked** - One Piece specific scanner + collection tracking
+- **Arcane** - Multi-TCG with PSA verification API
 
 ## TODO / Roadmap
 
